@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+  <!-- 元数据 -->
+  <meta charset="utf-8">
+  <link rel="icon" href="/blog/images/logo.png">
+  
+  <title>CentOS7 安装 Docker | 溪岚花的博客</title>
+  
+  <meta name="author" content="林家隆" />
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="robots" content="index,follow" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <meta name="format-detection" content="telphone=no, email=no" />
+  
+    <meta name="keywords" content="Docker" />
+  
+  <meta name="description" content="Docker 是一个开源平台，用于支持开发人员构建、部署、运行、更新和管理容器；而容器是标准化的可执行组件，结合了应用程序源代码以及在任何环境中运行该代码所需的操作系统库和依赖关系。 使用官方安装 Docker12345678910# 1. yum 包更新到最新 yum update# 2. 安装需要的软件包， yum-util 提供yum-config-manager功能，另外两个是device">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CentOS7 安装 Docker">
+<meta property="og:url" content="https://lin316.gitee.io/blog/2023/06/10/Docker/CentOS-Docker-%E5%AE%89%E8%A3%85/index.html">
+<meta property="og:site_name" content="溪岚花的博客">
+<meta property="og:description" content="Docker 是一个开源平台，用于支持开发人员构建、部署、运行、更新和管理容器；而容器是标准化的可执行组件，结合了应用程序源代码以及在任何环境中运行该代码所需的操作系统库和依赖关系。 使用官方安装 Docker12345678910# 1. yum 包更新到最新 yum update# 2. 安装需要的软件包， yum-util 提供yum-config-manager功能，另外两个是device">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://lin316.gitee.io/blog/blog/images/logo.png">
+<meta property="article:published_time" content="2023-06-10T07:48:48.000Z">
+<meta property="article:modified_time" content="2026-01-04T10:11:22.287Z">
+<meta property="article:author" content="林家隆">
+<meta property="article:tag" content="Docker">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://lin316.gitee.io/blog/blog/images/logo.png">
+  
+  <!-- 站点验证相关 -->
+  
+    
+    
+    
+  
+  <!-- 样式表文件 -->
+  <link rel="stylesheet" id="kratos-css" href="/blog/css/kratosr.min.css" media="all"></script>
+  
+    <link rel="stylesheet" id="darkmode-css" href="/blog/css/kr-color-dark.min.css" media="(prefers-color-scheme: dark)"></script>
+    <script src="/blog/js/kr-dark.min.js"></script>
+  
+  
+    <link rel="stylesheet" id="highlight-css" href="/blog/css/highlight/night-eighties.min.css" media="all"></script>
+  
+  <link rel="stylesheet" id="fontawe-css" href="/blog/vendors/font-awesome@4.7.0/css/font-awesome.min.css" media="all"></script>
+  <link rel="stylesheet" id="nprogress-css" href="/blog/vendors/nprogress@0.2.0/nprogress.css" media="all"></script>
+  
+  
+  
+    <link rel="stylesheet" href="/blog/vendors/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css"></script>
+  
+  <!-- 不得不预先加载的一些JS文件 -->
+  <script src="/blog/vendors/jquery@3.6.0/dist/jquery.min.js"></script>
+  
+  
+  <style>
+    
+    
+  </style>
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+    <body class="custom-background">
+        <div id="kratos-wrapper">
+    <div id="kratos-page">
+        <div id="kratos-header">
+            <header id="kratos-desktop-topnav" class="kratos-topnav">
+                <div class="container">
+                    <div class="nav-header">
+                        <nav id="kratos-menu-wrap">
+                            <ul id="kratos-primary-menu" class="sf-menu">
+                                
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/">
+                                            
+                                                
+                                                    <i class="fa fa-home"></i>
+                                                
+                                                首页
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/archives/">
+                                            
+                                                
+                                                    <i class="fa fa-file"></i>
+                                                
+                                                归档
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/tags/">
+                                            
+                                                
+                                                    <i class="fa fa-tag"></i>
+                                                
+                                                标签
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/categories/">
+                                            
+                                                
+                                                    <i class="fa fa-folder"></i>
+                                                
+                                                目录
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/search/">
+                                            
+                                                
+                                                    <i class="fa fa-search"></i>
+                                                
+                                                搜索
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </header>
+            <header id="kratos-mobile-topnav" class="kratos-topnav">
+                <div class="container">
+                    <div class="color-logo"><a href="/blog/">溪岚花的博客</a></div>
+                    <div class="nav-toggle">
+                        <a class="kratos-nav-toggle js-kratos-nav-toggle">
+                            <i></i>
+                        </a>
+                    </div>
+                </div>
+            </header>
+        </div>
+        <div class="kratos-start kratos-hero-2">
+            <!-- <div class="kratos-overlay"></div> -->
+            <div class="kratos-cover kratos-cover-2 text-center">
+                <div class="desc desc2 animate-box">
+                    <a href="/blog/">
+                        <h2 style="opacity: 0.2;">溪岚花的博客</h2> <br />
+                        <span></span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div id="kratos-blog-post">
+            <div class="container">
+                <div id="main" class="row">
+                    
+
+        
+
+            <section class="col-md-8">
+
+        
+
+            <article itemscope itemtype="https://schema.org/Article">
+    
+    <link itemprop="mainEntityOfPage" href="https://lin316.gitee.io/blog/2023/06/10/Docker/CentOS-Docker-%E5%AE%89%E8%A3%85/">
+    <div class="kratos-hentry kratos-post-inner clearfix">
+        <header class="kratos-entry-header">
+            
+                <h1 class="kratos-entry-title text-center" itemprop="name headline">CentOS7 安装 Docker</h1>
+            
+            
+            <ul class="kratos-post-meta text-center">
+                <li><time datetime="2023-06-10T07:48:48.000Z" itemprop="datePublished"><i class="fa fa-calendar"></i> 2023-06-10</time></li>
+                <li itemprop="author" itemscope itemtype="https://schema.org/Person">
+                    <i class="fa fa-user"></i> 作者 <span itemprop="name">林家隆</span>
+                </li>
+                
+                    <li>
+                        <i class="fa fa-edit"></i> 
+                        
+                        
+                            1.65K
+                        
+                        字
+                    </li>
+                
+                
+            </ul>
+        </header>
+        <div class="kratos-post-content">
+            
+            <div id="expire-alert" class="alert alert-warning hidden" role="alert">
+                <div class="icon"><i class="fa fa-warning"></i></div>
+                <div class="text"><p>本文最后编辑于 <time datetime="1767521482287"></time> 前，其中的内容可能需要更新。</p></div>
+            </div>
+            
+            
+            
+                <div class="kratos-post-inner-toc toc-div-class" >
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E5%AE%98%E6%96%B9%E5%AE%89%E8%A3%85-Docker"><span class="toc-number">1.</span> <span class="toc-text">使用官方安装 Docker</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E9%98%BF%E9%87%8C%E4%BA%91%E7%9A%84%E5%AE%89%E8%A3%85Docker"><span class="toc-number">1.1.</span> <span class="toc-text">使用阿里云的安装Docker</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE%E9%95%9C%E5%83%8F%E6%9C%8D%E5%8A%A1%E5%99%A8"><span class="toc-number">2.</span> <span class="toc-text">配置镜像服务器</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE%E9%95%9C%E5%83%8F%E5%8A%A0%E9%80%9F%E5%9C%B0%E5%9D%80"><span class="toc-number">2.1.</span> <span class="toc-text">配置镜像加速地址</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Docker-Hub-%E9%95%9C%E5%83%8F%E6%B5%8B%E9%80%9F"><span class="toc-number">2.2.</span> <span class="toc-text">Docker Hub 镜像测速</span></a></li></ol></li></ol>
+                </div>
+            
+            <hr />
+            <div itemprop="articleBody"><p>Docker 是一个开源平台，用于支持开发人员构建、部署、运行、更新和管理<em>容器</em>；而容器是标准化的可执行组件，结合了应用程序源代码以及在任何环境中运行该代码所需的操作系统库和依赖关系。</p>
+<h2 id="使用官方安装-Docker"><a href="#使用官方安装-Docker" class="headerlink" title="使用官方安装 Docker"></a><strong>使用官方安装 Docker</strong></h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">1. yum 包更新到最新</span> </span><br><span class="line">yum update</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">2. 安装需要的软件包， yum-util 提供yum-config-manager功能，另外两个是devicemapper驱动依赖的</span> </span><br><span class="line">yum install -y yum-utils device-mapper-persistent-data lvm2</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">3. 设置yum源</span></span><br><span class="line">yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">4. 安装docker，出现输入的界面都按 y</span> </span><br><span class="line">yum install -y docker-ce</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">5. 查看docker版本，验证是否验证成功</span></span><br><span class="line">docker -v</span><br></pre></td></tr></table></figure>
+
+<h3 id="使用阿里云的安装Docker"><a href="#使用阿里云的安装Docker" class="headerlink" title="使用阿里云的安装Docker"></a>使用阿里云的安装Docker</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">yum install -y yum-utils</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">设置阿里云作为源安装 Docker</span></span><br><span class="line">yum-config-manager --add-repo http://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">安装 Docker</span></span><br><span class="line">yum install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin</span><br></pre></td></tr></table></figure>
+
+<h2 id="配置镜像服务器"><a href="#配置镜像服务器" class="headerlink" title="配置镜像服务器"></a><strong>配置镜像服务器</strong></h2><p>Docker 拉取镜像时，经常出现无法访问或者长时间下载不完的情况。是因为 Docker 的默认的镜像服务器 Docker Hub 部署在海外，因此要解决这个问题只需要将镜像服务器地址指定为国内的地址即可。</p>
+<p>到 <code>2023-06-10</code> 为止，还可以免费使用的国内的镜像平台：</p>
+<table>
+<thead>
+<tr>
+<th>镜像加速器</th>
+<th>镜像加速器地址</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>USTC</td>
+<td><a target="_blank" rel="noopener" href="https://docker.mirrors.ustc.edu.cn/">https://docker.mirrors.ustc.edu.cn</a></td>
+</tr>
+<tr>
+<td>阿里云</td>
+<td><a target="_blank" rel="noopener" href="https://ustc-edu-cn.mirror.aliyuncs.com/">https://ustc-edu-cn.mirror.aliyuncs.com</a></td>
+</tr>
+<tr>
+<td>百度云</td>
+<td><a target="_blank" rel="noopener" href="https://mirror.baidubce.com/">https://mirror.baidubce.com</a></td>
+</tr>
+<tr>
+<td>网易云</td>
+<td><a target="_blank" rel="noopener" href="https://hub-mirror.c.163.com/">https://hub-mirror.c.163.com</a></td>
+</tr>
+<tr>
+<td>DaoCloud 镜像站</td>
+<td><a target="_blank" rel="noopener" href="https://docker.m.daocloud.io/">https://docker.m.daocloud.io</a></td>
+</tr>
+<tr>
+<td>Docker 镜像代理</td>
+<td><a target="_blank" rel="noopener" href="https://dockerproxy.com/">https://dockerproxy.com</a></td>
+</tr>
+</tbody></table>
+<h3 id="配置镜像加速地址"><a href="#配置镜像加速地址" class="headerlink" title="配置镜像加速地址"></a><strong>配置镜像加速地址</strong></h3><p>创建或修改 <code>daemon.json</code> 文件</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/docker/daemon.json</span><br></pre></td></tr></table></figure>
+
+<p>将以下内容写入此配置文件，镜像服务地址可根据自己实际情况填写</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">      <span class="attr">&quot;registry-mirrors&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">            <span class="string">&quot;https://ustc-edu-cn.mirror.aliyuncs.com/&quot;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="string">&quot;https://hub-mirror.c.163.com&quot;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="string">&quot;https://mirror.baidubce.com&quot;</span></span><br><span class="line">      <span class="punctuation">]</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>重新加载配置文件</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl daemon-reload</span><br></pre></td></tr></table></figure>
+
+<p>重启 docker 服务</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl restart docker</span><br></pre></td></tr></table></figure>
+
+<p>查看 docker 信息</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker info</span><br></pre></td></tr></table></figure>
+
+<p><img src="/blog/2023/06/10/Docker/CentOS-Docker-%E5%AE%89%E8%A3%85/image-20230610165235637.png"></p>
+<p>出现如上信息表示配置成功。</p>
+<h3 id="Docker-Hub-镜像测速"><a href="#Docker-Hub-镜像测速" class="headerlink" title="Docker Hub 镜像测速"></a><strong>Docker Hub 镜像测速</strong></h3><p>使用镜像前后，可使用 <code>time</code> 统计所花费的总时间。测速前先移除本地的镜像！</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker rmi node</span><br><span class="line">time docker pull node</span><br></pre></td></tr></table></figure>
+
+<p><img src="/blog/2023/06/10/Docker/CentOS-Docker-%E5%AE%89%E8%A3%85/image-20230610165652084.png" alt="镜像加速测试结果"></p>
+</div>
+        </div>
+        
+        <footer class="kratos-entry-footer clearfix">
+            
+            <div class="footer-tag clearfix">
+                <div class="pull-left">
+                <i class="fa fa-tags"></i>
+                    <a class="tag-none-link" href="/blog/tags/Docker/" rel="tag">Docker</a>
+                </div>
+                <div class="pull-date">
+                    <time datetime="2026-01-04T10:11:22.287Z" itemprop="dateModified">最后编辑：2026-01-04</time>
+                </div>
+            </div>
+        </footer>
+    </div>
+    
+        <nav class="navigation post-navigation clearfix" role="navigation">
+            
+            <div class="nav-previous clearfix">
+                <a title=" MySQL 的数据目录" href="/blog/2023/05/22/mysql/MySQL的数据目录/">&lt; 上一篇</a>
+            </div>
+            
+            
+            <div class="nav-next clearfix">
+                <a title=" CentOS7 配置静态 IP" href="/blog/2023/06/10/Linux/Centos7-配置静态IP/">下一篇 &gt;</a>
+            </div>
+            
+        </nav>
+    
+    
+</article>
+
+        
+
+            </section>
+
+        
+
+                
+            
+
+<section id="kratos-widget-area" class="col-md-4 hidden-xs hidden-sm">
+    <!-- 文章和页面根据splitter来分割，没有的话就从头开始设置为sticky -->
+    
+    
+                <aside id="krw-about" class="widget widget-kratos-about clearfix">
+    <div class="photo-background"></div>
+    <div class="photo-wrapper clearfix">
+        <div class="photo-wrapper-tip text-center">
+            <img class="about-photo" src="/blog/images/avatar.webp" loading="lazy" decoding="auto" />
+        </div>
+    </div>
+    <div class="textwidget">
+        <p class="text-center">极简主义</p>
+    </div>
+    <div class="site-meta">
+        <a class="meta-item" href="/blog/archives/">
+            <span class="title">
+                文章
+            </span>
+            <span class="count">
+                77
+            </span>
+        </a>
+        <a class="meta-item" href="/blog/categories/">
+            <span class="title">
+                分类
+            </span>
+            <span class="count">
+                10
+            </span>
+        </a>
+        <a class="meta-item" href="/blog/tags/">
+            <span class="title">
+                标签
+            </span>
+            <span class="count">
+                29
+            </span>
+        </a>
+    </div>
+</aside>
+            
+                    <div class="sticky-area">
+                
+                    <aside id="krw-toc" class="widget widget-kratos-toc clearfix toc-div-class" >
+    <div class="photo-background"></div>
+    <h4 class="widget-title no-after">
+        <i class="fa fa-compass"></i>
+        文章目录
+        <span class="toc-progress-bar" role="progressbar" aria-label="阅读进度："></span>
+    </h4>
+    <div class="textwidget">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E5%AE%98%E6%96%B9%E5%AE%89%E8%A3%85-Docker"><span class="toc-text">使用官方安装 Docker</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E9%98%BF%E9%87%8C%E4%BA%91%E7%9A%84%E5%AE%89%E8%A3%85Docker"><span class="toc-text">使用阿里云的安装Docker</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE%E9%95%9C%E5%83%8F%E6%9C%8D%E5%8A%A1%E5%99%A8"><span class="toc-text">配置镜像服务器</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE%E9%95%9C%E5%83%8F%E5%8A%A0%E9%80%9F%E5%9C%B0%E5%9D%80"><span class="toc-text">配置镜像加速地址</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Docker-Hub-%E9%95%9C%E5%83%8F%E6%B5%8B%E9%80%9F"><span class="toc-text">Docker Hub 镜像测速</span></a></li></ol></li></ol>
+    </div>
+</aside>
+                
+                
+  <aside id="krw-categories" class="widget widget-kratos-categories clearfix">
+    <h4 class="widget-title"><i class="fa fa-folder"></i>分类目录</h4>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Docker/">Docker</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Idea/">Idea</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Java/">Java</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/K8s/">K8s</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Linux/">Linux</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/MySQL/">MySQL</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Python/">Python</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Selenium/">Selenium</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/SpringBoot/">SpringBoot</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/SpringCloud/">SpringCloud</a><span class="category-list-count">13</span></li></ul>
+  </aside>
+
+
+            
+                
+  <aside id="krw-tags" class="widget widget-kratos-tags clearfix">
+    <h4 class="widget-title"><i class="fa fa-tags"></i>标签聚合</h4>
+      <div class="tag-clouds">
+        <a href="/blog/tags/CORS/" style="font-size: 0.8em;">CORS</a> <a href="/blog/tags/Docker/" style="font-size: 0.8em;">Docker</a> <a href="/blog/tags/Dubbo/" style="font-size: 0.8em;">Dubbo</a> <a href="/blog/tags/ELK/" style="font-size: 0.8em;">ELK</a> <a href="/blog/tags/Elasticsearch/" style="font-size: 0.8em;">Elasticsearch</a> <a href="/blog/tags/Eureka/" style="font-size: 0.8em;">Eureka</a> <a href="/blog/tags/Feign/" style="font-size: 0.8em;">Feign</a> <a href="/blog/tags/Gateway/" style="font-size: 0.8em;">Gateway</a> <a href="/blog/tags/Idea/" style="font-size: 0.8em;">Idea</a> <a href="/blog/tags/Java/" style="font-size: 0.8em;">Java</a> <a href="/blog/tags/JavaWeb/" style="font-size: 0.8em;">JavaWeb</a> <a href="/blog/tags/K8s/" style="font-size: 0.8em;">K8s</a> <a href="/blog/tags/Linux/" style="font-size: 0.8em;">Linux</a> <a href="/blog/tags/Maven/" style="font-size: 0.8em;">Maven</a> <a href="/blog/tags/MySQL/" style="font-size: 0.8em;">MySQL</a> <a href="/blog/tags/Mybatis/" style="font-size: 0.8em;">Mybatis</a> <a href="/blog/tags/Nacos/" style="font-size: 0.8em;">Nacos</a> <a href="/blog/tags/Pytest/" style="font-size: 0.8em;">Pytest</a>
+      </div>
+  </aside>
+
+            
+                
+  <aside id="krw-posts" class="widget widget-kratos-posts">
+  <h4 class="widget-title"><i class="fa fa-file"></i>最新文章</h4>
+  <div class="tab-content">
+      <ul class="list-group">
+        
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/01/25/K8s/K8s%E7%BB%84%E4%BB%B6/"><i class="fa  fa-book"></i> 【K8s】组件</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/01/24/K8s/K8s%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/"><i class="fa  fa-book"></i> 【K8s】常用命令</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/01/11/Idea/IDEA%E6%8F%92%E4%BB%B6/"><i class="fa  fa-book"></i> 【Idea】插件</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/01/04/Linux/Centos7%E9%97%AE%E9%A2%98%E5%A4%84%E7%90%86/"><i class="fa  fa-book"></i> Centos7问题处理</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2025/12/09/Trae/Trae%E5%AE%89%E8%A3%85%E6%8F%92%E4%BB%B6%E5%AE%9E%E7%8E%B0Java%E4%BB%A3%E7%A0%81%E7%BC%96%E5%86%99/"><i class="fa  fa-book"></i> 【Trae】安装插件实现Java代码编写</a>
+            
+          
+        
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+      </ul>
+  </div>
+  </aside>
+
+            
+    </div>
+</section>
+        
+        </div>
+    </div>
+</div>
+<footer>
+    <div id="footer"  >
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3 footer-list text-center">
+                    <ul class="kratos-social-icons">
+                        <!-- Keep for compatibility -->
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <!-- New links -->
+                        
+                    </ul>
+                    <ul class="kratos-copyright">
+                        <div>
+                            <li>&copy; 2026 溪岚花的博客 版权所有.</li>
+                            <li>本站已运行<span id="span_dt">Loading...</span></li>
+                        </div>
+                        <div>
+                            <li>Theme <a href="https://github.com/Candinya/Kratos-Rebirth" target="_blank">Kratos:Rebirth</a></li>
+                            <li>Site built with&nbsp;<i class="fa fa-heart throb" style="color:#d43f57"></i>&nbsp;by 林家隆.</li>
+                        </div>
+                        <div>
+                            <li>Powered by <a href="https://hexo.io" target="_blank" rel="nofollow">Hexo</a></li>
+                            <li>Hosted on <a href="https://gitee.com/" target="_blank">Gitee Pages</a></li>
+                        </div>
+                        <div>
+                            
+                            
+                        </div>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="kr-tool text-center">
+            <div class="tool">
+                
+                    <div class="box search-box">
+                        <a href="/blog/search/">
+                            <span class="fa fa-search"></span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="box theme-box" id="darkmode-switch">
+                        <span class="fa fa-adjust"></span>
+                    </div>
+                
+                
+                
+            </div>
+            <div class="box gotop-box">
+                <span class="fa fa-chevron-up"></span>
+            </div>
+        </div>
+    </div>
+</footer>
+</div>
+</div>
+
+        <script defer src="/blog/vendors/bootstrap@3.3.4/dist/js/bootstrap.min.js"></script>
+<script defer src="/blog/vendors/nprogress@0.2.0/nprogress.js"></script>
+<script>
+    if (!window.kr) {
+        window.kr = {};
+    }
+    window.kr.notMobile = (!(navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i)));
+    window.kr.siteRoot = "/blog/";
+</script>
+
+
+
+
+
+    <script defer src="/blog/vendors/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+
+<script defer src="/blog/js/kratosr.min.js"></script>
+<script defer src="/blog/js/pjax.min.js"></script>
+
+
+
+<!-- Extra support for third-party plguins  -->
+
+
+    </body>
+</html>

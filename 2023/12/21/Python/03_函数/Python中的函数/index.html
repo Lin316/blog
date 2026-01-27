@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+  <!-- 元数据 -->
+  <meta charset="utf-8">
+  <link rel="icon" href="/blog/images/logo.png">
+  
+  <title>【Python】函数 | 溪岚花的博客</title>
+  
+  <meta name="author" content="林家隆" />
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="robots" content="index,follow" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <meta name="format-detection" content="telphone=no, email=no" />
+  
+    <meta name="keywords" content="Python" />
+  
+  <meta name="description" content="定义函数定义函数使用 def 语句，依次写出函数名、括号、括号中的参数和冒号: ，然后编写函数体。 12def fun(name):    print(f&amp;#x27;hello &amp;#123;name&amp;#125;&amp;#x27;)  定义空函数12def nop():    pass  调用函数调用函数函数名+参数 12345def fun(name):    print(f&amp;#x27;hello &amp;#">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【Python】函数">
+<meta property="og:url" content="https://lin316.gitee.io/blog/2023/12/21/Python/03_%E5%87%BD%E6%95%B0/Python%E4%B8%AD%E7%9A%84%E5%87%BD%E6%95%B0/index.html">
+<meta property="og:site_name" content="溪岚花的博客">
+<meta property="og:description" content="定义函数定义函数使用 def 语句，依次写出函数名、括号、括号中的参数和冒号: ，然后编写函数体。 12def fun(name):    print(f&amp;#x27;hello &amp;#123;name&amp;#125;&amp;#x27;)  定义空函数12def nop():    pass  调用函数调用函数函数名+参数 12345def fun(name):    print(f&amp;#x27;hello &amp;#">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://lin316.gitee.io/blog/blog/images/logo.png">
+<meta property="article:published_time" content="2023-12-20T16:00:00.000Z">
+<meta property="article:modified_time" content="2026-01-04T05:51:48.258Z">
+<meta property="article:author" content="林家隆">
+<meta property="article:tag" content="Python">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://lin316.gitee.io/blog/blog/images/logo.png">
+  
+  <!-- 站点验证相关 -->
+  
+    
+    
+    
+  
+  <!-- 样式表文件 -->
+  <link rel="stylesheet" id="kratos-css" href="/blog/css/kratosr.min.css" media="all"></script>
+  
+    <link rel="stylesheet" id="darkmode-css" href="/blog/css/kr-color-dark.min.css" media="(prefers-color-scheme: dark)"></script>
+    <script src="/blog/js/kr-dark.min.js"></script>
+  
+  
+    <link rel="stylesheet" id="highlight-css" href="/blog/css/highlight/night-eighties.min.css" media="all"></script>
+  
+  <link rel="stylesheet" id="fontawe-css" href="/blog/vendors/font-awesome@4.7.0/css/font-awesome.min.css" media="all"></script>
+  <link rel="stylesheet" id="nprogress-css" href="/blog/vendors/nprogress@0.2.0/nprogress.css" media="all"></script>
+  
+  
+  
+    <link rel="stylesheet" href="/blog/vendors/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css"></script>
+  
+  <!-- 不得不预先加载的一些JS文件 -->
+  <script src="/blog/vendors/jquery@3.6.0/dist/jquery.min.js"></script>
+  
+  
+  <style>
+    
+    
+  </style>
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+    <body class="custom-background">
+        <div id="kratos-wrapper">
+    <div id="kratos-page">
+        <div id="kratos-header">
+            <header id="kratos-desktop-topnav" class="kratos-topnav">
+                <div class="container">
+                    <div class="nav-header">
+                        <nav id="kratos-menu-wrap">
+                            <ul id="kratos-primary-menu" class="sf-menu">
+                                
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/">
+                                            
+                                                
+                                                    <i class="fa fa-home"></i>
+                                                
+                                                首页
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/archives/">
+                                            
+                                                
+                                                    <i class="fa fa-file"></i>
+                                                
+                                                归档
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/tags/">
+                                            
+                                                
+                                                    <i class="fa fa-tag"></i>
+                                                
+                                                标签
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/categories/">
+                                            
+                                                
+                                                    <i class="fa fa-folder"></i>
+                                                
+                                                目录
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/search/">
+                                            
+                                                
+                                                    <i class="fa fa-search"></i>
+                                                
+                                                搜索
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </header>
+            <header id="kratos-mobile-topnav" class="kratos-topnav">
+                <div class="container">
+                    <div class="color-logo"><a href="/blog/">溪岚花的博客</a></div>
+                    <div class="nav-toggle">
+                        <a class="kratos-nav-toggle js-kratos-nav-toggle">
+                            <i></i>
+                        </a>
+                    </div>
+                </div>
+            </header>
+        </div>
+        <div class="kratos-start kratos-hero-2">
+            <!-- <div class="kratos-overlay"></div> -->
+            <div class="kratos-cover kratos-cover-2 text-center">
+                <div class="desc desc2 animate-box">
+                    <a href="/blog/">
+                        <h2 style="opacity: 0.2;">溪岚花的博客</h2> <br />
+                        <span></span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div id="kratos-blog-post">
+            <div class="container">
+                <div id="main" class="row">
+                    
+
+        
+
+            <section class="col-md-8">
+
+        
+
+            <article itemscope itemtype="https://schema.org/Article">
+    
+    <link itemprop="mainEntityOfPage" href="https://lin316.gitee.io/blog/2023/12/21/Python/03_%E5%87%BD%E6%95%B0/Python%E4%B8%AD%E7%9A%84%E5%87%BD%E6%95%B0/">
+    <div class="kratos-hentry kratos-post-inner clearfix">
+        <header class="kratos-entry-header">
+            
+                <h1 class="kratos-entry-title text-center" itemprop="name headline">【Python】函数</h1>
+            
+            
+            <ul class="kratos-post-meta text-center">
+                <li><time datetime="2023-12-20T16:00:00.000Z" itemprop="datePublished"><i class="fa fa-calendar"></i> 2023-12-21</time></li>
+                <li itemprop="author" itemscope itemtype="https://schema.org/Person">
+                    <i class="fa fa-user"></i> 作者 <span itemprop="name">林家隆</span>
+                </li>
+                
+                    <li>
+                        <i class="fa fa-edit"></i> 
+                        
+                        
+                            2.99K
+                        
+                        字
+                    </li>
+                
+                
+            </ul>
+        </header>
+        <div class="kratos-post-content">
+            
+            <div id="expire-alert" class="alert alert-warning hidden" role="alert">
+                <div class="icon"><i class="fa fa-warning"></i></div>
+                <div class="text"><p>本文最后编辑于 <time datetime="1767505908258"></time> 前，其中的内容可能需要更新。</p></div>
+            </div>
+            
+            
+            
+                <div class="kratos-post-inner-toc toc-div-class" >
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9A%E4%B9%89%E5%87%BD%E6%95%B0"><span class="toc-number">1.</span> <span class="toc-text">定义函数</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9A%E4%B9%89%E5%87%BD%E6%95%B0-1"><span class="toc-number">1.1.</span> <span class="toc-text">定义函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9A%E4%B9%89%E7%A9%BA%E5%87%BD%E6%95%B0"><span class="toc-number">1.2.</span> <span class="toc-text">定义空函数</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B0%83%E7%94%A8%E5%87%BD%E6%95%B0"><span class="toc-number">2.</span> <span class="toc-text">调用函数</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B0%83%E7%94%A8%E5%87%BD%E6%95%B0-1"><span class="toc-number">2.1.</span> <span class="toc-text">调用函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%82%E6%95%B0%E6%A3%80%E6%9F%A5"><span class="toc-number">2.2.</span> <span class="toc-text">参数检查</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%94%E5%9B%9E%E5%A4%9A%E4%B8%AA%E5%80%BC"><span class="toc-number">2.3.</span> <span class="toc-text">返回多个值</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%87%BD%E6%95%B0%E7%9A%84%E5%8F%82%E6%95%B0"><span class="toc-number">3.</span> <span class="toc-text">函数的参数</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BF%85%E9%80%89%E5%8F%82%E6%95%B0"><span class="toc-number">3.1.</span> <span class="toc-text">必选参数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%BB%98%E8%AE%A4%E5%8F%82%E6%95%B0"><span class="toc-number">3.2.</span> <span class="toc-text">默认参数</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%B3%A8%E6%84%8F%EF%BC%9A"><span class="toc-number">3.2.1.</span> <span class="toc-text">注意：</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%AF%E5%8F%98%E5%8F%82%E6%95%B0"><span class="toc-number">3.3.</span> <span class="toc-text">可变参数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B3%E9%94%AE%E5%AD%97%E5%8F%82%E6%95%B0"><span class="toc-number">3.4.</span> <span class="toc-text">关键字参数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%91%BD%E5%90%8D%E5%85%B3%E9%94%AE%E5%AD%97%E5%8F%82%E6%95%B0"><span class="toc-number">3.5.</span> <span class="toc-text">命名关键字参数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%82%E6%95%B0%E7%BB%84%E5%90%88"><span class="toc-number">3.6.</span> <span class="toc-text">参数组合</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%BB%98%E8%AE%A4%E5%8F%82%E6%95%B0-%E5%8F%AF%E5%8F%98%E5%8F%82%E6%95%B0"><span class="toc-number">3.6.1.</span> <span class="toc-text">默认参数 + 可变参数</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%BB%98%E8%AE%A4%E5%8F%82%E6%95%B0-%E5%91%BD%E5%90%8D%E5%85%B3%E9%94%AE%E5%AD%97%E5%8F%82%E6%95%B0-x2F-%E5%85%B3%E9%94%AE%E5%AD%97%E5%8F%82%E6%95%B0"><span class="toc-number">3.6.2.</span> <span class="toc-text">默认参数 + 命名关键字参数&#x2F;关键字参数</span></a></li></ol></li></ol></li></ol>
+                </div>
+            
+            <hr />
+            <div itemprop="articleBody"><h2 id="定义函数"><a href="#定义函数" class="headerlink" title="定义函数"></a><strong>定义函数</strong></h2><h3 id="定义函数-1"><a href="#定义函数-1" class="headerlink" title="定义函数"></a><strong>定义函数</strong></h3><p>使用 <code>def</code> 语句，依次写出函数名、括号、括号中的参数和冒号<code>:</code> ，然后编写函数体。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">fun</span>(<span class="params">name</span>):</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&#x27;hello <span class="subst">&#123;name&#125;</span>&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<h3 id="定义空函数"><a href="#定义空函数" class="headerlink" title="定义空函数"></a><strong>定义空函数</strong></h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">nop</span>():</span><br><span class="line">    <span class="keyword">pass</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="调用函数"><a href="#调用函数" class="headerlink" title="调用函数"></a><strong>调用函数</strong></h2><h3 id="调用函数-1"><a href="#调用函数-1" class="headerlink" title="调用函数"></a><strong>调用函数</strong></h3><p>函数名+参数</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">fun</span>(<span class="params">name</span>):</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&#x27;hello <span class="subst">&#123;name&#125;</span>&#x27;</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">fun(<span class="string">&#x27;lin&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<h3 id="参数检查"><a href="#参数检查" class="headerlink" title="参数检查"></a><strong>参数检查</strong></h3><p>调用函数时，如果参数个数不对，Python 解释器会抛出 <code>TypeError</code>：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">abs</span>(<span class="number">1</span>,<span class="number">2</span>)</span><br><span class="line">Traceback (most recent call last):</span><br><span class="line">  File <span class="string">&quot;&lt;stdin&gt;&quot;</span>, line <span class="number">1</span>, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line">TypeError: <span class="built_in">abs</span>() takes exactly one argument (<span class="number">2</span> given)</span><br></pre></td></tr></table></figure>
+
+<h3 id="返回多个值"><a href="#返回多个值" class="headerlink" title="返回多个值"></a><strong>返回多个值</strong></h3><p>实际返回值是一个 tuple，而多个变量可以同时接受一个 tuple：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">move</span>(<span class="params">x, y, step</span>):</span><br><span class="line">    <span class="keyword">return</span> x + step, y + step</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">m, n = move(<span class="number">2</span>, <span class="number">3</span>, <span class="number">10</span>);</span><br><span class="line"><span class="built_in">print</span>(m)</span><br><span class="line"><span class="built_in">print</span>(n)</span><br></pre></td></tr></table></figure>
+
+<h2 id="函数的参数"><a href="#函数的参数" class="headerlink" title="函数的参数"></a><strong>函数的参数</strong></h2><h3 id="必选参数"><a href="#必选参数" class="headerlink" title="必选参数"></a><strong>必选参数</strong></h3><p>对于 <code>power(x)</code> 函数，参数 <code>x</code> 就是一个必选参数。当调用 <code>power</code> 函数时，必须传入有且仅有的一个参数 <code>x</code>。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">power</span>(<span class="params">x</span>):</span><br><span class="line">    <span class="keyword">return</span> x * x</span><br></pre></td></tr></table></figure>
+
+<h3 id="默认参数"><a href="#默认参数" class="headerlink" title="默认参数"></a><strong>默认参数</strong></h3><p>对于 <code>power(x, n)</code> 函数，<code>n</code> 是默认参数。当调用 <code>power(5)</code> ，相当于调用 <code>power(5, 2)</code>。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">power</span>(<span class="params">x, n=<span class="number">2</span></span>):</span><br><span class="line">    s = <span class="number">1</span></span><br><span class="line">    <span class="keyword">while</span> n &gt; <span class="number">0</span>:</span><br><span class="line">        n = n - <span class="number">1</span></span><br><span class="line">        s = s * x</span><br><span class="line">    <span class="keyword">return</span> s</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">power(<span class="number">5</span>)</span><br></pre></td></tr></table></figure>
+
+<h4 id="注意："><a href="#注意：" class="headerlink" title="注意："></a><strong>注意：</strong></h4><ul>
+<li>默认参数必须指向不变对象。如果默认参数指向可变对象，每次调用该函数，改变了可变对象，下次调用该函数，默认参数的内容就改变了。</li>
+<li>必选参数在前，默认参数在后，否则 Python 的解释器会报错。</li>
+</ul>
+<h3 id="可变参数"><a href="#可变参数" class="headerlink" title="可变参数"></a><strong>可变参数</strong></h3><p>参数 <code>*numbers</code> 是一个可变参数，调用 <code>sum</code> 函数时，可以传入任意个参数，包括 0 个参数。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">sum</span>(<span class="params">*numbers</span>):</span><br><span class="line">    res = <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> num <span class="keyword">in</span> numbers:</span><br><span class="line">        res += num</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> res</span><br></pre></td></tr></table></figure>
+
+<p>如果传入的参数是 list 或者 tuple 类型，可以在变量前加一个 <code>*</code> 号，把 list 或 tuple 的元素变成可变参数传进去：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">numbers = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]</span><br><span class="line"><span class="built_in">sum</span>(*numbers)</span><br></pre></td></tr></table></figure>
+
+<h3 id="关键字参数"><a href="#关键字参数" class="headerlink" title="关键字参数"></a><strong>关键字参数</strong></h3><p><code>**kw</code> 是关键字参数，关键字参数传入 0 个或任意个含参数名的参数，这些关键字参数在函数内部自动组装为一个 dict。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">person</span>(<span class="params">**kw</span>):</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&#x27;kw = <span class="subst">&#123;kw&#125;</span>&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<h3 id="命名关键字参数"><a href="#命名关键字参数" class="headerlink" title="命名关键字参数"></a><strong>命名关键字参数</strong></h3><p>对于关键字参数，函数的调用者可以传入任意不受限制的关键字参数。如果要限制关键字参数的名字，就可以用命名关键字参数。命名关键字参数需要一个特殊分隔符 <code>*</code> ，<code>*</code> 后面的参数被视为命名关键字参数。例如：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">def person(name, age, *, city, job):</span><br><span class="line">    print(name, age, city, job)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">person(&#x27;lin&#x27;, 18, city=&#x27;beijin&#x27;, job=&#x27;java&#x27;)</span><br></pre></td></tr></table></figure>
+
+<p>如果函数定义中已经有了一个可变参数，后面跟着的命名关键字参数就不再需要一个特殊分隔符 <code>*</code> 了：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">person</span>(<span class="params">name, age, *args, city, job</span>):</span><br><span class="line">    <span class="built_in">print</span>(name, age, args, city, job)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">person(<span class="string">&#x27;lin&#x27;</span>, <span class="number">18</span>, <span class="string">&#x27;good&#x27;</span>, city=<span class="string">&#x27;beijin&#x27;</span>, job=<span class="string">&#x27;java&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>命名关键字参数可以有缺省值，从而简化调用：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">person</span>(<span class="params">name, age, *, city=<span class="string">&#x27;Beijing&#x27;</span>, job</span>):</span><br><span class="line">    <span class="built_in">print</span>(name, age, city, job)</span><br><span class="line"></span><br><span class="line">    </span><br><span class="line">person(<span class="string">&#x27;Jack&#x27;</span>, <span class="number">24</span>, job=<span class="string">&#x27;Engineer&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<h3 id="参数组合"><a href="#参数组合" class="headerlink" title="参数组合"></a><strong>参数组合</strong></h3><p>在 Python 中定义函数，这5种参数都可以组合使用，但是参数定义的顺序必须是：必选参数、默认参数、可变参数、命名关键字参数和关键字参数。</p>
+<h4 id="默认参数-可变参数"><a href="#默认参数-可变参数" class="headerlink" title="默认参数 + 可变参数"></a><strong>默认参数 + 可变参数</strong></h4><p>在<code>默认参数 + 可变参数</code>的组合中，如果想使用可变参数，必须要依次给默认参数全部重新赋值才能使用可变参数，并且不能使用 <code>a=0</code> 方式给默认参数赋值：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">def</span> <span class="title function_">f1</span>(<span class="params">a=<span class="number">0</span>, *args</span>):</span><br><span class="line"><span class="meta">... </span>    <span class="built_in">print</span>(<span class="string">f&#x27;a:<span class="subst">&#123;a&#125;</span>, args:<span class="subst">&#123;args&#125;</span>&#x27;</span>)</span><br><span class="line"><span class="meta">... </span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>f1(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>)</span><br><span class="line">a:<span class="number">1</span>, args:(<span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>f1(a=<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>)</span><br><span class="line">  File <span class="string">&quot;&lt;stdin&gt;&quot;</span>, line <span class="number">1</span></span><br><span class="line">    f1(a=<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>)</span><br><span class="line">                   ^</span><br><span class="line">SyntaxError: positional argument follows keyword argument</span><br></pre></td></tr></table></figure>
+
+<h4 id="默认参数-命名关键字参数-x2F-关键字参数"><a href="#默认参数-命名关键字参数-x2F-关键字参数" class="headerlink" title="默认参数 + 命名关键字参数&#x2F;关键字参数"></a><strong>默认参数 + 命名关键字参数&#x2F;关键字参数</strong></h4><p>在<code>默认参数 + 命名关键字参数/关键字参数</code>中，默认参数的变量名不会作为 key 出现在<code>命名关键字参数/关键字参数</code>中，因此<code>默认参数</code>跟<code>命名关键字参数/关键字参数</code>并没有什么冲突，包括参数的位置也没有限制：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">def</span> <span class="title function_">f2</span>(<span class="params">a=<span class="number">0</span>, *, b=<span class="number">1</span>, c, **kw</span>):</span><br><span class="line"><span class="meta">... </span>    <span class="built_in">print</span>(<span class="string">f&#x27;a=<span class="subst">&#123;a&#125;</span>, b=<span class="subst">&#123;b&#125;</span>, c=<span class="subst">&#123;c&#125;</span>, kw:<span class="subst">&#123;kw&#125;</span>&#x27;</span>)</span><br><span class="line">...</span><br><span class="line">&gt;&gt;&gt;</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>f2(d=<span class="number">10</span>, c=<span class="number">9</span>, b=<span class="number">8</span>, a=<span class="number">7</span>)</span><br><span class="line">a=<span class="number">7</span>, b=<span class="number">8</span>, c=<span class="number">9</span>, kw:&#123;<span class="string">&#x27;d&#x27;</span>: <span class="number">10</span>&#125;</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>f2(d=<span class="number">10</span>, c=<span class="number">9</span>)</span><br><span class="line">a=<span class="number">0</span>, b=<span class="number">1</span>, c=<span class="number">9</span>, kw:&#123;<span class="string">&#x27;d&#x27;</span>: <span class="number">10</span>&#125;</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>f2(c=<span class="number">9</span>)</span><br><span class="line">a=<span class="number">0</span>, b=<span class="number">1</span>, c=<span class="number">9</span>, kw:&#123;&#125;</span><br></pre></td></tr></table></figure>
+</div>
+        </div>
+        
+        <footer class="kratos-entry-footer clearfix">
+            
+            <div class="footer-tag clearfix">
+                <div class="pull-left">
+                <i class="fa fa-tags"></i>
+                    <a class="tag-none-link" href="/blog/tags/Python/" rel="tag">Python</a>
+                </div>
+                <div class="pull-date">
+                    <time datetime="2026-01-04T05:51:48.258Z" itemprop="dateModified">最后编辑：2026-01-04</time>
+                </div>
+            </div>
+        </footer>
+    </div>
+    
+        <nav class="navigation post-navigation clearfix" role="navigation">
+            
+            <div class="nav-previous clearfix">
+                <a title=" 【Python】集合" href="/blog/2023/12/20/Python/02_Python基础/Python中的集合/">&lt; 上一篇</a>
+            </div>
+            
+            
+            <div class="nav-next clearfix">
+                <a title=" 【Python】函数式编程" href="/blog/2023/12/23/Python/05_函数式编程/函数式编程/">下一篇 &gt;</a>
+            </div>
+            
+        </nav>
+    
+    
+</article>
+
+        
+
+            </section>
+
+        
+
+                
+            
+
+<section id="kratos-widget-area" class="col-md-4 hidden-xs hidden-sm">
+    <!-- 文章和页面根据splitter来分割，没有的话就从头开始设置为sticky -->
+    
+    
+                <aside id="krw-about" class="widget widget-kratos-about clearfix">
+    <div class="photo-background"></div>
+    <div class="photo-wrapper clearfix">
+        <div class="photo-wrapper-tip text-center">
+            <img class="about-photo" src="/blog/images/avatar.webp" loading="lazy" decoding="auto" />
+        </div>
+    </div>
+    <div class="textwidget">
+        <p class="text-center">极简主义</p>
+    </div>
+    <div class="site-meta">
+        <a class="meta-item" href="/blog/archives/">
+            <span class="title">
+                文章
+            </span>
+            <span class="count">
+                77
+            </span>
+        </a>
+        <a class="meta-item" href="/blog/categories/">
+            <span class="title">
+                分类
+            </span>
+            <span class="count">
+                10
+            </span>
+        </a>
+        <a class="meta-item" href="/blog/tags/">
+            <span class="title">
+                标签
+            </span>
+            <span class="count">
+                29
+            </span>
+        </a>
+    </div>
+</aside>
+            
+                    <div class="sticky-area">
+                
+                    <aside id="krw-toc" class="widget widget-kratos-toc clearfix toc-div-class" >
+    <div class="photo-background"></div>
+    <h4 class="widget-title no-after">
+        <i class="fa fa-compass"></i>
+        文章目录
+        <span class="toc-progress-bar" role="progressbar" aria-label="阅读进度："></span>
+    </h4>
+    <div class="textwidget">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9A%E4%B9%89%E5%87%BD%E6%95%B0"><span class="toc-text">定义函数</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9A%E4%B9%89%E5%87%BD%E6%95%B0-1"><span class="toc-text">定义函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9A%E4%B9%89%E7%A9%BA%E5%87%BD%E6%95%B0"><span class="toc-text">定义空函数</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B0%83%E7%94%A8%E5%87%BD%E6%95%B0"><span class="toc-text">调用函数</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B0%83%E7%94%A8%E5%87%BD%E6%95%B0-1"><span class="toc-text">调用函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%82%E6%95%B0%E6%A3%80%E6%9F%A5"><span class="toc-text">参数检查</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%94%E5%9B%9E%E5%A4%9A%E4%B8%AA%E5%80%BC"><span class="toc-text">返回多个值</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%87%BD%E6%95%B0%E7%9A%84%E5%8F%82%E6%95%B0"><span class="toc-text">函数的参数</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BF%85%E9%80%89%E5%8F%82%E6%95%B0"><span class="toc-text">必选参数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%BB%98%E8%AE%A4%E5%8F%82%E6%95%B0"><span class="toc-text">默认参数</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%B3%A8%E6%84%8F%EF%BC%9A"><span class="toc-text">注意：</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%AF%E5%8F%98%E5%8F%82%E6%95%B0"><span class="toc-text">可变参数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B3%E9%94%AE%E5%AD%97%E5%8F%82%E6%95%B0"><span class="toc-text">关键字参数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%91%BD%E5%90%8D%E5%85%B3%E9%94%AE%E5%AD%97%E5%8F%82%E6%95%B0"><span class="toc-text">命名关键字参数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%82%E6%95%B0%E7%BB%84%E5%90%88"><span class="toc-text">参数组合</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%BB%98%E8%AE%A4%E5%8F%82%E6%95%B0-%E5%8F%AF%E5%8F%98%E5%8F%82%E6%95%B0"><span class="toc-text">默认参数 + 可变参数</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%BB%98%E8%AE%A4%E5%8F%82%E6%95%B0-%E5%91%BD%E5%90%8D%E5%85%B3%E9%94%AE%E5%AD%97%E5%8F%82%E6%95%B0-x2F-%E5%85%B3%E9%94%AE%E5%AD%97%E5%8F%82%E6%95%B0"><span class="toc-text">默认参数 + 命名关键字参数&#x2F;关键字参数</span></a></li></ol></li></ol></li></ol>
+    </div>
+</aside>
+                
+                
+  <aside id="krw-categories" class="widget widget-kratos-categories clearfix">
+    <h4 class="widget-title"><i class="fa fa-folder"></i>分类目录</h4>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Docker/">Docker</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Idea/">Idea</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Java/">Java</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/K8s/">K8s</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Linux/">Linux</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/MySQL/">MySQL</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Python/">Python</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Selenium/">Selenium</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/SpringBoot/">SpringBoot</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/SpringCloud/">SpringCloud</a><span class="category-list-count">13</span></li></ul>
+  </aside>
+
+
+            
+                
+  <aside id="krw-tags" class="widget widget-kratos-tags clearfix">
+    <h4 class="widget-title"><i class="fa fa-tags"></i>标签聚合</h4>
+      <div class="tag-clouds">
+        <a href="/blog/tags/CORS/" style="font-size: 0.8em;">CORS</a> <a href="/blog/tags/Docker/" style="font-size: 0.8em;">Docker</a> <a href="/blog/tags/Dubbo/" style="font-size: 0.8em;">Dubbo</a> <a href="/blog/tags/ELK/" style="font-size: 0.8em;">ELK</a> <a href="/blog/tags/Elasticsearch/" style="font-size: 0.8em;">Elasticsearch</a> <a href="/blog/tags/Eureka/" style="font-size: 0.8em;">Eureka</a> <a href="/blog/tags/Feign/" style="font-size: 0.8em;">Feign</a> <a href="/blog/tags/Gateway/" style="font-size: 0.8em;">Gateway</a> <a href="/blog/tags/Idea/" style="font-size: 0.8em;">Idea</a> <a href="/blog/tags/Java/" style="font-size: 0.8em;">Java</a> <a href="/blog/tags/JavaWeb/" style="font-size: 0.8em;">JavaWeb</a> <a href="/blog/tags/K8s/" style="font-size: 0.8em;">K8s</a> <a href="/blog/tags/Linux/" style="font-size: 0.8em;">Linux</a> <a href="/blog/tags/Maven/" style="font-size: 0.8em;">Maven</a> <a href="/blog/tags/MySQL/" style="font-size: 0.8em;">MySQL</a> <a href="/blog/tags/Mybatis/" style="font-size: 0.8em;">Mybatis</a> <a href="/blog/tags/Nacos/" style="font-size: 0.8em;">Nacos</a> <a href="/blog/tags/Pytest/" style="font-size: 0.8em;">Pytest</a>
+      </div>
+  </aside>
+
+            
+                
+  <aside id="krw-posts" class="widget widget-kratos-posts">
+  <h4 class="widget-title"><i class="fa fa-file"></i>最新文章</h4>
+  <div class="tab-content">
+      <ul class="list-group">
+        
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/01/25/K8s/K8s%E7%BB%84%E4%BB%B6/"><i class="fa  fa-book"></i> 【K8s】组件</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/01/24/K8s/K8s%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/"><i class="fa  fa-book"></i> 【K8s】常用命令</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/01/11/Idea/IDEA%E6%8F%92%E4%BB%B6/"><i class="fa  fa-book"></i> 【Idea】插件</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/01/04/Linux/Centos7%E9%97%AE%E9%A2%98%E5%A4%84%E7%90%86/"><i class="fa  fa-book"></i> Centos7问题处理</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2025/12/09/Trae/Trae%E5%AE%89%E8%A3%85%E6%8F%92%E4%BB%B6%E5%AE%9E%E7%8E%B0Java%E4%BB%A3%E7%A0%81%E7%BC%96%E5%86%99/"><i class="fa  fa-book"></i> 【Trae】安装插件实现Java代码编写</a>
+            
+          
+        
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+      </ul>
+  </div>
+  </aside>
+
+            
+    </div>
+</section>
+        
+        </div>
+    </div>
+</div>
+<footer>
+    <div id="footer"  >
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3 footer-list text-center">
+                    <ul class="kratos-social-icons">
+                        <!-- Keep for compatibility -->
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <!-- New links -->
+                        
+                    </ul>
+                    <ul class="kratos-copyright">
+                        <div>
+                            <li>&copy; 2026 溪岚花的博客 版权所有.</li>
+                            <li>本站已运行<span id="span_dt">Loading...</span></li>
+                        </div>
+                        <div>
+                            <li>Theme <a href="https://github.com/Candinya/Kratos-Rebirth" target="_blank">Kratos:Rebirth</a></li>
+                            <li>Site built with&nbsp;<i class="fa fa-heart throb" style="color:#d43f57"></i>&nbsp;by 林家隆.</li>
+                        </div>
+                        <div>
+                            <li>Powered by <a href="https://hexo.io" target="_blank" rel="nofollow">Hexo</a></li>
+                            <li>Hosted on <a href="https://gitee.com/" target="_blank">Gitee Pages</a></li>
+                        </div>
+                        <div>
+                            
+                            
+                        </div>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="kr-tool text-center">
+            <div class="tool">
+                
+                    <div class="box search-box">
+                        <a href="/blog/search/">
+                            <span class="fa fa-search"></span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="box theme-box" id="darkmode-switch">
+                        <span class="fa fa-adjust"></span>
+                    </div>
+                
+                
+                
+            </div>
+            <div class="box gotop-box">
+                <span class="fa fa-chevron-up"></span>
+            </div>
+        </div>
+    </div>
+</footer>
+</div>
+</div>
+
+        <script defer src="/blog/vendors/bootstrap@3.3.4/dist/js/bootstrap.min.js"></script>
+<script defer src="/blog/vendors/nprogress@0.2.0/nprogress.js"></script>
+<script>
+    if (!window.kr) {
+        window.kr = {};
+    }
+    window.kr.notMobile = (!(navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i)));
+    window.kr.siteRoot = "/blog/";
+</script>
+
+
+
+
+
+    <script defer src="/blog/vendors/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+
+<script defer src="/blog/js/kratosr.min.js"></script>
+<script defer src="/blog/js/pjax.min.js"></script>
+
+
+
+<!-- Extra support for third-party plguins  -->
+
+
+    </body>
+</html>

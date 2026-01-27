@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+  <!-- 元数据 -->
+  <meta charset="utf-8">
+  <link rel="icon" href="/blog/images/logo.png">
+  
+  <title>分布式事务理论基础 | 溪岚花的博客</title>
+  
+  <meta name="author" content="林家隆" />
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="robots" content="index,follow" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <meta name="format-detection" content="telphone=no, email=no" />
+  
+    <meta name="keywords" content="SpringCloud, 分布式事务" />
+  
+  <meta name="description" content="随着微服务架构越来越流行，分布式事务在项目中也越来越普遍，本章主要涉及分布式事务的理论知识，为后续的学习分布式事务框架打下基础。 数据库事务事务的定义数据库事务是访问并可能操作各种数据项的一个数据库操作序列，这些操作要么全部执行，要么全部不执行，是一个不可分割的工作单位。事务由事务开始与事务结束之间执行的全部数据库操作组成。 数据库本地事务的性质 原子性：事务中的全部操作在数据库中是不可分割的，要">
+<meta property="og:type" content="article">
+<meta property="og:title" content="分布式事务理论基础">
+<meta property="og:url" content="https://lin316.gitee.io/blog/2023/07/01/SpringCloud/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1%E7%90%86%E8%AE%BA%E5%9F%BA%E7%A1%80/index.html">
+<meta property="og:site_name" content="溪岚花的博客">
+<meta property="og:description" content="随着微服务架构越来越流行，分布式事务在项目中也越来越普遍，本章主要涉及分布式事务的理论知识，为后续的学习分布式事务框架打下基础。 数据库事务事务的定义数据库事务是访问并可能操作各种数据项的一个数据库操作序列，这些操作要么全部执行，要么全部不执行，是一个不可分割的工作单位。事务由事务开始与事务结束之间执行的全部数据库操作组成。 数据库本地事务的性质 原子性：事务中的全部操作在数据库中是不可分割的，要">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://lin316.gitee.io/blog/blog/images/logo.png">
+<meta property="article:published_time" content="2023-07-01T02:17:31.000Z">
+<meta property="article:modified_time" content="2026-01-04T05:51:48.296Z">
+<meta property="article:author" content="林家隆">
+<meta property="article:tag" content="SpringCloud">
+<meta property="article:tag" content="分布式事务">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://lin316.gitee.io/blog/blog/images/logo.png">
+  
+  <!-- 站点验证相关 -->
+  
+    
+    
+    
+  
+  <!-- 样式表文件 -->
+  <link rel="stylesheet" id="kratos-css" href="/blog/css/kratosr.min.css" media="all"></script>
+  
+    <link rel="stylesheet" id="darkmode-css" href="/blog/css/kr-color-dark.min.css" media="(prefers-color-scheme: dark)"></script>
+    <script src="/blog/js/kr-dark.min.js"></script>
+  
+  
+    <link rel="stylesheet" id="highlight-css" href="/blog/css/highlight/night-eighties.min.css" media="all"></script>
+  
+  <link rel="stylesheet" id="fontawe-css" href="/blog/vendors/font-awesome@4.7.0/css/font-awesome.min.css" media="all"></script>
+  <link rel="stylesheet" id="nprogress-css" href="/blog/vendors/nprogress@0.2.0/nprogress.css" media="all"></script>
+  
+  
+  
+    <link rel="stylesheet" href="/blog/vendors/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css"></script>
+  
+  <!-- 不得不预先加载的一些JS文件 -->
+  <script src="/blog/vendors/jquery@3.6.0/dist/jquery.min.js"></script>
+  
+  
+  <style>
+    
+    
+  </style>
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+    <body class="custom-background">
+        <div id="kratos-wrapper">
+    <div id="kratos-page">
+        <div id="kratos-header">
+            <header id="kratos-desktop-topnav" class="kratos-topnav">
+                <div class="container">
+                    <div class="nav-header">
+                        <nav id="kratos-menu-wrap">
+                            <ul id="kratos-primary-menu" class="sf-menu">
+                                
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/">
+                                            
+                                                
+                                                    <i class="fa fa-home"></i>
+                                                
+                                                首页
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/archives/">
+                                            
+                                                
+                                                    <i class="fa fa-file"></i>
+                                                
+                                                归档
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/tags/">
+                                            
+                                                
+                                                    <i class="fa fa-tag"></i>
+                                                
+                                                标签
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/categories/">
+                                            
+                                                
+                                                    <i class="fa fa-folder"></i>
+                                                
+                                                目录
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/search/">
+                                            
+                                                
+                                                    <i class="fa fa-search"></i>
+                                                
+                                                搜索
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </header>
+            <header id="kratos-mobile-topnav" class="kratos-topnav">
+                <div class="container">
+                    <div class="color-logo"><a href="/blog/">溪岚花的博客</a></div>
+                    <div class="nav-toggle">
+                        <a class="kratos-nav-toggle js-kratos-nav-toggle">
+                            <i></i>
+                        </a>
+                    </div>
+                </div>
+            </header>
+        </div>
+        <div class="kratos-start kratos-hero-2">
+            <!-- <div class="kratos-overlay"></div> -->
+            <div class="kratos-cover kratos-cover-2 text-center">
+                <div class="desc desc2 animate-box">
+                    <a href="/blog/">
+                        <h2 style="opacity: 0.2;">溪岚花的博客</h2> <br />
+                        <span></span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div id="kratos-blog-post">
+            <div class="container">
+                <div id="main" class="row">
+                    
+
+        
+
+            <section class="col-md-8">
+
+        
+
+            <article itemscope itemtype="https://schema.org/Article">
+    
+    <link itemprop="mainEntityOfPage" href="https://lin316.gitee.io/blog/2023/07/01/SpringCloud/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1%E7%90%86%E8%AE%BA%E5%9F%BA%E7%A1%80/">
+    <div class="kratos-hentry kratos-post-inner clearfix">
+        <header class="kratos-entry-header">
+            
+                <h1 class="kratos-entry-title text-center" itemprop="name headline">分布式事务理论基础</h1>
+            
+            
+            <ul class="kratos-post-meta text-center">
+                <li><time datetime="2023-07-01T02:17:31.000Z" itemprop="datePublished"><i class="fa fa-calendar"></i> 2023-07-01</time></li>
+                <li itemprop="author" itemscope itemtype="https://schema.org/Person">
+                    <i class="fa fa-user"></i> 作者 <span itemprop="name">林家隆</span>
+                </li>
+                
+                    <li>
+                        <i class="fa fa-edit"></i> 
+                        
+                        
+                            6.85K
+                        
+                        字
+                    </li>
+                
+                
+            </ul>
+        </header>
+        <div class="kratos-post-content">
+            
+            <div id="expire-alert" class="alert alert-warning hidden" role="alert">
+                <div class="icon"><i class="fa fa-warning"></i></div>
+                <div class="text"><p>本文最后编辑于 <time datetime="1767505908296"></time> 前，其中的内容可能需要更新。</p></div>
+            </div>
+            
+            
+            
+                <div class="kratos-post-inner-toc toc-div-class" >
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93%E4%BA%8B%E5%8A%A1"><span class="toc-number">1.</span> <span class="toc-text">数据库事务</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%8B%E5%8A%A1%E7%9A%84%E5%AE%9A%E4%B9%89"><span class="toc-number">1.1.</span> <span class="toc-text">事务的定义</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93%E6%9C%AC%E5%9C%B0%E4%BA%8B%E5%8A%A1%E7%9A%84%E6%80%A7%E8%B4%A8"><span class="toc-number">1.2.</span> <span class="toc-text">数据库本地事务的性质</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1%E7%AE%80%E4%BB%8B"><span class="toc-number">2.</span> <span class="toc-text">分布式事务简介</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1"><span class="toc-number">2.1.</span> <span class="toc-text">什么是分布式事务</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1%E4%BA%A7%E7%94%9F%E7%9A%84%E5%9C%BA%E6%99%AF"><span class="toc-number">2.2.</span> <span class="toc-text">分布式事务产生的场景</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1%E5%9F%BA%E7%A1%80%E7%90%86%E8%AE%BA"><span class="toc-number">3.</span> <span class="toc-text">分布式事务基础理论</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#CAP-%E7%90%86%E8%AE%BA"><span class="toc-number">3.1.</span> <span class="toc-text">CAP 理论</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#C-Consistency"><span class="toc-number">3.1.1.</span> <span class="toc-text">C - Consistency</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#A-Availability"><span class="toc-number">3.1.2.</span> <span class="toc-text">A - Availability</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#P-Partition-tolerance"><span class="toc-number">3.1.3.</span> <span class="toc-text">P - Partition tolerance</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#CAP-%E6%80%8E%E4%B9%88%E9%80%89%E6%8B%A9"><span class="toc-number">3.1.4.</span> <span class="toc-text">CAP 怎么选择</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AF%B9-CAP-%E7%9A%84%E5%B8%B8%E8%A7%81%E8%AF%AF%E8%A7%A3"><span class="toc-number">3.1.5.</span> <span class="toc-text">对 CAP 的常见误解</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#BASE-%E7%90%86%E8%AE%BA"><span class="toc-number">3.2.</span> <span class="toc-text">BASE 理论</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#BA-Basically-Available"><span class="toc-number">3.2.1.</span> <span class="toc-text">BA - Basically Available</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#S-Soft-state"><span class="toc-number">3.2.2.</span> <span class="toc-text">S - Soft-state</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#E-Eventually-Consistent"><span class="toc-number">3.2.3.</span> <span class="toc-text">E - Eventually Consistent</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%83%E7%A7%8D%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88"><span class="toc-number">4.</span> <span class="toc-text">七种分布式事务解决方案</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2PC"><span class="toc-number">4.1.</span> <span class="toc-text">2PC</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%AC%AC%E4%B8%80%E9%98%B6%E6%AE%B5-%E5%87%86%E5%A4%87%E9%98%B6%E6%AE%B5"><span class="toc-number">4.1.1.</span> <span class="toc-text">第一阶段 - 准备阶段</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%AC%AC%E4%BA%8C%E9%98%B6%E6%AE%B5-%E6%8F%90%E4%BA%A4%E9%98%B6%E6%AE%B5"><span class="toc-number">4.1.2.</span> <span class="toc-text">第二阶段 - 提交阶段</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2PC-%E7%9A%84%E7%BC%BA%E7%82%B9"><span class="toc-number">4.1.3.</span> <span class="toc-text">2PC 的缺点</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3PC"><span class="toc-number">4.2.</span> <span class="toc-text">3PC</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%AC%AC%E4%B8%80%E9%98%B6%E6%AE%B5-%E5%87%86%E5%A4%87%E9%98%B6%E6%AE%B5-1"><span class="toc-number">4.2.1.</span> <span class="toc-text">第一阶段 - 准备阶段</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%AC%AC%E4%BA%8C%E9%98%B6%E6%AE%B5-%E9%A2%84%E6%8F%90%E4%BA%A4%E9%98%B6%E6%AE%B5"><span class="toc-number">4.2.2.</span> <span class="toc-text">第二阶段 - 预提交阶段</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%AC%AC%E4%B8%89%E9%98%B6%E6%AE%B5-%E6%8F%90%E4%BA%A4%E9%98%B6%E6%AE%B5"><span class="toc-number">4.2.3.</span> <span class="toc-text">第三阶段 - 提交阶段</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3PC-%E7%9A%84%E4%BC%98%E7%BC%BA%E7%82%B9"><span class="toc-number">4.2.4.</span> <span class="toc-text">3PC 的优缺点</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#TCC"><span class="toc-number">4.3.</span> <span class="toc-text">TCC</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#TCC-%E7%9A%84%E6%89%A7%E8%A1%8C%E6%B5%81%E7%A8%8B"><span class="toc-number">4.3.1.</span> <span class="toc-text">TCC 的执行流程</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#TCC-%E5%A6%82%E4%BD%95%E4%BF%9D%E8%AF%81%E6%9C%80%E7%BB%88%E4%B8%80%E8%87%B4%E6%80%A7"><span class="toc-number">4.3.2.</span> <span class="toc-text">TCC 如何保证最终一致性</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#TCC-%E7%9A%84%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="toc-number">4.3.3.</span> <span class="toc-text">TCC 的注意事项</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Saga-%E4%BA%8B%E5%8A%A1"><span class="toc-number">4.4.</span> <span class="toc-text">Saga 事务</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Saga-%E7%9A%84%E6%81%A2%E5%A4%8D%E7%AD%96%E7%95%A5"><span class="toc-number">4.4.1.</span> <span class="toc-text">Saga 的恢复策略</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Saga-%E4%BA%8B%E5%8A%A1%E7%9A%84%E5%AE%9E%E7%8E%B0%E6%96%B9%E5%BC%8F"><span class="toc-number">4.4.2.</span> <span class="toc-text">Saga 事务的实现方式</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Saga-%E4%BA%8B%E5%8A%A1%E7%9A%84%E4%BC%98%E7%BC%BA%E7%82%B9"><span class="toc-number">4.4.3.</span> <span class="toc-text">Saga 事务的优缺点</span></a></li></ol></li></ol></li></ol>
+                </div>
+            
+            <hr />
+            <div itemprop="articleBody"><p>随着微服务架构越来越流行，分布式事务在项目中也越来越普遍，本章主要涉及分布式事务的理论知识，为后续的学习分布式事务框架打下基础。</p>
+<h2 id="数据库事务"><a href="#数据库事务" class="headerlink" title="数据库事务"></a><strong>数据库事务</strong></h2><h3 id="事务的定义"><a href="#事务的定义" class="headerlink" title="事务的定义"></a><strong>事务的定义</strong></h3><p>数据库事务是访问并可能操作各种数据项的一个数据库操作序列，这些操作要么全部执行，要么全部不执行，是一个不可分割的工作单位。事务由事务开始与事务结束之间执行的全部数据库操作组成。</p>
+<h3 id="数据库本地事务的性质"><a href="#数据库本地事务的性质" class="headerlink" title="数据库本地事务的性质"></a><strong>数据库本地事务的性质</strong></h3><ol>
+<li><strong>原子性：</strong>事务中的全部操作在数据库中是不可分割的，要么全部完成，要么全部不执行。</li>
+<li><strong>一致性：</strong>几个并行执行的事务，其执行结果必须与按某一顺序串行执行的结果相一致。</li>
+<li><strong>隔离性：</strong>事务的执行不受其他事务的干扰，事务执行的中间结果对其他事务必须是透明的。</li>
+<li><strong>持久性：</strong>对于任意已提交事务，系统必须保证该事务对数据库的改变不被丢失，即使数据库出现故障。</li>
+</ol>
+<h2 id="分布式事务简介"><a href="#分布式事务简介" class="headerlink" title="分布式事务简介"></a><strong>分布式事务简介</strong></h2><h3 id="什么是分布式事务"><a href="#什么是分布式事务" class="headerlink" title="什么是分布式事务"></a><strong>什么是分布式事务</strong></h3><p>分布式系统会把一个应用系统拆分为可独立部署的多个服务，因此需要服务与服务之间远程协作才能完成事务操作，这种分布式系统环境下由不同的服务之间通过网络远程协作完成事务称之为<strong>分布式事务</strong>。例如下图，发起下单请求后会在订单数据库和库存数据库分别创建订单事务和库存事务，通过网络远程协作使得订单事务和库存事务同时提交或同时回滚。</p>
+<p><img src="/blog/2023/07/01/SpringCloud/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1%E7%90%86%E8%AE%BA%E5%9F%BA%E7%A1%80/image-20230701112348577.png"></p>
+<h3 id="分布式事务产生的场景"><a href="#分布式事务产生的场景" class="headerlink" title="分布式事务产生的场景"></a><strong>分布式事务产生的场景</strong></h3><p><strong>跨 JVM 进程产生分布式事务：</strong></p>
+<p><img src="/blog/2023/07/01/SpringCloud/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1%E7%90%86%E8%AE%BA%E5%9F%BA%E7%A1%80/image-20230701112348577.png"></p>
+<p><strong>单体系统访问多个数据库实例：</strong></p>
+<p><img src="/blog/2023/07/01/SpringCloud/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1%E7%90%86%E8%AE%BA%E5%9F%BA%E7%A1%80/image-20230701113851927.png"></p>
+<p><strong>多服务访问同一个数据库实例：</strong></p>
+<p><img src="/blog/2023/07/01/SpringCloud/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1%E7%90%86%E8%AE%BA%E5%9F%BA%E7%A1%80/image-20230701114355709.png"></p>
+<h2 id="分布式事务基础理论"><a href="#分布式事务基础理论" class="headerlink" title="分布式事务基础理论"></a><strong>分布式事务基础理论</strong></h2><h3 id="CAP-理论"><a href="#CAP-理论" class="headerlink" title="CAP 理论"></a><strong>CAP 理论</strong></h3><p>CAP理论：在一个分布式系统中，一致性（<strong>C</strong>onsistency）、可用性（<strong>A</strong>vailability）、分区容错性（<strong>P</strong>artition tolerance），这三个要素最多只能同时实现两点，不可能三者兼顾。</p>
+<h4 id="C-Consistency"><a href="#C-Consistency" class="headerlink" title="C - Consistency"></a><strong>C - Consistency</strong></h4><p>CAP 中的一致性指的是数据的一致性，是写操作后的读操作可以读取到最新的数据，当数据分布在多个节点上，从任意结点读取到的数据都是最新的。</p>
+<p><img src="/blog/2023/07/01/SpringCloud/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1%E7%90%86%E8%AE%BA%E5%9F%BA%E7%A1%80/image-20230701163412660.png" alt="数据发生一致性变化"></p>
+<p>系统不可能永久的正常运行下去。如果系统内部发生了问题从而导致系统的节点无法发生一致性变化时，就意味着想看到最新数据的读请求们，很可能会看到旧数据，或者说获取到不同版本的数据。此时，为了保证分布式系统对外的数据一致性，于是选择不返回任何数据。</p>
+<p><img src="/blog/2023/07/01/SpringCloud/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1%E7%90%86%E8%AE%BA%E5%9F%BA%E7%A1%80/image-20230701165447010.png" alt="同步失败，无法获取最新数据"></p>
+<p><strong>注：</strong>上面描述的一致性和 ACID 事务中的一致性是两回事。事务中的一致性包含了实际工程对状态的后续处理。但是 CAP 定理并不涉及到状态的后续处理，对于这些问题，后续出现了 BASE 理论等工程结论去处理，目前，只需要明白 CAP 定理主要描述的是状态。</p>
+<h4 id="A-Availability"><a href="#A-Availability" class="headerlink" title="A - Availability"></a><strong>A - Availability</strong></h4><p>CAP 中的可用性要求系统内的节点们接收到了无论是写请求还是读请求，都要能在规定的时间内处理并回响应结果。只是它有两点必须满足的条件：</p>
+<p>条件 1：返回结果必须在合理的时间以内，这个合理的时间是根据业务来定的。如果业务定的 100 毫秒，结果却在 1 秒才返回，那么这个系统就不满足可用性。</p>
+<p>条件 2：需要系统内能正常接收请求的所有节点都返回结果。这包含了两重含义：</p>
+<ol>
+<li>如果节点不能正常接收请求了，比如宕机了，系统崩溃了，而其他节点依然能正常接收请求，那么，我们说系统依然是可用的，也就是说，部分宕机没事儿，不影响可用性指标。</li>
+<li>如果节点能正常接收请求，但是发现节点内部数据有问题，那么也必须返回结果，哪怕返回的结果是有问题的。比如，系统有两个节点，其中有一个节点数据是三天前的，另一个节点是两分钟前的，如果，一个读请求跑到了包含了三天前数据的那个节点上，那么这个节点不能拒绝，必须返回这个三天前的数据，即使它可能不太合理。</li>
+</ol>
+<p><img src="/blog/2023/07/01/SpringCloud/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1%E7%90%86%E8%AE%BA%E5%9F%BA%E7%A1%80/image-20230701170200069.png"></p>
+<h4 id="P-Partition-tolerance"><a href="#P-Partition-tolerance" class="headerlink" title="P - Partition tolerance"></a><strong>P - Partition tolerance</strong></h4><p>分布式的存储系统会有很多的节点，这些节点都是通过网络进行通信。而网络是不可靠的，当节点和节点之间的通信出现了问题，此时，就称当前的分布式存储系统出现了分区。但是，分区并不一定是由网络故障引起的，只要节点通信出现了问题，那么就出现了分区。</p>
+<p>CAP 中的分区容忍性是指，如果出现了分区问题，我们的分布式存储系统还需要继续运行。不能因为出现了分区问题，整个分布式节点无法继续工作。</p>
+<h4 id="CAP-怎么选择"><a href="#CAP-怎么选择" class="headerlink" title="CAP 怎么选择"></a><strong>CAP 怎么选择</strong></h4><p>在设计分布式系统时，架构师们在 C、A、P 这三种特性里，只能选择两种。</p>
+<p>因为在分布式系统中，P 是必然的发生的，不选 P，一旦发生分区错误，整个分布式系统就完全无法使用了，这是不符合实际需要的。所以，对于分布式系统，我们只能能考虑当发生分区错误时，如何选择一致性和可用性。</p>
+<p>而根据一致性和可用性的选择不同，开源的分布式系统往往又被分为 CP 系统和 AP 系统。</p>
+<p>当一套系统在发生分区故障后，客户端的任何请求都被卡死或者超时，但是，系统的每个节点总是会返回一致的数据，则这套系统就是 CP 系统。</p>
+<p>如果一套系统发生分区故障后，客户端依然可以访问系统，但是获取的数据有的是新的数据，有的还是老数据，那么这套系统就是 AP 系统。</p>
+<h4 id="对-CAP-的常见误解"><a href="#对-CAP-的常见误解" class="headerlink" title="对 CAP 的常见误解"></a><strong>对 CAP 的常见误解</strong></h4><p><strong>误解一：分布式系统因为 CAP 定理放弃了 C 或者 A 中的其中一个</strong></p>
+<p>在发生 P 的情况下，根据 CAP 定理，分布式系统只能在 C 或 A 中选择一个。但是 P 发生的概率是非常低的，在没发生时，系统可以即是 C 又是 A。</p>
+<p><strong>误解二：C 和 A 之间的选择是针对整个分布式系统的，只能整体考虑 C 和 A 之间的选择</strong></p>
+<p>当 P 发生的时候，其实对 C 和 A 的抉择是局部性的，而不是针对整个系统的。</p>
+<h3 id="BASE-理论"><a href="#BASE-理论" class="headerlink" title="BASE 理论"></a><strong>BASE 理论</strong></h3><p>BASE 理论是基本可用（<strong>B</strong>asically <strong>A</strong>vailable）、软状态（<strong>S</strong>oft-state） 和 最终一致性（<strong>E</strong>ventually Consistent） 三个短语的缩写。BASE 理论是对 CAP 中一致性 C 和可用性 A 权衡的结果，是基于 CAP 定理逐步演化而来的，它大大降低了我们对系统的要求。</p>
+<h4 id="BA-Basically-Available"><a href="#BA-Basically-Available" class="headerlink" title="BA - Basically Available"></a><strong>BA - Basically Available</strong></h4><p>基本可用是指分布式系统在出现不可预知故障的时候，允许损失部分可用性。例如延长响应时间、非核心功能不可用，核心功能依然可用。</p>
+<h4 id="S-Soft-state"><a href="#S-Soft-state" class="headerlink" title="S - Soft-state"></a><strong>S - Soft-state</strong></h4><p>软状态指允许系统中的数据存在中间状态，并认为该中间状态的存在不会影响系统的整体可用性，即允许系统在不同节点之间进行数据同步的过程存在延时。</p>
+<h4 id="E-Eventually-Consistent"><a href="#E-Eventually-Consistent" class="headerlink" title="E - Eventually Consistent"></a><strong>E - Eventually Consistent</strong></h4><p>最终一致性强调的是系统中所有的数据副本，在规定的时间内，最终能够达到一个一致的状态。</p>
+<blockquote>
+<p>分布式一致性的 3 种级别：</p>
+<p><strong>强一致性</strong>：处理读请求时，每个节点的数据副本都是一致的。</p>
+<p><strong>弱一致性</strong>：不一定可以读取到最新写入的值，也不保证多少时间之后读取到的数据是最新的，只是会尽量保证某个时刻达到数据一致的状态。</p>
+<p><strong>最终一致性</strong>：弱一致性的升级版，系统会保证在规定时间内达到数据一致的状态。</p>
+</blockquote>
+<h2 id="七种分布式事务解决方案"><a href="#七种分布式事务解决方案" class="headerlink" title="七种分布式事务解决方案"></a><strong>七种分布式事务解决方案</strong></h2><h3 id="2PC"><a href="#2PC" class="headerlink" title="2PC"></a><strong>2PC</strong></h3><p>2PC，两阶段提交，将事务的提交过程分为资源准备和资源提交两个阶段，并且由事务协调者来协调所有事务参与者，如果准备阶段所有事务参与者都预留资源成功，则进行第二阶段的资源提交，否则事务协调者回滚资源。</p>
+<p><img src="/blog/2023/07/01/SpringCloud/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1%E7%90%86%E8%AE%BA%E5%9F%BA%E7%A1%80/image-20230702113520157.png" alt="两阶段提交-序列图"></p>
+<h4 id="第一阶段-准备阶段"><a href="#第一阶段-准备阶段" class="headerlink" title="第一阶段 - 准备阶段"></a><strong>第一阶段 - 准备阶段</strong></h4><ol>
+<li>协调者向所有参与者发送事务内容，询问是否可以提交事务，并等待答复。</li>
+<li>各参与者执行本地事务操作，但不提交事务。</li>
+<li>如参与者执行成功，给协调者反馈同意，否则反馈中止，表示事务不可以执行。</li>
+</ol>
+<h4 id="第二阶段-提交阶段"><a href="#第二阶段-提交阶段" class="headerlink" title="第二阶段 - 提交阶段"></a><strong>第二阶段 - 提交阶段</strong></h4><ol>
+<li>协调者节点向所有参与者节点发出<code>提交/回滚</code>请求。</li>
+<li>收到协调者发出<code>提交/回滚</code>请求，参与者正式执行事务<code>提交/回滚</code>操作。</li>
+<li>参与者完成事务提交后，向协调者节点发送 ACK 消息。</li>
+<li>协调者节点收到所有参与者节点反馈的 ACK 消息后，完成事务。</li>
+</ol>
+<h4 id="2PC-的缺点"><a href="#2PC-的缺点" class="headerlink" title="2PC 的缺点"></a><strong>2PC 的缺点</strong></h4><ol>
+<li><strong>性能问题：</strong>在第一阶段，事务协调者需要收到所有事务参与者的响应信息才能在第二阶段发起<code>提交/回滚</code>请求。</li>
+<li><strong>可靠性问题：</strong>2PC 非常依赖协调者，当协调者发生故障时，尤其是第二阶段，那么所有的参与者就会都处于锁定事务资源的状态中，而无法继续完成事务操作（如果是协调者挂掉，可以重新选举一个协调者，但是无法解决因为协调者宕机导致的参与者处于阻塞状态的问题）</li>
+<li><strong>数据一致性问题：</strong>在阶段二中，当协调者向参与者发送提交请求之后，因为局部网络异常导致只有一部分参与者接受到了提交请求。而在这部分参与者收到提交请求之后就会执行提交操作。但是其他部分未接到提交请求的机器则无法执行事务提交。于是整个分布式系统便出现了数据部一致性的现象。</li>
+</ol>
+<h3 id="3PC"><a href="#3PC" class="headerlink" title="3PC"></a><strong>3PC</strong></h3><p>3PC 分为 3 个阶段：准备阶段、预提交阶段、提交阶段。三阶段提交协议，是二阶段提交协议的改进版本，三阶段提交有两个改动点：</p>
+<ol>
+<li><p>在协调者和参与者中都引入超时机制。</p>
+</li>
+<li><p>在第一阶段前新增一个准备阶段，保证在预提交阶段之前各参与节点的状态是一致的。</p>
+</li>
+</ol>
+<p><img src="/blog/2023/07/01/SpringCloud/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1%E7%90%86%E8%AE%BA%E5%9F%BA%E7%A1%80/image-20230702154049028.png" alt="三阶段提交-序列图"></p>
+<h4 id="第一阶段-准备阶段-1"><a href="#第一阶段-准备阶段-1" class="headerlink" title="第一阶段 - 准备阶段"></a><strong>第一阶段 - 准备阶段</strong></h4><ol>
+<li>事务询问：协调者向所有参与者发出包含事务内容的请求，询问是否可以提交事务，并等待所有参与者答复。</li>
+<li>响应反馈：参与者收到请求后，如果认为可以执行事务操作，则反馈 yes 并进入预备状态，否则反馈 no。</li>
+</ol>
+<h4 id="第二阶段-预提交阶段"><a href="#第二阶段-预提交阶段" class="headerlink" title="第二阶段 - 预提交阶段"></a><strong>第二阶段 - 预提交阶段</strong></h4><p>根据第一阶段的响应结果，有以下两种可能：</p>
+<p><strong>假如所有参与者均反馈  Yes，协调者预执行事务，具体如下：</strong></p>
+<ol>
+<li>发送预提交请求：协调者向参与者发送执行事务请求，并进入准备阶段。</li>
+<li>事务预提交 ：参与者接收到请求后，执行本地事务操作，但不提交事务。</li>
+<li>响应反馈 ：参与者根据处理结果向协调者响应信息，同时开始等待最终指令。</li>
+</ol>
+<p><strong>假如有任何一个参与者向协调者发送了 No 响应，或者在规定时间内，协调者都没有接到参与者的响应，那么就执行事务的中断，流程如下：</strong></p>
+<ol>
+<li>发送中断请求 ：协调者向所有参与者发送中断请求。</li>
+<li>中断事务 ：参与者收到来自协调者的中断请求之后，或者超时之后，仍未收到协调者的请求，执行事务的中断。</li>
+</ol>
+<h4 id="第三阶段-提交阶段"><a href="#第三阶段-提交阶段" class="headerlink" title="第三阶段 - 提交阶段"></a><strong>第三阶段 - 提交阶段</strong></h4><ol>
+<li>发起<code>提交/回滚</code>请求：若第二阶段所有参与者都响应 Yes 则发起提交请求，若有任何一个参与者响应 No 或协调者在规定的时间内没有收到参与者的响应信息则发起回滚请求。</li>
+<li><code>提交/回滚</code>事务：参与者接收请求并<code>提交/回滚</code>本地事务。</li>
+<li>响应反馈：参与者<code>提交/回滚</code>本地事务后，向协调者发送 ACK 响应。</li>
+</ol>
+<p><strong>注：</strong>参与者们进入第三阶段后，因为种种原因导致参与者们在规定的时间内没用收到协调者发起的<code>提交/回滚</code>请求，参与者们都会在等待超时之后，继续执行事务提交。</p>
+<h4 id="3PC-的优缺点"><a href="#3PC-的优缺点" class="headerlink" title="3PC 的优缺点"></a><strong>3PC 的优缺点</strong></h4><p>优点：与 2PC 相比，3PC 在等待超时后，协调者或参与者会中断事务，避免了协调者单点问题。阶段三中协调者出现问题时，参与者会继续提交事务。</p>
+<p>缺点：数据不一致问题依然存在。在第三阶段，如果协调者发起的是回滚事务请求，参与者因为网络问题无法接收协调者的请求，会导致参与者继续提交事务，造成数据不一致。</p>
+<h3 id="TCC"><a href="#TCC" class="headerlink" title="TCC"></a><strong>TCC</strong></h3><p>TCC（Try Confirm Cancel）是应用层的两阶段提交，其核心思想是：针对每个操作，都要实现对应的确认和补偿操作，也就是业务逻辑的每个分支都需要实现 Try、Confirm、Cancel 三个操作。</p>
+<h4 id="TCC-的执行流程"><a href="#TCC-的执行流程" class="headerlink" title="TCC 的执行流程"></a><strong>TCC 的执行流程</strong></h4><p>TCC的执行流程可以分为两个阶段，分别如下：</p>
+<ol>
+<li>第一阶段：Try，业务系统做检测并预留资源 (加锁，锁住资源)，比如常见的下单，在 Try 阶段，我们不是真正的减库存，而是把下单的库存给锁定住。</li>
+<li>第二阶段：根据第一阶段的结果决定是执行 Confirm 操作还是 Cancel 操作。Confirm 执行真正的业务（执行业务，释放锁），Cancel 是对 Try 阶段预留资源的释放（释放锁）。</li>
+</ol>
+<p><img src="/blog/2023/07/01/SpringCloud/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1%E7%90%86%E8%AE%BA%E5%9F%BA%E7%A1%80/image-20230702172143516.png" alt="TCC 的执行流程"></p>
+<h4 id="TCC-如何保证最终一致性"><a href="#TCC-如何保证最终一致性" class="headerlink" title="TCC 如何保证最终一致性"></a><strong>TCC 如何保证最终一致性</strong></h4><ul>
+<li>TCC 事务机制以 Try 为中心的，Confirm 确认操作和 Cancel 取消操作都是围绕 Try 而展开。因此，Try 阶段中的操作，其保障性是最好的，即使失败，仍然有 Cancel 取消操作可以将其执行结果撤销。</li>
+<li>Try 阶段执行成功并开始执行 Confirm 阶段时，默认 Confirm 阶段是不会出错的，也就是说只要 Try 成功，Confirm 一定成功（TCC设计之初的定义）。</li>
+<li>Confirm 与 Cancel 如果失败，由TCC框架进行重试补偿。</li>
+<li>存在极低概率在CC环节彻底失败，则需要定时任务或人工介入。</li>
+</ul>
+<h4 id="TCC-的注意事项"><a href="#TCC-的注意事项" class="headerlink" title="TCC 的注意事项"></a><strong>TCC 的注意事项</strong></h4><p><strong>允许空回滚</strong></p>
+<p>空回滚出现的原因是 Try 超时或者丢包，导致 TCC 分布式事务二阶段的回滚，触发 Cancel 操作，此时事务参与者未收到 Try，但是却收到了 Cancel 请求。所以 Cancel 接口在实现时需要允许空回滚，也就是 Cancel 执行时如果发现没有对应的事务 xid 或主键时，需要返回回滚成功，让事务服务管理器认为已回滚。</p>
+<p><strong>防悬挂控制</strong></p>
+<p>悬挂指的是二阶段的 Cancel 比一阶段的 Try 操作先执行，出现该问题的原因是 Try 由于网络拥堵而超时，导致事务管理器生成回滚，触发 Cancel 接口，但之后拥堵在网络的 Try 操作又被资源管理器收到了，但是 Cancel 比 Try 先到。但按照前面允许空回滚的逻辑，回滚会返回成功，事务管理器认为事务已回滚成功，所以此时应该拒绝执行空回滚之后到来的 Try 操作，否则上锁的资源无法释放。因此我们可以在 Cancel 空回滚返回成功之前，先记录该条事务 xid 或业务主键，标识这条记录已经回滚过，Try 接口执行前先检查这条事务 xid 或业务主键是否已经标记为回滚成功，如果是则不执行 Try 的业务操作。</p>
+<p><strong>幂等控制</strong></p>
+<p>由于网络原因或者重试操作都有可能导致 Try - Confirm - Cancel 3个操作的重复执行，所以使用 TCC 时需要注意这三个操作的幂等控制，通常我们可以使用事务 xid 或业务主键判重来控制。</p>
+<h3 id="Saga-事务"><a href="#Saga-事务" class="headerlink" title="Saga 事务"></a><strong>Saga 事务</strong></h3><p>Saga 事务核心思想是将长事务拆分为多个本地短事务并依次正常提交，如果所有短事务均执行成功，那么分布式事务提交；如果出现某个参与者执行本地事务失败，则由 Saga 事务协调器根据相反顺序调用补偿操作，回滚已提交的参与者，使分布式事务回到最初始的状态。Saga 事务基本协议如下：</p>
+<ol>
+<li>每个 Saga 事务由一系列幂等的有序子事务 Ti 组成。</li>
+<li>每个 Ti 都有对应的幂等补偿动作 Ci，补偿动作用于撤销 Ti 造成的结果。</li>
+</ol>
+<h4 id="Saga-的恢复策略"><a href="#Saga-的恢复策略" class="headerlink" title="Saga 的恢复策略"></a><strong>Saga 的恢复策略</strong></h4><p>对于事务异常，Saga 提供了两种恢复策略，分别如下：</p>
+<p><strong>1. 向后恢复</strong></p>
+<p>当执行事务失败时，补偿所有已完成的事务，是“一退到底”的方式，这种做法的效果是撤销掉之前所有成功的子事务，使得整个 Saga 的执行结果撤销。如下图：</p>
+<p><img src="/blog/2023/07/01/SpringCloud/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1%E7%90%86%E8%AE%BA%E5%9F%BA%E7%A1%80/image-20230702195048388.png"></p>
+<p><strong>2. 向前恢复</strong></p>
+<p>对于执行不通过的事务，会尝试重试事务，这里有一个假设就是每个子事务最终都会成功，这种方式适用于必须要成功的场景，事务失败了重试，不需要补偿。流程如下图：</p>
+<p><img src="/blog/2023/07/01/SpringCloud/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1%E7%90%86%E8%AE%BA%E5%9F%BA%E7%A1%80/image-20230702195534143.png"></p>
+<h4 id="Saga-事务的实现方式"><a href="#Saga-事务的实现方式" class="headerlink" title="Saga 事务的实现方式"></a><strong>Saga 事务的实现方式</strong></h4><p>Saga 事务有两种不同的实现方式，分别如下：</p>
+<p><strong>1. 命令协调</strong></p>
+<p>中央协调器（Orchestrator，简称 OSO）以<code>命令/回复</code>的方式与每项服务进行通信，全权负责告诉每个参与者该做什么以及什么时候该做什么。整体流程如下图：</p>
+<p><img src="/blog/2023/07/01/SpringCloud/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1%E7%90%86%E8%AE%BA%E5%9F%BA%E7%A1%80/image-20230702200812537.png"></p>
+<p>中央协调器必须事先知道执行整个事务所需的流程，如果有任何失败，它还负责通过向每个参与者发送命令来撤销之前的操作来协调分布式的回滚，基于中央协调器协调一切时，回滚要容易得多，因为协调器默认是执行正向流程，回滚时只要执行反向流程即可。</p>
+<p><strong>2. 事件编排</strong></p>
+<p>命令协调方式基于中央协调器实现，所以有单点风险，但是事件编排方式没有中央协调器。事件编排的实现方式中，每个服务产生自己的事件并监听其他服务的事件来决定是否应采取行动。</p>
+<p>在事件编排方法中，第一个服务执行一个事务，然后发布一个事件，该事件被一个或多个服务进行监听，这些服务再执行本地事务并发布（或不发布）新的事件。当最后一个服务执行本地事务并且不发布任何事件时，意味着分布式事务结束，或者它发布的事件没有被任何 Saga 参与者听到都意味着事务结束。整体流程如下图：</p>
+<p><img src="/blog/2023/07/01/SpringCloud/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1%E7%90%86%E8%AE%BA%E5%9F%BA%E7%A1%80/image-20230702203209814.png"></p>
+<p>如果事务涉及 2 至 4 个步骤，则非常合适使用事件编排方式，它是实现 Saga 模式的自然方式，它很简单，容易理解，不需要太多的代码来构建。</p>
+<h4 id="Saga-事务的优缺点"><a href="#Saga-事务的优缺点" class="headerlink" title="Saga 事务的优缺点"></a><strong>Saga 事务的优缺点</strong></h4><p><strong>1. 命令协调设计的优缺点</strong></p>
+<p>优点：</p>
+<p>（1）服务之间关系简单，避免服务间循环依赖。</p>
+<p>（2）程序开发简单，只需要执行命令&#x2F;回复，降低参与者的复杂性。</p>
+<p>（3）易维护扩展，在添加新步骤时，事务复杂性保持线性，回滚更容易管理，更容易实施和测试。</p>
+<p>缺点：</p>
+<p>（1）中央协调器处理逻辑容易变得庞大复杂，导致难以维护。</p>
+<p>（2）存在协调器单点故障风险。</p>
+<p><strong>2. 事件编排设计的优缺点：</strong></p>
+<p>优点：</p>
+<p>（1）避免中央协调器单点故障风险。</p>
+<p>（2）当涉及的步骤较少服务开发简单，容易实现。</p>
+<p>缺点：</p>
+<p>（1）服务之间存在循环依赖的风险。</p>
+<p>（2）当涉及的步骤较多，服务间关系混乱，难以追踪调测。</p>
+</div>
+        </div>
+        
+        <footer class="kratos-entry-footer clearfix">
+            
+            <div class="footer-tag clearfix">
+                <div class="pull-left">
+                <i class="fa fa-tags"></i>
+                    <a class="tag-none-link" href="/blog/tags/SpringCloud/" rel="tag">SpringCloud</a>, <a class="tag-none-link" href="/blog/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1/" rel="tag">分布式事务</a>
+                </div>
+                <div class="pull-date">
+                    <time datetime="2026-01-04T05:51:48.296Z" itemprop="dateModified">最后编辑：2026-01-04</time>
+                </div>
+            </div>
+        </footer>
+    </div>
+    
+        <nav class="navigation post-navigation clearfix" role="navigation">
+            
+            <div class="nav-previous clearfix">
+                <a title=" 【Windows】 常用软件" href="/blog/2023/06/20/Windows/Windows软件/">&lt; 上一篇</a>
+            </div>
+            
+            
+            <div class="nav-next clearfix">
+                <a title=" 【Python】常用函数" href="/blog/2023/12/19/Python/99_积累/Python中常用的函数/">下一篇 &gt;</a>
+            </div>
+            
+        </nav>
+    
+    
+</article>
+
+        
+
+            </section>
+
+        
+
+                
+            
+
+<section id="kratos-widget-area" class="col-md-4 hidden-xs hidden-sm">
+    <!-- 文章和页面根据splitter来分割，没有的话就从头开始设置为sticky -->
+    
+    
+                <aside id="krw-about" class="widget widget-kratos-about clearfix">
+    <div class="photo-background"></div>
+    <div class="photo-wrapper clearfix">
+        <div class="photo-wrapper-tip text-center">
+            <img class="about-photo" src="/blog/images/avatar.webp" loading="lazy" decoding="auto" />
+        </div>
+    </div>
+    <div class="textwidget">
+        <p class="text-center">极简主义</p>
+    </div>
+    <div class="site-meta">
+        <a class="meta-item" href="/blog/archives/">
+            <span class="title">
+                文章
+            </span>
+            <span class="count">
+                77
+            </span>
+        </a>
+        <a class="meta-item" href="/blog/categories/">
+            <span class="title">
+                分类
+            </span>
+            <span class="count">
+                10
+            </span>
+        </a>
+        <a class="meta-item" href="/blog/tags/">
+            <span class="title">
+                标签
+            </span>
+            <span class="count">
+                29
+            </span>
+        </a>
+    </div>
+</aside>
+            
+                    <div class="sticky-area">
+                
+                    <aside id="krw-toc" class="widget widget-kratos-toc clearfix toc-div-class" >
+    <div class="photo-background"></div>
+    <h4 class="widget-title no-after">
+        <i class="fa fa-compass"></i>
+        文章目录
+        <span class="toc-progress-bar" role="progressbar" aria-label="阅读进度："></span>
+    </h4>
+    <div class="textwidget">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93%E4%BA%8B%E5%8A%A1"><span class="toc-text">数据库事务</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%8B%E5%8A%A1%E7%9A%84%E5%AE%9A%E4%B9%89"><span class="toc-text">事务的定义</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93%E6%9C%AC%E5%9C%B0%E4%BA%8B%E5%8A%A1%E7%9A%84%E6%80%A7%E8%B4%A8"><span class="toc-text">数据库本地事务的性质</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1%E7%AE%80%E4%BB%8B"><span class="toc-text">分布式事务简介</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1"><span class="toc-text">什么是分布式事务</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1%E4%BA%A7%E7%94%9F%E7%9A%84%E5%9C%BA%E6%99%AF"><span class="toc-text">分布式事务产生的场景</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1%E5%9F%BA%E7%A1%80%E7%90%86%E8%AE%BA"><span class="toc-text">分布式事务基础理论</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#CAP-%E7%90%86%E8%AE%BA"><span class="toc-text">CAP 理论</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#C-Consistency"><span class="toc-text">C - Consistency</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#A-Availability"><span class="toc-text">A - Availability</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#P-Partition-tolerance"><span class="toc-text">P - Partition tolerance</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#CAP-%E6%80%8E%E4%B9%88%E9%80%89%E6%8B%A9"><span class="toc-text">CAP 怎么选择</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AF%B9-CAP-%E7%9A%84%E5%B8%B8%E8%A7%81%E8%AF%AF%E8%A7%A3"><span class="toc-text">对 CAP 的常见误解</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#BASE-%E7%90%86%E8%AE%BA"><span class="toc-text">BASE 理论</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#BA-Basically-Available"><span class="toc-text">BA - Basically Available</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#S-Soft-state"><span class="toc-text">S - Soft-state</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#E-Eventually-Consistent"><span class="toc-text">E - Eventually Consistent</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%83%E7%A7%8D%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88"><span class="toc-text">七种分布式事务解决方案</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2PC"><span class="toc-text">2PC</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%AC%AC%E4%B8%80%E9%98%B6%E6%AE%B5-%E5%87%86%E5%A4%87%E9%98%B6%E6%AE%B5"><span class="toc-text">第一阶段 - 准备阶段</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%AC%AC%E4%BA%8C%E9%98%B6%E6%AE%B5-%E6%8F%90%E4%BA%A4%E9%98%B6%E6%AE%B5"><span class="toc-text">第二阶段 - 提交阶段</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2PC-%E7%9A%84%E7%BC%BA%E7%82%B9"><span class="toc-text">2PC 的缺点</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3PC"><span class="toc-text">3PC</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%AC%AC%E4%B8%80%E9%98%B6%E6%AE%B5-%E5%87%86%E5%A4%87%E9%98%B6%E6%AE%B5-1"><span class="toc-text">第一阶段 - 准备阶段</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%AC%AC%E4%BA%8C%E9%98%B6%E6%AE%B5-%E9%A2%84%E6%8F%90%E4%BA%A4%E9%98%B6%E6%AE%B5"><span class="toc-text">第二阶段 - 预提交阶段</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%AC%AC%E4%B8%89%E9%98%B6%E6%AE%B5-%E6%8F%90%E4%BA%A4%E9%98%B6%E6%AE%B5"><span class="toc-text">第三阶段 - 提交阶段</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3PC-%E7%9A%84%E4%BC%98%E7%BC%BA%E7%82%B9"><span class="toc-text">3PC 的优缺点</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#TCC"><span class="toc-text">TCC</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#TCC-%E7%9A%84%E6%89%A7%E8%A1%8C%E6%B5%81%E7%A8%8B"><span class="toc-text">TCC 的执行流程</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#TCC-%E5%A6%82%E4%BD%95%E4%BF%9D%E8%AF%81%E6%9C%80%E7%BB%88%E4%B8%80%E8%87%B4%E6%80%A7"><span class="toc-text">TCC 如何保证最终一致性</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#TCC-%E7%9A%84%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="toc-text">TCC 的注意事项</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Saga-%E4%BA%8B%E5%8A%A1"><span class="toc-text">Saga 事务</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Saga-%E7%9A%84%E6%81%A2%E5%A4%8D%E7%AD%96%E7%95%A5"><span class="toc-text">Saga 的恢复策略</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Saga-%E4%BA%8B%E5%8A%A1%E7%9A%84%E5%AE%9E%E7%8E%B0%E6%96%B9%E5%BC%8F"><span class="toc-text">Saga 事务的实现方式</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Saga-%E4%BA%8B%E5%8A%A1%E7%9A%84%E4%BC%98%E7%BC%BA%E7%82%B9"><span class="toc-text">Saga 事务的优缺点</span></a></li></ol></li></ol></li></ol>
+    </div>
+</aside>
+                
+                
+  <aside id="krw-categories" class="widget widget-kratos-categories clearfix">
+    <h4 class="widget-title"><i class="fa fa-folder"></i>分类目录</h4>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Docker/">Docker</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Idea/">Idea</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Java/">Java</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/K8s/">K8s</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Linux/">Linux</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/MySQL/">MySQL</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Python/">Python</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Selenium/">Selenium</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/SpringBoot/">SpringBoot</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/SpringCloud/">SpringCloud</a><span class="category-list-count">13</span></li></ul>
+  </aside>
+
+
+            
+                
+  <aside id="krw-tags" class="widget widget-kratos-tags clearfix">
+    <h4 class="widget-title"><i class="fa fa-tags"></i>标签聚合</h4>
+      <div class="tag-clouds">
+        <a href="/blog/tags/CORS/" style="font-size: 0.8em;">CORS</a> <a href="/blog/tags/Docker/" style="font-size: 0.8em;">Docker</a> <a href="/blog/tags/Dubbo/" style="font-size: 0.8em;">Dubbo</a> <a href="/blog/tags/ELK/" style="font-size: 0.8em;">ELK</a> <a href="/blog/tags/Elasticsearch/" style="font-size: 0.8em;">Elasticsearch</a> <a href="/blog/tags/Eureka/" style="font-size: 0.8em;">Eureka</a> <a href="/blog/tags/Feign/" style="font-size: 0.8em;">Feign</a> <a href="/blog/tags/Gateway/" style="font-size: 0.8em;">Gateway</a> <a href="/blog/tags/Idea/" style="font-size: 0.8em;">Idea</a> <a href="/blog/tags/Java/" style="font-size: 0.8em;">Java</a> <a href="/blog/tags/JavaWeb/" style="font-size: 0.8em;">JavaWeb</a> <a href="/blog/tags/K8s/" style="font-size: 0.8em;">K8s</a> <a href="/blog/tags/Linux/" style="font-size: 0.8em;">Linux</a> <a href="/blog/tags/Maven/" style="font-size: 0.8em;">Maven</a> <a href="/blog/tags/MySQL/" style="font-size: 0.8em;">MySQL</a> <a href="/blog/tags/Mybatis/" style="font-size: 0.8em;">Mybatis</a> <a href="/blog/tags/Nacos/" style="font-size: 0.8em;">Nacos</a> <a href="/blog/tags/Pytest/" style="font-size: 0.8em;">Pytest</a>
+      </div>
+  </aside>
+
+            
+                
+  <aside id="krw-posts" class="widget widget-kratos-posts">
+  <h4 class="widget-title"><i class="fa fa-file"></i>最新文章</h4>
+  <div class="tab-content">
+      <ul class="list-group">
+        
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/01/25/K8s/K8s%E7%BB%84%E4%BB%B6/"><i class="fa  fa-book"></i> 【K8s】组件</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/01/24/K8s/K8s%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/"><i class="fa  fa-book"></i> 【K8s】常用命令</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/01/11/Idea/IDEA%E6%8F%92%E4%BB%B6/"><i class="fa  fa-book"></i> 【Idea】插件</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/01/04/Linux/Centos7%E9%97%AE%E9%A2%98%E5%A4%84%E7%90%86/"><i class="fa  fa-book"></i> Centos7问题处理</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2025/12/09/Trae/Trae%E5%AE%89%E8%A3%85%E6%8F%92%E4%BB%B6%E5%AE%9E%E7%8E%B0Java%E4%BB%A3%E7%A0%81%E7%BC%96%E5%86%99/"><i class="fa  fa-book"></i> 【Trae】安装插件实现Java代码编写</a>
+            
+          
+        
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+      </ul>
+  </div>
+  </aside>
+
+            
+    </div>
+</section>
+        
+        </div>
+    </div>
+</div>
+<footer>
+    <div id="footer"  >
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3 footer-list text-center">
+                    <ul class="kratos-social-icons">
+                        <!-- Keep for compatibility -->
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <!-- New links -->
+                        
+                    </ul>
+                    <ul class="kratos-copyright">
+                        <div>
+                            <li>&copy; 2026 溪岚花的博客 版权所有.</li>
+                            <li>本站已运行<span id="span_dt">Loading...</span></li>
+                        </div>
+                        <div>
+                            <li>Theme <a href="https://github.com/Candinya/Kratos-Rebirth" target="_blank">Kratos:Rebirth</a></li>
+                            <li>Site built with&nbsp;<i class="fa fa-heart throb" style="color:#d43f57"></i>&nbsp;by 林家隆.</li>
+                        </div>
+                        <div>
+                            <li>Powered by <a href="https://hexo.io" target="_blank" rel="nofollow">Hexo</a></li>
+                            <li>Hosted on <a href="https://gitee.com/" target="_blank">Gitee Pages</a></li>
+                        </div>
+                        <div>
+                            
+                            
+                        </div>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="kr-tool text-center">
+            <div class="tool">
+                
+                    <div class="box search-box">
+                        <a href="/blog/search/">
+                            <span class="fa fa-search"></span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="box theme-box" id="darkmode-switch">
+                        <span class="fa fa-adjust"></span>
+                    </div>
+                
+                
+                
+            </div>
+            <div class="box gotop-box">
+                <span class="fa fa-chevron-up"></span>
+            </div>
+        </div>
+    </div>
+</footer>
+</div>
+</div>
+
+        <script defer src="/blog/vendors/bootstrap@3.3.4/dist/js/bootstrap.min.js"></script>
+<script defer src="/blog/vendors/nprogress@0.2.0/nprogress.js"></script>
+<script>
+    if (!window.kr) {
+        window.kr = {};
+    }
+    window.kr.notMobile = (!(navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i)));
+    window.kr.siteRoot = "/blog/";
+</script>
+
+
+
+
+
+    <script defer src="/blog/vendors/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+
+<script defer src="/blog/js/kratosr.min.js"></script>
+<script defer src="/blog/js/pjax.min.js"></script>
+
+
+
+<!-- Extra support for third-party plguins  -->
+
+
+    </body>
+</html>

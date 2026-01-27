@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+  <!-- 元数据 -->
+  <meta charset="utf-8">
+  <link rel="icon" href="/blog/images/logo.png">
+  
+  <title>【ES】搜索语法 | 溪岚花的博客</title>
+  
+  <meta name="author" content="林家隆" />
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="robots" content="index,follow" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <meta name="format-detection" content="telphone=no, email=no" />
+  
+    <meta name="keywords" content="ELK, Elasticsearch, SpringCloud" />
+  
+  <meta name="description" content="Query 查询 DSL 查询模板： 12345678GET &#x2F;&amp;#123;索引名称&amp;#125;&#x2F;_search&amp;#123; &quot;query&quot;: &amp;#123;     &quot;&amp;#123;查询类型&amp;#125;&quot;: &amp;#123;         ...编写查询逻辑...     &amp;#125; &amp;#125;&amp;#125;  查询类型：  match_all：查询所有文档。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【ES】搜索语法">
+<meta property="og:url" content="https://lin316.gitee.io/blog/2024/04/06/SpringCloud/ElasticStack/Elasticsearch%E6%90%9C%E7%B4%A2%E8%AF%AD%E6%B3%95/index.html">
+<meta property="og:site_name" content="溪岚花的博客">
+<meta property="og:description" content="Query 查询 DSL 查询模板： 12345678GET &#x2F;&amp;#123;索引名称&amp;#125;&#x2F;_search&amp;#123; &quot;query&quot;: &amp;#123;     &quot;&amp;#123;查询类型&amp;#125;&quot;: &amp;#123;         ...编写查询逻辑...     &amp;#125; &amp;#125;&amp;#125;  查询类型：  match_all：查询所有文档。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://lin316.gitee.io/blog/blog/images/logo.png">
+<meta property="article:published_time" content="2024-04-06T01:00:00.000Z">
+<meta property="article:modified_time" content="2026-01-04T05:51:48.283Z">
+<meta property="article:author" content="林家隆">
+<meta property="article:tag" content="SpringCloud">
+<meta property="article:tag" content="Elasticsearch">
+<meta property="article:tag" content="ELK">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://lin316.gitee.io/blog/blog/images/logo.png">
+  
+  <!-- 站点验证相关 -->
+  
+    
+    
+    
+  
+  <!-- 样式表文件 -->
+  <link rel="stylesheet" id="kratos-css" href="/blog/css/kratosr.min.css" media="all"></script>
+  
+    <link rel="stylesheet" id="darkmode-css" href="/blog/css/kr-color-dark.min.css" media="(prefers-color-scheme: dark)"></script>
+    <script src="/blog/js/kr-dark.min.js"></script>
+  
+  
+    <link rel="stylesheet" id="highlight-css" href="/blog/css/highlight/night-eighties.min.css" media="all"></script>
+  
+  <link rel="stylesheet" id="fontawe-css" href="/blog/vendors/font-awesome@4.7.0/css/font-awesome.min.css" media="all"></script>
+  <link rel="stylesheet" id="nprogress-css" href="/blog/vendors/nprogress@0.2.0/nprogress.css" media="all"></script>
+  
+  
+  
+    <link rel="stylesheet" href="/blog/vendors/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css"></script>
+  
+  <!-- 不得不预先加载的一些JS文件 -->
+  <script src="/blog/vendors/jquery@3.6.0/dist/jquery.min.js"></script>
+  
+  
+  <style>
+    
+    
+  </style>
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+    <body class="custom-background">
+        <div id="kratos-wrapper">
+    <div id="kratos-page">
+        <div id="kratos-header">
+            <header id="kratos-desktop-topnav" class="kratos-topnav">
+                <div class="container">
+                    <div class="nav-header">
+                        <nav id="kratos-menu-wrap">
+                            <ul id="kratos-primary-menu" class="sf-menu">
+                                
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/">
+                                            
+                                                
+                                                    <i class="fa fa-home"></i>
+                                                
+                                                首页
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/archives/">
+                                            
+                                                
+                                                    <i class="fa fa-file"></i>
+                                                
+                                                归档
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/tags/">
+                                            
+                                                
+                                                    <i class="fa fa-tag"></i>
+                                                
+                                                标签
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/categories/">
+                                            
+                                                
+                                                    <i class="fa fa-folder"></i>
+                                                
+                                                目录
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/search/">
+                                            
+                                                
+                                                    <i class="fa fa-search"></i>
+                                                
+                                                搜索
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </header>
+            <header id="kratos-mobile-topnav" class="kratos-topnav">
+                <div class="container">
+                    <div class="color-logo"><a href="/blog/">溪岚花的博客</a></div>
+                    <div class="nav-toggle">
+                        <a class="kratos-nav-toggle js-kratos-nav-toggle">
+                            <i></i>
+                        </a>
+                    </div>
+                </div>
+            </header>
+        </div>
+        <div class="kratos-start kratos-hero-2">
+            <!-- <div class="kratos-overlay"></div> -->
+            <div class="kratos-cover kratos-cover-2 text-center">
+                <div class="desc desc2 animate-box">
+                    <a href="/blog/">
+                        <h2 style="opacity: 0.2;">溪岚花的博客</h2> <br />
+                        <span></span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div id="kratos-blog-post">
+            <div class="container">
+                <div id="main" class="row">
+                    
+
+        
+
+            <section class="col-md-8">
+
+        
+
+            <article itemscope itemtype="https://schema.org/Article">
+    
+    <link itemprop="mainEntityOfPage" href="https://lin316.gitee.io/blog/2024/04/06/SpringCloud/ElasticStack/Elasticsearch%E6%90%9C%E7%B4%A2%E8%AF%AD%E6%B3%95/">
+    <div class="kratos-hentry kratos-post-inner clearfix">
+        <header class="kratos-entry-header">
+            
+                <h1 class="kratos-entry-title text-center" itemprop="name headline">【ES】搜索语法</h1>
+            
+            
+            <ul class="kratos-post-meta text-center">
+                <li><time datetime="2024-04-06T01:00:00.000Z" itemprop="datePublished"><i class="fa fa-calendar"></i> 2024-04-06</time></li>
+                <li itemprop="author" itemscope itemtype="https://schema.org/Person">
+                    <i class="fa fa-user"></i> 作者 <span itemprop="name">林家隆</span>
+                </li>
+                
+                    <li>
+                        <i class="fa fa-edit"></i> 
+                        
+                        
+                            25.72K
+                        
+                        字
+                    </li>
+                
+                
+            </ul>
+        </header>
+        <div class="kratos-post-content">
+            
+            <div id="expire-alert" class="alert alert-warning hidden" role="alert">
+                <div class="icon"><i class="fa fa-warning"></i></div>
+                <div class="text"><p>本文最后编辑于 <time datetime="1767505908283"></time> 前，其中的内容可能需要更新。</p></div>
+            </div>
+            
+            
+            
+                <div class="kratos-post-inner-toc toc-div-class" >
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Query-%E6%9F%A5%E8%AF%A2"><span class="toc-number">1.</span> <span class="toc-text">Query 查询</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#match-all"><span class="toc-number">1.1.</span> <span class="toc-text">match_all</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#match"><span class="toc-number">1.2.</span> <span class="toc-text">match</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#mulit-match"><span class="toc-number">1.3.</span> <span class="toc-text">mulit_match</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#term"><span class="toc-number">1.4.</span> <span class="toc-text">term</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#terms"><span class="toc-number">1.5.</span> <span class="toc-text">terms</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ids"><span class="toc-number">1.6.</span> <span class="toc-text">ids</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#range"><span class="toc-number">1.7.</span> <span class="toc-text">range</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#geo-distance"><span class="toc-number">1.8.</span> <span class="toc-text">geo_distance</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#exists"><span class="toc-number">1.9.</span> <span class="toc-text">exists</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#fuzzy"><span class="toc-number">1.10.</span> <span class="toc-text">fuzzy</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#prefix"><span class="toc-number">1.11.</span> <span class="toc-text">prefix</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#bool-%E6%9F%A5%E8%AF%A2"><span class="toc-number">1.12.</span> <span class="toc-text">bool 查询</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#function-score-%E5%BE%97%E5%88%86"><span class="toc-number">1.13.</span> <span class="toc-text">function_score 得分</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AF%B9%E6%9F%A5%E8%AF%A2%E7%BB%93%E6%9E%9C%E6%8E%92%E5%BA%8F"><span class="toc-number">2.</span> <span class="toc-text">对查询结果排序</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%99%AE%E9%80%9A%E5%AD%97%E6%AE%B5%E6%8E%92%E5%BA%8F"><span class="toc-number">2.1.</span> <span class="toc-text">普通字段排序</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9C%B0%E7%90%86%E5%9D%90%E6%A0%87%E6%8E%92%E5%BA%8F"><span class="toc-number">2.2.</span> <span class="toc-text">地理坐标排序</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%86%E9%A1%B5%E6%9F%A5%E8%AF%A2"><span class="toc-number">3.</span> <span class="toc-text">分页查询</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%AB%98%E4%BA%AE%E6%98%BE%E7%A4%BA"><span class="toc-number">4.</span> <span class="toc-text">高亮显示</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E8%81%9A%E5%90%88"><span class="toc-number">5.</span> <span class="toc-text">数据聚合</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%81%9A%E5%90%88%E6%A6%82%E5%BF%B5"><span class="toc-number">5.1.</span> <span class="toc-text">聚合概念</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8C%87%E6%A0%87%E8%81%9A%E5%90%88%E7%B1%BB%E5%9E%8B"><span class="toc-number">5.2.</span> <span class="toc-text">指标聚合类型</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#value-count"><span class="toc-number">5.2.1.</span> <span class="toc-text">value_count</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#cardinality"><span class="toc-number">5.2.2.</span> <span class="toc-text">cardinality</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#avg"><span class="toc-number">5.2.3.</span> <span class="toc-text">avg</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#sum"><span class="toc-number">5.2.4.</span> <span class="toc-text">sum</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#max"><span class="toc-number">5.2.5.</span> <span class="toc-text">max</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#min"><span class="toc-number">5.2.6.</span> <span class="toc-text">min</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#stats"><span class="toc-number">5.2.7.</span> <span class="toc-text">stats</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%86%E7%BB%84%E8%81%9A%E5%90%88%E7%B1%BB%E5%9E%8B"><span class="toc-number">5.3.</span> <span class="toc-text">分组聚合类型</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#terms-1"><span class="toc-number">5.3.1.</span> <span class="toc-text">terms</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#histogram"><span class="toc-number">5.3.2.</span> <span class="toc-text">histogram</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#date-histogram"><span class="toc-number">5.3.3.</span> <span class="toc-text">date_histogram</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#range-1"><span class="toc-number">5.3.4.</span> <span class="toc-text">range</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%86%E7%BB%84%E6%8E%92%E5%BA%8F"><span class="toc-number">5.4.</span> <span class="toc-text">分组排序</span></a></li></ol></li></ol>
+                </div>
+            
+            <hr />
+            <div itemprop="articleBody"><h2 id="Query-查询"><a href="#Query-查询" class="headerlink" title="Query 查询"></a>Query 查询</h2><blockquote>
+<p>DSL 查询模板：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">GET /<span class="punctuation">&#123;</span>索引名称<span class="punctuation">&#125;</span>/_search</span><br><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line"> <span class="attr">&quot;query&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">     <span class="attr">&quot;&#123;查询类型&#125;&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">         ...编写查询逻辑...</span><br><span class="line">     <span class="punctuation">&#125;</span></span><br><span class="line"> <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>查询类型：</p>
+<ul>
+<li>match_all：查询所有文档。</li>
+<li>match：全文检索，单字段查询。</li>
+<li>multi_match：全文检索，多字段查询。</li>
+<li>term：精确查询，不分词查询。</li>
+<li>ids：精确查询，根据文档 id 查询。</li>
+<li>range：精确查询，指定查询范围。</li>
+<li>geo_distance：地理位置查询，需要指定圆的范围。</li>
+<li>geo_bounding_box：地理位置查询，需要指定矩形的范围。</li>
+<li>bool：复合查询，多种类型的查询的集合。</li>
+<li>function_score：根据查询结果重新计算文档的分数。</li>
+</ul>
+</blockquote>
+<h3 id="match-all"><a href="#match-all" class="headerlink" title="match_all"></a>match_all</h3><p>用来查询所有文档。</p>
+<blockquote>
+<p><strong>match_all 使用示例</strong></p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">GET /hotel/_search</span><br><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;query&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;match_all&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span><span class="punctuation">&#125;</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+</blockquote>
+<h3 id="match"><a href="#match" class="headerlink" title="match"></a>match</h3><p>将搜索内容的分词结果跟指定字段的倒排索引匹配。</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">GET /<span class="punctuation">&#123;</span>索引名称<span class="punctuation">&#125;</span>/_search</span><br><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;query&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;match&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">            <span class="attr">&quot;&#123;字段名称&#125;&quot;</span><span class="punctuation">:</span> <span class="string">&quot;&#123;搜索内容&#125;&quot;</span></span><br><span class="line">        <span class="punctuation">&#125;</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>注意：</strong>指定的字段的 index 属性为 false，会抛出 query_shard_exception 异常。</p>
+<h3 id="mulit-match"><a href="#mulit-match" class="headerlink" title="mulit_match"></a>mulit_match</h3><p>将搜索内容的分词结果跟多个字段的倒排索引匹配。</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">GET /<span class="punctuation">&#123;</span>索引名称<span class="punctuation">&#125;</span>/_search</span><br><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;query&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;multi_match&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">            <span class="attr">&quot;query&quot;</span><span class="punctuation">:</span> <span class="string">&quot;&#123;搜索内容&#125;&quot;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;fields&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">&quot;&#123;字段名称1&#125;&quot;</span><span class="punctuation">,</span> <span class="string">&quot;&#123;字段名称2&#125;&quot;</span>...<span class="punctuation">]</span></span><br><span class="line">        <span class="punctuation">&#125;</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>注意：</strong>指定的字段的 index 属性为 false，会抛出 query_shard_exception 异常。</p>
+<p><strong>注：</strong>搜索字段越多，对查询性能影响越大，因此建议采用 copy_to，然后单字段查询的方式。</p>
+<h3 id="term"><a href="#term" class="headerlink" title="term"></a>term</h3><p>对搜索内容不分词查询。</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">GET /<span class="punctuation">&#123;</span>索引名称<span class="punctuation">&#125;</span>/_search</span><br><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;query&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;term&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">            <span class="attr">&quot;&#123;字段名称&#125;&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">                <span class="attr">&quot;value&quot;</span><span class="punctuation">:</span> <span class="string">&quot;&#123;搜索内容&#125;&quot;</span></span><br><span class="line">            <span class="punctuation">&#125;</span></span><br><span class="line">        <span class="punctuation">&#125;</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="terms"><a href="#terms" class="headerlink" title="terms"></a>terms</h3><p>对搜索内容不分词查询，可以指定多个搜索内容。</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">GET /<span class="punctuation">&#123;</span>索引名称<span class="punctuation">&#125;</span>/_search</span><br><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;query&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;terms&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">            <span class="attr">&quot;&#123;字段名称&#125;&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">&quot;&#123;搜索内容1&#125;&quot;</span><span class="punctuation">,</span> <span class="string">&quot;&#123;搜索内容2&#125;&quot;</span><span class="punctuation">]</span></span><br><span class="line">        <span class="punctuation">&#125;</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="ids"><a href="#ids" class="headerlink" title="ids"></a>ids</h3><p>根据 id 查询文档。</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">GET /<span class="punctuation">&#123;</span>索引名称<span class="punctuation">&#125;</span>/_search</span><br><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;query&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;ids&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">            <span class="attr">&quot;values&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">&quot;&#123;文档1 id&#125;&quot;</span><span class="punctuation">,</span> <span class="string">&quot;&#123;文档2 id&#125;&quot;</span>...<span class="punctuation">]</span></span><br><span class="line">        <span class="punctuation">&#125;</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="range"><a href="#range" class="headerlink" title="range"></a>range</h3><p>范围查询。</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">GET /<span class="punctuation">&#123;</span>索引名称<span class="punctuation">&#125;</span>/_search</span><br><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;query&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;range&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">            <span class="attr">&quot;&#123;字段名称&#125;&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">                <span class="attr">&quot;gte&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span>整数<span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">                <span class="attr">&quot;lte&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span>整数<span class="punctuation">&#125;</span></span><br><span class="line">            <span class="punctuation">&#125;</span></span><br><span class="line">        <span class="punctuation">&#125;</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="geo-distance"><a href="#geo-distance" class="headerlink" title="geo_distance"></a>geo_distance</h3><p>地理位置查询，需要指定圆的范围。</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">GET /<span class="punctuation">&#123;</span>索引名称<span class="punctuation">&#125;</span>/_search</span><br><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;query&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;geo_distance&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">            <span class="attr">&quot;distance&quot;</span><span class="punctuation">:</span> <span class="string">&quot;&#123;圆的半径&#125;&quot;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;&#123;字段名称&#125;&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">                <span class="attr">&quot;lon&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span>经度<span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">                <span class="attr">&quot;lat&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span>纬度<span class="punctuation">&#125;</span></span><br><span class="line">            <span class="punctuation">&#125;</span></span><br><span class="line">        <span class="punctuation">&#125;</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p><strong>geo_distance 使用示例</strong></p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">GET /hotel/_search</span><br><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;query&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;geo_distance&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">            <span class="attr">&quot;distance&quot;</span><span class="punctuation">:</span> <span class="string">&quot;2km&quot;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;location&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">                <span class="attr">&quot;lon&quot;</span><span class="punctuation">:</span> <span class="number">121.5</span><span class="punctuation">,</span></span><br><span class="line">                <span class="attr">&quot;lat&quot;</span><span class="punctuation">:</span> <span class="number">31.21</span></span><br><span class="line">            <span class="punctuation">&#125;</span></span><br><span class="line">        <span class="punctuation">&#125;</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+</blockquote>
+<h3 id="exists"><a href="#exists" class="headerlink" title="exists"></a>exists</h3><p>指定的字段要存在，且值不为 null。</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">GET /<span class="punctuation">&#123;</span>索引名称<span class="punctuation">&#125;</span>/_search</span><br><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;query&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;exists&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">            <span class="attr">&quot;field&quot;</span><span class="punctuation">:</span> <span class="string">&quot;&#123;字段名称&#125;&quot;</span></span><br><span class="line">        <span class="punctuation">&#125;</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="fuzzy"><a href="#fuzzy" class="headerlink" title="fuzzy"></a>fuzzy</h3><p>返回包含与搜索词类似的词的文档，包括以下几种情况：</p>
+<ul>
+<li>写错字符（fox → box）</li>
+<li>漏写字符（apple → aple）</li>
+<li>多写字符（sic  → sick）</li>
+<li>相邻字符被调换（cat → act）</li>
+</ul>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">GET /<span class="punctuation">&#123;</span>索引名称<span class="punctuation">&#125;</span>/_search</span><br><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;query&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;fuzzy&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">      <span class="attr">&quot;&#123;字段名称&#125;&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;value&quot;</span><span class="punctuation">:</span> <span class="string">&quot;&#123;搜索内容&#125;&quot;</span></span><br><span class="line">      <span class="punctuation">&#125;</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p><strong>fuzzy 使用示例</strong></p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">GET /hotel/_search</span><br><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;query&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;fuzzy&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">            <span class="attr">&quot;name&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">                <span class="attr">&quot;value&quot;</span><span class="punctuation">:</span> <span class="string">&quot;jave&quot;</span></span><br><span class="line">            <span class="punctuation">&#125;</span></span><br><span class="line">        <span class="punctuation">&#125;</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+</blockquote>
+<h3 id="prefix"><a href="#prefix" class="headerlink" title="prefix"></a>prefix</h3><p>前缀查询。</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">GET /<span class="punctuation">&#123;</span>索引名称<span class="punctuation">&#125;</span>/_search</span><br><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;query&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;prefix&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">            <span class="attr">&quot;&#123;字段名称&#125;&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">                <span class="attr">&quot;value&quot;</span><span class="punctuation">:</span> <span class="string">&quot;&#123;前缀&#125;&quot;</span></span><br><span class="line">            <span class="punctuation">&#125;</span></span><br><span class="line">        <span class="punctuation">&#125;</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="bool-查询"><a href="#bool-查询" class="headerlink" title="bool 查询"></a>bool 查询</h3><p>布尔查询是由多个子查询组合而成，<strong>子查询之间的逻辑关系是与 and</strong>。</p>
+<p>bool 的四种子查询类型：</p>
+<ul>
+<li><strong>must：</strong>每个查询条件之间的逻辑关系是 and。</li>
+<li><strong>should：</strong>每个查询条件之间的逻辑关系是 or。</li>
+<li><strong>filter：</strong>跟 must 一样，区别是不参与 score 的计算。</li>
+<li><strong>must_not：</strong>文档不能匹配指定查询条件，不参与 score 的计算。</li>
+</ul>
+<p><strong>注意：使用 should 类型的子查询，必须设置 minimum_should_match 参数的值。minimum_should_match 参数表示匹配的文档必须满足几个 should 子查询。</strong>如果 should 子句中包含两个查询，如果不设置参数 minimum_should_match，默认值是0。</p>
+<blockquote>
+<p><strong>bool 查询示例</strong></p>
+<p>条件：brand&#x3D;”速8” and city&#x3D;”上海” and business&#x3D;”四川北路商业区”</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">GET /hotel/_search</span><br><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;query&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;bool&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">      <span class="attr">&quot;must&quot;</span><span class="punctuation">:</span> </span><br><span class="line">      <span class="punctuation">[</span></span><br><span class="line">        <span class="punctuation">&#123;</span><span class="attr">&quot;term&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span><span class="attr">&quot;brand&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span><span class="attr">&quot;value&quot;</span><span class="punctuation">:</span> <span class="string">&quot;速8&quot;</span><span class="punctuation">&#125;</span><span class="punctuation">&#125;</span><span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="punctuation">&#123;</span><span class="attr">&quot;term&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span><span class="attr">&quot;city&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span><span class="attr">&quot;value&quot;</span><span class="punctuation">:</span> <span class="string">&quot;上海&quot;</span><span class="punctuation">&#125;</span><span class="punctuation">&#125;</span><span class="punctuation">&#125;</span></span><br><span class="line">      <span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;filter&quot;</span><span class="punctuation">:</span> </span><br><span class="line">      <span class="punctuation">[</span></span><br><span class="line">        <span class="punctuation">&#123;</span><span class="attr">&quot;term&quot;</span><span class="punctuation">:</span><span class="punctuation">&#123;</span><span class="attr">&quot;business&quot;</span><span class="punctuation">:</span><span class="punctuation">&#123;</span><span class="attr">&quot;value&quot;</span><span class="punctuation">:</span><span class="string">&quot;四川北路商业区&quot;</span><span class="punctuation">&#125;</span><span class="punctuation">&#125;</span><span class="punctuation">&#125;</span></span><br><span class="line">      <span class="punctuation">]</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>条件：(brand&#x3D;”速8” and city&#x3D;”上海”) and (business&#x3D;”四川北路商业区” or business&#x3D;”长风公园地区”)</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">GET /hotel/_search</span><br><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;query&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;bool&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">      <span class="attr">&quot;must&quot;</span><span class="punctuation">:</span> </span><br><span class="line">      <span class="punctuation">[</span></span><br><span class="line">        <span class="punctuation">&#123;</span><span class="attr">&quot;term&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span><span class="attr">&quot;brand&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span><span class="attr">&quot;value&quot;</span><span class="punctuation">:</span> <span class="string">&quot;速8&quot;</span><span class="punctuation">&#125;</span><span class="punctuation">&#125;</span><span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="punctuation">&#123;</span><span class="attr">&quot;term&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span><span class="attr">&quot;city&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span><span class="attr">&quot;value&quot;</span><span class="punctuation">:</span> <span class="string">&quot;上海&quot;</span><span class="punctuation">&#125;</span><span class="punctuation">&#125;</span><span class="punctuation">&#125;</span></span><br><span class="line">      <span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;should&quot;</span><span class="punctuation">:</span> </span><br><span class="line">      <span class="punctuation">[</span></span><br><span class="line">        <span class="punctuation">&#123;</span><span class="attr">&quot;term&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span><span class="attr">&quot;business&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span><span class="attr">&quot;value&quot;</span><span class="punctuation">:</span> <span class="string">&quot;四川北路商业区&quot;</span><span class="punctuation">&#125;</span><span class="punctuation">&#125;</span><span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="punctuation">&#123;</span><span class="attr">&quot;term&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span><span class="attr">&quot;business&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span><span class="attr">&quot;value&quot;</span><span class="punctuation">:</span> <span class="string">&quot;长风公园地区&quot;</span><span class="punctuation">&#125;</span><span class="punctuation">&#125;</span><span class="punctuation">&#125;</span></span><br><span class="line">      <span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;minimum_should_match&quot;</span><span class="punctuation">:</span> <span class="number">1</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>条件：business&#x3D;”四川北路商业区” or business&#x3D;”长风公园地区” or (city&#x3D;”北京” and starName&#x3D;”五钻”)</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">GET /hotel/_search</span><br><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;query&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;bool&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">            <span class="attr">&quot;should&quot;</span><span class="punctuation">:</span> </span><br><span class="line">            <span class="punctuation">[</span></span><br><span class="line">                <span class="punctuation">&#123;</span><span class="attr">&quot;term&quot;</span><span class="punctuation">:</span><span class="punctuation">&#123;</span><span class="attr">&quot;business&quot;</span><span class="punctuation">:</span><span class="punctuation">&#123;</span><span class="attr">&quot;value&quot;</span><span class="punctuation">:</span><span class="string">&quot;四川北路商业区&quot;</span><span class="punctuation">&#125;</span><span class="punctuation">&#125;</span><span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">                <span class="punctuation">&#123;</span><span class="attr">&quot;term&quot;</span><span class="punctuation">:</span><span class="punctuation">&#123;</span><span class="attr">&quot;business&quot;</span><span class="punctuation">:</span><span class="punctuation">&#123;</span><span class="attr">&quot;value&quot;</span><span class="punctuation">:</span><span class="string">&quot;长风公园地区&quot;</span><span class="punctuation">&#125;</span><span class="punctuation">&#125;</span><span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">                <span class="punctuation">&#123;</span></span><br><span class="line">                    <span class="attr">&quot;bool&quot;</span><span class="punctuation">:</span><span class="punctuation">&#123;</span></span><br><span class="line">                        <span class="attr">&quot;must&quot;</span><span class="punctuation">:</span> </span><br><span class="line">                        <span class="punctuation">[</span></span><br><span class="line">                            <span class="punctuation">&#123;</span><span class="attr">&quot;term&quot;</span><span class="punctuation">:</span><span class="punctuation">&#123;</span><span class="attr">&quot;starName&quot;</span><span class="punctuation">:</span><span class="punctuation">&#123;</span><span class="attr">&quot;value&quot;</span><span class="punctuation">:</span><span class="string">&quot;五钻&quot;</span><span class="punctuation">&#125;</span><span class="punctuation">&#125;</span><span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">                            <span class="punctuation">&#123;</span><span class="attr">&quot;term&quot;</span><span class="punctuation">:</span><span class="punctuation">&#123;</span><span class="attr">&quot;city&quot;</span><span class="punctuation">:</span><span class="punctuation">&#123;</span><span class="attr">&quot;value&quot;</span><span class="punctuation">:</span><span class="string">&quot;北京&quot;</span><span class="punctuation">&#125;</span><span class="punctuation">&#125;</span><span class="punctuation">&#125;</span></span><br><span class="line">                        <span class="punctuation">]</span></span><br><span class="line">                    <span class="punctuation">&#125;</span></span><br><span class="line">                <span class="punctuation">&#125;</span></span><br><span class="line">            <span class="punctuation">]</span><span class="punctuation">,</span> </span><br><span class="line">            <span class="attr">&quot;minimum_should_match&quot;</span><span class="punctuation">:</span> <span class="number">1</span></span><br><span class="line">        <span class="punctuation">&#125;</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+</blockquote>
+<h3 id="function-score-得分"><a href="#function-score-得分" class="headerlink" title="function_score 得分"></a>function_score 得分</h3><p>根据业务要求重新计算 _score 算分。</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">GET /<span class="punctuation">&#123;</span>索引名称<span class="punctuation">&#125;</span>/_search</span><br><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;query&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;function_score&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">            <span class="attr">&quot;query&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">                <span class="comment">// 查询语句，文档的 score 分数由 es 计算得出</span></span><br><span class="line">            <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;functions&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">                <span class="punctuation">&#123;</span></span><br><span class="line">                    <span class="attr">&quot;filter&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">                        <span class="comment">// 查询语句，对查询出来的文档重新计算 score 分数	</span></span><br><span class="line">                    <span class="punctuation">&#125;</span><span class="punctuation">,</span> </span><br><span class="line">                    <span class="attr">&quot;&#123;算分函数&#125;&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">                        <span class="comment">// 计算逻辑</span></span><br><span class="line">                    <span class="punctuation">&#125;</span></span><br><span class="line">                <span class="punctuation">&#125;</span></span><br><span class="line">            <span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;boost_mode&quot;</span><span class="punctuation">:</span> <span class="string">&quot;&#123;加权模式&#125;&quot;</span></span><br><span class="line">        <span class="punctuation">&#125;</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>function_score 的四部分内容：</p>
+<ul>
+<li>query 查询：基于 query 查询出来的文档，score 值由 es 计算得出。</li>
+<li>filter 查询：基于 filter 查询出来的文档，根据算分函数重新计算文档的 score 值。</li>
+<li>算分函数：对 filter 查询的文档重新计算 score 值，有四种算分函数。<ul>
+<li>weight：指定一个常量。</li>
+<li>field_value_factor：以文档中的某个字段值作为 score 值。</li>
+<li>random_score：随机一个数作为 score 值。</li>
+<li>script_score：自定义算分函数。</li>
+</ul>
+</li>
+<li>加权模式：对 es 得出 score 和算分函数得出的 score 运算得出 score 的最终值：<ul>
+<li>multiply：相乘。</li>
+<li>sum：相加。</li>
+<li>avg：取平均值。</li>
+<li>max：取最大值。</li>
+<li>min：取最小值。</li>
+<li>replace：采用算分函数得出的 score。</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p><strong>function_score 使用示例</strong></p>
+<p>对品牌为君悦的酒店的权重全部 +3：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">GET /hotel/_search</span><br><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;query&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;function_score&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">            <span class="attr">&quot;query&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">                <span class="attr">&quot;match&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">                    <span class="attr">&quot;name&quot;</span><span class="punctuation">:</span> <span class="string">&quot;深圳连锁酒店&quot;</span></span><br><span class="line">                <span class="punctuation">&#125;</span></span><br><span class="line">            <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;functions&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">                <span class="punctuation">&#123;</span></span><br><span class="line">                    <span class="attr">&quot;filter&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">                        <span class="attr">&quot;term&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">                            <span class="attr">&quot;brand&quot;</span><span class="punctuation">:</span> <span class="string">&quot;君悦&quot;</span></span><br><span class="line">                        <span class="punctuation">&#125;</span></span><br><span class="line">                    <span class="punctuation">&#125;</span><span class="punctuation">,</span> </span><br><span class="line">                    <span class="attr">&quot;weight&quot;</span><span class="punctuation">:</span> <span class="number">3</span></span><br><span class="line">                <span class="punctuation">&#125;</span></span><br><span class="line">            <span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;boost_mode&quot;</span><span class="punctuation">:</span> <span class="string">&quot;sum&quot;</span></span><br><span class="line">        <span class="punctuation">&#125;</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+</blockquote>
+<h2 id="对查询结果排序"><a href="#对查询结果排序" class="headerlink" title="对查询结果排序"></a>对查询结果排序</h2><h3 id="普通字段排序"><a href="#普通字段排序" class="headerlink" title="普通字段排序"></a>普通字段排序</h3><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">GET /<span class="punctuation">&#123;</span>索引名称<span class="punctuation">&#125;</span>/_search</span><br><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;query&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;match_all&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span><span class="punctuation">&#125;</span></span><br><span class="line">  <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;sort&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">    <span class="punctuation">&#123;</span></span><br><span class="line">      <span class="attr">&quot;&#123;字段名&#125;&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;order&quot;</span><span class="punctuation">:</span> <span class="string">&quot;&#123;asc | desc&#125;&quot;</span></span><br><span class="line">      <span class="punctuation">&#125;</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line">  <span class="punctuation">]</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="地理坐标排序"><a href="#地理坐标排序" class="headerlink" title="地理坐标排序"></a>地理坐标排序</h3><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">GET /<span class="punctuation">&#123;</span>索引名称<span class="punctuation">&#125;</span>/_search</span><br><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;query&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;match_all&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span><span class="punctuation">&#125;</span></span><br><span class="line">    <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;sort&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">        <span class="punctuation">&#123;</span></span><br><span class="line">            <span class="attr">&quot;_geo_distance&quot;</span><span class="punctuation">:</span><span class="punctuation">&#123;</span></span><br><span class="line">                <span class="attr">&quot;&#123;字段名&#125;&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">                    <span class="attr">&quot;lon&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span>经度<span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">                    <span class="attr">&quot;lat&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span>纬度<span class="punctuation">&#125;</span></span><br><span class="line">                <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">                <span class="attr">&quot;order&quot;</span><span class="punctuation">:</span> <span class="string">&quot;&#123;asc | desc&#125;&quot;</span><span class="punctuation">,</span></span><br><span class="line">                <span class="attr">&quot;unit&quot;</span><span class="punctuation">:</span> <span class="string">&quot;&#123;举例单位&#125;&quot;</span></span><br><span class="line">            <span class="punctuation">&#125;</span></span><br><span class="line">        <span class="punctuation">&#125;</span></span><br><span class="line">    <span class="punctuation">]</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="分页查询"><a href="#分页查询" class="headerlink" title="分页查询"></a>分页查询</h2><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">GET /<span class="punctuation">&#123;</span>索引名称<span class="punctuation">&#125;</span>/_search</span><br><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;query&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;match_all&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span><span class="punctuation">&#125;</span></span><br><span class="line">    <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">    </span><br><span class="line">    <span class="attr">&quot;from&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span>从第几个文档开始<span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;size&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span>查询文档的数量<span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>from 默认从 0 开始。</li>
+</ul>
+<p>当分页查询深度较大、汇总数据过多时，会对内存和 CPU 压力造成巨大的压力，因此 es 会禁止from+ size 超过 10000 的请求。如果要查询 10000 以后的数据，可以使用 search_after 方式。</p>
+<p>搜索时可以通过 search_after 指定一个游标来作为搜索的起点。这个游标是由排序字段的值决定的。</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">GET /<span class="punctuation">&#123;</span>索引名称<span class="punctuation">&#125;</span>/_search</span><br><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;query&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;match_all&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span><span class="punctuation">&#125;</span></span><br><span class="line">    <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line"></span><br><span class="line">    <span class="attr">&quot;search_after&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">&quot;&#123;排序字段1 的值&#125;&quot;</span><span class="punctuation">,</span> <span class="string">&quot;&#123;排序字段2 的值&#125;&quot;</span>...<span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;size&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span>查询文档的数量<span class="punctuation">&#125;</span><span class="punctuation">,</span> </span><br><span class="line">    </span><br><span class="line">    <span class="attr">&quot;sort&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">        <span class="punctuation">&#123;</span></span><br><span class="line">            <span class="attr">&quot;&#123;排序字段1&#125;&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">                <span class="attr">&quot;order&quot;</span><span class="punctuation">:</span> <span class="string">&quot;&#123;asc | desc&#125;&quot;</span></span><br><span class="line">            <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;&#123;排序字段2&#125;&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">                <span class="attr">&quot;order&quot;</span><span class="punctuation">:</span> <span class="string">&quot;&#123;asc | desc&#125;&quot;</span></span><br><span class="line">            <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="comment">// ... 略</span></span><br><span class="line">        <span class="punctuation">&#125;</span></span><br><span class="line">    <span class="punctuation">]</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p><strong>search_after 的使用示例</strong></p>
+<p>假设查询结果根据 id 倒序排序，每次查询 10 条数据。上一次查询结果的最后一个文档 id 为100000，那么查询这次查询 url 为：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">GET /lin_index/_search</span><br><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;query&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;match_all&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span><span class="punctuation">&#125;</span></span><br><span class="line">    <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line"></span><br><span class="line">    <span class="attr">&quot;search_after&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="number">100000</span><span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;size&quot;</span><span class="punctuation">:</span> <span class="number">10</span><span class="punctuation">,</span> </span><br><span class="line">    </span><br><span class="line">    <span class="attr">&quot;sort&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">        <span class="punctuation">&#123;</span></span><br><span class="line">            <span class="attr">&quot;id.row&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">                <span class="attr">&quot;order&quot;</span><span class="punctuation">:</span> <span class="string">&quot;asc&quot;</span></span><br><span class="line">            <span class="punctuation">&#125;</span></span><br><span class="line">        <span class="punctuation">&#125;</span></span><br><span class="line">    <span class="punctuation">]</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+</blockquote>
+<h2 id="高亮显示"><a href="#高亮显示" class="headerlink" title="高亮显示"></a>高亮显示</h2><p>高亮显示就是在分词前后添加 html 标签，给前端解析就能够高亮显示了。</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">GET /<span class="punctuation">&#123;</span>索引名称<span class="punctuation">&#125;</span>/_search</span><br><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;query&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="comment">// 查询逻辑</span></span><br><span class="line">    <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;highlight&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;fields&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">            <span class="attr">&quot;&#123;字段名&#125;&quot;</span><span class="punctuation">:</span><span class="punctuation">&#123;</span></span><br><span class="line">                <span class="attr">&quot;pre_tags&quot;</span><span class="punctuation">:</span> <span class="string">&quot;&#123;html 前置标签&#125;&quot;</span><span class="punctuation">,</span></span><br><span class="line">                <span class="attr">&quot;post_tags&quot;</span><span class="punctuation">:</span> <span class="string">&quot;&#123;html 后置标签&#125;&quot;</span></span><br><span class="line">            <span class="punctuation">&#125;</span></span><br><span class="line">        <span class="punctuation">&#125;</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>高亮显示的字段必须在查询字段的范围内，否则没有意义。</li>
+</ul>
+<blockquote>
+<p><strong>高亮显示示例</strong></p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">GET /hotel/_search</span><br><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;query&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;bool&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">            <span class="attr">&quot;must&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">                <span class="punctuation">&#123;</span><span class="attr">&quot;match&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span><span class="attr">&quot;name&quot;</span><span class="punctuation">:</span> <span class="string">&quot;连锁酒店&quot;</span><span class="punctuation">&#125;</span><span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">                <span class="punctuation">&#123;</span><span class="attr">&quot;term&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span><span class="attr">&quot;city&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span><span class="attr">&quot;value&quot;</span><span class="punctuation">:</span> <span class="string">&quot;深圳&quot;</span><span class="punctuation">&#125;</span><span class="punctuation">&#125;</span><span class="punctuation">&#125;</span></span><br><span class="line">            <span class="punctuation">]</span></span><br><span class="line">        <span class="punctuation">&#125;</span></span><br><span class="line">    <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;size&quot;</span><span class="punctuation">:</span> <span class="number">1</span><span class="punctuation">,</span> </span><br><span class="line"></span><br><span class="line">    <span class="attr">&quot;highlight&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;fields&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">            <span class="attr">&quot;city&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">                <span class="attr">&quot;pre_tags&quot;</span><span class="punctuation">:</span> <span class="string">&quot;&lt;em&gt;&quot;</span><span class="punctuation">,</span></span><br><span class="line">                <span class="attr">&quot;post_tags&quot;</span><span class="punctuation">:</span> <span class="string">&quot;&lt;/em&gt;&quot;</span></span><br><span class="line">            <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;name&quot;</span><span class="punctuation">:</span><span class="punctuation">&#123;</span></span><br><span class="line">                <span class="attr">&quot;pre_tags&quot;</span><span class="punctuation">:</span> <span class="string">&quot;&lt;em&gt;&quot;</span><span class="punctuation">,</span></span><br><span class="line">                <span class="attr">&quot;post_tags&quot;</span><span class="punctuation">:</span> <span class="string">&quot;&lt;/em&gt;&quot;</span></span><br><span class="line">            <span class="punctuation">&#125;</span></span><br><span class="line">        <span class="punctuation">&#125;</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>查询结果：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;took&quot;</span> <span class="punctuation">:</span> <span class="number">2</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;timed_out&quot;</span> <span class="punctuation">:</span> <span class="literal"><span class="keyword">false</span></span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;_shards&quot;</span> <span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;total&quot;</span> <span class="punctuation">:</span> <span class="number">1</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;successful&quot;</span> <span class="punctuation">:</span> <span class="number">1</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;skipped&quot;</span> <span class="punctuation">:</span> <span class="number">0</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;failed&quot;</span> <span class="punctuation">:</span> <span class="number">0</span></span><br><span class="line">    <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;hits&quot;</span> <span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;total&quot;</span> <span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">            <span class="attr">&quot;value&quot;</span> <span class="punctuation">:</span> <span class="number">56</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;relation&quot;</span> <span class="punctuation">:</span> <span class="string">&quot;eq&quot;</span></span><br><span class="line">        <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;max_score&quot;</span> <span class="punctuation">:</span> <span class="number">3.2519073</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;hits&quot;</span> <span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">            <span class="punctuation">&#123;</span></span><br><span class="line">                <span class="attr">&quot;_index&quot;</span> <span class="punctuation">:</span> <span class="string">&quot;hotel&quot;</span><span class="punctuation">,</span></span><br><span class="line">                <span class="attr">&quot;_type&quot;</span> <span class="punctuation">:</span> <span class="string">&quot;_doc&quot;</span><span class="punctuation">,</span></span><br><span class="line">                <span class="attr">&quot;_id&quot;</span> <span class="punctuation">:</span> <span class="string">&quot;844350&quot;</span><span class="punctuation">,</span></span><br><span class="line">                <span class="attr">&quot;_score&quot;</span> <span class="punctuation">:</span> <span class="number">3.2519073</span><span class="punctuation">,</span></span><br><span class="line">                <span class="attr">&quot;_source&quot;</span> <span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">                    <span class="attr">&quot;address&quot;</span> <span class="punctuation">:</span> <span class="string">&quot;南山区白石洲沙河街2号金三角大厦&quot;</span><span class="punctuation">,</span></span><br><span class="line">                    <span class="attr">&quot;brand&quot;</span> <span class="punctuation">:</span> <span class="string">&quot;7天酒店&quot;</span><span class="punctuation">,</span></span><br><span class="line">                    <span class="attr">&quot;business&quot;</span> <span class="punctuation">:</span> <span class="string">&quot;华侨城&quot;</span><span class="punctuation">,</span></span><br><span class="line">                    <span class="attr">&quot;city&quot;</span> <span class="punctuation">:</span> <span class="string">&quot;深圳&quot;</span><span class="punctuation">,</span></span><br><span class="line">                    <span class="attr">&quot;id&quot;</span> <span class="punctuation">:</span> <span class="number">844350</span><span class="punctuation">,</span></span><br><span class="line">                    <span class="attr">&quot;location&quot;</span> <span class="punctuation">:</span> <span class="string">&quot;22.540501, 113.968858&quot;</span><span class="punctuation">,</span></span><br><span class="line">                    <span class="attr">&quot;name&quot;</span> <span class="punctuation">:</span> <span class="string">&quot;7天连锁酒店(深圳世界之窗店)&quot;</span><span class="punctuation">,</span></span><br><span class="line">                    <span class="attr">&quot;pic&quot;</span> <span class="punctuation">:</span> <span class="string">&quot;https://m.tuniucdn.com/fb2/t1/G2/M00/D8/11/Cii-TFku2zmIOdjCAAAQJpLFhEEAAKxZQIEvQ0AABA-920_w200_h200_c1_t0.jpg&quot;</span><span class="punctuation">,</span></span><br><span class="line">                    <span class="attr">&quot;price&quot;</span> <span class="punctuation">:</span> <span class="number">769</span><span class="punctuation">,</span></span><br><span class="line">                    <span class="attr">&quot;score&quot;</span> <span class="punctuation">:</span> <span class="number">36</span><span class="punctuation">,</span></span><br><span class="line">                    <span class="attr">&quot;starName&quot;</span> <span class="punctuation">:</span> <span class="string">&quot;二钻&quot;</span></span><br><span class="line">                <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">                <span class="attr">&quot;highlight&quot;</span> <span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">                    <span class="attr">&quot;city&quot;</span> <span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">                        <span class="string">&quot;&lt;em&gt;深圳&lt;/em&gt;&quot;</span></span><br><span class="line">                    <span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">                    <span class="attr">&quot;name&quot;</span> <span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">                        <span class="string">&quot;7天&lt;em&gt;连锁&lt;/em&gt;&lt;em&gt;酒店&lt;/em&gt;(深圳世界之窗店)&quot;</span></span><br><span class="line">                    <span class="punctuation">]</span></span><br><span class="line">                <span class="punctuation">&#125;</span></span><br><span class="line">            <span class="punctuation">&#125;</span></span><br><span class="line">        <span class="punctuation">]</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+</blockquote>
+<h2 id="数据聚合"><a href="#数据聚合" class="headerlink" title="数据聚合"></a>数据聚合</h2><h3 id="聚合概念"><a href="#聚合概念" class="headerlink" title="聚合概念"></a>聚合概念</h3><p>数据聚合就是对数据进行分组，让后进行统计、分析、运算等。</p>
+<ul>
+<li><strong>桶聚合（Bucket）：</strong>用来对文档做分组。<ul>
+<li>term：根据文档字段值分组。</li>
+<li>date：按照日期阶梯分组，例如一周为一组，或者一月为一组。</li>
+</ul>
+</li>
+<li><strong>指标聚合（Metric）：</strong>对分组进行统计，例如求 avg、max、min、sum 等。</li>
+</ul>
+<p><strong>注：</strong>参加聚合的字段必须是keyword、日期、数值、布尔类型</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">GET /<span class="punctuation">&#123;</span>索引名称<span class="punctuation">&#125;</span>/_search</span><br><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;query&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="comment">// 查询逻辑</span></span><br><span class="line">    <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;size&quot;</span><span class="punctuation">:</span> <span class="number">0</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;aggs&quot;</span> <span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;&#123;聚合名称&#125;&quot;</span> <span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">            <span class="attr">&quot;&#123;聚合类型&#125;&quot;</span> <span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">                <span class="comment">// 聚合逻辑</span></span><br><span class="line">            <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;aggs&quot;</span><span class="punctuation">:</span><span class="punctuation">&#123;</span></span><br><span class="line">                <span class="comment">// 嵌套子聚合</span></span><br><span class="line">            <span class="punctuation">&#125;</span></span><br><span class="line">        <span class="punctuation">&#125;</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>在聚合逻辑那里可以填以下属性：</p>
+<ul>
+<li>field：根据指定的文档字段聚合。</li>
+<li>size：显示数据的条数。</li>
+</ul>
+<h3 id="指标聚合类型"><a href="#指标聚合类型" class="headerlink" title="指标聚合类型"></a>指标聚合类型</h3><h4 id="value-count"><a href="#value-count" class="headerlink" title="value_count"></a>value_count</h4><p>用来统计文档的数量，null 值不在统计范围内。</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">GET /<span class="punctuation">&#123;</span>索引名称<span class="punctuation">&#125;</span>/_search</span><br><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;size&quot;</span><span class="punctuation">:</span> <span class="number">0</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;aggs&quot;</span> <span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;&#123;聚合名称&#125;&quot;</span> <span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">            <span class="attr">&quot;value_count&quot;</span> <span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">                <span class="attr">&quot;field&quot;</span><span class="punctuation">:</span> <span class="string">&quot;&#123;字段名称&#125;&quot;</span></span><br><span class="line">            <span class="punctuation">&#125;</span></span><br><span class="line">        <span class="punctuation">&#125;</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="cardinality"><a href="#cardinality" class="headerlink" title="cardinality"></a>cardinality</h4><p>用统计文档的数量，会根据字段值去重。null 值不在统计范围内。</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">GET /<span class="punctuation">&#123;</span>索引名称<span class="punctuation">&#125;</span>/_search</span><br><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;size&quot;</span><span class="punctuation">:</span> <span class="number">0</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;aggs&quot;</span> <span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;&#123;聚合名称&#125;&quot;</span> <span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">            <span class="attr">&quot;cardinality&quot;</span> <span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">                <span class="attr">&quot;field&quot;</span><span class="punctuation">:</span> <span class="string">&quot;&#123;字段名称&#125;&quot;</span></span><br><span class="line">            <span class="punctuation">&#125;</span></span><br><span class="line">        <span class="punctuation">&#125;</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="avg"><a href="#avg" class="headerlink" title="avg"></a>avg</h4><p>统计组内指定字段的平均值。</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">GET /<span class="punctuation">&#123;</span>索引名称<span class="punctuation">&#125;</span>/_search</span><br><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;size&quot;</span><span class="punctuation">:</span> <span class="number">0</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;aggs&quot;</span> <span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;&#123;聚合名称&#125;&quot;</span> <span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">            <span class="attr">&quot;avg&quot;</span> <span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">                <span class="attr">&quot;field&quot;</span><span class="punctuation">:</span> <span class="string">&quot;&#123;字段名称&#125;&quot;</span></span><br><span class="line">            <span class="punctuation">&#125;</span></span><br><span class="line">        <span class="punctuation">&#125;</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="sum"><a href="#sum" class="headerlink" title="sum"></a>sum</h4><p>组内字段求和。</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">GET /<span class="punctuation">&#123;</span>索引名称<span class="punctuation">&#125;</span>/_search</span><br><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;size&quot;</span><span class="punctuation">:</span> <span class="number">0</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;aggs&quot;</span> <span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;&#123;聚合名称&#125;&quot;</span> <span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">            <span class="attr">&quot;sum&quot;</span> <span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">                <span class="attr">&quot;field&quot;</span><span class="punctuation">:</span> <span class="string">&quot;&#123;字段名称&#125;&quot;</span></span><br><span class="line">            <span class="punctuation">&#125;</span></span><br><span class="line">        <span class="punctuation">&#125;</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="max"><a href="#max" class="headerlink" title="max"></a>max</h4><p>组内指定字段的最大值。</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">GET /<span class="punctuation">&#123;</span>索引名称<span class="punctuation">&#125;</span>/_search</span><br><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;size&quot;</span><span class="punctuation">:</span> <span class="number">0</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;aggs&quot;</span> <span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;&#123;聚合名称&#125;&quot;</span> <span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">            <span class="attr">&quot;max&quot;</span> <span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">                <span class="attr">&quot;field&quot;</span><span class="punctuation">:</span> <span class="string">&quot;&#123;字段名称&#125;&quot;</span></span><br><span class="line">            <span class="punctuation">&#125;</span></span><br><span class="line">        <span class="punctuation">&#125;</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="min"><a href="#min" class="headerlink" title="min"></a>min</h4><p>组内指定字段的最小值。</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">GET /<span class="punctuation">&#123;</span>索引名称<span class="punctuation">&#125;</span>/_search</span><br><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;size&quot;</span><span class="punctuation">:</span> <span class="number">0</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;aggs&quot;</span> <span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;&#123;聚合名称&#125;&quot;</span> <span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">            <span class="attr">&quot;min&quot;</span> <span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">                <span class="attr">&quot;field&quot;</span><span class="punctuation">:</span> <span class="string">&quot;&#123;字段名称&#125;&quot;</span></span><br><span class="line">            <span class="punctuation">&#125;</span></span><br><span class="line">        <span class="punctuation">&#125;</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="stats"><a href="#stats" class="headerlink" title="stats"></a>stats</h4><p>统计 value_count、avg、sum、max、min 值。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">GET /&#123;索引名称&#125;/_search</span><br><span class="line">&#123;</span><br><span class="line">    &quot;size&quot;: 0,</span><br><span class="line">    &quot;aggs&quot; : &#123;</span><br><span class="line">        &quot;&#123;聚合名称&#125;&quot; : &#123;</span><br><span class="line">            &quot;stats&quot; : &#123;</span><br><span class="line">                &quot;field&quot;: &quot;&#123;字段名称&#125;&quot;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="分组聚合类型"><a href="#分组聚合类型" class="headerlink" title="分组聚合类型"></a>分组聚合类型</h3><h4 id="terms-1"><a href="#terms-1" class="headerlink" title="terms"></a>terms</h4><p>根据文档字段的唯一值分组。</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">GET /<span class="punctuation">&#123;</span>索引名称<span class="punctuation">&#125;</span>/_search</span><br><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;size&quot;</span><span class="punctuation">:</span> <span class="number">0</span><span class="punctuation">,</span> </span><br><span class="line">    <span class="attr">&quot;aggs&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;&#123;聚合名称&#125;&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">            <span class="attr">&quot;terms&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">                <span class="attr">&quot;field&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span>字段名称<span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">                <span class="attr">&quot;size&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span>显示的数据量<span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">                <span class="attr">&quot;min_doc_count&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span>doc_count 的最小值<span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="punctuation">&#125;</span></span><br><span class="line">        <span class="punctuation">&#125;</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>min_doc_count：如果组内 doc_count 小于 min_doc_count 设定的值，就不显示那个区间的信息。</li>
+</ul>
+<h4 id="histogram"><a href="#histogram" class="headerlink" title="histogram"></a>histogram</h4><p>划分区间然后进行分组。</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">GET /<span class="punctuation">&#123;</span>索引名称<span class="punctuation">&#125;</span>/_search</span><br><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;size&quot;</span><span class="punctuation">:</span> <span class="number">0</span><span class="punctuation">,</span> </span><br><span class="line">    <span class="attr">&quot;aggs&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;&#123;聚合名称&#125;&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">            <span class="attr">&quot;histogram&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">                <span class="attr">&quot;field&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span>字段名称<span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">                <span class="attr">&quot;interval&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span>区间间隔<span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">                <span class="attr">&quot;min_doc_count&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span>doc_count 的最小值<span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">                <span class="attr">&quot;extended_bounds&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">                    <span class="attr">&quot;min&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span>字段的最小值<span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">                    <span class="attr">&quot;max&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span>字段的最大值<span class="punctuation">&#125;</span></span><br><span class="line">                <span class="punctuation">&#125;</span></span><br><span class="line">            <span class="punctuation">&#125;</span></span><br><span class="line">        <span class="punctuation">&#125;</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>interval：设置区间的间隔，从 0 开始加减 interval 形成区间，区间是左闭右开类型。组内 key 指的是区间的左边界值。</li>
+<li>min_doc_count：如果组内 doc_count 小于 min_doc_count 设定的值，就不显示那个区间的信息。</li>
+<li>extended_bounds：设置 min 和 max，即分组内 key 的范围。如果 interval&#x3D;10，min&#x3D;-1，那么组内 key 从 -10 开始。</li>
+</ul>
+<p><strong>注意：</strong>如果字段值比设置的 max 要大，以实际的最大值为准，如果比 max 要小，以 max 为准，min 同理。</p>
+<h4 id="date-histogram"><a href="#date-histogram" class="headerlink" title="date_histogram"></a>date_histogram</h4><p>将日期根据年月日时分秒分组。</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">GET /<span class="punctuation">&#123;</span>索引名称<span class="punctuation">&#125;</span>/_search</span><br><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;size&quot;</span><span class="punctuation">:</span> <span class="number">0</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;aggs&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;&#123;聚合名称&#125;&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">            <span class="attr">&quot;date_histogram&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">                <span class="attr">&quot;field&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span>字段名称<span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">                <span class="attr">&quot;calendar_interval&quot;</span><span class="punctuation">:</span> <span class="string">&quot;&#123;year | week | month | day | hour | minute&#125;&quot;</span><span class="punctuation">,</span></span><br><span class="line">                <span class="attr">&quot;min_doc_count&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span>doc_count 的最小值<span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">                <span class="attr">&quot;format&quot;</span><span class="punctuation">:</span> <span class="string">&quot;&#123;日期的显示格式&#125;&quot;</span></span><br><span class="line">            <span class="punctuation">&#125;</span></span><br><span class="line">        <span class="punctuation">&#125;</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>calendar_interval：时间分隔单位。</li>
+<li>format：指定时间的显示格式。</li>
+<li>min_doc_count：如果组内 doc_count 小于 min_doc_count 设定的值，就不显示那个区间的信息。</li>
+</ul>
+<h4 id="range-1"><a href="#range-1" class="headerlink" title="range"></a>range</h4><p>字段的区间由自己划分。</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">GET /<span class="punctuation">&#123;</span>索引名称<span class="punctuation">&#125;</span>/_search</span><br><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;size&quot;</span><span class="punctuation">:</span> <span class="number">0</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;aggs&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;&#123;聚合名称&#125;&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">            <span class="attr">&quot;range&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">                <span class="attr">&quot;field&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span>字段名称<span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">                <span class="attr">&quot;keyed&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span><span class="literal"><span class="keyword">true</span></span> | <span class="literal"><span class="keyword">false</span></span><span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">                <span class="attr">&quot;min_doc_count&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span>doc_count 的最小值<span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">                <span class="attr">&quot;ranges&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">                    <span class="punctuation">&#123;</span></span><br><span class="line">                        <span class="attr">&quot;key&quot;</span> <span class="punctuation">:</span> <span class="string">&quot;&#123;key 的名字&#125;&quot;</span><span class="punctuation">,</span></span><br><span class="line">                        <span class="attr">&quot;from&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span>区间左边界<span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">                        <span class="attr">&quot;to&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span>区间右边界<span class="punctuation">&#125;</span></span><br><span class="line">                    <span class="punctuation">&#125;</span></span><br><span class="line">                <span class="punctuation">]</span></span><br><span class="line">            <span class="punctuation">&#125;</span></span><br><span class="line">        <span class="punctuation">&#125;</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>keyed：是否由内置 key 指向区间信息。</li>
+<li>ranges.key：指定内置 key 的名称。不指定内置 key 的名称由 ranges.from 和 ranges.to 组成。</li>
+</ul>
+<p><strong>注：</strong>区间是左闭右开类型的。</p>
+<blockquote>
+<p><strong>range 使用示例</strong></p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">GET /lin_index/_search</span><br><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;size&quot;</span><span class="punctuation">:</span> <span class="number">0</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;aggs&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;price_ranges&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">            <span class="attr">&quot;range&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">                <span class="attr">&quot;field&quot;</span><span class="punctuation">:</span> <span class="string">&quot;price&quot;</span><span class="punctuation">,</span></span><br><span class="line">                <span class="attr">&quot;keyed&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span><span class="punctuation">,</span> </span><br><span class="line">                <span class="attr">&quot;ranges&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">                    <span class="punctuation">&#123;</span><span class="attr">&quot;to&quot;</span><span class="punctuation">:</span> <span class="number">100</span><span class="punctuation">,</span><span class="attr">&quot;key&quot;</span> <span class="punctuation">:</span> <span class="string">&quot;cheap&quot;</span><span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">                    <span class="punctuation">&#123;</span><span class="attr">&quot;from&quot;</span><span class="punctuation">:</span> <span class="number">100</span><span class="punctuation">,</span><span class="attr">&quot;to&quot;</span><span class="punctuation">:</span> <span class="number">200</span><span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">                    <span class="punctuation">&#123;</span><span class="attr">&quot;from&quot;</span><span class="punctuation">:</span> <span class="number">200</span><span class="punctuation">&#125;</span></span><br><span class="line">                <span class="punctuation">]</span></span><br><span class="line">            <span class="punctuation">&#125;</span></span><br><span class="line">        <span class="punctuation">&#125;</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>执行结果：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">    <span class="comment">// ...略</span></span><br><span class="line">    <span class="attr">&quot;aggregations&quot;</span> <span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;price_ranges&quot;</span> <span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">            <span class="attr">&quot;buckets&quot;</span> <span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">                <span class="attr">&quot;cheap&quot;</span> <span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">                    <span class="attr">&quot;to&quot;</span> <span class="punctuation">:</span> <span class="number">100.0</span><span class="punctuation">,</span></span><br><span class="line">                    <span class="attr">&quot;doc_count&quot;</span> <span class="punctuation">:</span> <span class="number">1</span></span><br><span class="line">                <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">                <span class="attr">&quot;100.0-200.0&quot;</span> <span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">                    <span class="attr">&quot;from&quot;</span> <span class="punctuation">:</span> <span class="number">100.0</span><span class="punctuation">,</span></span><br><span class="line">                    <span class="attr">&quot;to&quot;</span> <span class="punctuation">:</span> <span class="number">200.0</span><span class="punctuation">,</span></span><br><span class="line">                    <span class="attr">&quot;doc_count&quot;</span> <span class="punctuation">:</span> <span class="number">0</span></span><br><span class="line">                <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">                <span class="attr">&quot;200.0-*&quot;</span> <span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">                    <span class="attr">&quot;from&quot;</span> <span class="punctuation">:</span> <span class="number">200.0</span><span class="punctuation">,</span></span><br><span class="line">                    <span class="attr">&quot;doc_count&quot;</span> <span class="punctuation">:</span> <span class="number">0</span></span><br><span class="line">                <span class="punctuation">&#125;</span></span><br><span class="line">            <span class="punctuation">&#125;</span></span><br><span class="line">        <span class="punctuation">&#125;</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+</blockquote>
+<h3 id="分组排序"><a href="#分组排序" class="headerlink" title="分组排序"></a>分组排序</h3><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">GET /<span class="punctuation">&#123;</span>索引名称<span class="punctuation">&#125;</span>/_search</span><br><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;size&quot;</span><span class="punctuation">:</span> <span class="number">0</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;aggs&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;&#123;聚合名称&#125;&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">            <span class="attr">&quot;&#123;分组聚合类型&#125;&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">                <span class="attr">&quot;order&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">                    <span class="attr">&quot;&#123;排序参数&#125;&quot;</span> <span class="punctuation">:</span> <span class="string">&quot;&#123;asc | desc&#125;&quot;</span></span><br><span class="line">                <span class="punctuation">&#125;</span></span><br><span class="line">            <span class="punctuation">&#125;</span></span><br><span class="line">        <span class="punctuation">&#125;</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>排序参数有：</p>
+<ul>
+<li><strong>_count：</strong>根据 doc_count 排序。仅对 terms 、 histogram 、 date_histogram 类型的分组有效。</li>
+<li><strong>_key：</strong>根据内置 key 排序，仅对 histogram、date_histogram 类型的分组有效。</li>
+<li><strong>子聚合的指标：</strong>根据统计结果进行排序。</li>
+</ul>
+<blockquote>
+<p><strong>_key 排序示例</strong></p>
+<p>使用 histogram 分组，然后根据划分的区间从大到小排序：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">GET /lin_index/_search</span><br><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;size&quot;</span><span class="punctuation">:</span> <span class="number">0</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;aggs&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;price_ranges&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">            <span class="attr">&quot;histogram&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">                <span class="attr">&quot;field&quot;</span><span class="punctuation">:</span> <span class="string">&quot;price&quot;</span><span class="punctuation">,</span></span><br><span class="line">                <span class="attr">&quot;interval&quot;</span><span class="punctuation">:</span> <span class="number">50</span><span class="punctuation">,</span></span><br><span class="line">                <span class="attr">&quot;extended_bounds&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">                    <span class="attr">&quot;min&quot;</span><span class="punctuation">:</span> <span class="number">-50</span><span class="punctuation">,</span></span><br><span class="line">                    <span class="attr">&quot;max&quot;</span><span class="punctuation">:</span> <span class="number">50</span></span><br><span class="line">                <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">                <span class="attr">&quot;order&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">                    <span class="attr">&quot;_key&quot;</span><span class="punctuation">:</span> <span class="string">&quot;desc&quot;</span></span><br><span class="line">                <span class="punctuation">&#125;</span></span><br><span class="line">            <span class="punctuation">&#125;</span></span><br><span class="line">        <span class="punctuation">&#125;</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>执行结果：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">    <span class="comment">// ...略</span></span><br><span class="line">    <span class="attr">&quot;aggregations&quot;</span> <span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;price_ranges&quot;</span> <span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">            <span class="attr">&quot;buckets&quot;</span> <span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">                <span class="punctuation">&#123;</span></span><br><span class="line">                    <span class="attr">&quot;key&quot;</span> <span class="punctuation">:</span> <span class="number">50.0</span><span class="punctuation">,</span></span><br><span class="line">                    <span class="attr">&quot;doc_count&quot;</span> <span class="punctuation">:</span> <span class="number">0</span></span><br><span class="line">                <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">                <span class="punctuation">&#123;</span></span><br><span class="line">                    <span class="attr">&quot;key&quot;</span> <span class="punctuation">:</span> <span class="number">0.0</span><span class="punctuation">,</span></span><br><span class="line">                    <span class="attr">&quot;doc_count&quot;</span> <span class="punctuation">:</span> <span class="number">1</span></span><br><span class="line">                <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">                <span class="punctuation">&#123;</span></span><br><span class="line">                    <span class="attr">&quot;key&quot;</span> <span class="punctuation">:</span> <span class="number">-50.0</span><span class="punctuation">,</span></span><br><span class="line">                    <span class="attr">&quot;doc_count&quot;</span> <span class="punctuation">:</span> <span class="number">0</span></span><br><span class="line">                <span class="punctuation">&#125;</span></span><br><span class="line">            <span class="punctuation">]</span></span><br><span class="line">        <span class="punctuation">&#125;</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+</blockquote>
+<blockquote>
+<p><strong>根据聚合指标排序示例</strong></p>
+<p>统计每个酒店品牌的价格的平均值，然后根据价格的平均值从大到小排序：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">GET /hotel/_search</span><br><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;size&quot;</span><span class="punctuation">:</span> <span class="number">0</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;aggs&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;brand_group&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">            <span class="attr">&quot;terms&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">                <span class="attr">&quot;field&quot;</span><span class="punctuation">:</span> <span class="string">&quot;brand&quot;</span><span class="punctuation">,</span></span><br><span class="line">                <span class="attr">&quot;order&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">                    <span class="comment">// 根据价格的平均值从大到小排序</span></span><br><span class="line">                    <span class="attr">&quot;price_avg&quot;</span><span class="punctuation">:</span> <span class="string">&quot;desc&quot;</span></span><br><span class="line">                <span class="punctuation">&#125;</span></span><br><span class="line">            <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;aggs&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">                <span class="attr">&quot;price_avg&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">                    <span class="attr">&quot;avg&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">                        <span class="attr">&quot;field&quot;</span><span class="punctuation">:</span> <span class="string">&quot;price&quot;</span></span><br><span class="line">                    <span class="punctuation">&#125;</span></span><br><span class="line">                <span class="punctuation">&#125;</span></span><br><span class="line">            <span class="punctuation">&#125;</span></span><br><span class="line">        <span class="punctuation">&#125;</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>执行结果：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">    <span class="comment">// ...略</span></span><br><span class="line">    <span class="attr">&quot;aggregations&quot;</span> <span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;price_group&quot;</span> <span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">            <span class="attr">&quot;doc_count_error_upper_bound&quot;</span> <span class="punctuation">:</span> <span class="number">-1</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;sum_other_doc_count&quot;</span> <span class="punctuation">:</span> <span class="number">178</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;buckets&quot;</span> <span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">                <span class="punctuation">&#123;</span></span><br><span class="line">                    <span class="attr">&quot;key&quot;</span> <span class="punctuation">:</span> <span class="string">&quot;喜来登&quot;</span><span class="punctuation">,</span></span><br><span class="line">                    <span class="attr">&quot;doc_count&quot;</span> <span class="punctuation">:</span> <span class="number">11</span><span class="punctuation">,</span></span><br><span class="line">                    <span class="attr">&quot;price_avg&quot;</span> <span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">                        <span class="attr">&quot;value&quot;</span> <span class="punctuation">:</span> <span class="number">1851.18</span></span><br><span class="line">                    <span class="punctuation">&#125;</span></span><br><span class="line">                <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">                <span class="punctuation">&#123;</span></span><br><span class="line">                    <span class="attr">&quot;key&quot;</span> <span class="punctuation">:</span> <span class="string">&quot;丽笙&quot;</span><span class="punctuation">,</span></span><br><span class="line">                    <span class="attr">&quot;doc_count&quot;</span> <span class="punctuation">:</span> <span class="number">2</span><span class="punctuation">,</span></span><br><span class="line">                    <span class="attr">&quot;price_avg&quot;</span> <span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">                        <span class="attr">&quot;value&quot;</span> <span class="punctuation">:</span> <span class="number">1100.5</span></span><br><span class="line">                    <span class="punctuation">&#125;</span></span><br><span class="line">                <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">                <span class="punctuation">&#123;</span></span><br><span class="line">                    <span class="attr">&quot;key&quot;</span> <span class="punctuation">:</span> <span class="string">&quot;希尔顿&quot;</span><span class="punctuation">,</span></span><br><span class="line">                    <span class="attr">&quot;doc_count&quot;</span> <span class="punctuation">:</span> <span class="number">10</span><span class="punctuation">,</span></span><br><span class="line">                    <span class="attr">&quot;price_avg&quot;</span> <span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">                        <span class="attr">&quot;value&quot;</span> <span class="punctuation">:</span> <span class="number">1085.8</span></span><br><span class="line">                    <span class="punctuation">&#125;</span></span><br><span class="line">                <span class="punctuation">&#125;</span></span><br><span class="line">            <span class="punctuation">]</span></span><br><span class="line">        <span class="punctuation">&#125;</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+</blockquote>
+</div>
+        </div>
+        
+        <footer class="kratos-entry-footer clearfix">
+            
+            <div class="footer-tag clearfix">
+                <div class="pull-left">
+                <i class="fa fa-tags"></i>
+                    <a class="tag-none-link" href="/blog/tags/ELK/" rel="tag">ELK</a>, <a class="tag-none-link" href="/blog/tags/Elasticsearch/" rel="tag">Elasticsearch</a>, <a class="tag-none-link" href="/blog/tags/SpringCloud/" rel="tag">SpringCloud</a>
+                </div>
+                <div class="pull-date">
+                    <time datetime="2026-01-04T05:51:48.283Z" itemprop="dateModified">最后编辑：2026-01-04</time>
+                </div>
+            </div>
+        </footer>
+    </div>
+    
+        <nav class="navigation post-navigation clearfix" role="navigation">
+            
+            <div class="nav-previous clearfix">
+                <a title=" 【ES】索引配置" href="/blog/2024/04/03/SpringCloud/ElasticStack/Elasticsearch索引配置/">&lt; 上一篇</a>
+            </div>
+            
+            
+            <div class="nav-next clearfix">
+                <a title=" 【Java】常见的日志框架" href="/blog/2024/04/07/Java日志框架/Java日志框架/">下一篇 &gt;</a>
+            </div>
+            
+        </nav>
+    
+    
+</article>
+
+        
+
+            </section>
+
+        
+
+                
+            
+
+<section id="kratos-widget-area" class="col-md-4 hidden-xs hidden-sm">
+    <!-- 文章和页面根据splitter来分割，没有的话就从头开始设置为sticky -->
+    
+    
+                <aside id="krw-about" class="widget widget-kratos-about clearfix">
+    <div class="photo-background"></div>
+    <div class="photo-wrapper clearfix">
+        <div class="photo-wrapper-tip text-center">
+            <img class="about-photo" src="/blog/images/avatar.webp" loading="lazy" decoding="auto" />
+        </div>
+    </div>
+    <div class="textwidget">
+        <p class="text-center">极简主义</p>
+    </div>
+    <div class="site-meta">
+        <a class="meta-item" href="/blog/archives/">
+            <span class="title">
+                文章
+            </span>
+            <span class="count">
+                77
+            </span>
+        </a>
+        <a class="meta-item" href="/blog/categories/">
+            <span class="title">
+                分类
+            </span>
+            <span class="count">
+                10
+            </span>
+        </a>
+        <a class="meta-item" href="/blog/tags/">
+            <span class="title">
+                标签
+            </span>
+            <span class="count">
+                29
+            </span>
+        </a>
+    </div>
+</aside>
+            
+                    <div class="sticky-area">
+                
+                    <aside id="krw-toc" class="widget widget-kratos-toc clearfix toc-div-class" >
+    <div class="photo-background"></div>
+    <h4 class="widget-title no-after">
+        <i class="fa fa-compass"></i>
+        文章目录
+        <span class="toc-progress-bar" role="progressbar" aria-label="阅读进度："></span>
+    </h4>
+    <div class="textwidget">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Query-%E6%9F%A5%E8%AF%A2"><span class="toc-text">Query 查询</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#match-all"><span class="toc-text">match_all</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#match"><span class="toc-text">match</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#mulit-match"><span class="toc-text">mulit_match</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#term"><span class="toc-text">term</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#terms"><span class="toc-text">terms</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ids"><span class="toc-text">ids</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#range"><span class="toc-text">range</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#geo-distance"><span class="toc-text">geo_distance</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#exists"><span class="toc-text">exists</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#fuzzy"><span class="toc-text">fuzzy</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#prefix"><span class="toc-text">prefix</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#bool-%E6%9F%A5%E8%AF%A2"><span class="toc-text">bool 查询</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#function-score-%E5%BE%97%E5%88%86"><span class="toc-text">function_score 得分</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AF%B9%E6%9F%A5%E8%AF%A2%E7%BB%93%E6%9E%9C%E6%8E%92%E5%BA%8F"><span class="toc-text">对查询结果排序</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%99%AE%E9%80%9A%E5%AD%97%E6%AE%B5%E6%8E%92%E5%BA%8F"><span class="toc-text">普通字段排序</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9C%B0%E7%90%86%E5%9D%90%E6%A0%87%E6%8E%92%E5%BA%8F"><span class="toc-text">地理坐标排序</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%86%E9%A1%B5%E6%9F%A5%E8%AF%A2"><span class="toc-text">分页查询</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%AB%98%E4%BA%AE%E6%98%BE%E7%A4%BA"><span class="toc-text">高亮显示</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E8%81%9A%E5%90%88"><span class="toc-text">数据聚合</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%81%9A%E5%90%88%E6%A6%82%E5%BF%B5"><span class="toc-text">聚合概念</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8C%87%E6%A0%87%E8%81%9A%E5%90%88%E7%B1%BB%E5%9E%8B"><span class="toc-text">指标聚合类型</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#value-count"><span class="toc-text">value_count</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#cardinality"><span class="toc-text">cardinality</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#avg"><span class="toc-text">avg</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#sum"><span class="toc-text">sum</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#max"><span class="toc-text">max</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#min"><span class="toc-text">min</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#stats"><span class="toc-text">stats</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%86%E7%BB%84%E8%81%9A%E5%90%88%E7%B1%BB%E5%9E%8B"><span class="toc-text">分组聚合类型</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#terms-1"><span class="toc-text">terms</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#histogram"><span class="toc-text">histogram</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#date-histogram"><span class="toc-text">date_histogram</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#range-1"><span class="toc-text">range</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%86%E7%BB%84%E6%8E%92%E5%BA%8F"><span class="toc-text">分组排序</span></a></li></ol></li></ol>
+    </div>
+</aside>
+                
+                
+  <aside id="krw-categories" class="widget widget-kratos-categories clearfix">
+    <h4 class="widget-title"><i class="fa fa-folder"></i>分类目录</h4>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Docker/">Docker</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Idea/">Idea</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Java/">Java</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/K8s/">K8s</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Linux/">Linux</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/MySQL/">MySQL</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Python/">Python</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Selenium/">Selenium</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/SpringBoot/">SpringBoot</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/SpringCloud/">SpringCloud</a><span class="category-list-count">13</span></li></ul>
+  </aside>
+
+
+            
+                
+  <aside id="krw-tags" class="widget widget-kratos-tags clearfix">
+    <h4 class="widget-title"><i class="fa fa-tags"></i>标签聚合</h4>
+      <div class="tag-clouds">
+        <a href="/blog/tags/CORS/" style="font-size: 0.8em;">CORS</a> <a href="/blog/tags/Docker/" style="font-size: 0.8em;">Docker</a> <a href="/blog/tags/Dubbo/" style="font-size: 0.8em;">Dubbo</a> <a href="/blog/tags/ELK/" style="font-size: 0.8em;">ELK</a> <a href="/blog/tags/Elasticsearch/" style="font-size: 0.8em;">Elasticsearch</a> <a href="/blog/tags/Eureka/" style="font-size: 0.8em;">Eureka</a> <a href="/blog/tags/Feign/" style="font-size: 0.8em;">Feign</a> <a href="/blog/tags/Gateway/" style="font-size: 0.8em;">Gateway</a> <a href="/blog/tags/Idea/" style="font-size: 0.8em;">Idea</a> <a href="/blog/tags/Java/" style="font-size: 0.8em;">Java</a> <a href="/blog/tags/JavaWeb/" style="font-size: 0.8em;">JavaWeb</a> <a href="/blog/tags/K8s/" style="font-size: 0.8em;">K8s</a> <a href="/blog/tags/Linux/" style="font-size: 0.8em;">Linux</a> <a href="/blog/tags/Maven/" style="font-size: 0.8em;">Maven</a> <a href="/blog/tags/MySQL/" style="font-size: 0.8em;">MySQL</a> <a href="/blog/tags/Mybatis/" style="font-size: 0.8em;">Mybatis</a> <a href="/blog/tags/Nacos/" style="font-size: 0.8em;">Nacos</a> <a href="/blog/tags/Pytest/" style="font-size: 0.8em;">Pytest</a>
+      </div>
+  </aside>
+
+            
+                
+  <aside id="krw-posts" class="widget widget-kratos-posts">
+  <h4 class="widget-title"><i class="fa fa-file"></i>最新文章</h4>
+  <div class="tab-content">
+      <ul class="list-group">
+        
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/01/25/K8s/K8s%E7%BB%84%E4%BB%B6/"><i class="fa  fa-book"></i> 【K8s】组件</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/01/24/K8s/K8s%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/"><i class="fa  fa-book"></i> 【K8s】常用命令</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/01/11/Idea/IDEA%E6%8F%92%E4%BB%B6/"><i class="fa  fa-book"></i> 【Idea】插件</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/01/04/Linux/Centos7%E9%97%AE%E9%A2%98%E5%A4%84%E7%90%86/"><i class="fa  fa-book"></i> Centos7问题处理</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2025/12/09/Trae/Trae%E5%AE%89%E8%A3%85%E6%8F%92%E4%BB%B6%E5%AE%9E%E7%8E%B0Java%E4%BB%A3%E7%A0%81%E7%BC%96%E5%86%99/"><i class="fa  fa-book"></i> 【Trae】安装插件实现Java代码编写</a>
+            
+          
+        
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+      </ul>
+  </div>
+  </aside>
+
+            
+    </div>
+</section>
+        
+        </div>
+    </div>
+</div>
+<footer>
+    <div id="footer"  >
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3 footer-list text-center">
+                    <ul class="kratos-social-icons">
+                        <!-- Keep for compatibility -->
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <!-- New links -->
+                        
+                    </ul>
+                    <ul class="kratos-copyright">
+                        <div>
+                            <li>&copy; 2026 溪岚花的博客 版权所有.</li>
+                            <li>本站已运行<span id="span_dt">Loading...</span></li>
+                        </div>
+                        <div>
+                            <li>Theme <a href="https://github.com/Candinya/Kratos-Rebirth" target="_blank">Kratos:Rebirth</a></li>
+                            <li>Site built with&nbsp;<i class="fa fa-heart throb" style="color:#d43f57"></i>&nbsp;by 林家隆.</li>
+                        </div>
+                        <div>
+                            <li>Powered by <a href="https://hexo.io" target="_blank" rel="nofollow">Hexo</a></li>
+                            <li>Hosted on <a href="https://gitee.com/" target="_blank">Gitee Pages</a></li>
+                        </div>
+                        <div>
+                            
+                            
+                        </div>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="kr-tool text-center">
+            <div class="tool">
+                
+                    <div class="box search-box">
+                        <a href="/blog/search/">
+                            <span class="fa fa-search"></span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="box theme-box" id="darkmode-switch">
+                        <span class="fa fa-adjust"></span>
+                    </div>
+                
+                
+                
+            </div>
+            <div class="box gotop-box">
+                <span class="fa fa-chevron-up"></span>
+            </div>
+        </div>
+    </div>
+</footer>
+</div>
+</div>
+
+        <script defer src="/blog/vendors/bootstrap@3.3.4/dist/js/bootstrap.min.js"></script>
+<script defer src="/blog/vendors/nprogress@0.2.0/nprogress.js"></script>
+<script>
+    if (!window.kr) {
+        window.kr = {};
+    }
+    window.kr.notMobile = (!(navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i)));
+    window.kr.siteRoot = "/blog/";
+</script>
+
+
+
+
+
+    <script defer src="/blog/vendors/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+
+<script defer src="/blog/js/kratosr.min.js"></script>
+<script defer src="/blog/js/pjax.min.js"></script>
+
+
+
+<!-- Extra support for third-party plguins  -->
+
+
+    </body>
+</html>

@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+  <!-- 元数据 -->
+  <meta charset="utf-8">
+  <link rel="icon" href="/blog/images/logo.png">
+  
+  <title>【Linux】系统管理 | 溪岚花的博客</title>
+  
+  <meta name="author" content="林家隆" />
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="robots" content="index,follow" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <meta name="format-detection" content="telphone=no, email=no" />
+  
+    <meta name="keywords" content="Linux" />
+  
+  <meta name="description" content="运行级别Linux 系统有 7 种运行级别，常用的级别是 3 和 5。  运行级别0：系统停机状态，系统默认运行级别不能设为0，否则不能正常启动。 运行级别1：单用户工作状态，root权限，用于系统维护，禁止远程登陆。 运行级别2：多用户状态（没有NFS，网络文件系统），不支持网络。 运行级别3：完全的多用户状态（有NFS），登陆后进入控制台命令行模式。 运行级别4：系统未使用，保留。运行级别5：">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【Linux】系统管理">
+<meta property="og:url" content="https://lin316.gitee.io/blog/2024/02/21/Linux/%E7%B3%BB%E7%BB%9F%E7%AE%A1%E7%90%86/index.html">
+<meta property="og:site_name" content="溪岚花的博客">
+<meta property="og:description" content="运行级别Linux 系统有 7 种运行级别，常用的级别是 3 和 5。  运行级别0：系统停机状态，系统默认运行级别不能设为0，否则不能正常启动。 运行级别1：单用户工作状态，root权限，用于系统维护，禁止远程登陆。 运行级别2：多用户状态（没有NFS，网络文件系统），不支持网络。 运行级别3：完全的多用户状态（有NFS），登陆后进入控制台命令行模式。 运行级别4：系统未使用，保留。运行级别5：">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://lin316.gitee.io/blog/blog/images/logo.png">
+<meta property="article:published_time" content="2024-02-21T06:00:00.000Z">
+<meta property="article:modified_time" content="2026-01-04T05:51:48.249Z">
+<meta property="article:author" content="林家隆">
+<meta property="article:tag" content="Linux">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://lin316.gitee.io/blog/blog/images/logo.png">
+  
+  <!-- 站点验证相关 -->
+  
+    
+    
+    
+  
+  <!-- 样式表文件 -->
+  <link rel="stylesheet" id="kratos-css" href="/blog/css/kratosr.min.css" media="all"></script>
+  
+    <link rel="stylesheet" id="darkmode-css" href="/blog/css/kr-color-dark.min.css" media="(prefers-color-scheme: dark)"></script>
+    <script src="/blog/js/kr-dark.min.js"></script>
+  
+  
+    <link rel="stylesheet" id="highlight-css" href="/blog/css/highlight/night-eighties.min.css" media="all"></script>
+  
+  <link rel="stylesheet" id="fontawe-css" href="/blog/vendors/font-awesome@4.7.0/css/font-awesome.min.css" media="all"></script>
+  <link rel="stylesheet" id="nprogress-css" href="/blog/vendors/nprogress@0.2.0/nprogress.css" media="all"></script>
+  
+  
+  
+    <link rel="stylesheet" href="/blog/vendors/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css"></script>
+  
+  <!-- 不得不预先加载的一些JS文件 -->
+  <script src="/blog/vendors/jquery@3.6.0/dist/jquery.min.js"></script>
+  
+  
+  <style>
+    
+    
+  </style>
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+    <body class="custom-background">
+        <div id="kratos-wrapper">
+    <div id="kratos-page">
+        <div id="kratos-header">
+            <header id="kratos-desktop-topnav" class="kratos-topnav">
+                <div class="container">
+                    <div class="nav-header">
+                        <nav id="kratos-menu-wrap">
+                            <ul id="kratos-primary-menu" class="sf-menu">
+                                
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/">
+                                            
+                                                
+                                                    <i class="fa fa-home"></i>
+                                                
+                                                首页
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/archives/">
+                                            
+                                                
+                                                    <i class="fa fa-file"></i>
+                                                
+                                                归档
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/tags/">
+                                            
+                                                
+                                                    <i class="fa fa-tag"></i>
+                                                
+                                                标签
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/categories/">
+                                            
+                                                
+                                                    <i class="fa fa-folder"></i>
+                                                
+                                                目录
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/search/">
+                                            
+                                                
+                                                    <i class="fa fa-search"></i>
+                                                
+                                                搜索
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </header>
+            <header id="kratos-mobile-topnav" class="kratos-topnav">
+                <div class="container">
+                    <div class="color-logo"><a href="/blog/">溪岚花的博客</a></div>
+                    <div class="nav-toggle">
+                        <a class="kratos-nav-toggle js-kratos-nav-toggle">
+                            <i></i>
+                        </a>
+                    </div>
+                </div>
+            </header>
+        </div>
+        <div class="kratos-start kratos-hero-2">
+            <!-- <div class="kratos-overlay"></div> -->
+            <div class="kratos-cover kratos-cover-2 text-center">
+                <div class="desc desc2 animate-box">
+                    <a href="/blog/">
+                        <h2 style="opacity: 0.2;">溪岚花的博客</h2> <br />
+                        <span></span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div id="kratos-blog-post">
+            <div class="container">
+                <div id="main" class="row">
+                    
+
+        
+
+            <section class="col-md-8">
+
+        
+
+            <article itemscope itemtype="https://schema.org/Article">
+    
+    <link itemprop="mainEntityOfPage" href="https://lin316.gitee.io/blog/2024/02/21/Linux/%E7%B3%BB%E7%BB%9F%E7%AE%A1%E7%90%86/">
+    <div class="kratos-hentry kratos-post-inner clearfix">
+        <header class="kratos-entry-header">
+            
+                <h1 class="kratos-entry-title text-center" itemprop="name headline">【Linux】系统管理</h1>
+            
+            
+            <ul class="kratos-post-meta text-center">
+                <li><time datetime="2024-02-21T06:00:00.000Z" itemprop="datePublished"><i class="fa fa-calendar"></i> 2024-02-21</time></li>
+                <li itemprop="author" itemscope itemtype="https://schema.org/Person">
+                    <i class="fa fa-user"></i> 作者 <span itemprop="name">林家隆</span>
+                </li>
+                
+                    <li>
+                        <i class="fa fa-edit"></i> 
+                        
+                        
+                            3.69K
+                        
+                        字
+                    </li>
+                
+                
+            </ul>
+        </header>
+        <div class="kratos-post-content">
+            
+            <div id="expire-alert" class="alert alert-warning hidden" role="alert">
+                <div class="icon"><i class="fa fa-warning"></i></div>
+                <div class="text"><p>本文最后编辑于 <time datetime="1767505908249"></time> 前，其中的内容可能需要更新。</p></div>
+            </div>
+            
+            
+            
+                <div class="kratos-post-inner-toc toc-div-class" >
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%90%E8%A1%8C%E7%BA%A7%E5%88%AB"><span class="toc-number">1.</span> <span class="toc-text">运行级别</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#centos-7-%E7%9A%84%E8%BF%90%E8%A1%8C%E7%BA%A7%E5%88%AB%E7%AE%80%E5%8C%96%E4%B8%BA%EF%BC%9A"><span class="toc-number">1.1.</span> <span class="toc-text">centos 7 的运行级别简化为：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8B%E5%BD%93%E5%89%8D%E8%BF%90%E8%A1%8C%E7%BA%A7%E5%88%AB"><span class="toc-number">1.2.</span> <span class="toc-text">查看当前运行级别</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BF%AE%E6%94%B9%E8%BF%90%E8%A1%8C%E7%BA%A7%E5%88%AB"><span class="toc-number">1.3.</span> <span class="toc-text">修改运行级别</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%94%A8%E6%88%B7%E4%B8%8E%E7%94%A8%E6%88%B7%E7%BB%84%E7%AE%A1%E7%90%86"><span class="toc-number">2.</span> <span class="toc-text">用户与用户组管理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A6%82%E8%BF%B0"><span class="toc-number">2.1.</span> <span class="toc-text">概述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%A8%E6%88%B7%E7%AE%A1%E7%90%86"><span class="toc-number">2.2.</span> <span class="toc-text">用户管理</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%B7%BB%E5%8A%A0%E7%94%A8%E6%88%B7"><span class="toc-number">2.2.1.</span> <span class="toc-text">添加用户</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BF%AE%E6%94%B9%E7%94%A8%E6%88%B7"><span class="toc-number">2.2.2.</span> <span class="toc-text">修改用户</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%AE%BE%E7%BD%AE%E5%AF%86%E7%A0%81"><span class="toc-number">2.2.3.</span> <span class="toc-text">设置密码</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%A0%E9%99%A4%E7%94%A8%E6%88%B7"><span class="toc-number">2.2.4.</span> <span class="toc-text">删除用户</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%87%E6%8D%A2%E7%94%A8%E6%88%B7"><span class="toc-number">2.2.5.</span> <span class="toc-text">切换用户</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%A8%E6%88%B7%E7%BB%84%E7%AE%A1%E7%90%86"><span class="toc-number">2.3.</span> <span class="toc-text">用户组管理</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%B7%BB%E5%8A%A0%E7%94%A8%E6%88%B7%E7%BB%84"><span class="toc-number">2.3.1.</span> <span class="toc-text">添加用户组</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BC%96%E8%BE%91%E7%94%A8%E6%88%B7%E7%BB%84"><span class="toc-number">2.3.2.</span> <span class="toc-text">编辑用户组</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%A0%E9%99%A4%E7%94%A8%E6%88%B7%E7%BB%84"><span class="toc-number">2.3.3.</span> <span class="toc-text">删除用户组</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ssh-%E6%9C%8D%E5%8A%A1"><span class="toc-number">3.</span> <span class="toc-text">ssh 服务</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BF%AE%E6%94%B9%E4%B8%BB%E6%9C%BA%E5%90%8D"><span class="toc-number">4.</span> <span class="toc-text">修改主机名</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%98%B2%E7%81%AB%E5%A2%99%E6%9C%8D%E5%8A%A1"><span class="toc-number">5.</span> <span class="toc-text">防火墙服务</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%93%8D%E4%BD%9C%E9%98%B2%E7%81%AB%E5%A2%99"><span class="toc-number">5.1.</span> <span class="toc-text">操作防火墙</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%93%8D%E4%BD%9C%E7%AB%AF%E5%8F%A3"><span class="toc-number">5.2.</span> <span class="toc-text">操作端口</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8B%E9%98%B2%E7%81%AB%E5%A2%99%E6%89%80%E6%9C%89%E5%BC%80%E6%94%BE%E7%9A%84%E7%AB%AF%E5%8F%A3"><span class="toc-number">5.3.</span> <span class="toc-text">查看防火墙所有开放的端口</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8B%E7%9B%91%E5%90%AC%E7%9A%84%E7%AB%AF%E5%8F%A3"><span class="toc-number">5.4.</span> <span class="toc-text">查看监听的端口</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#rpm-%E7%AE%A1%E7%90%86%EF%BC%88%E9%87%8D%E7%82%B9%EF%BC%89"><span class="toc-number">6.</span> <span class="toc-text">rpm 管理（重点）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9F%A5%E8%AF%A2%E6%9F%90%E4%B8%AA%E8%BD%AF%E4%BB%B6%E7%9A%84%E5%AE%89%E8%A3%85%E6%83%85%E5%86%B5"><span class="toc-number">6.1.</span> <span class="toc-text">查询某个软件的安装情况</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8D%B8%E8%BD%BD%E8%BD%AF%E4%BB%B6"><span class="toc-number">6.2.</span> <span class="toc-text">卸载软件</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#crontab-%E8%AE%A1%E5%88%92%E4%BB%BB%E5%8A%A1%EF%BC%88%E9%87%8D%E7%82%B9%EF%BC%89"><span class="toc-number">7.</span> <span class="toc-text">crontab 计划任务（重点）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BC%96%E8%BE%91%E8%AE%A1%E5%88%92%E4%BB%BB%E5%8A%A1%E4%B9%A6"><span class="toc-number">7.1.</span> <span class="toc-text">编辑计划任务书</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#crontab-%E6%9D%83%E9%99%90%E9%97%AE%E9%A2%98"><span class="toc-number">7.2.</span> <span class="toc-text">crontab 权限问题</span></a></li></ol></li></ol>
+                </div>
+            
+            <hr />
+            <div itemprop="articleBody"><h2 id="运行级别"><a href="#运行级别" class="headerlink" title="运行级别"></a>运行级别</h2><p>Linux 系统有 7 种运行级别，常用的级别是 3 和 5。</p>
+<blockquote>
+<p>运行级别0：系统停机状态，系统默认运行级别不能设为0，否则不能正常启动。</p>
+<p>运行级别1：单用户工作状态，root权限，用于系统维护，禁止远程登陆。</p>
+<p>运行级别2：多用户状态（没有NFS，网络文件系统），不支持网络。</p>
+<p>运行级别3：完全的多用户状态（有NFS），登陆后进入控制台命令行模式。</p>
+<p>运行级别4：系统未使用，保留。<br>运行级别5：X11 控制台，登陆后进入图形 GUI 模式。</p>
+<p>运行级别6：系统正常关闭并重启，默认运行级别不能设为 6，否则不能正常启动。</p>
+</blockquote>
+<h3 id="centos-7-的运行级别简化为："><a href="#centos-7-的运行级别简化为：" class="headerlink" title="centos 7 的运行级别简化为："></a>centos 7 的运行级别简化为：</h3><p>multi-user.target 等价于原运行级别 3。</p>
+<p>graphical.target 等价于原运行级别 5。</p>
+<h3 id="查看当前运行级别"><a href="#查看当前运行级别" class="headerlink" title="查看当前运行级别"></a>查看当前运行级别</h3><p>systemctl get-default</p>
+<h3 id="修改运行级别"><a href="#修改运行级别" class="headerlink" title="修改运行级别"></a>修改运行级别</h3><p>systemctl set-default 运行级别</p>
+<h2 id="用户与用户组管理"><a href="#用户与用户组管理" class="headerlink" title="用户与用户组管理"></a>用户与用户组管理</h2><h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>Linux 系统是一个多用户多任务的操作系统，任何一个要使用系统资源的用户，都必须首先向系统管理员申请一个账号，然后以这个账号的身份进入系统。</p>
+<p>用户的账号一方面可以帮助系统管理员对使用系统的用户进行跟踪，并控制他们对系统资源的访问；另一方面也可以帮助用户组织文件，并为用户提供安全性保护。</p>
+<p>每个用户账号都拥有一个惟一的用户名和各自的密码。用户在登录时键入正确的用户名和密码后，就能够进入系统和自己的主目录。</p>
+<p>要想实现用户账号的管理，要完成的工作主要有如下几个方面：</p>
+<ul>
+<li><p>用户账号的添加、删除、修改以及用户密码的管理。</p>
+</li>
+<li><p>用户组的管理。</p>
+</li>
+</ul>
+<p>三个关键文件：</p>
+<ul>
+<li>&#x2F;etc&#x2F;passwd：存储用户的关键信息</li>
+<li>&#x2F;etc&#x2F;group：存储用户组的关键信息</li>
+<li>&#x2F;etc&#x2F;shadow：存储用户的密码信息</li>
+</ul>
+<blockquote>
+<p> passwd 文件结构：</p>
+<p><img src="/blog/2024/02/21/Linux/%E7%B3%BB%E7%BB%9F%E7%AE%A1%E7%90%86/image-20240218192421726.png"></p>
+<p>passwd 文件的数据格式：<code>用户名:密码:用户ID:用户组ID:注释:家目录:解释器 shell</code></p>
+<p>用户名：创建新用户名称，后期登录时需要输入。</p>
+<p>密码：此密码位置一般情况都是 “x”，表示密码的占位。</p>
+<p>用户 ID：用户的唯一标识符。</p>
+<p>用户组 ID：该用户所属的主组 ID。</p>
+<p>注释：解释该用户的作用是什么。</p>
+<p>家目录：用户进入系统后默认的工作目录。</p>
+<p>解释器 shell：用户输入指令后，该解释器会收集用户输入的指令，传递给内核处理。</p>
+</blockquote>
+<blockquote>
+<p>group 文件结构：</p>
+<p><img src="/blog/2024/02/21/Linux/%E7%B3%BB%E7%BB%9F%E7%AE%A1%E7%90%86/image-20240218212219415.png"></p>
+<p>group 文件的数据格式：<code>用户组名:密码:用户组ID:组内用户名</code></p>
+<p>密码：X表示占位符，虽然用户组可以设置密码，但是绝大部分的情况下不设置密码。</p>
+<p>组内用户名：表示附加组是该组的用户名称。</p>
+</blockquote>
+<h3 id="用户管理"><a href="#用户管理" class="headerlink" title="用户管理"></a>用户管理</h3><h4 id="添加用户"><a href="#添加用户" class="headerlink" title="添加用户"></a>添加用户</h4><p>语法：<code>useradd 选项 用户名</code>。</p>
+<p>选项：</p>
+<ul>
+<li>-g：用于指定用户的用户主组，选项的值可以是用户组的 id，也可以是组名。</li>
+<li>-G：用于指定用户的用户附加组，选项的值可以是用户组的 id，也可以是组名。</li>
+<li>-u：用户的 id，系统默认会从 500 之后按顺序分配 uid，如果不想使用系统分配，可以通过该选项自定义。</li>
+<li>-c：添加注释。</li>
+</ul>
+<p><strong>注：</strong>在不添加选项的时候，执行 useradd 之后会进行两个操作：创建同名的家目录、创建同名的用户组。</p>
+<h4 id="修改用户"><a href="#修改用户" class="headerlink" title="修改用户"></a>修改用户</h4><p>语法：<code>usermod 选项 用户名</code>。</p>
+<p>选项：</p>
+<ul>
+<li>-g：用于指定用户的用户主组，选项的值可以是用户组的 id，也可以是组名。</li>
+<li>-G：用于指定用户的用户附加组，选项的值可以是用户组的 id，也可以是组名。</li>
+<li>-u：用户的 id，系统默认会从 500 之后按顺序分配 uid，如果不想使用系统分配，可以通过该选项自定义。</li>
+<li>-l：修改用户名</li>
+</ul>
+<h4 id="设置密码"><a href="#设置密码" class="headerlink" title="设置密码"></a>设置密码</h4><p>语法：<code>passwd 用户名</code>。</p>
+<p>设置密码后在 shadow 文件体现：</p>
+<p><img src="/blog/2024/02/21/Linux/%E7%B3%BB%E7%BB%9F%E7%AE%A1%E7%90%86/image-20240218195443873.png"></p>
+<h4 id="删除用户"><a href="#删除用户" class="headerlink" title="删除用户"></a>删除用户</h4><p>语法：<code>userdel 选项 用户名</code>。</p>
+<p>选项：</p>
+<ul>
+<li>-r：表示删除用户的同时，删除其家目录。</li>
+</ul>
+<p><strong>注：</strong>删除登录中的用户会提示失败。可以 kill 对应用户的全部进程。</p>
+<h4 id="切换用户"><a href="#切换用户" class="headerlink" title="切换用户"></a>切换用户</h4><p>语法：<code>su 用户名</code>，如果不指定用户名则表示切换到 root 用户。</p>
+<p>退出语法：<code>exit</code>。</p>
+<p><strong>注：</strong></p>
+<ol>
+<li>从 root 往普通用户切换不需要密码，但是反之则需要root密码。</li>
+<li>切换用户之后前后的工作路径是不变的。</li>
+<li>普通用户没有办法访问 root 用户家目录，但是反之则可以。</li>
+</ol>
+<h3 id="用户组管理"><a href="#用户组管理" class="headerlink" title="用户组管理"></a>用户组管理</h3><h4 id="添加用户组"><a href="#添加用户组" class="headerlink" title="添加用户组"></a>添加用户组</h4><p>语法：<code>groupadd 选项 用户组名</code>。</p>
+<p>选项：</p>
+<ul>
+<li>-g：类似用户添加里的 <code>-u</code>，<code>-g</code> 表示自己设置一个自定义的用户组 id 数字，如果自己不指定，则默认从500之后递增。</li>
+</ul>
+<h4 id="编辑用户组"><a href="#编辑用户组" class="headerlink" title="编辑用户组"></a>编辑用户组</h4><p>语法：<code>groupdel 用户组名</code>。</p>
+<p>选项：</p>
+<ul>
+<li>-g：类似用户修改里的 <code>-u</code>，<code>-g</code> 表示自己设置一个自定义的用户组 id 数字。</li>
+<li>-n：类似于用户修改 <code>-l</code>，表示设置新的用户组名称。</li>
+</ul>
+<h4 id="删除用户组"><a href="#删除用户组" class="headerlink" title="删除用户组"></a>删除用户组</h4><p>语法：<code>groupdel 用户组名</code></p>
+<p>注：如果需要删除一个组，但是这个组是某个用户的主组时，则不允许删除；如果确实需要删除，则先从组内移出所有用户。</p>
+<h2 id="ssh-服务"><a href="#ssh-服务" class="headerlink" title="ssh 服务"></a>ssh 服务</h2><p>查看 ssh 服务执行情况：<code>systemctl status/start/stop sshd</code></p>
+<h2 id="修改主机名"><a href="#修改主机名" class="headerlink" title="修改主机名"></a>修改主机名</h2><p>临时修改主机名：<code>hostname 设置的主机名</code>，需要切换用户使之生效。</p>
+<p>永久修改主机名：修改 <code>/etc/hostname</code> 配置文件的内容，需要重启（reboot）。</p>
+<p><strong>注：</strong>如果永久修改主机名，需要将修改后的主机域名添加到 <code>/etc/hosts</code> 配置文件中的 <code>127.0.0.1</code> 末尾。否则可能会出现以下问题：</p>
+<ol>
+<li>如果不设置则会影响本地域名的解析。</li>
+<li>很多开源服务器软件（例如 Apache）则无法启动，或出现报错。</li>
+</ol>
+<h2 id="防火墙服务"><a href="#防火墙服务" class="headerlink" title="防火墙服务"></a>防火墙服务</h2><h3 id="操作防火墙"><a href="#操作防火墙" class="headerlink" title="操作防火墙"></a>操作防火墙</h3><p><code>systemctl status/start/stop firewalld.service</code></p>
+<h3 id="操作端口"><a href="#操作端口" class="headerlink" title="操作端口"></a>操作端口</h3><p>开放 5672 端口：<code>firewall-cmd --zone=public --add-port=5672/tcp --permanent</code></p>
+<p>关闭 5672 端口：<code>firewall-cmd --zone=public --remove-port=5672/tcp --permanent</code></p>
+<p>配置立即生效：<code>firewall-cmd --reload</code></p>
+<h3 id="查看防火墙所有开放的端口"><a href="#查看防火墙所有开放的端口" class="headerlink" title="查看防火墙所有开放的端口"></a>查看防火墙所有开放的端口</h3><p><code>firewall-cmd --zone=public --list-ports</code></p>
+<h3 id="查看监听的端口"><a href="#查看监听的端口" class="headerlink" title="查看监听的端口"></a>查看监听的端口</h3><p><code>netstat -lnpt</code></p>
+<h2 id="rpm-管理（重点）"><a href="#rpm-管理（重点）" class="headerlink" title="rpm 管理（重点）"></a>rpm 管理（重点）</h2><p>rpm 作用：对 Linux 服务器上的软件包进行对应管理操作，<strong>管理分为：查询、卸载、安装</strong>。</p>
+<h3 id="查询某个软件的安装情况"><a href="#查询某个软件的安装情况" class="headerlink" title="查询某个软件的安装情况"></a>查询某个软件的安装情况</h3><p>语法：<code>rpm -qa|grep 关键词</code>。</p>
+<p>选项：</p>
+<ul>
+<li>-q：选项。</li>
+<li>-a：全部。</li>
+</ul>
+<h3 id="卸载软件"><a href="#卸载软件" class="headerlink" title="卸载软件"></a>卸载软件</h3><p>语法：<code>rpm -e 软件的名称</code>。</p>
+<p><strong>注：</strong>如果软件有依赖关系则无法卸载，如果还要卸载可以添加 <code>--nodeps</code>。例如：<code>rpm -e 软件包名 --nodeps</code>。</p>
+<h2 id="crontab-计划任务（重点）"><a href="#crontab-计划任务（重点）" class="headerlink" title="crontab 计划任务（重点）"></a>crontab 计划任务（重点）</h2><p>crontab 作用：执行定时任务。</p>
+<p>选项：</p>
+<ul>
+<li>-l：列出指定用户的计划任务列表。</li>
+<li>-e：编辑指定用户的计划任务列表。</li>
+<li>-u：指定的用户名，如果不指定，则表示当前用户。</li>
+<li>-r：删除指定用户的计划任务列表。</li>
+</ul>
+<h3 id="编辑计划任务书"><a href="#编辑计划任务书" class="headerlink" title="编辑计划任务书"></a>编辑计划任务书</h3><p>计划任务的语法格式，以行为单位，一行则为一个计划：<code>分 时 日 月 周 需要执行的命令</code>。</p>
+<p>取值范围：</p>
+<ul>
+<li>分：0~59</li>
+<li>时：0~23</li>
+<li>日：1~31</li>
+<li>月：1~12</li>
+<li>周：0~7，0和7表示星期天</li>
+</ul>
+<p>四个符号：</p>
+<ul>
+<li><code>*</code>：表示取值范围中的每一个数字。</li>
+<li><code>-</code>：做连续区间表达式的，要想表示1~7，则可以写成：1-7。</li>
+<li><code>/</code>：表示每多少个，例如：想每10分钟一次，则可以在分的位置写：*&#x2F;10。</li>
+<li><code>,</code>：表示多个取值，比如想在1点，2点6点执行，则可以在时的位置写：1,2,6。</li>
+</ul>
+<blockquote>
+<p>练习：</p>
+<p>问题1：每月1、10、22日的4:45重启network服务</p>
+<p>45 4 1,10,22 * * service network restart</p>
+<p>问题2：每周六、周日的1:10重启network服务</p>
+<p>10 1 * * 6,0  service network restart</p>
+<p>问题3：每天18:00至23:00之间每隔30分钟重启network服务</p>
+<p>*&#x2F;30 18-23 * * *  service network restart</p>
+<p>问题4：每隔两天的上午8点到11点的第3和第15分钟执行一次重启</p>
+<p>3,15 8-11 *&#x2F;2 * *  reboot</p>
+</blockquote>
+<h3 id="crontab-权限问题"><a href="#crontab-权限问题" class="headerlink" title="crontab 权限问题"></a>crontab 权限问题</h3><p>默认情况是任何用户都可以创建自己的计划任务，但是超级管理员可以通过配置来设置某些用户不允许设置计划任务。在配置文件 <code>/etc/cron.deny</code> 编辑，一行一个用户名。加入黑名单后，用户编辑的效果图如下：</p>
+<p><img src="/blog/2024/02/21/Linux/%E7%B3%BB%E7%BB%9F%E7%AE%A1%E7%90%86/image-20240219111309342.png"></p>
+<p>此外还有一个白名单配置文件 <code>/etc/cron.allow</code>，本身不存在，需要自己创建。</p>
+<p>注：白名单优先级高于黑名单，如果一个用户同时存在两个名单文件中，则会被默认允许创建计划任务。</p>
+</div>
+        </div>
+        
+        <footer class="kratos-entry-footer clearfix">
+            
+            <div class="footer-tag clearfix">
+                <div class="pull-left">
+                <i class="fa fa-tags"></i>
+                    <a class="tag-none-link" href="/blog/tags/Linux/" rel="tag">Linux</a>
+                </div>
+                <div class="pull-date">
+                    <time datetime="2026-01-04T05:51:48.249Z" itemprop="dateModified">最后编辑：2026-01-04</time>
+                </div>
+            </div>
+        </footer>
+    </div>
+    
+        <nav class="navigation post-navigation clearfix" role="navigation">
+            
+            <div class="nav-previous clearfix">
+                <a title=" 【Linux】vim 编辑器" href="/blog/2024/02/21/Linux/vim编辑器/">&lt; 上一篇</a>
+            </div>
+            
+            
+            <div class="nav-next clearfix">
+                <a title=" 【Linux】权限管理" href="/blog/2024/02/22/Linux/权限管理/">下一篇 &gt;</a>
+            </div>
+            
+        </nav>
+    
+    
+</article>
+
+        
+
+            </section>
+
+        
+
+                
+            
+
+<section id="kratos-widget-area" class="col-md-4 hidden-xs hidden-sm">
+    <!-- 文章和页面根据splitter来分割，没有的话就从头开始设置为sticky -->
+    
+    
+                <aside id="krw-about" class="widget widget-kratos-about clearfix">
+    <div class="photo-background"></div>
+    <div class="photo-wrapper clearfix">
+        <div class="photo-wrapper-tip text-center">
+            <img class="about-photo" src="/blog/images/avatar.webp" loading="lazy" decoding="auto" />
+        </div>
+    </div>
+    <div class="textwidget">
+        <p class="text-center">极简主义</p>
+    </div>
+    <div class="site-meta">
+        <a class="meta-item" href="/blog/archives/">
+            <span class="title">
+                文章
+            </span>
+            <span class="count">
+                77
+            </span>
+        </a>
+        <a class="meta-item" href="/blog/categories/">
+            <span class="title">
+                分类
+            </span>
+            <span class="count">
+                10
+            </span>
+        </a>
+        <a class="meta-item" href="/blog/tags/">
+            <span class="title">
+                标签
+            </span>
+            <span class="count">
+                29
+            </span>
+        </a>
+    </div>
+</aside>
+            
+                    <div class="sticky-area">
+                
+                    <aside id="krw-toc" class="widget widget-kratos-toc clearfix toc-div-class" >
+    <div class="photo-background"></div>
+    <h4 class="widget-title no-after">
+        <i class="fa fa-compass"></i>
+        文章目录
+        <span class="toc-progress-bar" role="progressbar" aria-label="阅读进度："></span>
+    </h4>
+    <div class="textwidget">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%90%E8%A1%8C%E7%BA%A7%E5%88%AB"><span class="toc-text">运行级别</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#centos-7-%E7%9A%84%E8%BF%90%E8%A1%8C%E7%BA%A7%E5%88%AB%E7%AE%80%E5%8C%96%E4%B8%BA%EF%BC%9A"><span class="toc-text">centos 7 的运行级别简化为：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8B%E5%BD%93%E5%89%8D%E8%BF%90%E8%A1%8C%E7%BA%A7%E5%88%AB"><span class="toc-text">查看当前运行级别</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BF%AE%E6%94%B9%E8%BF%90%E8%A1%8C%E7%BA%A7%E5%88%AB"><span class="toc-text">修改运行级别</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%94%A8%E6%88%B7%E4%B8%8E%E7%94%A8%E6%88%B7%E7%BB%84%E7%AE%A1%E7%90%86"><span class="toc-text">用户与用户组管理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A6%82%E8%BF%B0"><span class="toc-text">概述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%A8%E6%88%B7%E7%AE%A1%E7%90%86"><span class="toc-text">用户管理</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%B7%BB%E5%8A%A0%E7%94%A8%E6%88%B7"><span class="toc-text">添加用户</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BF%AE%E6%94%B9%E7%94%A8%E6%88%B7"><span class="toc-text">修改用户</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%AE%BE%E7%BD%AE%E5%AF%86%E7%A0%81"><span class="toc-text">设置密码</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%A0%E9%99%A4%E7%94%A8%E6%88%B7"><span class="toc-text">删除用户</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%87%E6%8D%A2%E7%94%A8%E6%88%B7"><span class="toc-text">切换用户</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%A8%E6%88%B7%E7%BB%84%E7%AE%A1%E7%90%86"><span class="toc-text">用户组管理</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%B7%BB%E5%8A%A0%E7%94%A8%E6%88%B7%E7%BB%84"><span class="toc-text">添加用户组</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BC%96%E8%BE%91%E7%94%A8%E6%88%B7%E7%BB%84"><span class="toc-text">编辑用户组</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%A0%E9%99%A4%E7%94%A8%E6%88%B7%E7%BB%84"><span class="toc-text">删除用户组</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ssh-%E6%9C%8D%E5%8A%A1"><span class="toc-text">ssh 服务</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BF%AE%E6%94%B9%E4%B8%BB%E6%9C%BA%E5%90%8D"><span class="toc-text">修改主机名</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%98%B2%E7%81%AB%E5%A2%99%E6%9C%8D%E5%8A%A1"><span class="toc-text">防火墙服务</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%93%8D%E4%BD%9C%E9%98%B2%E7%81%AB%E5%A2%99"><span class="toc-text">操作防火墙</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%93%8D%E4%BD%9C%E7%AB%AF%E5%8F%A3"><span class="toc-text">操作端口</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8B%E9%98%B2%E7%81%AB%E5%A2%99%E6%89%80%E6%9C%89%E5%BC%80%E6%94%BE%E7%9A%84%E7%AB%AF%E5%8F%A3"><span class="toc-text">查看防火墙所有开放的端口</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8B%E7%9B%91%E5%90%AC%E7%9A%84%E7%AB%AF%E5%8F%A3"><span class="toc-text">查看监听的端口</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#rpm-%E7%AE%A1%E7%90%86%EF%BC%88%E9%87%8D%E7%82%B9%EF%BC%89"><span class="toc-text">rpm 管理（重点）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9F%A5%E8%AF%A2%E6%9F%90%E4%B8%AA%E8%BD%AF%E4%BB%B6%E7%9A%84%E5%AE%89%E8%A3%85%E6%83%85%E5%86%B5"><span class="toc-text">查询某个软件的安装情况</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8D%B8%E8%BD%BD%E8%BD%AF%E4%BB%B6"><span class="toc-text">卸载软件</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#crontab-%E8%AE%A1%E5%88%92%E4%BB%BB%E5%8A%A1%EF%BC%88%E9%87%8D%E7%82%B9%EF%BC%89"><span class="toc-text">crontab 计划任务（重点）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BC%96%E8%BE%91%E8%AE%A1%E5%88%92%E4%BB%BB%E5%8A%A1%E4%B9%A6"><span class="toc-text">编辑计划任务书</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#crontab-%E6%9D%83%E9%99%90%E9%97%AE%E9%A2%98"><span class="toc-text">crontab 权限问题</span></a></li></ol></li></ol>
+    </div>
+</aside>
+                
+                
+  <aside id="krw-categories" class="widget widget-kratos-categories clearfix">
+    <h4 class="widget-title"><i class="fa fa-folder"></i>分类目录</h4>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Docker/">Docker</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Idea/">Idea</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Java/">Java</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/K8s/">K8s</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Linux/">Linux</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/MySQL/">MySQL</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Python/">Python</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Selenium/">Selenium</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/SpringBoot/">SpringBoot</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/SpringCloud/">SpringCloud</a><span class="category-list-count">13</span></li></ul>
+  </aside>
+
+
+            
+                
+  <aside id="krw-tags" class="widget widget-kratos-tags clearfix">
+    <h4 class="widget-title"><i class="fa fa-tags"></i>标签聚合</h4>
+      <div class="tag-clouds">
+        <a href="/blog/tags/CORS/" style="font-size: 0.8em;">CORS</a> <a href="/blog/tags/Docker/" style="font-size: 0.8em;">Docker</a> <a href="/blog/tags/Dubbo/" style="font-size: 0.8em;">Dubbo</a> <a href="/blog/tags/ELK/" style="font-size: 0.8em;">ELK</a> <a href="/blog/tags/Elasticsearch/" style="font-size: 0.8em;">Elasticsearch</a> <a href="/blog/tags/Eureka/" style="font-size: 0.8em;">Eureka</a> <a href="/blog/tags/Feign/" style="font-size: 0.8em;">Feign</a> <a href="/blog/tags/Gateway/" style="font-size: 0.8em;">Gateway</a> <a href="/blog/tags/Idea/" style="font-size: 0.8em;">Idea</a> <a href="/blog/tags/Java/" style="font-size: 0.8em;">Java</a> <a href="/blog/tags/JavaWeb/" style="font-size: 0.8em;">JavaWeb</a> <a href="/blog/tags/K8s/" style="font-size: 0.8em;">K8s</a> <a href="/blog/tags/Linux/" style="font-size: 0.8em;">Linux</a> <a href="/blog/tags/Maven/" style="font-size: 0.8em;">Maven</a> <a href="/blog/tags/MySQL/" style="font-size: 0.8em;">MySQL</a> <a href="/blog/tags/Mybatis/" style="font-size: 0.8em;">Mybatis</a> <a href="/blog/tags/Nacos/" style="font-size: 0.8em;">Nacos</a> <a href="/blog/tags/Pytest/" style="font-size: 0.8em;">Pytest</a>
+      </div>
+  </aside>
+
+            
+                
+  <aside id="krw-posts" class="widget widget-kratos-posts">
+  <h4 class="widget-title"><i class="fa fa-file"></i>最新文章</h4>
+  <div class="tab-content">
+      <ul class="list-group">
+        
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/01/25/K8s/K8s%E7%BB%84%E4%BB%B6/"><i class="fa  fa-book"></i> 【K8s】组件</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/01/24/K8s/K8s%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/"><i class="fa  fa-book"></i> 【K8s】常用命令</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/01/11/Idea/IDEA%E6%8F%92%E4%BB%B6/"><i class="fa  fa-book"></i> 【Idea】插件</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/01/04/Linux/Centos7%E9%97%AE%E9%A2%98%E5%A4%84%E7%90%86/"><i class="fa  fa-book"></i> Centos7问题处理</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2025/12/09/Trae/Trae%E5%AE%89%E8%A3%85%E6%8F%92%E4%BB%B6%E5%AE%9E%E7%8E%B0Java%E4%BB%A3%E7%A0%81%E7%BC%96%E5%86%99/"><i class="fa  fa-book"></i> 【Trae】安装插件实现Java代码编写</a>
+            
+          
+        
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+      </ul>
+  </div>
+  </aside>
+
+            
+    </div>
+</section>
+        
+        </div>
+    </div>
+</div>
+<footer>
+    <div id="footer"  >
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3 footer-list text-center">
+                    <ul class="kratos-social-icons">
+                        <!-- Keep for compatibility -->
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <!-- New links -->
+                        
+                    </ul>
+                    <ul class="kratos-copyright">
+                        <div>
+                            <li>&copy; 2026 溪岚花的博客 版权所有.</li>
+                            <li>本站已运行<span id="span_dt">Loading...</span></li>
+                        </div>
+                        <div>
+                            <li>Theme <a href="https://github.com/Candinya/Kratos-Rebirth" target="_blank">Kratos:Rebirth</a></li>
+                            <li>Site built with&nbsp;<i class="fa fa-heart throb" style="color:#d43f57"></i>&nbsp;by 林家隆.</li>
+                        </div>
+                        <div>
+                            <li>Powered by <a href="https://hexo.io" target="_blank" rel="nofollow">Hexo</a></li>
+                            <li>Hosted on <a href="https://gitee.com/" target="_blank">Gitee Pages</a></li>
+                        </div>
+                        <div>
+                            
+                            
+                        </div>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="kr-tool text-center">
+            <div class="tool">
+                
+                    <div class="box search-box">
+                        <a href="/blog/search/">
+                            <span class="fa fa-search"></span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="box theme-box" id="darkmode-switch">
+                        <span class="fa fa-adjust"></span>
+                    </div>
+                
+                
+                
+            </div>
+            <div class="box gotop-box">
+                <span class="fa fa-chevron-up"></span>
+            </div>
+        </div>
+    </div>
+</footer>
+</div>
+</div>
+
+        <script defer src="/blog/vendors/bootstrap@3.3.4/dist/js/bootstrap.min.js"></script>
+<script defer src="/blog/vendors/nprogress@0.2.0/nprogress.js"></script>
+<script>
+    if (!window.kr) {
+        window.kr = {};
+    }
+    window.kr.notMobile = (!(navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i)));
+    window.kr.siteRoot = "/blog/";
+</script>
+
+
+
+
+
+    <script defer src="/blog/vendors/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+
+<script defer src="/blog/js/kratosr.min.js"></script>
+<script defer src="/blog/js/pjax.min.js"></script>
+
+
+
+<!-- Extra support for third-party plguins  -->
+
+
+    </body>
+</html>

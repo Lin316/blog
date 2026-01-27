@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+  <!-- 元数据 -->
+  <meta charset="utf-8">
+  <link rel="icon" href="/blog/images/logo.png">
+  
+  <title>【Python】字符串 | 溪岚花的博客</title>
+  
+  <meta name="author" content="林家隆" />
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="robots" content="index,follow" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <meta name="format-detection" content="telphone=no, email=no" />
+  
+    <meta name="keywords" content="Python" />
+  
+  <meta name="description" content="Python有 5 种数据类型：整数、浮点数、字符串、布尔值（True、False）、空值（None）。其中字符串较为复杂。 字符串的定义字符串有两种定义方式：单引号 &#39;&#39; 和双引号 &quot;&quot; 。 1234&gt;&gt;&gt; print(&amp;#x27;abc&amp;#x27;)abc&gt;&gt;&gt; print(&quot;abc&quot;)abc  转义字">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【Python】字符串">
+<meta property="og:url" content="https://lin316.gitee.io/blog/2023/12/19/Python/02_Python%E5%9F%BA%E7%A1%80/Python%E4%B8%AD%E7%9A%84%E5%AD%97%E7%AC%A6%E4%B8%B2/index.html">
+<meta property="og:site_name" content="溪岚花的博客">
+<meta property="og:description" content="Python有 5 种数据类型：整数、浮点数、字符串、布尔值（True、False）、空值（None）。其中字符串较为复杂。 字符串的定义字符串有两种定义方式：单引号 &#39;&#39; 和双引号 &quot;&quot; 。 1234&gt;&gt;&gt; print(&amp;#x27;abc&amp;#x27;)abc&gt;&gt;&gt; print(&quot;abc&quot;)abc  转义字">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://lin316.gitee.io/blog/blog/images/logo.png">
+<meta property="article:published_time" content="2023-12-18T16:00:00.000Z">
+<meta property="article:modified_time" content="2026-01-04T05:51:48.258Z">
+<meta property="article:author" content="林家隆">
+<meta property="article:tag" content="Python">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://lin316.gitee.io/blog/blog/images/logo.png">
+  
+  <!-- 站点验证相关 -->
+  
+    
+    
+    
+  
+  <!-- 样式表文件 -->
+  <link rel="stylesheet" id="kratos-css" href="/blog/css/kratosr.min.css" media="all"></script>
+  
+    <link rel="stylesheet" id="darkmode-css" href="/blog/css/kr-color-dark.min.css" media="(prefers-color-scheme: dark)"></script>
+    <script src="/blog/js/kr-dark.min.js"></script>
+  
+  
+    <link rel="stylesheet" id="highlight-css" href="/blog/css/highlight/night-eighties.min.css" media="all"></script>
+  
+  <link rel="stylesheet" id="fontawe-css" href="/blog/vendors/font-awesome@4.7.0/css/font-awesome.min.css" media="all"></script>
+  <link rel="stylesheet" id="nprogress-css" href="/blog/vendors/nprogress@0.2.0/nprogress.css" media="all"></script>
+  
+  
+  
+    <link rel="stylesheet" href="/blog/vendors/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css"></script>
+  
+  <!-- 不得不预先加载的一些JS文件 -->
+  <script src="/blog/vendors/jquery@3.6.0/dist/jquery.min.js"></script>
+  
+  
+  <style>
+    
+    
+  </style>
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+    <body class="custom-background">
+        <div id="kratos-wrapper">
+    <div id="kratos-page">
+        <div id="kratos-header">
+            <header id="kratos-desktop-topnav" class="kratos-topnav">
+                <div class="container">
+                    <div class="nav-header">
+                        <nav id="kratos-menu-wrap">
+                            <ul id="kratos-primary-menu" class="sf-menu">
+                                
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/">
+                                            
+                                                
+                                                    <i class="fa fa-home"></i>
+                                                
+                                                首页
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/archives/">
+                                            
+                                                
+                                                    <i class="fa fa-file"></i>
+                                                
+                                                归档
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/tags/">
+                                            
+                                                
+                                                    <i class="fa fa-tag"></i>
+                                                
+                                                标签
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/categories/">
+                                            
+                                                
+                                                    <i class="fa fa-folder"></i>
+                                                
+                                                目录
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/search/">
+                                            
+                                                
+                                                    <i class="fa fa-search"></i>
+                                                
+                                                搜索
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </header>
+            <header id="kratos-mobile-topnav" class="kratos-topnav">
+                <div class="container">
+                    <div class="color-logo"><a href="/blog/">溪岚花的博客</a></div>
+                    <div class="nav-toggle">
+                        <a class="kratos-nav-toggle js-kratos-nav-toggle">
+                            <i></i>
+                        </a>
+                    </div>
+                </div>
+            </header>
+        </div>
+        <div class="kratos-start kratos-hero-2">
+            <!-- <div class="kratos-overlay"></div> -->
+            <div class="kratos-cover kratos-cover-2 text-center">
+                <div class="desc desc2 animate-box">
+                    <a href="/blog/">
+                        <h2 style="opacity: 0.2;">溪岚花的博客</h2> <br />
+                        <span></span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div id="kratos-blog-post">
+            <div class="container">
+                <div id="main" class="row">
+                    
+
+        
+
+            <section class="col-md-8">
+
+        
+
+            <article itemscope itemtype="https://schema.org/Article">
+    
+    <link itemprop="mainEntityOfPage" href="https://lin316.gitee.io/blog/2023/12/19/Python/02_Python%E5%9F%BA%E7%A1%80/Python%E4%B8%AD%E7%9A%84%E5%AD%97%E7%AC%A6%E4%B8%B2/">
+    <div class="kratos-hentry kratos-post-inner clearfix">
+        <header class="kratos-entry-header">
+            
+                <h1 class="kratos-entry-title text-center" itemprop="name headline">【Python】字符串</h1>
+            
+            
+            <ul class="kratos-post-meta text-center">
+                <li><time datetime="2023-12-18T16:00:00.000Z" itemprop="datePublished"><i class="fa fa-calendar"></i> 2023-12-19</time></li>
+                <li itemprop="author" itemscope itemtype="https://schema.org/Person">
+                    <i class="fa fa-user"></i> 作者 <span itemprop="name">林家隆</span>
+                </li>
+                
+                    <li>
+                        <i class="fa fa-edit"></i> 
+                        
+                        
+                            3.57K
+                        
+                        字
+                    </li>
+                
+                
+            </ul>
+        </header>
+        <div class="kratos-post-content">
+            
+            <div id="expire-alert" class="alert alert-warning hidden" role="alert">
+                <div class="icon"><i class="fa fa-warning"></i></div>
+                <div class="text"><p>本文最后编辑于 <time datetime="1767505908258"></time> 前，其中的内容可能需要更新。</p></div>
+            </div>
+            
+            
+            
+                <div class="kratos-post-inner-toc toc-div-class" >
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%9A%84%E5%AE%9A%E4%B9%89"><span class="toc-number">1.</span> <span class="toc-text">字符串的定义</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BD%AC%E4%B9%89%E5%AD%97%E7%AC%A6"><span class="toc-number">2.</span> <span class="toc-text">转义字符</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%BC%96%E7%A0%81"><span class="toc-number">3.</span> <span class="toc-text">字符串编码</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#encode-%E5%92%8C-decode-%E7%9A%84%E4%BD%BF%E7%94%A8"><span class="toc-number">3.1.</span> <span class="toc-text">encode() 和 decode() 的使用</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%A0%BC%E5%BC%8F%E5%8C%96"><span class="toc-number">4.</span> <span class="toc-text">字符串格式化</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E4%B8%80%E7%A7%8D%EF%BC%9A%E5%8D%A0%E4%BD%8D%E7%AC%A6"><span class="toc-number">4.1.</span> <span class="toc-text">第一种：占位符 %</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E4%BA%8C%E7%A7%8D%EF%BC%9Aformat"><span class="toc-number">4.2.</span> <span class="toc-text">第二种：format()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E4%B8%89%E4%B8%AD%EF%BC%9Af-string"><span class="toc-number">4.3.</span> <span class="toc-text">第三中：f-string</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%96%B9%E6%B3%95"><span class="toc-number">5.</span> <span class="toc-text">字符串方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2%E4%BD%BF%E7%94%A8%E5%B0%8F%E6%8A%80%E5%B7%A7"><span class="toc-number">6.</span> <span class="toc-text">字符串使用小技巧</span></a></li></ol>
+                </div>
+            
+            <hr />
+            <div itemprop="articleBody"><p>Python有 5 种数据类型：整数、浮点数、字符串、布尔值（True、False）、空值（None）。其中字符串较为复杂。</p>
+<h2 id="字符串的定义"><a href="#字符串的定义" class="headerlink" title="字符串的定义"></a><strong>字符串的定义</strong></h2><p>字符串有两种定义方式：单引号 <code>&#39;&#39;</code> 和双引号 <code>&quot;&quot;</code> 。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">print</span>(<span class="string">&#x27;abc&#x27;</span>)</span><br><span class="line">abc</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">print</span>(<span class="string">&quot;abc&quot;</span>)</span><br><span class="line">abc</span><br></pre></td></tr></table></figure>
+
+<h2 id="转义字符"><a href="#转义字符" class="headerlink" title="转义字符"></a><strong>转义字符</strong></h2><p>转义字符 <code>\</code> 除了可以转义单引号 <code>&#39;</code> 和 双引号 <code>”</code>，还可以转义很多字符，比如 <code>\n</code> 表示换行，<code>\t</code> 表示制表符，字符 <code>\</code> 本身也要转义，所以 <code>\\</code> 表示的字符就是 <code>\</code>。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">print</span>(<span class="string">&quot;hello\nworld&quot;</span>)</span><br><span class="line">hello</span><br><span class="line">world</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">print</span>(<span class="string">&quot;\thello&quot;</span>)</span><br><span class="line">	hello</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">print</span>(<span class="string">&quot;\\&quot;</span>)</span><br><span class="line">\</span><br></pre></td></tr></table></figure>
+
+<p>如果字符串里面有很多字符都需要转义，就需要加很多 <code>\</code>，为了简化，Python 还允许用 <code>r&#39;&#39;</code> 表示 <code>&#39;&#39;</code> 内部的字符串默认不转义。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">print</span>(<span class="string">r&#x27;\n\t\\&#x27;</span>)</span><br><span class="line">\n\t\\</span><br></pre></td></tr></table></figure>
+
+<h2 id="字符串编码"><a href="#字符串编码" class="headerlink" title="字符串编码"></a><strong>字符串编码</strong></h2><p><strong>ASCII</strong>：127 个字符的编码，包括大小写英文字母、数字和一些符号。</p>
+<p><strong>Unicode</strong>：将全世界上百种语言统一到一套编码中，用两个字节表示一个字符，汉字也是两个字节。特点是字节长度固定。</p>
+<p><strong>UTF-8</strong>：Unicode 的字节长度是固定的，因此出现了把 Unicode 编码转化为“可变长编码”的 <code>UTF-8</code> 编码。常用的英文字母被编码成 1 个字节，汉字通常是 3 个字节。</p>
+<p>在计算机内存中，统一使用 Unicode 编码，当需要保存到硬盘或者需要传输的时候，就转换为 UTF-8 编码。记事本编辑的时候，从文件读取的 UTF-8 字符被转换为 Unicode 字符到内存里，编辑完成后，保存的时候再把 Unicode 转换为 UTF-8 保存到文件：</p>
+<p><img src="/blog/2023/12/19/Python/02_Python%E5%9F%BA%E7%A1%80/Python%E4%B8%AD%E7%9A%84%E5%AD%97%E7%AC%A6%E4%B8%B2/image-20231219212854202.png"></p>
+<p>浏览网页的时候，服务器会把动态生成的 Unicode 内容转换为 UTF-8 再传输到浏览器：</p>
+<p><img src="/blog/2023/12/19/Python/02_Python%E5%9F%BA%E7%A1%80/Python%E4%B8%AD%E7%9A%84%E5%AD%97%E7%AC%A6%E4%B8%B2/image-20231219213021739.png"></p>
+<p>由于 Python 的字符串类型是 <code>str</code>，在内存中以 Unicode 表示，一个字符对应若干个字节。如果要在网络上传输，或者保存到磁盘上，就需要把 <code>str</code> 变为以字节为单位的 <code>bytes</code>。Python 对 <code>bytes</code> 类型的数据用带 <code>b</code> 前缀的单引号或双引号表示：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">x = <span class="string">b&#x27;ABC&#x27;</span> <span class="comment"># bytes 类型</span></span><br><span class="line">y = <span class="string">&#x27;ABC&#x27;</span> <span class="comment"># str 类型</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="encode-和-decode-的使用"><a href="#encode-和-decode-的使用" class="headerlink" title="encode() 和 decode() 的使用"></a><strong>encode() 和 decode() 的使用</strong></h3><p><strong>encode()：</strong>对字符串编码。</p>
+<p><strong>decode() ：</strong>对 bytes 字节解码</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="string">&#x27;字符串&#x27;</span>.encode(<span class="string">&#x27;utf-8&#x27;</span>)</span><br><span class="line"><span class="string">b&#x27;\xe5\xad\x97\xe7\xac\xa6\xe4\xb8\xb2&#x27;</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="string">b&#x27;\xe5\xad\x97\xe7\xac\xa6\xe4\xb8\xb2&#x27;</span>.decode(<span class="string">&#x27;utf-8&#x27;</span>)</span><br><span class="line"><span class="string">&#x27;字符串&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="string">&#x27;ABC&#x27;</span>.encode(<span class="string">&#x27;ascii&#x27;</span>)</span><br><span class="line"><span class="string">b&#x27;ABC&#x27;</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="string">b&#x27;ABC&#x27;</span>.decode(<span class="string">&#x27;ascii&#x27;</span>)</span><br><span class="line"><span class="string">&#x27;ABC&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="字符串格式化"><a href="#字符串格式化" class="headerlink" title="字符串格式化"></a><strong>字符串格式化</strong></h2><h3 id="第一种：占位符"><a href="#第一种：占位符" class="headerlink" title="第一种：占位符 %"></a><strong>第一种：占位符 %</strong></h3><p>用 <code>%s </code>表示字符串，<code>%d</code> 表示整数，<code>%f</code> 表示浮点数</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">print</span>(<span class="string">&#x27;hello %s&#x27;</span> %(<span class="string">&#x27;lin&#x27;</span>))</span><br><span class="line">hello lin</span><br></pre></td></tr></table></figure>
+<p>其中，格式化整数和浮点数还可以指定是否补0和整数与小数的位数：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">print</span>(<span class="string">&#x27;%d-%02d&#x27;</span> % (<span class="number">3</span>, <span class="number">1</span>))</span><br><span class="line"><span class="number">3</span>-01</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">print</span>(<span class="string">&#x27;%05.2f&#x27;</span> % <span class="number">3.1415926</span>)</span><br><span class="line"><span class="number">03.14</span></span><br></pre></td></tr></table></figure>
+
+<p>如果字符串里面的 <code>%</code> 是一个普通字符，这时候用用 <code>%%</code> 来表示一个 <code>%</code> ：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">print</span>(<span class="string">&#x27;rate: %d%%&#x27;</span> %(<span class="number">10</span>))</span><br><span class="line">rate: <span class="number">10</span>%</span><br></pre></td></tr></table></figure>
+
+<h3 id="第二种：format"><a href="#第二种：format" class="headerlink" title="第二种：format()"></a><strong>第二种：format()</strong></h3><p><code>format()</code> 方法需要依次传入参数以替换字符串中的占位符 <code>&#123;0&#125;</code>、<code>&#123;1&#125;</code>……</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">print</span>(<span class="string">&#x27;字符串：&#123;0&#125;, 整数：&#123;1:05d&#125;，浮点数：&#123;2:05.2f&#125;&#x27;</span>.<span class="built_in">format</span>(<span class="string">&#x27;hello&#x27;</span>, <span class="number">1</span>, <span class="number">3.1415</span>))</span><br><span class="line">字符串：hello, 整数：00001，浮点数：<span class="number">03.14</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="第三中：f-string"><a href="#第三中：f-string" class="headerlink" title="第三中：f-string"></a><strong>第三中：f-string</strong></h3><p>以 <code>f</code> 开头的字符串，字符串如果包含 <code>&#123;xxx&#125;</code>，就会以对应的变量替换：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>string = <span class="string">&#x27;hello&#x27;</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>integer = <span class="number">1</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>pi = <span class="number">3.141592</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">print</span>(<span class="string">f&#x27;字符串：<span class="subst">&#123;string&#125;</span>，整数：<span class="subst">&#123;integer:05d&#125;</span>，浮点数：<span class="subst">&#123;pi:<span class="number">05.2</span>f&#125;</span>&#x27;</span>)</span><br><span class="line">字符串：hello，整数：00001，浮点数：<span class="number">03.14</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="字符串方法"><a href="#字符串方法" class="headerlink" title="字符串方法"></a><strong>字符串方法</strong></h2><p><strong>center：</strong>在两边添加填充字符（默认为空格）让字符串居中。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="string">&quot;The Middle by Jimmy Eat World&quot;</span>.center(<span class="number">39</span>) </span><br><span class="line"><span class="string">&#x27; The Middle by Jimmy Eat World &#x27;</span> </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="string">&quot;The Middle by Jimmy Eat World&quot;</span>.center(<span class="number">39</span>, <span class="string">&quot;*&quot;</span>) </span><br><span class="line"><span class="string">&#x27;*****The Middle by Jimmy Eat World*****&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>find：</strong>在字符串中查找子串。如果找到，就返回子串的第一个字符的索引，否则返回-1。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="string">&#x27;With a moo-moo here, and a moo-moo there&#x27;</span>.find(<span class="string">&#x27;moo&#x27;</span>) </span><br><span class="line"><span class="number">7</span> </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>title = <span class="string">&quot;Monty Python&#x27;s Flying Circus&quot;</span> </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>title.find(<span class="string">&#x27;Monty&#x27;</span>) </span><br><span class="line"><span class="number">0</span> </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>title.find(<span class="string">&#x27;Python&#x27;</span>)</span><br><span class="line"><span class="number">6</span> </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>title.find(<span class="string">&#x27;Flying&#x27;</span>) </span><br><span class="line"><span class="number">15</span> </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>title.find(<span class="string">&#x27;Zirquss&#x27;</span>) </span><br><span class="line">-<span class="number">1</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="字符串使用小技巧"><a href="#字符串使用小技巧" class="headerlink" title="字符串使用小技巧"></a><strong>字符串使用小技巧</strong></h2><p>如果字符串里面有很多字符都需要转义，就需要加很多 <code>\</code>，为了简化，Python 还允许用 <code>r&#39;&#39;</code> 表示 <code>&#39;&#39;</code> 内部的字符串默认不转义。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">print</span>(<span class="string">r&#x27;\n\t\\&#x27;</span>)</span><br><span class="line">\n\t\\</span><br></pre></td></tr></table></figure>
+
+<p>如果字符串内部有很多换行，用 <code>\n</code> 写在一行里不好阅读，为了简化，Python 允许用<code>&#39;&#39;&#39;  &#39;&#39;&#39;</code>的格式表示多行内容。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;&#x27;&#x27;line1</span></span><br><span class="line"><span class="string">line2</span></span><br><span class="line"><span class="string">line3&#x27;&#x27;&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>由于 Python 源代码也是一个文本文件，所以，当你的源代码中包含中文的时候，在保存源代码时，就需要务必指定保存为 UTF-8 编码。当 Python 解释器读取源代码时，为了让它按 UTF-8 编码读取，我们通常在文件开头写上这一行：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br></pre></td></tr></table></figure>
+
+</div>
+        </div>
+        
+        <footer class="kratos-entry-footer clearfix">
+            
+            <div class="footer-tag clearfix">
+                <div class="pull-left">
+                <i class="fa fa-tags"></i>
+                    <a class="tag-none-link" href="/blog/tags/Python/" rel="tag">Python</a>
+                </div>
+                <div class="pull-date">
+                    <time datetime="2026-01-04T05:51:48.258Z" itemprop="dateModified">最后编辑：2026-01-04</time>
+                </div>
+            </div>
+        </footer>
+    </div>
+    
+        <nav class="navigation post-navigation clearfix" role="navigation">
+            
+            <div class="nav-previous clearfix">
+                <a title=" 【Python】常用函数" href="/blog/2023/12/19/Python/99_积累/Python中常用的函数/">&lt; 上一篇</a>
+            </div>
+            
+            
+            <div class="nav-next clearfix">
+                <a title=" 【Python】集合" href="/blog/2023/12/20/Python/02_Python基础/Python中的集合/">下一篇 &gt;</a>
+            </div>
+            
+        </nav>
+    
+    
+</article>
+
+        
+
+            </section>
+
+        
+
+                
+            
+
+<section id="kratos-widget-area" class="col-md-4 hidden-xs hidden-sm">
+    <!-- 文章和页面根据splitter来分割，没有的话就从头开始设置为sticky -->
+    
+    
+                <aside id="krw-about" class="widget widget-kratos-about clearfix">
+    <div class="photo-background"></div>
+    <div class="photo-wrapper clearfix">
+        <div class="photo-wrapper-tip text-center">
+            <img class="about-photo" src="/blog/images/avatar.webp" loading="lazy" decoding="auto" />
+        </div>
+    </div>
+    <div class="textwidget">
+        <p class="text-center">极简主义</p>
+    </div>
+    <div class="site-meta">
+        <a class="meta-item" href="/blog/archives/">
+            <span class="title">
+                文章
+            </span>
+            <span class="count">
+                77
+            </span>
+        </a>
+        <a class="meta-item" href="/blog/categories/">
+            <span class="title">
+                分类
+            </span>
+            <span class="count">
+                10
+            </span>
+        </a>
+        <a class="meta-item" href="/blog/tags/">
+            <span class="title">
+                标签
+            </span>
+            <span class="count">
+                29
+            </span>
+        </a>
+    </div>
+</aside>
+            
+                    <div class="sticky-area">
+                
+                    <aside id="krw-toc" class="widget widget-kratos-toc clearfix toc-div-class" >
+    <div class="photo-background"></div>
+    <h4 class="widget-title no-after">
+        <i class="fa fa-compass"></i>
+        文章目录
+        <span class="toc-progress-bar" role="progressbar" aria-label="阅读进度："></span>
+    </h4>
+    <div class="textwidget">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%9A%84%E5%AE%9A%E4%B9%89"><span class="toc-text">字符串的定义</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BD%AC%E4%B9%89%E5%AD%97%E7%AC%A6"><span class="toc-text">转义字符</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%BC%96%E7%A0%81"><span class="toc-text">字符串编码</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#encode-%E5%92%8C-decode-%E7%9A%84%E4%BD%BF%E7%94%A8"><span class="toc-text">encode() 和 decode() 的使用</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%A0%BC%E5%BC%8F%E5%8C%96"><span class="toc-text">字符串格式化</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E4%B8%80%E7%A7%8D%EF%BC%9A%E5%8D%A0%E4%BD%8D%E7%AC%A6"><span class="toc-text">第一种：占位符 %</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E4%BA%8C%E7%A7%8D%EF%BC%9Aformat"><span class="toc-text">第二种：format()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E4%B8%89%E4%B8%AD%EF%BC%9Af-string"><span class="toc-text">第三中：f-string</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%96%B9%E6%B3%95"><span class="toc-text">字符串方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2%E4%BD%BF%E7%94%A8%E5%B0%8F%E6%8A%80%E5%B7%A7"><span class="toc-text">字符串使用小技巧</span></a></li></ol>
+    </div>
+</aside>
+                
+                
+  <aside id="krw-categories" class="widget widget-kratos-categories clearfix">
+    <h4 class="widget-title"><i class="fa fa-folder"></i>分类目录</h4>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Docker/">Docker</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Idea/">Idea</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Java/">Java</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/K8s/">K8s</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Linux/">Linux</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/MySQL/">MySQL</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Python/">Python</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Selenium/">Selenium</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/SpringBoot/">SpringBoot</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/SpringCloud/">SpringCloud</a><span class="category-list-count">13</span></li></ul>
+  </aside>
+
+
+            
+                
+  <aside id="krw-tags" class="widget widget-kratos-tags clearfix">
+    <h4 class="widget-title"><i class="fa fa-tags"></i>标签聚合</h4>
+      <div class="tag-clouds">
+        <a href="/blog/tags/CORS/" style="font-size: 0.8em;">CORS</a> <a href="/blog/tags/Docker/" style="font-size: 0.8em;">Docker</a> <a href="/blog/tags/Dubbo/" style="font-size: 0.8em;">Dubbo</a> <a href="/blog/tags/ELK/" style="font-size: 0.8em;">ELK</a> <a href="/blog/tags/Elasticsearch/" style="font-size: 0.8em;">Elasticsearch</a> <a href="/blog/tags/Eureka/" style="font-size: 0.8em;">Eureka</a> <a href="/blog/tags/Feign/" style="font-size: 0.8em;">Feign</a> <a href="/blog/tags/Gateway/" style="font-size: 0.8em;">Gateway</a> <a href="/blog/tags/Idea/" style="font-size: 0.8em;">Idea</a> <a href="/blog/tags/Java/" style="font-size: 0.8em;">Java</a> <a href="/blog/tags/JavaWeb/" style="font-size: 0.8em;">JavaWeb</a> <a href="/blog/tags/K8s/" style="font-size: 0.8em;">K8s</a> <a href="/blog/tags/Linux/" style="font-size: 0.8em;">Linux</a> <a href="/blog/tags/Maven/" style="font-size: 0.8em;">Maven</a> <a href="/blog/tags/MySQL/" style="font-size: 0.8em;">MySQL</a> <a href="/blog/tags/Mybatis/" style="font-size: 0.8em;">Mybatis</a> <a href="/blog/tags/Nacos/" style="font-size: 0.8em;">Nacos</a> <a href="/blog/tags/Pytest/" style="font-size: 0.8em;">Pytest</a>
+      </div>
+  </aside>
+
+            
+                
+  <aside id="krw-posts" class="widget widget-kratos-posts">
+  <h4 class="widget-title"><i class="fa fa-file"></i>最新文章</h4>
+  <div class="tab-content">
+      <ul class="list-group">
+        
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/01/25/K8s/K8s%E7%BB%84%E4%BB%B6/"><i class="fa  fa-book"></i> 【K8s】组件</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/01/24/K8s/K8s%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/"><i class="fa  fa-book"></i> 【K8s】常用命令</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/01/11/Idea/IDEA%E6%8F%92%E4%BB%B6/"><i class="fa  fa-book"></i> 【Idea】插件</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/01/04/Linux/Centos7%E9%97%AE%E9%A2%98%E5%A4%84%E7%90%86/"><i class="fa  fa-book"></i> Centos7问题处理</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2025/12/09/Trae/Trae%E5%AE%89%E8%A3%85%E6%8F%92%E4%BB%B6%E5%AE%9E%E7%8E%B0Java%E4%BB%A3%E7%A0%81%E7%BC%96%E5%86%99/"><i class="fa  fa-book"></i> 【Trae】安装插件实现Java代码编写</a>
+            
+          
+        
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+      </ul>
+  </div>
+  </aside>
+
+            
+    </div>
+</section>
+        
+        </div>
+    </div>
+</div>
+<footer>
+    <div id="footer"  >
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3 footer-list text-center">
+                    <ul class="kratos-social-icons">
+                        <!-- Keep for compatibility -->
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <!-- New links -->
+                        
+                    </ul>
+                    <ul class="kratos-copyright">
+                        <div>
+                            <li>&copy; 2026 溪岚花的博客 版权所有.</li>
+                            <li>本站已运行<span id="span_dt">Loading...</span></li>
+                        </div>
+                        <div>
+                            <li>Theme <a href="https://github.com/Candinya/Kratos-Rebirth" target="_blank">Kratos:Rebirth</a></li>
+                            <li>Site built with&nbsp;<i class="fa fa-heart throb" style="color:#d43f57"></i>&nbsp;by 林家隆.</li>
+                        </div>
+                        <div>
+                            <li>Powered by <a href="https://hexo.io" target="_blank" rel="nofollow">Hexo</a></li>
+                            <li>Hosted on <a href="https://gitee.com/" target="_blank">Gitee Pages</a></li>
+                        </div>
+                        <div>
+                            
+                            
+                        </div>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="kr-tool text-center">
+            <div class="tool">
+                
+                    <div class="box search-box">
+                        <a href="/blog/search/">
+                            <span class="fa fa-search"></span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="box theme-box" id="darkmode-switch">
+                        <span class="fa fa-adjust"></span>
+                    </div>
+                
+                
+                
+            </div>
+            <div class="box gotop-box">
+                <span class="fa fa-chevron-up"></span>
+            </div>
+        </div>
+    </div>
+</footer>
+</div>
+</div>
+
+        <script defer src="/blog/vendors/bootstrap@3.3.4/dist/js/bootstrap.min.js"></script>
+<script defer src="/blog/vendors/nprogress@0.2.0/nprogress.js"></script>
+<script>
+    if (!window.kr) {
+        window.kr = {};
+    }
+    window.kr.notMobile = (!(navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i)));
+    window.kr.siteRoot = "/blog/";
+</script>
+
+
+
+
+
+    <script defer src="/blog/vendors/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+
+<script defer src="/blog/js/kratosr.min.js"></script>
+<script defer src="/blog/js/pjax.min.js"></script>
+
+
+
+<!-- Extra support for third-party plguins  -->
+
+
+    </body>
+</html>

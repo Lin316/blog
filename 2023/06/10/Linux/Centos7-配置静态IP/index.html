@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+  <!-- 元数据 -->
+  <meta charset="utf-8">
+  <link rel="icon" href="/blog/images/logo.png">
+  
+  <title>CentOS7 配置静态 IP | 溪岚花的博客</title>
+  
+  <meta name="author" content="林家隆" />
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="robots" content="index,follow" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <meta name="format-detection" content="telphone=no, email=no" />
+  
+    <meta name="keywords" content="Linux" />
+  
+  <meta name="description" content="修改配置文件1vim &#x2F;etc&#x2F;sysconfig&#x2F;network-scripts&#x2F;ifcfg-ens33  需要修改或添加如下信息： BOOTPROTO&#x3D;”static” ONBOOT&#x3D;”yes” IPADDR&#x3D;192.168.134.100 （根据自己情况设置） GATEWAY&#x3D;192.168.134.2 （根据自己情况设置） NETMASK&#x3D;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CentOS7 配置静态 IP">
+<meta property="og:url" content="https://lin316.gitee.io/blog/2023/06/10/Linux/Centos7-%E9%85%8D%E7%BD%AE%E9%9D%99%E6%80%81IP/index.html">
+<meta property="og:site_name" content="溪岚花的博客">
+<meta property="og:description" content="修改配置文件1vim &#x2F;etc&#x2F;sysconfig&#x2F;network-scripts&#x2F;ifcfg-ens33  需要修改或添加如下信息： BOOTPROTO&#x3D;”static” ONBOOT&#x3D;”yes” IPADDR&#x3D;192.168.134.100 （根据自己情况设置） GATEWAY&#x3D;192.168.134.2 （根据自己情况设置） NETMASK&#x3D;">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://lin316.gitee.io/blog/blog/images/logo.png">
+<meta property="article:published_time" content="2023-06-10T09:11:18.000Z">
+<meta property="article:modified_time" content="2026-01-04T05:51:48.244Z">
+<meta property="article:author" content="林家隆">
+<meta property="article:tag" content="Linux">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://lin316.gitee.io/blog/blog/images/logo.png">
+  
+  <!-- 站点验证相关 -->
+  
+    
+    
+    
+  
+  <!-- 样式表文件 -->
+  <link rel="stylesheet" id="kratos-css" href="/blog/css/kratosr.min.css" media="all"></script>
+  
+    <link rel="stylesheet" id="darkmode-css" href="/blog/css/kr-color-dark.min.css" media="(prefers-color-scheme: dark)"></script>
+    <script src="/blog/js/kr-dark.min.js"></script>
+  
+  
+    <link rel="stylesheet" id="highlight-css" href="/blog/css/highlight/night-eighties.min.css" media="all"></script>
+  
+  <link rel="stylesheet" id="fontawe-css" href="/blog/vendors/font-awesome@4.7.0/css/font-awesome.min.css" media="all"></script>
+  <link rel="stylesheet" id="nprogress-css" href="/blog/vendors/nprogress@0.2.0/nprogress.css" media="all"></script>
+  
+  
+  
+    <link rel="stylesheet" href="/blog/vendors/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css"></script>
+  
+  <!-- 不得不预先加载的一些JS文件 -->
+  <script src="/blog/vendors/jquery@3.6.0/dist/jquery.min.js"></script>
+  
+  
+  <style>
+    
+    
+  </style>
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+    <body class="custom-background">
+        <div id="kratos-wrapper">
+    <div id="kratos-page">
+        <div id="kratos-header">
+            <header id="kratos-desktop-topnav" class="kratos-topnav">
+                <div class="container">
+                    <div class="nav-header">
+                        <nav id="kratos-menu-wrap">
+                            <ul id="kratos-primary-menu" class="sf-menu">
+                                
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/">
+                                            
+                                                
+                                                    <i class="fa fa-home"></i>
+                                                
+                                                首页
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/archives/">
+                                            
+                                                
+                                                    <i class="fa fa-file"></i>
+                                                
+                                                归档
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/tags/">
+                                            
+                                                
+                                                    <i class="fa fa-tag"></i>
+                                                
+                                                标签
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/categories/">
+                                            
+                                                
+                                                    <i class="fa fa-folder"></i>
+                                                
+                                                目录
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/search/">
+                                            
+                                                
+                                                    <i class="fa fa-search"></i>
+                                                
+                                                搜索
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </header>
+            <header id="kratos-mobile-topnav" class="kratos-topnav">
+                <div class="container">
+                    <div class="color-logo"><a href="/blog/">溪岚花的博客</a></div>
+                    <div class="nav-toggle">
+                        <a class="kratos-nav-toggle js-kratos-nav-toggle">
+                            <i></i>
+                        </a>
+                    </div>
+                </div>
+            </header>
+        </div>
+        <div class="kratos-start kratos-hero-2">
+            <!-- <div class="kratos-overlay"></div> -->
+            <div class="kratos-cover kratos-cover-2 text-center">
+                <div class="desc desc2 animate-box">
+                    <a href="/blog/">
+                        <h2 style="opacity: 0.2;">溪岚花的博客</h2> <br />
+                        <span></span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div id="kratos-blog-post">
+            <div class="container">
+                <div id="main" class="row">
+                    
+
+        
+
+            <section class="col-md-8">
+
+        
+
+            <article itemscope itemtype="https://schema.org/Article">
+    
+    <link itemprop="mainEntityOfPage" href="https://lin316.gitee.io/blog/2023/06/10/Linux/Centos7-%E9%85%8D%E7%BD%AE%E9%9D%99%E6%80%81IP/">
+    <div class="kratos-hentry kratos-post-inner clearfix">
+        <header class="kratos-entry-header">
+            
+                <h1 class="kratos-entry-title text-center" itemprop="name headline">CentOS7 配置静态 IP</h1>
+            
+            
+            <ul class="kratos-post-meta text-center">
+                <li><time datetime="2023-06-10T09:11:18.000Z" itemprop="datePublished"><i class="fa fa-calendar"></i> 2023-06-10</time></li>
+                <li itemprop="author" itemscope itemtype="https://schema.org/Person">
+                    <i class="fa fa-user"></i> 作者 <span itemprop="name">林家隆</span>
+                </li>
+                
+                    <li>
+                        <i class="fa fa-edit"></i> 
+                        
+                        
+                            1333
+                        
+                        字
+                    </li>
+                
+                
+            </ul>
+        </header>
+        <div class="kratos-post-content">
+            
+            <div id="expire-alert" class="alert alert-warning hidden" role="alert">
+                <div class="icon"><i class="fa fa-warning"></i></div>
+                <div class="text"><p>本文最后编辑于 <time datetime="1767505908244"></time> 前，其中的内容可能需要更新。</p></div>
+            </div>
+            
+            
+            
+                <div class="kratos-post-inner-toc toc-div-class" >
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BF%AE%E6%94%B9%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="toc-number">1.</span> <span class="toc-text">修改配置文件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%87%8D%E5%90%AF%E7%BD%91%E7%BB%9C"><span class="toc-number">2.</span> <span class="toc-text">重启网络</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8B%E7%BD%91%E7%BB%9C%E6%98%AF%E5%90%A6%E5%8F%AF%E7%94%A8"><span class="toc-number">3.</span> <span class="toc-text">查看网络是否可用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8B-IP-%E5%9C%B0%E5%9D%80"><span class="toc-number">4.</span> <span class="toc-text">查看 IP 地址</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98"><span class="toc-number">5.</span> <span class="toc-text">遇到的问题</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BD%91%E7%BB%9C%E4%B8%8D%E5%8F%AF%E7%94%A8%E7%9A%84%E6%83%85%E5%86%B5"><span class="toc-number">5.1.</span> <span class="toc-text">网络不可用的情况</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B5%8F%E8%A7%88%E5%99%A8%E6%97%A0%E6%B3%95%E8%AE%BF%E9%97%AE%E8%99%9A%E6%8B%9F%E6%9C%BA%E6%8E%A5%E5%8F%A3%E7%9A%84%E9%97%AE%E9%A2%98"><span class="toc-number">5.2.</span> <span class="toc-text">浏览器无法访问虚拟机接口的问题</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E6%9D%A5%E6%BA%90%E8%AF%B4%E6%98%8E"><span class="toc-number">6.</span> <span class="toc-text">数据来源说明</span></a></li></ol>
+                </div>
+            
+            <hr />
+            <div itemprop="articleBody"><h2 id="修改配置文件"><a href="#修改配置文件" class="headerlink" title="修改配置文件"></a><strong>修改配置文件</strong></h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/sysconfig/network-scripts/ifcfg-ens33</span><br></pre></td></tr></table></figure>
+
+<p>需要修改或添加如下信息：</p>
+<p>BOOTPROTO&#x3D;”static”</p>
+<p>ONBOOT&#x3D;”yes”</p>
+<p>IPADDR&#x3D;192.168.134.100 （根据自己情况设置）</p>
+<p>GATEWAY&#x3D;192.168.134.2 （根据自己情况设置）</p>
+<p>NETMASK&#x3D;255.255.255.0 </p>
+<p>DNS1&#x3D;8.8.8.8 </p>
+<figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">TYPE</span>=<span class="string">&quot;Ethernet&quot;</span></span><br><span class="line"><span class="attr">PROXY_METHOD</span>=<span class="string">&quot;none&quot;</span></span><br><span class="line"><span class="attr">BROWSER_ONLY</span>=<span class="string">&quot;no&quot;</span></span><br><span class="line"><span class="attr">BOOTPROTO</span>=<span class="string">&quot;static&quot;  # 使用静态 IP 地址，默认为 dhcp</span></span><br><span class="line"><span class="attr">DEFROUTE</span>=<span class="string">&quot;yes&quot;</span></span><br><span class="line"><span class="attr">IPV4_FAILURE_FATAL</span>=<span class="string">&quot;no&quot;</span></span><br><span class="line"><span class="attr">IPV6INIT</span>=<span class="string">&quot;yes&quot;</span></span><br><span class="line"><span class="attr">IPV6_AUTOCONF</span>=<span class="string">&quot;yes&quot;</span></span><br><span class="line"><span class="attr">IPV6_DEFROUTE</span>=<span class="string">&quot;yes&quot;</span></span><br><span class="line"><span class="attr">IPV6_FAILURE_FATAL</span>=<span class="string">&quot;no&quot;</span></span><br><span class="line"><span class="attr">IPV6_ADDR_GEN_MODE</span>=<span class="string">&quot;stable-privacy&quot;</span></span><br><span class="line"><span class="attr">NAME</span>=<span class="string">&quot;ens33&quot;</span></span><br><span class="line"><span class="attr">UUID</span>=<span class="string">&quot;b031c504-2c46-4dd6-83b7-038c685d0998&quot;</span></span><br><span class="line"><span class="attr">DEVICE</span>=<span class="string">&quot;ens33&quot;</span></span><br><span class="line"><span class="attr">ONBOOT</span>=<span class="string">&quot;yes&quot;  # 设置网卡启动方式为开机启动，并且可以通过系统服务管理器 systemctl 控制网卡</span></span><br><span class="line"></span><br><span class="line"><span class="attr">IPADDR</span>=<span class="string">192.168.134.100 # 静态 IP 地址</span></span><br><span class="line"><span class="attr">GATEWAY</span>=<span class="string">192.168.134.2  # 网关地址</span></span><br><span class="line"><span class="attr">NETMASK</span>=<span class="string">255.255.255.0  # 子网掩码</span></span><br><span class="line"><span class="attr">DNS1</span>=<span class="string">8.8.8.8  # DNS服务器（默认添加就行）</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="重启网络"><a href="#重启网络" class="headerlink" title="重启网络"></a><strong>重启网络</strong></h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">service network restart </span><br></pre></td></tr></table></figure>
+
+<h2 id="查看网络是否可用"><a href="#查看网络是否可用" class="headerlink" title="查看网络是否可用"></a><strong>查看网络是否可用</strong></h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ping baidu.com -c 3</span><br></pre></td></tr></table></figure>
+
+<p><img src="/blog/2023/06/10/Linux/Centos7-%E9%85%8D%E7%BD%AE%E9%9D%99%E6%80%81IP/image-20230610173524405.png" alt="测试结果"></p>
+<h2 id="查看-IP-地址"><a href="#查看-IP-地址" class="headerlink" title="查看 IP 地址"></a><strong>查看 IP 地址</strong></h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ifconfig</span><br></pre></td></tr></table></figure>
+
+<p><img src="/blog/2023/06/10/Linux/Centos7-%E9%85%8D%E7%BD%AE%E9%9D%99%E6%80%81IP/image-20230610173717395.png"></p>
+<h2 id="遇到的问题"><a href="#遇到的问题" class="headerlink" title="遇到的问题"></a><strong>遇到的问题</strong></h2><h3 id="网络不可用的情况"><a href="#网络不可用的情况" class="headerlink" title="网络不可用的情况"></a><strong>网络不可用的情况</strong></h3><p>如果物理机无法 ping 通虚拟机，那么是配置问题。如果物理机和虚拟机可以互 ping 通，但是无法 ping 通百度。尝试添加网关：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/resolv.conf</span><br></pre></td></tr></table></figure>
+
+<p><img src="/blog/2023/06/10/Linux/Centos7-%E9%85%8D%E7%BD%AE%E9%9D%99%E6%80%81IP/image-20240216184949148.png"></p>
+<h3 id="浏览器无法访问虚拟机接口的问题"><a href="#浏览器无法访问虚拟机接口的问题" class="headerlink" title="浏览器无法访问虚拟机接口的问题"></a>浏览器无法访问虚拟机接口的问题</h3><p>问题描述：宿主机和虚拟机能互相 ping 通，且 postman 可以调用虚拟机的接口，但是宿主机的浏览器无法调用虚拟机的接口。</p>
+<p>原因：可能是 windows 对虚拟机的静态 ip 进行了代理，导致在浏览器无法调用虚拟机的接口。修改 windows 的代理配置，要求禁止对虚拟机的静态 ip 进行代理。修改如下：</p>
+<p><img src="/blog/2023/06/10/Linux/Centos7-%E9%85%8D%E7%BD%AE%E9%9D%99%E6%80%81IP/image-20240325212449075.png"></p>
+<h2 id="数据来源说明"><a href="#数据来源说明" class="headerlink" title="数据来源说明"></a><strong>数据来源说明</strong></h2><p>IPADDR、GATEWAY、NETMASK 数据来源如下：</p>
+<p>编辑 -&gt; 虚拟网络编辑器 -&gt; NAT 设置</p>
+<p><img src="/blog/2023/06/10/Linux/Centos7-%E9%85%8D%E7%BD%AE%E9%9D%99%E6%80%81IP/image-20230610174557513.png"></p>
+<p><img src="/blog/2023/06/10/Linux/Centos7-%E9%85%8D%E7%BD%AE%E9%9D%99%E6%80%81IP/image-20230610174656508.png" alt="NAT"></p>
+</div>
+        </div>
+        
+        <footer class="kratos-entry-footer clearfix">
+            
+            <div class="footer-tag clearfix">
+                <div class="pull-left">
+                <i class="fa fa-tags"></i>
+                    <a class="tag-none-link" href="/blog/tags/Linux/" rel="tag">Linux</a>
+                </div>
+                <div class="pull-date">
+                    <time datetime="2026-01-04T05:51:48.244Z" itemprop="dateModified">最后编辑：2026-01-04</time>
+                </div>
+            </div>
+        </footer>
+    </div>
+    
+        <nav class="navigation post-navigation clearfix" role="navigation">
+            
+            <div class="nav-previous clearfix">
+                <a title=" CentOS7 安装 Docker" href="/blog/2023/06/10/Docker/CentOS-Docker-安装/">&lt; 上一篇</a>
+            </div>
+            
+            
+            <div class="nav-next clearfix">
+                <a title=" HTTP Client 接口调用插件的使用" href="/blog/2023/06/17/Idea/HTTP-Client-接口调用插件的使用/">下一篇 &gt;</a>
+            </div>
+            
+        </nav>
+    
+    
+</article>
+
+        
+
+            </section>
+
+        
+
+                
+            
+
+<section id="kratos-widget-area" class="col-md-4 hidden-xs hidden-sm">
+    <!-- 文章和页面根据splitter来分割，没有的话就从头开始设置为sticky -->
+    
+    
+                <aside id="krw-about" class="widget widget-kratos-about clearfix">
+    <div class="photo-background"></div>
+    <div class="photo-wrapper clearfix">
+        <div class="photo-wrapper-tip text-center">
+            <img class="about-photo" src="/blog/images/avatar.webp" loading="lazy" decoding="auto" />
+        </div>
+    </div>
+    <div class="textwidget">
+        <p class="text-center">极简主义</p>
+    </div>
+    <div class="site-meta">
+        <a class="meta-item" href="/blog/archives/">
+            <span class="title">
+                文章
+            </span>
+            <span class="count">
+                77
+            </span>
+        </a>
+        <a class="meta-item" href="/blog/categories/">
+            <span class="title">
+                分类
+            </span>
+            <span class="count">
+                10
+            </span>
+        </a>
+        <a class="meta-item" href="/blog/tags/">
+            <span class="title">
+                标签
+            </span>
+            <span class="count">
+                29
+            </span>
+        </a>
+    </div>
+</aside>
+            
+                    <div class="sticky-area">
+                
+                    <aside id="krw-toc" class="widget widget-kratos-toc clearfix toc-div-class" >
+    <div class="photo-background"></div>
+    <h4 class="widget-title no-after">
+        <i class="fa fa-compass"></i>
+        文章目录
+        <span class="toc-progress-bar" role="progressbar" aria-label="阅读进度："></span>
+    </h4>
+    <div class="textwidget">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BF%AE%E6%94%B9%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="toc-text">修改配置文件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%87%8D%E5%90%AF%E7%BD%91%E7%BB%9C"><span class="toc-text">重启网络</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8B%E7%BD%91%E7%BB%9C%E6%98%AF%E5%90%A6%E5%8F%AF%E7%94%A8"><span class="toc-text">查看网络是否可用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8B-IP-%E5%9C%B0%E5%9D%80"><span class="toc-text">查看 IP 地址</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98"><span class="toc-text">遇到的问题</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BD%91%E7%BB%9C%E4%B8%8D%E5%8F%AF%E7%94%A8%E7%9A%84%E6%83%85%E5%86%B5"><span class="toc-text">网络不可用的情况</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B5%8F%E8%A7%88%E5%99%A8%E6%97%A0%E6%B3%95%E8%AE%BF%E9%97%AE%E8%99%9A%E6%8B%9F%E6%9C%BA%E6%8E%A5%E5%8F%A3%E7%9A%84%E9%97%AE%E9%A2%98"><span class="toc-text">浏览器无法访问虚拟机接口的问题</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E6%9D%A5%E6%BA%90%E8%AF%B4%E6%98%8E"><span class="toc-text">数据来源说明</span></a></li></ol>
+    </div>
+</aside>
+                
+                
+  <aside id="krw-categories" class="widget widget-kratos-categories clearfix">
+    <h4 class="widget-title"><i class="fa fa-folder"></i>分类目录</h4>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Docker/">Docker</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Idea/">Idea</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Java/">Java</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/K8s/">K8s</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Linux/">Linux</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/MySQL/">MySQL</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Python/">Python</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Selenium/">Selenium</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/SpringBoot/">SpringBoot</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/SpringCloud/">SpringCloud</a><span class="category-list-count">13</span></li></ul>
+  </aside>
+
+
+            
+                
+  <aside id="krw-tags" class="widget widget-kratos-tags clearfix">
+    <h4 class="widget-title"><i class="fa fa-tags"></i>标签聚合</h4>
+      <div class="tag-clouds">
+        <a href="/blog/tags/CORS/" style="font-size: 0.8em;">CORS</a> <a href="/blog/tags/Docker/" style="font-size: 0.8em;">Docker</a> <a href="/blog/tags/Dubbo/" style="font-size: 0.8em;">Dubbo</a> <a href="/blog/tags/ELK/" style="font-size: 0.8em;">ELK</a> <a href="/blog/tags/Elasticsearch/" style="font-size: 0.8em;">Elasticsearch</a> <a href="/blog/tags/Eureka/" style="font-size: 0.8em;">Eureka</a> <a href="/blog/tags/Feign/" style="font-size: 0.8em;">Feign</a> <a href="/blog/tags/Gateway/" style="font-size: 0.8em;">Gateway</a> <a href="/blog/tags/Idea/" style="font-size: 0.8em;">Idea</a> <a href="/blog/tags/Java/" style="font-size: 0.8em;">Java</a> <a href="/blog/tags/JavaWeb/" style="font-size: 0.8em;">JavaWeb</a> <a href="/blog/tags/K8s/" style="font-size: 0.8em;">K8s</a> <a href="/blog/tags/Linux/" style="font-size: 0.8em;">Linux</a> <a href="/blog/tags/Maven/" style="font-size: 0.8em;">Maven</a> <a href="/blog/tags/MySQL/" style="font-size: 0.8em;">MySQL</a> <a href="/blog/tags/Mybatis/" style="font-size: 0.8em;">Mybatis</a> <a href="/blog/tags/Nacos/" style="font-size: 0.8em;">Nacos</a> <a href="/blog/tags/Pytest/" style="font-size: 0.8em;">Pytest</a>
+      </div>
+  </aside>
+
+            
+                
+  <aside id="krw-posts" class="widget widget-kratos-posts">
+  <h4 class="widget-title"><i class="fa fa-file"></i>最新文章</h4>
+  <div class="tab-content">
+      <ul class="list-group">
+        
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/01/25/K8s/K8s%E7%BB%84%E4%BB%B6/"><i class="fa  fa-book"></i> 【K8s】组件</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/01/24/K8s/K8s%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/"><i class="fa  fa-book"></i> 【K8s】常用命令</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/01/11/Idea/IDEA%E6%8F%92%E4%BB%B6/"><i class="fa  fa-book"></i> 【Idea】插件</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/01/04/Linux/Centos7%E9%97%AE%E9%A2%98%E5%A4%84%E7%90%86/"><i class="fa  fa-book"></i> Centos7问题处理</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2025/12/09/Trae/Trae%E5%AE%89%E8%A3%85%E6%8F%92%E4%BB%B6%E5%AE%9E%E7%8E%B0Java%E4%BB%A3%E7%A0%81%E7%BC%96%E5%86%99/"><i class="fa  fa-book"></i> 【Trae】安装插件实现Java代码编写</a>
+            
+          
+        
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+      </ul>
+  </div>
+  </aside>
+
+            
+    </div>
+</section>
+        
+        </div>
+    </div>
+</div>
+<footer>
+    <div id="footer"  >
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3 footer-list text-center">
+                    <ul class="kratos-social-icons">
+                        <!-- Keep for compatibility -->
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <!-- New links -->
+                        
+                    </ul>
+                    <ul class="kratos-copyright">
+                        <div>
+                            <li>&copy; 2026 溪岚花的博客 版权所有.</li>
+                            <li>本站已运行<span id="span_dt">Loading...</span></li>
+                        </div>
+                        <div>
+                            <li>Theme <a href="https://github.com/Candinya/Kratos-Rebirth" target="_blank">Kratos:Rebirth</a></li>
+                            <li>Site built with&nbsp;<i class="fa fa-heart throb" style="color:#d43f57"></i>&nbsp;by 林家隆.</li>
+                        </div>
+                        <div>
+                            <li>Powered by <a href="https://hexo.io" target="_blank" rel="nofollow">Hexo</a></li>
+                            <li>Hosted on <a href="https://gitee.com/" target="_blank">Gitee Pages</a></li>
+                        </div>
+                        <div>
+                            
+                            
+                        </div>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="kr-tool text-center">
+            <div class="tool">
+                
+                    <div class="box search-box">
+                        <a href="/blog/search/">
+                            <span class="fa fa-search"></span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="box theme-box" id="darkmode-switch">
+                        <span class="fa fa-adjust"></span>
+                    </div>
+                
+                
+                
+            </div>
+            <div class="box gotop-box">
+                <span class="fa fa-chevron-up"></span>
+            </div>
+        </div>
+    </div>
+</footer>
+</div>
+</div>
+
+        <script defer src="/blog/vendors/bootstrap@3.3.4/dist/js/bootstrap.min.js"></script>
+<script defer src="/blog/vendors/nprogress@0.2.0/nprogress.js"></script>
+<script>
+    if (!window.kr) {
+        window.kr = {};
+    }
+    window.kr.notMobile = (!(navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i)));
+    window.kr.siteRoot = "/blog/";
+</script>
+
+
+
+
+
+    <script defer src="/blog/vendors/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+
+<script defer src="/blog/js/kratosr.min.js"></script>
+<script defer src="/blog/js/pjax.min.js"></script>
+
+
+
+<!-- Extra support for third-party plguins  -->
+
+
+    </body>
+</html>

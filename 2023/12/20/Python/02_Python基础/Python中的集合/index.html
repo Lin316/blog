@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+  <!-- 元数据 -->
+  <meta charset="utf-8">
+  <link rel="icon" href="/blog/images/logo.png">
+  
+  <title>【Python】集合 | 溪岚花的博客</title>
+  
+  <meta name="author" content="林家隆" />
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="robots" content="index,follow" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <meta name="format-detection" content="telphone=no, email=no" />
+  
+    <meta name="keywords" content="Python" />
+  
+  <meta name="description" content="Python 有 4 种集合：list 、tuple 、dict 、set。 ListList 的定义1name &#x3D; [&amp;#x27;lin&amp;#x27;, &amp;#x27;cheng&amp;#x27;, &amp;#x27;zhang&amp;#x27;]  增在末尾添加元素 1234&gt;&gt;&gt; name &#x3D; [&amp;#x27;lin&amp;#x27;, &amp;#x27;cheng&amp;#x27;, &amp;#x27;zhang&amp;#x">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【Python】集合">
+<meta property="og:url" content="https://lin316.gitee.io/blog/2023/12/20/Python/02_Python%E5%9F%BA%E7%A1%80/Python%E4%B8%AD%E7%9A%84%E9%9B%86%E5%90%88/index.html">
+<meta property="og:site_name" content="溪岚花的博客">
+<meta property="og:description" content="Python 有 4 种集合：list 、tuple 、dict 、set。 ListList 的定义1name &#x3D; [&amp;#x27;lin&amp;#x27;, &amp;#x27;cheng&amp;#x27;, &amp;#x27;zhang&amp;#x27;]  增在末尾添加元素 1234&gt;&gt;&gt; name &#x3D; [&amp;#x27;lin&amp;#x27;, &amp;#x27;cheng&amp;#x27;, &amp;#x27;zhang&amp;#x">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://lin316.gitee.io/blog/blog/images/logo.png">
+<meta property="article:published_time" content="2023-12-19T16:00:00.000Z">
+<meta property="article:modified_time" content="2026-01-04T05:51:48.258Z">
+<meta property="article:author" content="林家隆">
+<meta property="article:tag" content="Python">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://lin316.gitee.io/blog/blog/images/logo.png">
+  
+  <!-- 站点验证相关 -->
+  
+    
+    
+    
+  
+  <!-- 样式表文件 -->
+  <link rel="stylesheet" id="kratos-css" href="/blog/css/kratosr.min.css" media="all"></script>
+  
+    <link rel="stylesheet" id="darkmode-css" href="/blog/css/kr-color-dark.min.css" media="(prefers-color-scheme: dark)"></script>
+    <script src="/blog/js/kr-dark.min.js"></script>
+  
+  
+    <link rel="stylesheet" id="highlight-css" href="/blog/css/highlight/night-eighties.min.css" media="all"></script>
+  
+  <link rel="stylesheet" id="fontawe-css" href="/blog/vendors/font-awesome@4.7.0/css/font-awesome.min.css" media="all"></script>
+  <link rel="stylesheet" id="nprogress-css" href="/blog/vendors/nprogress@0.2.0/nprogress.css" media="all"></script>
+  
+  
+  
+    <link rel="stylesheet" href="/blog/vendors/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css"></script>
+  
+  <!-- 不得不预先加载的一些JS文件 -->
+  <script src="/blog/vendors/jquery@3.6.0/dist/jquery.min.js"></script>
+  
+  
+  <style>
+    
+    
+  </style>
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+    <body class="custom-background">
+        <div id="kratos-wrapper">
+    <div id="kratos-page">
+        <div id="kratos-header">
+            <header id="kratos-desktop-topnav" class="kratos-topnav">
+                <div class="container">
+                    <div class="nav-header">
+                        <nav id="kratos-menu-wrap">
+                            <ul id="kratos-primary-menu" class="sf-menu">
+                                
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/">
+                                            
+                                                
+                                                    <i class="fa fa-home"></i>
+                                                
+                                                首页
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/archives/">
+                                            
+                                                
+                                                    <i class="fa fa-file"></i>
+                                                
+                                                归档
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/tags/">
+                                            
+                                                
+                                                    <i class="fa fa-tag"></i>
+                                                
+                                                标签
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/categories/">
+                                            
+                                                
+                                                    <i class="fa fa-folder"></i>
+                                                
+                                                目录
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/search/">
+                                            
+                                                
+                                                    <i class="fa fa-search"></i>
+                                                
+                                                搜索
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </header>
+            <header id="kratos-mobile-topnav" class="kratos-topnav">
+                <div class="container">
+                    <div class="color-logo"><a href="/blog/">溪岚花的博客</a></div>
+                    <div class="nav-toggle">
+                        <a class="kratos-nav-toggle js-kratos-nav-toggle">
+                            <i></i>
+                        </a>
+                    </div>
+                </div>
+            </header>
+        </div>
+        <div class="kratos-start kratos-hero-2">
+            <!-- <div class="kratos-overlay"></div> -->
+            <div class="kratos-cover kratos-cover-2 text-center">
+                <div class="desc desc2 animate-box">
+                    <a href="/blog/">
+                        <h2 style="opacity: 0.2;">溪岚花的博客</h2> <br />
+                        <span></span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div id="kratos-blog-post">
+            <div class="container">
+                <div id="main" class="row">
+                    
+
+        
+
+            <section class="col-md-8">
+
+        
+
+            <article itemscope itemtype="https://schema.org/Article">
+    
+    <link itemprop="mainEntityOfPage" href="https://lin316.gitee.io/blog/2023/12/20/Python/02_Python%E5%9F%BA%E7%A1%80/Python%E4%B8%AD%E7%9A%84%E9%9B%86%E5%90%88/">
+    <div class="kratos-hentry kratos-post-inner clearfix">
+        <header class="kratos-entry-header">
+            
+                <h1 class="kratos-entry-title text-center" itemprop="name headline">【Python】集合</h1>
+            
+            
+            <ul class="kratos-post-meta text-center">
+                <li><time datetime="2023-12-19T16:00:00.000Z" itemprop="datePublished"><i class="fa fa-calendar"></i> 2023-12-20</time></li>
+                <li itemprop="author" itemscope itemtype="https://schema.org/Person">
+                    <i class="fa fa-user"></i> 作者 <span itemprop="name">林家隆</span>
+                </li>
+                
+                    <li>
+                        <i class="fa fa-edit"></i> 
+                        
+                        
+                            8.57K
+                        
+                        字
+                    </li>
+                
+                
+            </ul>
+        </header>
+        <div class="kratos-post-content">
+            
+            <div id="expire-alert" class="alert alert-warning hidden" role="alert">
+                <div class="icon"><i class="fa fa-warning"></i></div>
+                <div class="text"><p>本文最后编辑于 <time datetime="1767505908258"></time> 前，其中的内容可能需要更新。</p></div>
+            </div>
+            
+            
+            
+                <div class="kratos-post-inner-toc toc-div-class" >
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#List"><span class="toc-number">1.</span> <span class="toc-text">List</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#List-%E7%9A%84%E5%AE%9A%E4%B9%89"><span class="toc-number">1.1.</span> <span class="toc-text">List 的定义</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A2%9E"><span class="toc-number">1.2.</span> <span class="toc-text">增</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%A0"><span class="toc-number">1.3.</span> <span class="toc-text">删</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%94%B9"><span class="toc-number">1.4.</span> <span class="toc-text">改</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9F%A5"><span class="toc-number">1.5.</span> <span class="toc-text">查</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%A9%BA%E5%88%97%E8%A1%A8%E5%92%8C%E5%88%9D%E5%A7%8B%E5%8C%96"><span class="toc-number">1.6.</span> <span class="toc-text">空列表和初始化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%81%8D%E5%8E%86"><span class="toc-number">1.7.</span> <span class="toc-text">遍历</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%97%E8%A1%A8%E6%96%B9%E6%B3%95"><span class="toc-number">1.8.</span> <span class="toc-text">列表方法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Tuple"><span class="toc-number">2.</span> <span class="toc-text">Tuple</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Tuple-%E7%9A%84%E5%AE%9A%E4%B9%89"><span class="toc-number">2.1.</span> <span class="toc-text">Tuple 的定义</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9F%A5-1"><span class="toc-number">2.2.</span> <span class="toc-text">查</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%81%8D%E5%8E%86-1"><span class="toc-number">2.3.</span> <span class="toc-text">遍历</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B3%A8%E6%84%8F"><span class="toc-number">2.4.</span> <span class="toc-text">注意</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Dict"><span class="toc-number">3.</span> <span class="toc-text">Dict</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Dict-%E7%9A%84%E5%AE%9A%E4%B9%89"><span class="toc-number">3.1.</span> <span class="toc-text">Dict 的定义</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A2%9E-1"><span class="toc-number">3.2.</span> <span class="toc-text">增</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%A0-1"><span class="toc-number">3.3.</span> <span class="toc-text">删</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%94%B9-1"><span class="toc-number">3.4.</span> <span class="toc-text">改</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9F%A5-2"><span class="toc-number">3.5.</span> <span class="toc-text">查</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%81%8D%E5%8E%86-2"><span class="toc-number">3.6.</span> <span class="toc-text">遍历</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%81%8D%E5%8E%86-key"><span class="toc-number">3.6.1.</span> <span class="toc-text">遍历 key</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%81%8D%E5%8E%86-value"><span class="toc-number">3.6.2.</span> <span class="toc-text">遍历 value</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%81%8D%E5%8E%86-key-%E5%92%8C-value"><span class="toc-number">3.6.3.</span> <span class="toc-text">遍历 key 和 value</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Set"><span class="toc-number">4.</span> <span class="toc-text">Set</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Set-%E7%9A%84%E5%AE%9A%E4%B9%89"><span class="toc-number">4.1.</span> <span class="toc-text">Set 的定义</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A2%9E-2"><span class="toc-number">4.2.</span> <span class="toc-text">增</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%A0-2"><span class="toc-number">4.3.</span> <span class="toc-text">删</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%81%8D%E5%8E%86-3"><span class="toc-number">4.4.</span> <span class="toc-text">遍历</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%9B%86%E5%90%88%E8%BF%90%E7%AE%97"><span class="toc-number">4.5.</span> <span class="toc-text">集合运算</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%B9%B6%E9%9B%86"><span class="toc-number">4.5.1.</span> <span class="toc-text">并集</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BA%A4%E9%9B%86"><span class="toc-number">4.5.2.</span> <span class="toc-text">交集</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%B7%AE%E9%9B%86"><span class="toc-number">4.5.3.</span> <span class="toc-text">差集</span></a></li></ol></li></ol></li></ol>
+                </div>
+            
+            <hr />
+            <div itemprop="articleBody"><p>Python 有 4 种集合：<code>list</code> 、<code>tuple</code> 、<code>dict</code> 、<code>set</code>。</p>
+<h2 id="List"><a href="#List" class="headerlink" title="List"></a><strong>List</strong></h2><h3 id="List-的定义"><a href="#List-的定义" class="headerlink" title="List 的定义"></a><strong>List 的定义</strong></h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">name = [<span class="string">&#x27;lin&#x27;</span>, <span class="string">&#x27;cheng&#x27;</span>, <span class="string">&#x27;zhang&#x27;</span>]</span><br></pre></td></tr></table></figure>
+
+<h3 id="增"><a href="#增" class="headerlink" title="增"></a><strong>增</strong></h3><p>在末尾添加元素</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>name = [<span class="string">&#x27;lin&#x27;</span>, <span class="string">&#x27;cheng&#x27;</span>, <span class="string">&#x27;zhang&#x27;</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>name.append(<span class="string">&#x27;zhao&#x27;</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">print</span>(name)</span><br><span class="line">[<span class="string">&#x27;lin&#x27;</span>, <span class="string">&#x27;cheng&#x27;</span>, <span class="string">&#x27;zhang&#x27;</span>, <span class="string">&#x27;zhao&#x27;</span>]</span><br></pre></td></tr></table></figure>
+
+<p>在指定位置添加元素</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>name = [<span class="string">&#x27;lin&#x27;</span>, <span class="string">&#x27;cheng&#x27;</span>, <span class="string">&#x27;zhang&#x27;</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>name.insert(<span class="number">1</span>, <span class="string">&#x27;zhao&#x27;</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">print</span>(name)</span><br><span class="line">[<span class="string">&#x27;lin&#x27;</span>, <span class="string">&#x27;zhao&#x27;</span>, <span class="string">&#x27;cheng&#x27;</span>, <span class="string">&#x27;zhang&#x27;</span>]</span><br></pre></td></tr></table></figure>
+
+<h3 id="删"><a href="#删" class="headerlink" title="删"></a><strong>删</strong></h3><p>删除末尾元素</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>name = [<span class="string">&#x27;lin&#x27;</span>, <span class="string">&#x27;cheng&#x27;</span>, <span class="string">&#x27;zhang&#x27;</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>name.pop()</span><br><span class="line"><span class="string">&#x27;zhang&#x27;</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">print</span>(name)</span><br><span class="line">[<span class="string">&#x27;lin&#x27;</span>, <span class="string">&#x27;cheng&#x27;</span>]</span><br></pre></td></tr></table></figure>
+
+<p>删除指定位置的元素</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>name = [<span class="string">&#x27;lin&#x27;</span>, <span class="string">&#x27;cheng&#x27;</span>, <span class="string">&#x27;zhang&#x27;</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>name.pop(<span class="number">1</span>)</span><br><span class="line"><span class="string">&#x27;cheng&#x27;</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">print</span>(name)</span><br><span class="line">[<span class="string">&#x27;lin&#x27;</span>, <span class="string">&#x27;zhang&#x27;</span>]</span><br></pre></td></tr></table></figure>
+
+<h3 id="改"><a href="#改" class="headerlink" title="改"></a><strong>改</strong></h3><p>直接赋值给对应的索引位置</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>name = [<span class="string">&#x27;lin&#x27;</span>, <span class="string">&#x27;cheng&#x27;</span>, <span class="string">&#x27;zhang&#x27;</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>name[<span class="number">1</span>] = <span class="string">&#x27;zhao&#x27;</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">print</span>(name)</span><br><span class="line">[<span class="string">&#x27;lin&#x27;</span>, <span class="string">&#x27;zhao&#x27;</span>, <span class="string">&#x27;zhang&#x27;</span>]</span><br></pre></td></tr></table></figure>
+
+<h3 id="查"><a href="#查" class="headerlink" title="查"></a><strong>查</strong></h3><p>通过索引下标查询</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>name = [<span class="string">&#x27;lin&#x27;</span>, <span class="string">&#x27;cheng&#x27;</span>, <span class="string">&#x27;zhang&#x27;</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">print</span>(name[<span class="number">0</span>])</span><br><span class="line">lin</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">print</span>(name[-<span class="number">1</span>])</span><br><span class="line">zhang</span><br></pre></td></tr></table></figure>
+
+<h3 id="空列表和初始化"><a href="#空列表和初始化" class="headerlink" title="空列表和初始化"></a><strong>空列表和初始化</strong></h3><p>空列表是使用不包含任何内容的两个方括号 <code>[]</code> 表示的。使用 None，可以初始化列表的长度，例如：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>sequence = [<span class="literal">None</span>] * <span class="number">10</span> </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>sequence </span><br><span class="line">[<span class="literal">None</span>, <span class="literal">None</span>, <span class="literal">None</span>, <span class="literal">None</span>, <span class="literal">None</span>, <span class="literal">None</span>, <span class="literal">None</span>, <span class="literal">None</span>, <span class="literal">None</span>, <span class="literal">None</span>]</span><br></pre></td></tr></table></figure>
+
+<h3 id="遍历"><a href="#遍历" class="headerlink" title="遍历"></a><strong>遍历</strong></h3><p>遍历元素</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">name = [<span class="string">&#x27;lin&#x27;</span>, <span class="string">&#x27;cheng&#x27;</span>, <span class="string">&#x27;zhang&#x27;</span>]</span><br><span class="line"><span class="keyword">for</span> val <span class="keyword">in</span> name:</span><br><span class="line">    <span class="built_in">print</span>(val)</span><br></pre></td></tr></table></figure>
+
+<p>带索引遍历元素</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">name = [<span class="string">&#x27;lin&#x27;</span>, <span class="string">&#x27;cheng&#x27;</span>, <span class="string">&#x27;zhang&#x27;</span>]</span><br><span class="line"><span class="keyword">for</span> idx, val <span class="keyword">in</span> <span class="built_in">enumerate</span>(name):</span><br><span class="line">    <span class="built_in">print</span>(<span class="built_in">str</span>(idx) + <span class="string">&#x27;--&gt;&#x27;</span> + val)</span><br></pre></td></tr></table></figure>
+
+<h3 id="列表方法"><a href="#列表方法" class="headerlink" title="列表方法"></a><strong>列表方法</strong></h3><p><strong>append：</strong>用于将一个对象附加到列表末尾。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>lst = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>] </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>lst.append(<span class="number">4</span>) </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>lst </span><br><span class="line">[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>]</span><br></pre></td></tr></table></figure>
+
+<p><strong>clear：</strong>就地清空列表的内容。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>lst = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>] </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>lst.clear() </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>lst </span><br><span class="line">[]</span><br></pre></td></tr></table></figure>
+
+<p><strong>copy：</strong>复制列表。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>a = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>] </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>b = a </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>b[<span class="number">1</span>] = <span class="number">4</span> </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a </span><br><span class="line">[<span class="number">1</span>, <span class="number">4</span>, <span class="number">3</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>] </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>b = a.copy() </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>b[<span class="number">1</span>] = <span class="number">4</span> </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a </span><br><span class="line">[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]</span><br></pre></td></tr></table></figure>
+
+<p><strong>count：</strong>计算指定的元素在列表中出现了多少次。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>[<span class="string">&#x27;to&#x27;</span>, <span class="string">&#x27;be&#x27;</span>, <span class="string">&#x27;or&#x27;</span>, <span class="string">&#x27;not&#x27;</span>, <span class="string">&#x27;to&#x27;</span>, <span class="string">&#x27;be&#x27;</span>].count(<span class="string">&#x27;to&#x27;</span>) </span><br><span class="line"><span class="number">2</span> </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>x = [[<span class="number">1</span>, <span class="number">2</span>], <span class="number">1</span>, <span class="number">1</span>, [<span class="number">2</span>, <span class="number">1</span>, [<span class="number">1</span>, <span class="number">2</span>]]] </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>x.count(<span class="number">1</span>) </span><br><span class="line"><span class="number">2</span> </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>x.count([<span class="number">1</span>, <span class="number">2</span>]) </span><br><span class="line"><span class="number">1</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>extend：</strong>使用一个列表来扩展另一个列表。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>a = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>] </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>b = [<span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>] </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a.extend(b) </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a </span><br><span class="line">[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>]</span><br></pre></td></tr></table></figure>
+
+<p>extend 与拼接的一个重要差别，就是将修改被扩展的序列。在常规拼接中，情况是返回一个全新的序列。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>a = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>] </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>b = [<span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>] </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a + b </span><br><span class="line">[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>] </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a </span><br><span class="line">[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]</span><br></pre></td></tr></table></figure>
+
+<p><strong>index：</strong>列表中查找指定值第一次出现的索引。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>knights = [<span class="string">&#x27;We&#x27;</span>, <span class="string">&#x27;are&#x27;</span>, <span class="string">&#x27;the&#x27;</span>, <span class="string">&#x27;knights&#x27;</span>, <span class="string">&#x27;who&#x27;</span>, <span class="string">&#x27;say&#x27;</span>, <span class="string">&#x27;ni&#x27;</span>] </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>knights.index(<span class="string">&#x27;who&#x27;</span>) </span><br><span class="line"><span class="number">4</span> </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>knights.index(<span class="string">&#x27;herring&#x27;</span>) </span><br><span class="line">Traceback (innermost last): </span><br><span class="line"> File <span class="string">&quot;&lt;pyshell&gt;&quot;</span>, line <span class="number">1</span>, <span class="keyword">in</span> ? </span><br><span class="line"> knights.index(<span class="string">&#x27;herring&#x27;</span>) </span><br><span class="line">ValueError: <span class="built_in">list</span>.index(x): x <span class="keyword">not</span> <span class="keyword">in</span> <span class="built_in">list</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>insert：</strong>将一个对象插入列表指定位置。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>numbers = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>] </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>numbers.insert(<span class="number">3</span>, <span class="string">&#x27;four&#x27;</span>) </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>numbers </span><br><span class="line">[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="string">&#x27;four&#x27;</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>]</span><br></pre></td></tr></table></figure>
+
+<p><strong>pop：</strong>从列表中删除一个元素，并返回这一元素。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>x.pop() </span><br><span class="line"><span class="number">3</span> </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>x </span><br><span class="line">[<span class="number">1</span>, <span class="number">2</span>] </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>x.pop(<span class="number">0</span>) </span><br><span class="line"><span class="number">1</span> </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>x </span><br><span class="line">[<span class="number">2</span>]</span><br></pre></td></tr></table></figure>
+
+<p><strong>remove：</strong>用于删除第一个为指定值的元素。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>x = [<span class="string">&#x27;to&#x27;</span>, <span class="string">&#x27;be&#x27;</span>, <span class="string">&#x27;or&#x27;</span>, <span class="string">&#x27;not&#x27;</span>, <span class="string">&#x27;to&#x27;</span>, <span class="string">&#x27;be&#x27;</span>] </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>x.remove(<span class="string">&#x27;be&#x27;</span>) </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>x </span><br><span class="line">[<span class="string">&#x27;to&#x27;</span>, <span class="string">&#x27;or&#x27;</span>, <span class="string">&#x27;not&#x27;</span>, <span class="string">&#x27;to&#x27;</span>, <span class="string">&#x27;be&#x27;</span>] </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>x.remove(<span class="string">&#x27;bee&#x27;</span>) </span><br><span class="line">Traceback (innermost last): </span><br><span class="line"> File <span class="string">&quot;&lt;pyshell&gt;&quot;</span>, line <span class="number">1</span>, <span class="keyword">in</span> ? </span><br><span class="line"> x.remove(<span class="string">&#x27;bee&#x27;</span>) </span><br><span class="line">ValueError: <span class="built_in">list</span>.remove(x): x <span class="keyword">not</span> <span class="keyword">in</span> <span class="built_in">list</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>reverse：</strong>按相反的顺序排列列表中的元素。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>x = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>] </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>x.reverse() </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>x </span><br><span class="line">[<span class="number">3</span>, <span class="number">2</span>, <span class="number">1</span>]</span><br></pre></td></tr></table></figure>
+
+<p><strong>sort：</strong>用于对列表就地排序，默认从小到大排序。方法sort接受两个可选参数：key 和 reverse。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>x = [<span class="number">4</span>, <span class="number">6</span>, <span class="number">2</span>, <span class="number">1</span>, <span class="number">7</span>, <span class="number">9</span>] </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>x.sort() </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>x </span><br><span class="line">[<span class="number">1</span>, <span class="number">2</span>, <span class="number">4</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">9</span>]</span><br></pre></td></tr></table></figure>
+
+<h2 id="Tuple"><a href="#Tuple" class="headerlink" title="Tuple"></a><strong>Tuple</strong></h2><p>tuple 和 list 非常类似，但是 tuple 一旦初始化就不能修改，因此没有增删改。</p>
+<h3 id="Tuple-的定义"><a href="#Tuple-的定义" class="headerlink" title="Tuple 的定义"></a><strong>Tuple 的定义</strong></h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">language = (<span class="string">&#x27;cn&#x27;</span>, <span class="string">&#x27;en&#x27;</span>, <span class="string">&#x27;ja&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<h3 id="查-1"><a href="#查-1" class="headerlink" title="查"></a><strong>查</strong></h3><p>通过索引下标查询</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>language = (<span class="string">&#x27;cn&#x27;</span>, <span class="string">&#x27;en&#x27;</span>, <span class="string">&#x27;ja&#x27;</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">print</span>(language[<span class="number">0</span>])</span><br><span class="line">cn</span><br></pre></td></tr></table></figure>
+
+<h3 id="遍历-1"><a href="#遍历-1" class="headerlink" title="遍历"></a><strong>遍历</strong></h3><p>遍历元素</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">language = (<span class="string">&#x27;cn&#x27;</span>, <span class="string">&#x27;en&#x27;</span>, <span class="string">&#x27;ja&#x27;</span>)</span><br><span class="line"><span class="keyword">for</span> val <span class="keyword">in</span> language:</span><br><span class="line">    <span class="built_in">print</span>(val)</span><br></pre></td></tr></table></figure>
+
+<p>带索引遍历元素</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">language = (<span class="string">&#x27;cn&#x27;</span>, <span class="string">&#x27;en&#x27;</span>, <span class="string">&#x27;ja&#x27;</span>)</span><br><span class="line"><span class="keyword">for</span> idx, val <span class="keyword">in</span> <span class="built_in">enumerate</span>(language):</span><br><span class="line">    <span class="built_in">print</span>(<span class="built_in">str</span>(idx) + <span class="string">&#x27;--&gt;&#x27;</span> + val)</span><br></pre></td></tr></table></figure>
+
+<h3 id="注意"><a href="#注意" class="headerlink" title="注意"></a><strong>注意</strong></h3><p>注意空 tuple 和只有一个元素的 tuple的定义方式：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>t = () <span class="comment"># 空 tuple 的定义方式</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>t = (<span class="number">1</span>,) <span class="comment"># 只有一个元素的 tuple 的定义方式</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>t = (<span class="number">1</span>) <span class="comment"># 数据类型不是 tuple，是整数。括号 () 是数学中的括号。</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="Dict"><a href="#Dict" class="headerlink" title="Dict"></a><strong>Dict</strong></h2><h3 id="Dict-的定义"><a href="#Dict-的定义" class="headerlink" title="Dict 的定义"></a><strong>Dict 的定义</strong></h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dictionary = &#123;<span class="string">&#x27;China&#x27;</span>: <span class="string">&#x27;cn&#x27;</span>, <span class="string">&#x27;USA&#x27;</span>: <span class="string">&quot;en&quot;</span>, <span class="string">&#x27;Japan&#x27;</span>: <span class="string">&quot;ja&quot;</span>&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="增-1"><a href="#增-1" class="headerlink" title="增"></a><strong>增</strong></h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>dictionary = &#123;<span class="string">&#x27;China&#x27;</span>: <span class="string">&#x27;cn&#x27;</span>, <span class="string">&#x27;USA&#x27;</span>: <span class="string">&#x27;en&#x27;</span>, <span class="string">&#x27;Japan&#x27;</span>: <span class="string">&#x27;ja&#x27;</span>&#125;</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>dictionary[<span class="string">&#x27;Germany&#x27;</span>] = <span class="string">&#x27;de&#x27;</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">print</span>(dictionary)</span><br><span class="line">&#123;<span class="string">&#x27;China&#x27;</span>: <span class="string">&#x27;cn&#x27;</span>, <span class="string">&#x27;USA&#x27;</span>: <span class="string">&#x27;en&#x27;</span>, <span class="string">&#x27;Japan&#x27;</span>: <span class="string">&#x27;ja&#x27;</span>, <span class="string">&#x27;Germany&#x27;</span>: <span class="string">&#x27;de&#x27;</span>&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="删-1"><a href="#删-1" class="headerlink" title="删"></a><strong>删</strong></h3><p>pop(key) 方法删除 key</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>dictionary = &#123;<span class="string">&#x27;China&#x27;</span>: <span class="string">&#x27;cn&#x27;</span>, <span class="string">&#x27;USA&#x27;</span>: <span class="string">&quot;en&quot;</span>, <span class="string">&#x27;Japan&#x27;</span>: <span class="string">&quot;ja&quot;</span>&#125;</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>dictionary.pop(<span class="string">&#x27;China&#x27;</span>)</span><br><span class="line"><span class="string">&#x27;cn&#x27;</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">print</span>(dictionary)</span><br><span class="line">&#123;<span class="string">&#x27;USA&#x27;</span>: <span class="string">&#x27;en&#x27;</span>, <span class="string">&#x27;Japan&#x27;</span>: <span class="string">&#x27;ja&#x27;</span>&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="改-1"><a href="#改-1" class="headerlink" title="改"></a><strong>改</strong></h3><p>一个 key 只能对应一个 value，给 key 重新赋值即可。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>dictionary = &#123;<span class="string">&#x27;China&#x27;</span>: <span class="string">&#x27;cn&#x27;</span>, <span class="string">&#x27;USA&#x27;</span>: <span class="string">&#x27;en&#x27;</span>, <span class="string">&#x27;Japan&#x27;</span>: <span class="string">&#x27;ja&#x27;</span>&#125;</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>dictionary[<span class="string">&#x27;Japan&#x27;</span>] = <span class="string">&#x27;en&#x27;</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">print</span>(dictionary)</span><br><span class="line">&#123;<span class="string">&#x27;China&#x27;</span>: <span class="string">&#x27;cn&#x27;</span>, <span class="string">&#x27;USA&#x27;</span>: <span class="string">&#x27;en&#x27;</span>, <span class="string">&#x27;Japan&#x27;</span>: <span class="string">&#x27;en&#x27;</span>&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="查-2"><a href="#查-2" class="headerlink" title="查"></a><strong>查</strong></h3><p>根据 key 查询 value</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>dictionary = &#123;<span class="string">&#x27;China&#x27;</span>: <span class="string">&#x27;cn&#x27;</span>, <span class="string">&#x27;USA&#x27;</span>: <span class="string">&quot;en&quot;</span>, <span class="string">&#x27;Japan&#x27;</span>: <span class="string">&quot;ja&quot;</span>&#125;</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>dictionary[<span class="string">&#x27;China&#x27;</span>]</span><br><span class="line"><span class="string">&#x27;cn&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>get() 方法查询 value，如果 key 不存在返回 None，或者自己指定的 value。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>dictionary = &#123;<span class="string">&#x27;China&#x27;</span>: <span class="string">&#x27;cn&#x27;</span>, <span class="string">&#x27;USA&#x27;</span>: <span class="string">&quot;en&quot;</span>, <span class="string">&#x27;Japan&#x27;</span>: <span class="string">&quot;ja&quot;</span>&#125;</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>dictionary.get(<span class="string">&#x27;China&#x27;</span>)</span><br><span class="line"><span class="string">&#x27;cn&#x27;</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>dictionary.get(<span class="string">&#x27;UK&#x27;</span>, <span class="string">&#x27;en&#x27;</span>)</span><br><span class="line"><span class="string">&#x27;en&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="遍历-2"><a href="#遍历-2" class="headerlink" title="遍历"></a><strong>遍历</strong></h3><h4 id="遍历-key"><a href="#遍历-key" class="headerlink" title="遍历 key"></a><strong>遍历 key</strong></h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">dictionary = &#123;<span class="string">&#x27;China&#x27;</span>: <span class="string">&#x27;cn&#x27;</span>, <span class="string">&#x27;USA&#x27;</span>: <span class="string">&#x27;en&#x27;</span>, <span class="string">&#x27;Japan&#x27;</span>: <span class="string">&#x27;ja&#x27;</span>&#125;</span><br><span class="line"><span class="keyword">for</span> key <span class="keyword">in</span> dictionary:</span><br><span class="line">    <span class="built_in">print</span>(key)</span><br></pre></td></tr></table></figure>
+
+<h4 id="遍历-value"><a href="#遍历-value" class="headerlink" title="遍历 value"></a><strong>遍历 value</strong></h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">dictionary = &#123;<span class="string">&#x27;China&#x27;</span>: <span class="string">&#x27;cn&#x27;</span>, <span class="string">&#x27;USA&#x27;</span>: <span class="string">&#x27;en&#x27;</span>, <span class="string">&#x27;Japan&#x27;</span>: <span class="string">&#x27;ja&#x27;</span>&#125;</span><br><span class="line"><span class="keyword">for</span> val <span class="keyword">in</span> dictionary.values():</span><br><span class="line">    <span class="built_in">print</span>(val)</span><br></pre></td></tr></table></figure>
+
+<h4 id="遍历-key-和-value"><a href="#遍历-key-和-value" class="headerlink" title="遍历 key 和 value"></a><strong>遍历 key 和 value</strong></h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">dictionary = &#123;<span class="string">&#x27;China&#x27;</span>: <span class="string">&#x27;cn&#x27;</span>, <span class="string">&#x27;USA&#x27;</span>: <span class="string">&#x27;en&#x27;</span>, <span class="string">&#x27;Japan&#x27;</span>: <span class="string">&#x27;ja&#x27;</span>&#125;</span><br><span class="line"><span class="keyword">for</span> key, val <span class="keyword">in</span> dictionary.items():</span><br><span class="line">    <span class="built_in">print</span>(key + <span class="string">&#x27;--&gt;&#x27;</span> + val)</span><br></pre></td></tr></table></figure>
+
+<h2 id="Set"><a href="#Set" class="headerlink" title="Set"></a><strong>Set</strong></h2><h3 id="Set-的定义"><a href="#Set-的定义" class="headerlink" title="Set 的定义"></a><strong>Set 的定义</strong></h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">key = <span class="built_in">set</span>([<span class="string">&#x27;cn&#x27;</span>, <span class="string">&#x27;en&#x27;</span>, <span class="string">&#x27;ja&#x27;</span>])</span><br></pre></td></tr></table></figure>
+
+<h3 id="增-2"><a href="#增-2" class="headerlink" title="增"></a><strong>增</strong></h3><p>add(key) 方法添加元素</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>key = <span class="built_in">set</span>([<span class="string">&#x27;cn&#x27;</span>, <span class="string">&#x27;en&#x27;</span>, <span class="string">&#x27;ja&#x27;</span>])</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>key.add(<span class="string">&#x27;de&#x27;</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">print</span>(key)</span><br><span class="line">&#123;<span class="string">&#x27;de&#x27;</span>, <span class="string">&#x27;ja&#x27;</span>, <span class="string">&#x27;cn&#x27;</span>, <span class="string">&#x27;en&#x27;</span>&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="删-2"><a href="#删-2" class="headerlink" title="删"></a><strong>删</strong></h3><p>remove(key) 方法删除元素</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>key = <span class="built_in">set</span>([<span class="string">&#x27;cn&#x27;</span>, <span class="string">&#x27;en&#x27;</span>, <span class="string">&#x27;ja&#x27;</span>])</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>key.remove(<span class="string">&#x27;ja&#x27;</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">print</span>(key)</span><br><span class="line">&#123;<span class="string">&#x27;cn&#x27;</span>, <span class="string">&#x27;en&#x27;</span>&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="遍历-3"><a href="#遍历-3" class="headerlink" title="遍历"></a><strong>遍历</strong></h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">key = <span class="built_in">set</span>([<span class="string">&#x27;cn&#x27;</span>, <span class="string">&#x27;en&#x27;</span>, <span class="string">&#x27;ja&#x27;</span>])</span><br><span class="line"><span class="keyword">for</span> x <span class="keyword">in</span> key:</span><br><span class="line">    <span class="built_in">print</span>(x)</span><br></pre></td></tr></table></figure>
+
+<h3 id="集合运算"><a href="#集合运算" class="headerlink" title="集合运算"></a><strong>集合运算</strong></h3><h4 id="并集"><a href="#并集" class="headerlink" title="并集"></a><strong>并集</strong></h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>key1 = <span class="built_in">set</span>([<span class="string">&#x27;cn&#x27;</span>, <span class="string">&#x27;en&#x27;</span>, <span class="string">&#x27;ja&#x27;</span>])</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>key2 = <span class="built_in">set</span>([<span class="string">&#x27;cn&#x27;</span>, <span class="string">&#x27;en&#x27;</span>, <span class="string">&#x27;de&#x27;</span>])</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">print</span>(key1 &amp; key2)</span><br><span class="line">&#123;<span class="string">&#x27;cn&#x27;</span>, <span class="string">&#x27;en&#x27;</span>&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="交集"><a href="#交集" class="headerlink" title="交集"></a><strong>交集</strong></h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>key1 = <span class="built_in">set</span>([<span class="string">&#x27;cn&#x27;</span>, <span class="string">&#x27;en&#x27;</span>, <span class="string">&#x27;ja&#x27;</span>])</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>key2 = <span class="built_in">set</span>([<span class="string">&#x27;cn&#x27;</span>, <span class="string">&#x27;en&#x27;</span>, <span class="string">&#x27;de&#x27;</span>])</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">print</span>(key1 | key2)</span><br><span class="line">&#123;<span class="string">&#x27;de&#x27;</span>, <span class="string">&#x27;ja&#x27;</span>, <span class="string">&#x27;cn&#x27;</span>, <span class="string">&#x27;en&#x27;</span>&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="差集"><a href="#差集" class="headerlink" title="差集"></a><strong>差集</strong></h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>key1 = <span class="built_in">set</span>([<span class="string">&#x27;cn&#x27;</span>, <span class="string">&#x27;en&#x27;</span>, <span class="string">&#x27;ja&#x27;</span>])</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>key2 = <span class="built_in">set</span>([<span class="string">&#x27;cn&#x27;</span>, <span class="string">&#x27;en&#x27;</span>, <span class="string">&#x27;de&#x27;</span>])</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">print</span>(key1 - key2)</span><br><span class="line">&#123;<span class="string">&#x27;ja&#x27;</span>&#125;</span><br></pre></td></tr></table></figure>
+
+</div>
+        </div>
+        
+        <footer class="kratos-entry-footer clearfix">
+            
+            <div class="footer-tag clearfix">
+                <div class="pull-left">
+                <i class="fa fa-tags"></i>
+                    <a class="tag-none-link" href="/blog/tags/Python/" rel="tag">Python</a>
+                </div>
+                <div class="pull-date">
+                    <time datetime="2026-01-04T05:51:48.258Z" itemprop="dateModified">最后编辑：2026-01-04</time>
+                </div>
+            </div>
+        </footer>
+    </div>
+    
+        <nav class="navigation post-navigation clearfix" role="navigation">
+            
+            <div class="nav-previous clearfix">
+                <a title=" 【Python】字符串" href="/blog/2023/12/19/Python/02_Python基础/Python中的字符串/">&lt; 上一篇</a>
+            </div>
+            
+            
+            <div class="nav-next clearfix">
+                <a title=" 【Python】函数" href="/blog/2023/12/21/Python/03_函数/Python中的函数/">下一篇 &gt;</a>
+            </div>
+            
+        </nav>
+    
+    
+</article>
+
+        
+
+            </section>
+
+        
+
+                
+            
+
+<section id="kratos-widget-area" class="col-md-4 hidden-xs hidden-sm">
+    <!-- 文章和页面根据splitter来分割，没有的话就从头开始设置为sticky -->
+    
+    
+                <aside id="krw-about" class="widget widget-kratos-about clearfix">
+    <div class="photo-background"></div>
+    <div class="photo-wrapper clearfix">
+        <div class="photo-wrapper-tip text-center">
+            <img class="about-photo" src="/blog/images/avatar.webp" loading="lazy" decoding="auto" />
+        </div>
+    </div>
+    <div class="textwidget">
+        <p class="text-center">极简主义</p>
+    </div>
+    <div class="site-meta">
+        <a class="meta-item" href="/blog/archives/">
+            <span class="title">
+                文章
+            </span>
+            <span class="count">
+                77
+            </span>
+        </a>
+        <a class="meta-item" href="/blog/categories/">
+            <span class="title">
+                分类
+            </span>
+            <span class="count">
+                10
+            </span>
+        </a>
+        <a class="meta-item" href="/blog/tags/">
+            <span class="title">
+                标签
+            </span>
+            <span class="count">
+                29
+            </span>
+        </a>
+    </div>
+</aside>
+            
+                    <div class="sticky-area">
+                
+                    <aside id="krw-toc" class="widget widget-kratos-toc clearfix toc-div-class" >
+    <div class="photo-background"></div>
+    <h4 class="widget-title no-after">
+        <i class="fa fa-compass"></i>
+        文章目录
+        <span class="toc-progress-bar" role="progressbar" aria-label="阅读进度："></span>
+    </h4>
+    <div class="textwidget">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#List"><span class="toc-text">List</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#List-%E7%9A%84%E5%AE%9A%E4%B9%89"><span class="toc-text">List 的定义</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A2%9E"><span class="toc-text">增</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%A0"><span class="toc-text">删</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%94%B9"><span class="toc-text">改</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9F%A5"><span class="toc-text">查</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%A9%BA%E5%88%97%E8%A1%A8%E5%92%8C%E5%88%9D%E5%A7%8B%E5%8C%96"><span class="toc-text">空列表和初始化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%81%8D%E5%8E%86"><span class="toc-text">遍历</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%97%E8%A1%A8%E6%96%B9%E6%B3%95"><span class="toc-text">列表方法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Tuple"><span class="toc-text">Tuple</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Tuple-%E7%9A%84%E5%AE%9A%E4%B9%89"><span class="toc-text">Tuple 的定义</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9F%A5-1"><span class="toc-text">查</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%81%8D%E5%8E%86-1"><span class="toc-text">遍历</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B3%A8%E6%84%8F"><span class="toc-text">注意</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Dict"><span class="toc-text">Dict</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Dict-%E7%9A%84%E5%AE%9A%E4%B9%89"><span class="toc-text">Dict 的定义</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A2%9E-1"><span class="toc-text">增</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%A0-1"><span class="toc-text">删</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%94%B9-1"><span class="toc-text">改</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9F%A5-2"><span class="toc-text">查</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%81%8D%E5%8E%86-2"><span class="toc-text">遍历</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%81%8D%E5%8E%86-key"><span class="toc-text">遍历 key</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%81%8D%E5%8E%86-value"><span class="toc-text">遍历 value</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%81%8D%E5%8E%86-key-%E5%92%8C-value"><span class="toc-text">遍历 key 和 value</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Set"><span class="toc-text">Set</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Set-%E7%9A%84%E5%AE%9A%E4%B9%89"><span class="toc-text">Set 的定义</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A2%9E-2"><span class="toc-text">增</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%A0-2"><span class="toc-text">删</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%81%8D%E5%8E%86-3"><span class="toc-text">遍历</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%9B%86%E5%90%88%E8%BF%90%E7%AE%97"><span class="toc-text">集合运算</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%B9%B6%E9%9B%86"><span class="toc-text">并集</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BA%A4%E9%9B%86"><span class="toc-text">交集</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%B7%AE%E9%9B%86"><span class="toc-text">差集</span></a></li></ol></li></ol></li></ol>
+    </div>
+</aside>
+                
+                
+  <aside id="krw-categories" class="widget widget-kratos-categories clearfix">
+    <h4 class="widget-title"><i class="fa fa-folder"></i>分类目录</h4>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Docker/">Docker</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Idea/">Idea</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Java/">Java</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/K8s/">K8s</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Linux/">Linux</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/MySQL/">MySQL</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Python/">Python</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Selenium/">Selenium</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/SpringBoot/">SpringBoot</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/SpringCloud/">SpringCloud</a><span class="category-list-count">13</span></li></ul>
+  </aside>
+
+
+            
+                
+  <aside id="krw-tags" class="widget widget-kratos-tags clearfix">
+    <h4 class="widget-title"><i class="fa fa-tags"></i>标签聚合</h4>
+      <div class="tag-clouds">
+        <a href="/blog/tags/CORS/" style="font-size: 0.8em;">CORS</a> <a href="/blog/tags/Docker/" style="font-size: 0.8em;">Docker</a> <a href="/blog/tags/Dubbo/" style="font-size: 0.8em;">Dubbo</a> <a href="/blog/tags/ELK/" style="font-size: 0.8em;">ELK</a> <a href="/blog/tags/Elasticsearch/" style="font-size: 0.8em;">Elasticsearch</a> <a href="/blog/tags/Eureka/" style="font-size: 0.8em;">Eureka</a> <a href="/blog/tags/Feign/" style="font-size: 0.8em;">Feign</a> <a href="/blog/tags/Gateway/" style="font-size: 0.8em;">Gateway</a> <a href="/blog/tags/Idea/" style="font-size: 0.8em;">Idea</a> <a href="/blog/tags/Java/" style="font-size: 0.8em;">Java</a> <a href="/blog/tags/JavaWeb/" style="font-size: 0.8em;">JavaWeb</a> <a href="/blog/tags/K8s/" style="font-size: 0.8em;">K8s</a> <a href="/blog/tags/Linux/" style="font-size: 0.8em;">Linux</a> <a href="/blog/tags/Maven/" style="font-size: 0.8em;">Maven</a> <a href="/blog/tags/MySQL/" style="font-size: 0.8em;">MySQL</a> <a href="/blog/tags/Mybatis/" style="font-size: 0.8em;">Mybatis</a> <a href="/blog/tags/Nacos/" style="font-size: 0.8em;">Nacos</a> <a href="/blog/tags/Pytest/" style="font-size: 0.8em;">Pytest</a>
+      </div>
+  </aside>
+
+            
+                
+  <aside id="krw-posts" class="widget widget-kratos-posts">
+  <h4 class="widget-title"><i class="fa fa-file"></i>最新文章</h4>
+  <div class="tab-content">
+      <ul class="list-group">
+        
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/01/25/K8s/K8s%E7%BB%84%E4%BB%B6/"><i class="fa  fa-book"></i> 【K8s】组件</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/01/24/K8s/K8s%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/"><i class="fa  fa-book"></i> 【K8s】常用命令</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/01/11/Idea/IDEA%E6%8F%92%E4%BB%B6/"><i class="fa  fa-book"></i> 【Idea】插件</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/01/04/Linux/Centos7%E9%97%AE%E9%A2%98%E5%A4%84%E7%90%86/"><i class="fa  fa-book"></i> Centos7问题处理</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2025/12/09/Trae/Trae%E5%AE%89%E8%A3%85%E6%8F%92%E4%BB%B6%E5%AE%9E%E7%8E%B0Java%E4%BB%A3%E7%A0%81%E7%BC%96%E5%86%99/"><i class="fa  fa-book"></i> 【Trae】安装插件实现Java代码编写</a>
+            
+          
+        
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+      </ul>
+  </div>
+  </aside>
+
+            
+    </div>
+</section>
+        
+        </div>
+    </div>
+</div>
+<footer>
+    <div id="footer"  >
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3 footer-list text-center">
+                    <ul class="kratos-social-icons">
+                        <!-- Keep for compatibility -->
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <!-- New links -->
+                        
+                    </ul>
+                    <ul class="kratos-copyright">
+                        <div>
+                            <li>&copy; 2026 溪岚花的博客 版权所有.</li>
+                            <li>本站已运行<span id="span_dt">Loading...</span></li>
+                        </div>
+                        <div>
+                            <li>Theme <a href="https://github.com/Candinya/Kratos-Rebirth" target="_blank">Kratos:Rebirth</a></li>
+                            <li>Site built with&nbsp;<i class="fa fa-heart throb" style="color:#d43f57"></i>&nbsp;by 林家隆.</li>
+                        </div>
+                        <div>
+                            <li>Powered by <a href="https://hexo.io" target="_blank" rel="nofollow">Hexo</a></li>
+                            <li>Hosted on <a href="https://gitee.com/" target="_blank">Gitee Pages</a></li>
+                        </div>
+                        <div>
+                            
+                            
+                        </div>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="kr-tool text-center">
+            <div class="tool">
+                
+                    <div class="box search-box">
+                        <a href="/blog/search/">
+                            <span class="fa fa-search"></span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="box theme-box" id="darkmode-switch">
+                        <span class="fa fa-adjust"></span>
+                    </div>
+                
+                
+                
+            </div>
+            <div class="box gotop-box">
+                <span class="fa fa-chevron-up"></span>
+            </div>
+        </div>
+    </div>
+</footer>
+</div>
+</div>
+
+        <script defer src="/blog/vendors/bootstrap@3.3.4/dist/js/bootstrap.min.js"></script>
+<script defer src="/blog/vendors/nprogress@0.2.0/nprogress.js"></script>
+<script>
+    if (!window.kr) {
+        window.kr = {};
+    }
+    window.kr.notMobile = (!(navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i)));
+    window.kr.siteRoot = "/blog/";
+</script>
+
+
+
+
+
+    <script defer src="/blog/vendors/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+
+<script defer src="/blog/js/kratosr.min.js"></script>
+<script defer src="/blog/js/pjax.min.js"></script>
+
+
+
+<!-- Extra support for third-party plguins  -->
+
+
+    </body>
+</html>

@@ -1,0 +1,844 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+  <!-- 元数据 -->
+  <meta charset="utf-8">
+  <link rel="icon" href="/blog/images/logo.png">
+  
+  <title>【JavaWeb】核心功能 | 溪岚花的博客</title>
+  
+  <meta name="author" content="林家隆" />
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="robots" content="index,follow" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <meta name="format-detection" content="telphone=no, email=no" />
+  
+    <meta name="keywords" content="JavaWeb" />
+  
+  <meta name="description" content="Tomcat 服务器Tomcat 安装Tomcat 官方网站下载  JavaEE 版本和 Servlet 版本号对应关系     Servlet Version EE Version    6.1 Jakarta EE ?   6.0 Jakarta EE 10   5.0 Jakarta EE 9&#x2F;9.1   4.0 JAVA EE 8   3.1 JAVA EE 7   3.1 JA">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【JavaWeb】核心功能">
+<meta property="og:url" content="https://lin316.gitee.io/blog/2024/03/06/JavaWeb/JavaWeb/index.html">
+<meta property="og:site_name" content="溪岚花的博客">
+<meta property="og:description" content="Tomcat 服务器Tomcat 安装Tomcat 官方网站下载  JavaEE 版本和 Servlet 版本号对应关系     Servlet Version EE Version    6.1 Jakarta EE ?   6.0 Jakarta EE 10   5.0 Jakarta EE 9&#x2F;9.1   4.0 JAVA EE 8   3.1 JAVA EE 7   3.1 JA">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://lin316.gitee.io/blog/blog/images/logo.png">
+<meta property="article:published_time" content="2024-03-06T01:00:00.000Z">
+<meta property="article:modified_time" content="2026-01-04T05:51:48.242Z">
+<meta property="article:author" content="林家隆">
+<meta property="article:tag" content="JavaWeb">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://lin316.gitee.io/blog/blog/images/logo.png">
+  
+  <!-- 站点验证相关 -->
+  
+    
+    
+    
+  
+  <!-- 样式表文件 -->
+  <link rel="stylesheet" id="kratos-css" href="/blog/css/kratosr.min.css" media="all"></script>
+  
+    <link rel="stylesheet" id="darkmode-css" href="/blog/css/kr-color-dark.min.css" media="(prefers-color-scheme: dark)"></script>
+    <script src="/blog/js/kr-dark.min.js"></script>
+  
+  
+    <link rel="stylesheet" id="highlight-css" href="/blog/css/highlight/night-eighties.min.css" media="all"></script>
+  
+  <link rel="stylesheet" id="fontawe-css" href="/blog/vendors/font-awesome@4.7.0/css/font-awesome.min.css" media="all"></script>
+  <link rel="stylesheet" id="nprogress-css" href="/blog/vendors/nprogress@0.2.0/nprogress.css" media="all"></script>
+  
+  
+  
+    <link rel="stylesheet" href="/blog/vendors/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css"></script>
+  
+  <!-- 不得不预先加载的一些JS文件 -->
+  <script src="/blog/vendors/jquery@3.6.0/dist/jquery.min.js"></script>
+  
+  
+  <style>
+    
+    
+  </style>
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+    <body class="custom-background">
+        <div id="kratos-wrapper">
+    <div id="kratos-page">
+        <div id="kratos-header">
+            <header id="kratos-desktop-topnav" class="kratos-topnav">
+                <div class="container">
+                    <div class="nav-header">
+                        <nav id="kratos-menu-wrap">
+                            <ul id="kratos-primary-menu" class="sf-menu">
+                                
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/">
+                                            
+                                                
+                                                    <i class="fa fa-home"></i>
+                                                
+                                                首页
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/archives/">
+                                            
+                                                
+                                                    <i class="fa fa-file"></i>
+                                                
+                                                归档
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/tags/">
+                                            
+                                                
+                                                    <i class="fa fa-tag"></i>
+                                                
+                                                标签
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/categories/">
+                                            
+                                                
+                                                    <i class="fa fa-folder"></i>
+                                                
+                                                目录
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/search/">
+                                            
+                                                
+                                                    <i class="fa fa-search"></i>
+                                                
+                                                搜索
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </header>
+            <header id="kratos-mobile-topnav" class="kratos-topnav">
+                <div class="container">
+                    <div class="color-logo"><a href="/blog/">溪岚花的博客</a></div>
+                    <div class="nav-toggle">
+                        <a class="kratos-nav-toggle js-kratos-nav-toggle">
+                            <i></i>
+                        </a>
+                    </div>
+                </div>
+            </header>
+        </div>
+        <div class="kratos-start kratos-hero-2">
+            <!-- <div class="kratos-overlay"></div> -->
+            <div class="kratos-cover kratos-cover-2 text-center">
+                <div class="desc desc2 animate-box">
+                    <a href="/blog/">
+                        <h2 style="opacity: 0.2;">溪岚花的博客</h2> <br />
+                        <span></span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div id="kratos-blog-post">
+            <div class="container">
+                <div id="main" class="row">
+                    
+
+        
+
+            <section class="col-md-8">
+
+        
+
+            <article itemscope itemtype="https://schema.org/Article">
+    
+    <link itemprop="mainEntityOfPage" href="https://lin316.gitee.io/blog/2024/03/06/JavaWeb/JavaWeb/">
+    <div class="kratos-hentry kratos-post-inner clearfix">
+        <header class="kratos-entry-header">
+            
+                <h1 class="kratos-entry-title text-center" itemprop="name headline">【JavaWeb】核心功能</h1>
+            
+            
+            <ul class="kratos-post-meta text-center">
+                <li><time datetime="2024-03-06T01:00:00.000Z" itemprop="datePublished"><i class="fa fa-calendar"></i> 2024-03-06</time></li>
+                <li itemprop="author" itemscope itemtype="https://schema.org/Person">
+                    <i class="fa fa-user"></i> 作者 <span itemprop="name">林家隆</span>
+                </li>
+                
+                    <li>
+                        <i class="fa fa-edit"></i> 
+                        
+                        
+                            6.68K
+                        
+                        字
+                    </li>
+                
+                
+            </ul>
+        </header>
+        <div class="kratos-post-content">
+            
+            <div id="expire-alert" class="alert alert-warning hidden" role="alert">
+                <div class="icon"><i class="fa fa-warning"></i></div>
+                <div class="text"><p>本文最后编辑于 <time datetime="1767505908242"></time> 前，其中的内容可能需要更新。</p></div>
+            </div>
+            
+            
+            
+                <div class="kratos-post-inner-toc toc-div-class" >
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Tomcat-%E6%9C%8D%E5%8A%A1%E5%99%A8"><span class="toc-number">1.</span> <span class="toc-text">Tomcat 服务器</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Tomcat-%E5%AE%89%E8%A3%85"><span class="toc-number">1.1.</span> <span class="toc-text">Tomcat 安装</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Tomcat-%E6%97%A5%E5%BF%97%E4%B8%AD%E6%96%87%E4%B9%B1%E7%A0%81%E9%97%AE%E9%A2%98"><span class="toc-number">1.2.</span> <span class="toc-text">Tomcat 日志中文乱码问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Tomcat-%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84"><span class="toc-number">1.3.</span> <span class="toc-text">Tomcat 目录结构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Web-%E9%A1%B9%E7%9B%AE%E7%9A%84%E6%A0%87%E5%87%86%E7%BB%93%E6%9E%84"><span class="toc-number">1.4.</span> <span class="toc-text">Web 项目的标准结构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Web-%E9%A1%B9%E7%9B%AE%E9%83%A8%E7%BD%B2%E7%9A%84%E6%96%B9%E5%BC%8F"><span class="toc-number">1.5.</span> <span class="toc-text">Web 项目部署的方式</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Servlet"><span class="toc-number">2.</span> <span class="toc-text">Servlet</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Servlet-%E4%BB%8B%E7%BB%8D"><span class="toc-number">2.1.</span> <span class="toc-text">Servlet 介绍</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%A5%E9%97%A8%E7%A4%BA%E4%BE%8B"><span class="toc-number">2.2.</span> <span class="toc-text">入门示例</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#WebServlet-%E6%9B%BF%E4%BB%A3-web-xml-%E9%85%8D%E7%BD%AE"><span class="toc-number">2.3.</span> <span class="toc-text">@WebServlet 替代 web.xml 配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Servlet-%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F"><span class="toc-number">2.4.</span> <span class="toc-text">Servlet 的生命周期</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Filter-%E8%BF%87%E6%BB%A4%E5%99%A8"><span class="toc-number">3.</span> <span class="toc-text">Filter 过滤器</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%A5%E9%97%A8%E7%A4%BA%E4%BE%8B-1"><span class="toc-number">3.1.</span> <span class="toc-text">入门示例</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#WebFilter-%E6%9B%BF%E4%BB%A3-web-xml-%E9%85%8D%E7%BD%AE"><span class="toc-number">3.2.</span> <span class="toc-text">@WebFilter 替代 web.xml 配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%87%E6%BB%A4%E5%99%A8%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F"><span class="toc-number">3.3.</span> <span class="toc-text">过滤器生命周期</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%9B%91%E5%90%AC%E5%99%A8"><span class="toc-number">4.</span> <span class="toc-text">监听器</span></a></li></ol>
+                </div>
+            
+            <hr />
+            <div itemprop="articleBody"><h2 id="Tomcat-服务器"><a href="#Tomcat-服务器" class="headerlink" title="Tomcat 服务器"></a>Tomcat 服务器</h2><h3 id="Tomcat-安装"><a href="#Tomcat-安装" class="headerlink" title="Tomcat 安装"></a>Tomcat 安装</h3><p><a target="_blank" rel="noopener" href="https://tomcat.apache.org/download-90.cgi">Tomcat 官方网站下载</a></p>
+<ul>
+<li>JavaEE 版本和 Servlet 版本号对应关系</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th align="left"><strong>Servlet</strong> Version</th>
+<th>EE Version</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">6.1</td>
+<td>Jakarta EE ?</td>
+</tr>
+<tr>
+<td align="left">6.0</td>
+<td>Jakarta EE 10</td>
+</tr>
+<tr>
+<td align="left">5.0</td>
+<td>Jakarta EE 9&#x2F;9.1</td>
+</tr>
+<tr>
+<td align="left">4.0</td>
+<td>JAVA EE 8</td>
+</tr>
+<tr>
+<td align="left">3.1</td>
+<td>JAVA EE 7</td>
+</tr>
+<tr>
+<td align="left">3.1</td>
+<td>JAVA EE 7</td>
+</tr>
+<tr>
+<td align="left">3.0</td>
+<td>JAVAEE 6</td>
+</tr>
+</tbody></table>
+<ul>
+<li>Tomcat 版本和 Servlet 版本之间的对应关系</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th align="left"><strong>Servlet</strong> Version</th>
+<th align="left">**Tomcat ** Version</th>
+<th align="left"><strong>JDK</strong> Version</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">6.1</td>
+<td align="left">11.0.x</td>
+<td align="left">17 and later</td>
+</tr>
+<tr>
+<td align="left">6.0</td>
+<td align="left">10.1.x</td>
+<td align="left">11 and later</td>
+</tr>
+<tr>
+<td align="left">5.0</td>
+<td align="left">10.0.x (superseded)</td>
+<td align="left">8 and later</td>
+</tr>
+<tr>
+<td align="left">4.0</td>
+<td align="left">9.0.x</td>
+<td align="left">8 and later</td>
+</tr>
+<tr>
+<td align="left">3.1</td>
+<td align="left">8.5.x</td>
+<td align="left">7 and later</td>
+</tr>
+<tr>
+<td align="left">3.1</td>
+<td align="left">8.0.x (superseded)</td>
+<td align="left">7 and later</td>
+</tr>
+<tr>
+<td align="left">3.0</td>
+<td align="left">7.0.x (archived)</td>
+<td align="left">6 and later (7 and later for WebSocket)</td>
+</tr>
+</tbody></table>
+<h3 id="Tomcat-日志中文乱码问题"><a href="#Tomcat-日志中文乱码问题" class="headerlink" title="Tomcat 日志中文乱码问题"></a>Tomcat 日志中文乱码问题</h3><p>修改 <strong>conf&#x2F;logging.properties</strong> 文件，将所有的 UTF-8 修改为 GBK。</p>
+<p><img src="/blog/2024/03/06/JavaWeb/JavaWeb/image-20240311195158524.png"></p>
+<h3 id="Tomcat-目录结构"><a href="#Tomcat-目录结构" class="headerlink" title="Tomcat 目录结构"></a>Tomcat 目录结构</h3><p><strong>bin：</strong>该目录下存放的是二进制可执行文件。</p>
+<ul>
+<li>如果是安装版，那么这个目录下会有两个 exe 文件：tomcat10.exe、tomcat10w.exe。前者是在控制台下启动 Tomcat，后者是弹出 GUI 窗口启动 Tomcat。</li>
+<li>如果是解压版，那么会有 startup.bat 和 shutdown.bat 文件。startup.bat 用来启动 Tomcat，但需要先配置 JAVA_HOME 环境变量才能启动。shutdawn.bat 用来停止 Tomcat。</li>
+</ul>
+<p><strong>conf：</strong>Tomcat 的配置文件，有四个非常重要的文件：</p>
+<ul>
+<li>server.xml：配置整个服务器信息，例如端口号。</li>
+<li>tomcat-users.xml：存储 Tomcat 用户的文件，这里保存的是 Tomcat 的用户名及密码，以及用户的角色信息。</li>
+<li>web.xml：部署描述符文件。这个文件中注册了很多 MIME 类型，即文档类型。这些 MIME 类型是客户端与服务器之间说明文档类型的。</li>
+<li>context.xml：对所有应用的统一配置，通常不会去配置它。</li>
+</ul>
+<p>lib：Tomcat的类库。</p>
+<p>logs：日志文件，记录了 Tomcat 启动和关闭的日志。</p>
+<p>temp：存放 Tomcat 的临时文件，这个目录下的东西可以在停止 Tomcat 后删除。</p>
+<p><strong>webapps：</strong>存放 web 项目的目录，其中每个文件夹都是一个项目。</p>
+<p><strong>work：</strong>运行时生成的文件，最终运行的文件都在这里。可以把这个目录下的内容删除，再次运行时会生再次生成 work 目录。</p>
+<p>LICENSE：许可证。</p>
+<p>NOTICE：说明文件。</p>
+<h3 id="Web-项目的标准结构"><a href="#Web-项目的标准结构" class="headerlink" title="Web 项目的标准结构"></a>Web 项目的标准结构</h3><p><img src="/blog/2024/03/06/JavaWeb/JavaWeb/1681453620343.png"></p>
+<p>app  应用的根目录：</p>
+<ul>
+<li>static：非必要的目录，用来存放静态资源，例如：css、js、img 等。</li>
+<li>WEB-INF：必要的目录，用来存放受保护的资源。浏览器通过 url 不可以直接访问的目录。<ul>
+<li>classes：必要的目录，用来存放被编译后的 <strong>.class</strong> 文件和配置文件。</li>
+<li>lib：必要的目录，用来存放项目依赖的 jar 包。</li>
+<li>web.xml：必要的文件，web 项目的基本配置文件。</li>
+</ul>
+</li>
+<li>index.html：非必要的文件，默认的欢迎页。</li>
+</ul>
+<h3 id="Web-项目部署的方式"><a href="#Web-项目部署的方式" class="headerlink" title="Web 项目部署的方式"></a>Web 项目部署的方式</h3><ul>
+<li>将编译好的项目打成 war 包，然后放到 webapps 目录下，Tomcat 启动后会自动解压 war 包。</li>
+<li>将编译好的项目放在 webapps 目录下。</li>
+</ul>
+<h2 id="Servlet"><a href="#Servlet" class="headerlink" title="Servlet"></a>Servlet</h2><blockquote>
+<p><strong>Servlet 依赖包：</strong></p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>javax.servlet<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>javax.servlet-api<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>3.0.1<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 不加上运行时会报错 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">scope</span>&gt;</span>provided<span class="tag">&lt;/<span class="name">scope</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+</blockquote>
+<h3 id="Servlet-介绍"><a href="#Servlet-介绍" class="headerlink" title="Servlet 介绍"></a>Servlet 介绍</h3><p>Servlet 是运行在服务端的 Java 程序，是 sun 公司定义的一套获取动态资源规范。作用：</p>
+<ul>
+<li>用来接收、处理客户端请求以及返回响应数据的程序。</li>
+<li>Servlet 是运行在服务端的，所以 Servlet 需要在 Web 项目中开发且在类似 Tomcat 服务容中运行。</li>
+</ul>
+<h3 id="入门示例"><a href="#入门示例" class="headerlink" title="入门示例"></a>入门示例</h3><blockquote>
+<p><strong>入门示例：</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">UserServlet</span> <span class="keyword">extends</span> <span class="title class_">HttpServlet</span> &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">protected</span> <span class="keyword">void</span> <span class="title function_">service</span><span class="params">(HttpServletRequest req, HttpServletResponse resp)</span> <span class="keyword">throws</span> ServletException, IOException &#123;</span><br><span class="line">        <span class="comment">// 获取请求中的参数</span></span><br><span class="line">        <span class="type">String</span> <span class="variable">username</span> <span class="operator">=</span> req.getParameter(<span class="string">&quot;username&quot;</span>);</span><br><span class="line">        <span class="keyword">if</span> (<span class="string">&quot;lin&quot;</span>.equals(username)) &#123;</span><br><span class="line">            <span class="comment">//通过响应对象响应信息</span></span><br><span class="line">            resp.getWriter().write(<span class="string">&quot;YES&quot;</span>);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            resp.getWriter().write(<span class="string">&quot;NO&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>定义一个类，继承 HttpServlet。</li>
+<li>重写 service 方法，用于处理用户请求。</li>
+<li>HttpServletRequest 为请求对象，HttpServletResponse 为响应对象，由 Tomcat 负责转换。</li>
+<li>Servlet 对象的生命周期：创建、初始化、处理服务、销毁，由 Tomcat 管理。</li>
+</ul>
+<p><strong>web.xml 中的配置：</strong></p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">servlet</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 给 UserServlet 起一个别名 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">servlet-name</span>&gt;</span>userServlet<span class="tag">&lt;/<span class="name">servlet-name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">servlet-class</span>&gt;</span>blog.lin.server.UserServlet<span class="tag">&lt;/<span class="name">servlet-class</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 如果配置的是正整数表示容器在启动时就要实例化 Servlet，数字表示的是实例化的顺序 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">load-on-startup</span>&gt;</span>1<span class="tag">&lt;/<span class="name">load-on-startup</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">servlet</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- 服务映射路径 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">servlet-mapping</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">servlet-name</span>&gt;</span>userServlet<span class="tag">&lt;/<span class="name">servlet-name</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 请求 userServlet 服务的地址 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">url-pattern</span>&gt;</span>/userServlet<span class="tag">&lt;/<span class="name">url-pattern</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">servlet-mapping</span>&gt;</span></span><br></pre></td></tr></table></figure>
+</blockquote>
+<h3 id="WebServlet-替代-web-xml-配置"><a href="#WebServlet-替代-web-xml-配置" class="headerlink" title="@WebServlet 替代 web.xml 配置"></a>@WebServlet 替代 web.xml 配置</h3><blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@WebServlet(</span></span><br><span class="line"><span class="meta">    name = &quot;userServlet&quot;,</span></span><br><span class="line"><span class="meta">    urlPatterns = &#123;&quot;/userServlet&quot;, &quot;/userServlet1&quot;, &quot;/userServlet2&quot;&#125;</span></span><br><span class="line"><span class="meta">)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">UserServlet</span> <span class="keyword">extends</span> <span class="title class_">HttpServlet</span> &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">protected</span> <span class="keyword">void</span> <span class="title function_">service</span><span class="params">(HttpServletRequest req, HttpServletResponse resp)</span> <span class="keyword">throws</span> ServletException, IOException &#123;</span><br><span class="line">        <span class="comment">// 获取请求中的参数</span></span><br><span class="line">        <span class="type">String</span> <span class="variable">username</span> <span class="operator">=</span> req.getParameter(<span class="string">&quot;username&quot;</span>);</span><br><span class="line">        <span class="keyword">if</span> (<span class="string">&quot;lin&quot;</span>.equals(username)) &#123;</span><br><span class="line">            <span class="comment">//通过响应对象响应信息</span></span><br><span class="line">            resp.getWriter().write(<span class="string">&quot;YES&quot;</span>);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            resp.getWriter().write(<span class="string">&quot;NO&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<h3 id="Servlet-的生命周期"><a href="#Servlet-的生命周期" class="headerlink" title="Servlet 的生命周期"></a>Servlet 的生命周期</h3><table>
+<thead>
+<tr>
+<th>生命周期</th>
+<th>对应方法</th>
+<th>执行时机</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>构造对象</strong></td>
+<td>构造器</td>
+<td>第一次请求或者容器启动</td>
+</tr>
+<tr>
+<td><strong>初始化</strong></td>
+<td>init()</td>
+<td>构造完毕后</td>
+</tr>
+<tr>
+<td><strong>处理服务</strong></td>
+<td>service(req, resp)</td>
+<td>每次请求</td>
+</tr>
+<tr>
+<td><strong>销毁</strong></td>
+<td>destory()</td>
+<td>容器关闭</td>
+</tr>
+</tbody></table>
+<h2 id="Filter-过滤器"><a href="#Filter-过滤器" class="headerlink" title="Filter 过滤器"></a>Filter 过滤器</h2><h3 id="入门示例-1"><a href="#入门示例-1" class="headerlink" title="入门示例"></a>入门示例</h3><blockquote>
+<p><strong>Servlet 服务：</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@WebServlet(</span></span><br><span class="line"><span class="meta">    name = &quot;userServlet&quot;,</span></span><br><span class="line"><span class="meta">    urlPatterns = &#123;&quot;/userServlet&quot;, &quot;/userServlet1&quot;, &quot;/userServlet2&quot;&#125;</span></span><br><span class="line"><span class="meta">)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">UserServlet</span> <span class="keyword">extends</span> <span class="title class_">HttpServlet</span> &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">protected</span> <span class="keyword">void</span> <span class="title function_">service</span><span class="params">(HttpServletRequest req, HttpServletResponse resp)</span> <span class="keyword">throws</span> ServletException, IOException &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;user service running...&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Filter 过滤器：</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">LogFilter</span> <span class="keyword">implements</span> <span class="title class_">Filter</span> &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">init</span><span class="params">(FilterConfig filterConfig)</span> <span class="keyword">throws</span> ServletException &#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">doFilter</span><span class="params">(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)</span> <span class="keyword">throws</span> IOException, ServletException &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;filter before&quot;</span>);</span><br><span class="line">        filterChain.doFilter(servletRequest, servletResponse);</span><br><span class="line">        System.out.println(<span class="string">&quot;filter after&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">destroy</span><span class="params">()</span> &#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>web.xml 配置：</strong></p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 为过滤器起别名 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">filter</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">filter-name</span>&gt;</span>logFilter<span class="tag">&lt;/<span class="name">filter-name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">filter-class</span>&gt;</span>blog.lin.filter.LogFilter<span class="tag">&lt;/<span class="name">filter-class</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">filter</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- 配置需要经过过滤器的路径 --&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- 如果有多个过滤器，filter-mapping 的顺序决定了过滤器的工作顺序 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">filter-mapping</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">filter-name</span>&gt;</span>logFilter<span class="tag">&lt;/<span class="name">filter-name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">url-pattern</span>&gt;</span>/userServlet<span class="tag">&lt;/<span class="name">url-pattern</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">filter-mapping</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>执行结果：</strong></p>
+<blockquote>
+<p>filter before<br>user service running…<br>filter after</p>
+</blockquote>
+</blockquote>
+<h3 id="WebFilter-替代-web-xml-配置"><a href="#WebFilter-替代-web-xml-配置" class="headerlink" title="@WebFilter 替代 web.xml 配置"></a>@WebFilter 替代 web.xml 配置</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@WebFilter(</span></span><br><span class="line"><span class="meta">    filterName = &quot;loggingFilter&quot;,</span></span><br><span class="line"><span class="meta">    urlPatterns = &#123;&quot;/userServlet&quot;&#125;</span></span><br><span class="line"><span class="meta">)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">LogFilter</span> <span class="keyword">implements</span> <span class="title class_">Filter</span> &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">init</span><span class="params">(FilterConfig filterConfig)</span> <span class="keyword">throws</span> ServletException &#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">doFilter</span><span class="params">(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)</span> <span class="keyword">throws</span> IOException, ServletException &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;filter before&quot;</span>);</span><br><span class="line">        filterChain.doFilter(servletRequest, servletResponse);</span><br><span class="line">        System.out.println(<span class="string">&quot;filter after&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">destroy</span><span class="params">()</span> &#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="过滤器生命周期"><a href="#过滤器生命周期" class="headerlink" title="过滤器生命周期"></a>过滤器生命周期</h3><table>
+<thead>
+<tr>
+<th>阶段</th>
+<th>对应方法</th>
+<th>执行时机</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>创建对象</strong></td>
+<td>构造器</td>
+<td>web 应用启动时</td>
+</tr>
+<tr>
+<td><strong>初始化方法</strong></td>
+<td>void init(FilterConfig filterConfig)</td>
+<td>构造完毕</td>
+</tr>
+<tr>
+<td><strong>过滤请求</strong></td>
+<td>void doFilter(req, resq, FilterChain filterChain)</td>
+<td>每次请求</td>
+</tr>
+<tr>
+<td><strong>销毁</strong></td>
+<td>default void destroy()</td>
+<td>web 应用关闭时</td>
+</tr>
+</tbody></table>
+<h2 id="监听器"><a href="#监听器" class="headerlink" title="监听器"></a>监听器</h2><p>监听器：是一个对域对象身上发生的事件或状态改变进行监听以及进行相应处理的对象。</p>
+</div>
+        </div>
+        
+        <footer class="kratos-entry-footer clearfix">
+            
+            <div class="footer-tag clearfix">
+                <div class="pull-left">
+                <i class="fa fa-tags"></i>
+                    <a class="tag-none-link" href="/blog/tags/JavaWeb/" rel="tag">JavaWeb</a>
+                </div>
+                <div class="pull-date">
+                    <time datetime="2026-01-04T05:51:48.242Z" itemprop="dateModified">最后编辑：2026-01-04</time>
+                </div>
+            </div>
+        </footer>
+    </div>
+    
+        <nav class="navigation post-navigation clearfix" role="navigation">
+            
+            <div class="nav-previous clearfix">
+                <a title=" 【Spring】AOP 部分" href="/blog/2024/03/05/Spring/AOP部分/">&lt; 上一篇</a>
+            </div>
+            
+            
+            <div class="nav-next clearfix">
+                <a title=" 【Spring】SpringMVC" href="/blog/2024/03/07/Spring/SpringMVC/">下一篇 &gt;</a>
+            </div>
+            
+        </nav>
+    
+    
+</article>
+
+        
+
+            </section>
+
+        
+
+                
+            
+
+<section id="kratos-widget-area" class="col-md-4 hidden-xs hidden-sm">
+    <!-- 文章和页面根据splitter来分割，没有的话就从头开始设置为sticky -->
+    
+    
+                <aside id="krw-about" class="widget widget-kratos-about clearfix">
+    <div class="photo-background"></div>
+    <div class="photo-wrapper clearfix">
+        <div class="photo-wrapper-tip text-center">
+            <img class="about-photo" src="/blog/images/avatar.webp" loading="lazy" decoding="auto" />
+        </div>
+    </div>
+    <div class="textwidget">
+        <p class="text-center">极简主义</p>
+    </div>
+    <div class="site-meta">
+        <a class="meta-item" href="/blog/archives/">
+            <span class="title">
+                文章
+            </span>
+            <span class="count">
+                77
+            </span>
+        </a>
+        <a class="meta-item" href="/blog/categories/">
+            <span class="title">
+                分类
+            </span>
+            <span class="count">
+                10
+            </span>
+        </a>
+        <a class="meta-item" href="/blog/tags/">
+            <span class="title">
+                标签
+            </span>
+            <span class="count">
+                29
+            </span>
+        </a>
+    </div>
+</aside>
+            
+                    <div class="sticky-area">
+                
+                    <aside id="krw-toc" class="widget widget-kratos-toc clearfix toc-div-class" >
+    <div class="photo-background"></div>
+    <h4 class="widget-title no-after">
+        <i class="fa fa-compass"></i>
+        文章目录
+        <span class="toc-progress-bar" role="progressbar" aria-label="阅读进度："></span>
+    </h4>
+    <div class="textwidget">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Tomcat-%E6%9C%8D%E5%8A%A1%E5%99%A8"><span class="toc-text">Tomcat 服务器</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Tomcat-%E5%AE%89%E8%A3%85"><span class="toc-text">Tomcat 安装</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Tomcat-%E6%97%A5%E5%BF%97%E4%B8%AD%E6%96%87%E4%B9%B1%E7%A0%81%E9%97%AE%E9%A2%98"><span class="toc-text">Tomcat 日志中文乱码问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Tomcat-%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84"><span class="toc-text">Tomcat 目录结构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Web-%E9%A1%B9%E7%9B%AE%E7%9A%84%E6%A0%87%E5%87%86%E7%BB%93%E6%9E%84"><span class="toc-text">Web 项目的标准结构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Web-%E9%A1%B9%E7%9B%AE%E9%83%A8%E7%BD%B2%E7%9A%84%E6%96%B9%E5%BC%8F"><span class="toc-text">Web 项目部署的方式</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Servlet"><span class="toc-text">Servlet</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Servlet-%E4%BB%8B%E7%BB%8D"><span class="toc-text">Servlet 介绍</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%A5%E9%97%A8%E7%A4%BA%E4%BE%8B"><span class="toc-text">入门示例</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#WebServlet-%E6%9B%BF%E4%BB%A3-web-xml-%E9%85%8D%E7%BD%AE"><span class="toc-text">@WebServlet 替代 web.xml 配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Servlet-%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F"><span class="toc-text">Servlet 的生命周期</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Filter-%E8%BF%87%E6%BB%A4%E5%99%A8"><span class="toc-text">Filter 过滤器</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%A5%E9%97%A8%E7%A4%BA%E4%BE%8B-1"><span class="toc-text">入门示例</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#WebFilter-%E6%9B%BF%E4%BB%A3-web-xml-%E9%85%8D%E7%BD%AE"><span class="toc-text">@WebFilter 替代 web.xml 配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%87%E6%BB%A4%E5%99%A8%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F"><span class="toc-text">过滤器生命周期</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%9B%91%E5%90%AC%E5%99%A8"><span class="toc-text">监听器</span></a></li></ol>
+    </div>
+</aside>
+                
+                
+  <aside id="krw-categories" class="widget widget-kratos-categories clearfix">
+    <h4 class="widget-title"><i class="fa fa-folder"></i>分类目录</h4>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Docker/">Docker</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Idea/">Idea</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Java/">Java</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/K8s/">K8s</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Linux/">Linux</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/MySQL/">MySQL</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Python/">Python</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Selenium/">Selenium</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/SpringBoot/">SpringBoot</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/SpringCloud/">SpringCloud</a><span class="category-list-count">13</span></li></ul>
+  </aside>
+
+
+            
+                
+  <aside id="krw-tags" class="widget widget-kratos-tags clearfix">
+    <h4 class="widget-title"><i class="fa fa-tags"></i>标签聚合</h4>
+      <div class="tag-clouds">
+        <a href="/blog/tags/CORS/" style="font-size: 0.8em;">CORS</a> <a href="/blog/tags/Docker/" style="font-size: 0.8em;">Docker</a> <a href="/blog/tags/Dubbo/" style="font-size: 0.8em;">Dubbo</a> <a href="/blog/tags/ELK/" style="font-size: 0.8em;">ELK</a> <a href="/blog/tags/Elasticsearch/" style="font-size: 0.8em;">Elasticsearch</a> <a href="/blog/tags/Eureka/" style="font-size: 0.8em;">Eureka</a> <a href="/blog/tags/Feign/" style="font-size: 0.8em;">Feign</a> <a href="/blog/tags/Gateway/" style="font-size: 0.8em;">Gateway</a> <a href="/blog/tags/Idea/" style="font-size: 0.8em;">Idea</a> <a href="/blog/tags/Java/" style="font-size: 0.8em;">Java</a> <a href="/blog/tags/JavaWeb/" style="font-size: 0.8em;">JavaWeb</a> <a href="/blog/tags/K8s/" style="font-size: 0.8em;">K8s</a> <a href="/blog/tags/Linux/" style="font-size: 0.8em;">Linux</a> <a href="/blog/tags/Maven/" style="font-size: 0.8em;">Maven</a> <a href="/blog/tags/MySQL/" style="font-size: 0.8em;">MySQL</a> <a href="/blog/tags/Mybatis/" style="font-size: 0.8em;">Mybatis</a> <a href="/blog/tags/Nacos/" style="font-size: 0.8em;">Nacos</a> <a href="/blog/tags/Pytest/" style="font-size: 0.8em;">Pytest</a>
+      </div>
+  </aside>
+
+            
+                
+  <aside id="krw-posts" class="widget widget-kratos-posts">
+  <h4 class="widget-title"><i class="fa fa-file"></i>最新文章</h4>
+  <div class="tab-content">
+      <ul class="list-group">
+        
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/01/25/K8s/K8s%E7%BB%84%E4%BB%B6/"><i class="fa  fa-book"></i> 【K8s】组件</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/01/24/K8s/K8s%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/"><i class="fa  fa-book"></i> 【K8s】常用命令</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/01/11/Idea/IDEA%E6%8F%92%E4%BB%B6/"><i class="fa  fa-book"></i> 【Idea】插件</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/01/04/Linux/Centos7%E9%97%AE%E9%A2%98%E5%A4%84%E7%90%86/"><i class="fa  fa-book"></i> Centos7问题处理</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2025/12/09/Trae/Trae%E5%AE%89%E8%A3%85%E6%8F%92%E4%BB%B6%E5%AE%9E%E7%8E%B0Java%E4%BB%A3%E7%A0%81%E7%BC%96%E5%86%99/"><i class="fa  fa-book"></i> 【Trae】安装插件实现Java代码编写</a>
+            
+          
+        
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+      </ul>
+  </div>
+  </aside>
+
+            
+    </div>
+</section>
+        
+        </div>
+    </div>
+</div>
+<footer>
+    <div id="footer"  >
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3 footer-list text-center">
+                    <ul class="kratos-social-icons">
+                        <!-- Keep for compatibility -->
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <!-- New links -->
+                        
+                    </ul>
+                    <ul class="kratos-copyright">
+                        <div>
+                            <li>&copy; 2026 溪岚花的博客 版权所有.</li>
+                            <li>本站已运行<span id="span_dt">Loading...</span></li>
+                        </div>
+                        <div>
+                            <li>Theme <a href="https://github.com/Candinya/Kratos-Rebirth" target="_blank">Kratos:Rebirth</a></li>
+                            <li>Site built with&nbsp;<i class="fa fa-heart throb" style="color:#d43f57"></i>&nbsp;by 林家隆.</li>
+                        </div>
+                        <div>
+                            <li>Powered by <a href="https://hexo.io" target="_blank" rel="nofollow">Hexo</a></li>
+                            <li>Hosted on <a href="https://gitee.com/" target="_blank">Gitee Pages</a></li>
+                        </div>
+                        <div>
+                            
+                            
+                        </div>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="kr-tool text-center">
+            <div class="tool">
+                
+                    <div class="box search-box">
+                        <a href="/blog/search/">
+                            <span class="fa fa-search"></span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="box theme-box" id="darkmode-switch">
+                        <span class="fa fa-adjust"></span>
+                    </div>
+                
+                
+                
+            </div>
+            <div class="box gotop-box">
+                <span class="fa fa-chevron-up"></span>
+            </div>
+        </div>
+    </div>
+</footer>
+</div>
+</div>
+
+        <script defer src="/blog/vendors/bootstrap@3.3.4/dist/js/bootstrap.min.js"></script>
+<script defer src="/blog/vendors/nprogress@0.2.0/nprogress.js"></script>
+<script>
+    if (!window.kr) {
+        window.kr = {};
+    }
+    window.kr.notMobile = (!(navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i)));
+    window.kr.siteRoot = "/blog/";
+</script>
+
+
+
+
+
+    <script defer src="/blog/vendors/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+
+<script defer src="/blog/js/kratosr.min.js"></script>
+<script defer src="/blog/js/pjax.min.js"></script>
+
+
+
+<!-- Extra support for third-party plguins  -->
+
+
+    </body>
+</html>

@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+  <!-- 元数据 -->
+  <meta charset="utf-8">
+  <link rel="icon" href="/blog/images/logo.png">
+  
+  <title>【Mybatis】MyBatis Plus | 溪岚花的博客</title>
+  
+  <meta name="author" content="林家隆" />
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="robots" content="index,follow" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <meta name="format-detection" content="telphone=no, email=no" />
+  
+    <meta name="keywords" content="Mybatis" />
+  
+  <meta name="description" content="MyBatis Plus 介绍MyBatis Plus 简介MyBatis 可以让我们更方便的在 Java 中编写 SQL 查询数据库，MyBatis Plus 在 MyBatis 的基础上实现了对单表操作的 SQL、能够更方便的构建 SQL 的 where 条件，还扩展了多数据源、逻辑删除、字段自动填充等功能。 MyBatis Plus 入门导入依赖项目基于 SpringBoot 2 创建 12">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【Mybatis】MyBatis Plus">
+<meta property="og:url" content="https://lin316.gitee.io/blog/2024/03/17/Mybatis/mybatis_plus/index.html">
+<meta property="og:site_name" content="溪岚花的博客">
+<meta property="og:description" content="MyBatis Plus 介绍MyBatis Plus 简介MyBatis 可以让我们更方便的在 Java 中编写 SQL 查询数据库，MyBatis Plus 在 MyBatis 的基础上实现了对单表操作的 SQL、能够更方便的构建 SQL 的 where 条件，还扩展了多数据源、逻辑删除、字段自动填充等功能。 MyBatis Plus 入门导入依赖项目基于 SpringBoot 2 创建 12">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://lin316.gitee.io/blog/blog/images/logo.png">
+<meta property="article:published_time" content="2024-03-17T01:00:00.000Z">
+<meta property="article:modified_time" content="2026-01-04T05:51:48.252Z">
+<meta property="article:author" content="林家隆">
+<meta property="article:tag" content="Mybatis">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://lin316.gitee.io/blog/blog/images/logo.png">
+  
+  <!-- 站点验证相关 -->
+  
+    
+    
+    
+  
+  <!-- 样式表文件 -->
+  <link rel="stylesheet" id="kratos-css" href="/blog/css/kratosr.min.css" media="all"></script>
+  
+    <link rel="stylesheet" id="darkmode-css" href="/blog/css/kr-color-dark.min.css" media="(prefers-color-scheme: dark)"></script>
+    <script src="/blog/js/kr-dark.min.js"></script>
+  
+  
+    <link rel="stylesheet" id="highlight-css" href="/blog/css/highlight/night-eighties.min.css" media="all"></script>
+  
+  <link rel="stylesheet" id="fontawe-css" href="/blog/vendors/font-awesome@4.7.0/css/font-awesome.min.css" media="all"></script>
+  <link rel="stylesheet" id="nprogress-css" href="/blog/vendors/nprogress@0.2.0/nprogress.css" media="all"></script>
+  
+  
+  
+    <link rel="stylesheet" href="/blog/vendors/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css"></script>
+  
+  <!-- 不得不预先加载的一些JS文件 -->
+  <script src="/blog/vendors/jquery@3.6.0/dist/jquery.min.js"></script>
+  
+  
+  <style>
+    
+    
+  </style>
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+    <body class="custom-background">
+        <div id="kratos-wrapper">
+    <div id="kratos-page">
+        <div id="kratos-header">
+            <header id="kratos-desktop-topnav" class="kratos-topnav">
+                <div class="container">
+                    <div class="nav-header">
+                        <nav id="kratos-menu-wrap">
+                            <ul id="kratos-primary-menu" class="sf-menu">
+                                
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/">
+                                            
+                                                
+                                                    <i class="fa fa-home"></i>
+                                                
+                                                首页
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/archives/">
+                                            
+                                                
+                                                    <i class="fa fa-file"></i>
+                                                
+                                                归档
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/tags/">
+                                            
+                                                
+                                                    <i class="fa fa-tag"></i>
+                                                
+                                                标签
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/categories/">
+                                            
+                                                
+                                                    <i class="fa fa-folder"></i>
+                                                
+                                                目录
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/search/">
+                                            
+                                                
+                                                    <i class="fa fa-search"></i>
+                                                
+                                                搜索
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </header>
+            <header id="kratos-mobile-topnav" class="kratos-topnav">
+                <div class="container">
+                    <div class="color-logo"><a href="/blog/">溪岚花的博客</a></div>
+                    <div class="nav-toggle">
+                        <a class="kratos-nav-toggle js-kratos-nav-toggle">
+                            <i></i>
+                        </a>
+                    </div>
+                </div>
+            </header>
+        </div>
+        <div class="kratos-start kratos-hero-2">
+            <!-- <div class="kratos-overlay"></div> -->
+            <div class="kratos-cover kratos-cover-2 text-center">
+                <div class="desc desc2 animate-box">
+                    <a href="/blog/">
+                        <h2 style="opacity: 0.2;">溪岚花的博客</h2> <br />
+                        <span></span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div id="kratos-blog-post">
+            <div class="container">
+                <div id="main" class="row">
+                    
+
+        
+
+            <section class="col-md-8">
+
+        
+
+            <article itemscope itemtype="https://schema.org/Article">
+    
+    <link itemprop="mainEntityOfPage" href="https://lin316.gitee.io/blog/2024/03/17/Mybatis/mybatis_plus/">
+    <div class="kratos-hentry kratos-post-inner clearfix">
+        <header class="kratos-entry-header">
+            
+                <h1 class="kratos-entry-title text-center" itemprop="name headline">【Mybatis】MyBatis Plus</h1>
+            
+            
+            <ul class="kratos-post-meta text-center">
+                <li><time datetime="2024-03-17T01:00:00.000Z" itemprop="datePublished"><i class="fa fa-calendar"></i> 2024-03-17</time></li>
+                <li itemprop="author" itemscope itemtype="https://schema.org/Person">
+                    <i class="fa fa-user"></i> 作者 <span itemprop="name">林家隆</span>
+                </li>
+                
+                    <li>
+                        <i class="fa fa-edit"></i> 
+                        
+                        
+                            7.07K
+                        
+                        字
+                    </li>
+                
+                
+            </ul>
+        </header>
+        <div class="kratos-post-content">
+            
+            <div id="expire-alert" class="alert alert-warning hidden" role="alert">
+                <div class="icon"><i class="fa fa-warning"></i></div>
+                <div class="text"><p>本文最后编辑于 <time datetime="1767505908252"></time> 前，其中的内容可能需要更新。</p></div>
+            </div>
+            
+            
+            
+                <div class="kratos-post-inner-toc toc-div-class" >
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#MyBatis-Plus-%E4%BB%8B%E7%BB%8D"><span class="toc-number">1.</span> <span class="toc-text">MyBatis Plus 介绍</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#MyBatis-Plus-%E7%AE%80%E4%BB%8B"><span class="toc-number">1.1.</span> <span class="toc-text">MyBatis Plus 简介</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#MyBatis-Plus-%E5%85%A5%E9%97%A8"><span class="toc-number">1.2.</span> <span class="toc-text">MyBatis Plus 入门</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AF%BC%E5%85%A5%E4%BE%9D%E8%B5%96"><span class="toc-number">1.2.1.</span> <span class="toc-text">导入依赖</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE%E6%95%B0%E6%8D%AE%E6%BA%90"><span class="toc-number">1.2.2.</span> <span class="toc-text">配置数据源</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E5%AE%9E%E4%BD%93%E7%B1%BB"><span class="toc-number">1.2.3.</span> <span class="toc-text">创建实体类</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA-mapper-%E6%8E%A5%E5%8F%A3"><span class="toc-number">1.2.4.</span> <span class="toc-text">创建 mapper 接口</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%89%AB%E6%8F%8F-mapper-%E7%9B%AE%E5%BD%95"><span class="toc-number">1.2.5.</span> <span class="toc-text">扫描 mapper 目录</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA-Dao-%E7%B1%BB"><span class="toc-number">1.2.6.</span> <span class="toc-text">创建 Dao 类</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93-SQL"><span class="toc-number">1.2.7.</span> <span class="toc-text">数据库 SQL</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%B5%8B%E8%AF%95%E7%B1%BB"><span class="toc-number">1.2.8.</span> <span class="toc-text">测试类</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">1.2.9.</span> <span class="toc-text">总结</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#MyBatis-Plus-%E6%8F%90%E4%BE%9B%E7%9A%84%E6%B3%A8%E8%A7%A3"><span class="toc-number">2.</span> <span class="toc-text">MyBatis Plus 提供的注解</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#TableName"><span class="toc-number">2.1.</span> <span class="toc-text">@TableName</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#TableId"><span class="toc-number">2.2.</span> <span class="toc-text">@TableId</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#TableField"><span class="toc-number">2.3.</span> <span class="toc-text">@TableField</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#TableLogic"><span class="toc-number">2.4.</span> <span class="toc-text">@TableLogic</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#MyBatis-Plus-%E7%9B%B8%E5%85%B3%E9%85%8D%E7%BD%AE"><span class="toc-number">3.</span> <span class="toc-text">MyBatis Plus 相关配置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9D%A1%E4%BB%B6%E6%9E%84%E9%80%A0%E5%99%A8"><span class="toc-number">4.</span> <span class="toc-text">条件构造器</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9E%84%E9%80%A0%E5%99%A8"><span class="toc-number">4.1.</span> <span class="toc-text">构造器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#lambdaQuery-%E9%93%BE%E5%BC%8F"><span class="toc-number">4.2.</span> <span class="toc-text">lambdaQuery 链式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#lambdaUpdate-%E9%93%BE%E5%BC%8F"><span class="toc-number">4.3.</span> <span class="toc-text">lambdaUpdate 链式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#LambdaQueryWrapper-%E9%93%BE%E5%BC%8F"><span class="toc-number">4.4.</span> <span class="toc-text">LambdaQueryWrapper 链式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#LambdaUpdateWrapper-%E9%93%BE%E5%BC%8F"><span class="toc-number">4.5.</span> <span class="toc-text">LambdaUpdateWrapper 链式</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8D%95%E8%A1%A8-SQL"><span class="toc-number">5.</span> <span class="toc-text">单表 SQL</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#IService"><span class="toc-number">5.1.</span> <span class="toc-text">IService</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#BaseMapper"><span class="toc-number">5.2.</span> <span class="toc-text">BaseMapper</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89-SQL-Wrapper"><span class="toc-number">6.</span> <span class="toc-text">自定义 SQL + Wrapper</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#IService-%E6%89%B9%E9%87%8F%E6%96%B0%E5%A2%9E"><span class="toc-number">7.</span> <span class="toc-text">IService 批量新增</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#MyBatis-Plus-%E4%BD%BF%E7%94%A8%E8%A7%84%E8%8C%83"><span class="toc-number">8.</span> <span class="toc-text">MyBatis Plus 使用规范</span></a></li></ol>
+                </div>
+            
+            <hr />
+            <div itemprop="articleBody"><h2 id="MyBatis-Plus-介绍"><a href="#MyBatis-Plus-介绍" class="headerlink" title="MyBatis Plus 介绍"></a>MyBatis Plus 介绍</h2><h3 id="MyBatis-Plus-简介"><a href="#MyBatis-Plus-简介" class="headerlink" title="MyBatis Plus 简介"></a>MyBatis Plus 简介</h3><p>MyBatis 可以让我们更方便的在 Java 中编写 SQL 查询数据库，MyBatis Plus 在 MyBatis 的基础上实现了对单表操作的 SQL、能够更方便的构建 SQL 的 where 条件，还扩展了多数据源、逻辑删除、字段自动填充等功能。</p>
+<h3 id="MyBatis-Plus-入门"><a href="#MyBatis-Plus-入门" class="headerlink" title="MyBatis Plus 入门"></a>MyBatis Plus 入门</h3><h4 id="导入依赖"><a href="#导入依赖" class="headerlink" title="导入依赖"></a>导入依赖</h4><p>项目基于 SpringBoot 2 创建</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.baomidou<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>mybatis-plus-boot-starter<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>3.5.5<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.mysql<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>mysql-connector-j<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">scope</span>&gt;</span>runtime<span class="tag">&lt;/<span class="name">scope</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.alibaba<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>druid-spring-boot-starter<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.2.22<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.projectlombok<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>lombok<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="配置数据源"><a href="#配置数据源" class="headerlink" title="配置数据源"></a>配置数据源</h4><figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">spring.datasource.url</span>=<span class="string">jdbc:mysql://&#123;mysql ip&#125;:&#123;mysql port&#125;/mybatis</span></span><br><span class="line"><span class="attr">spring.datasource.driver-class-name</span>=<span class="string">com.mysql.cj.jdbc.Driver</span></span><br><span class="line"><span class="attr">spring.datasource.username</span>=<span class="string">root</span></span><br><span class="line"><span class="attr">spring.datasource.password</span>=<span class="string">123456</span></span><br><span class="line"><span class="attr">spring.datasource.type</span>=<span class="string">com.alibaba.druid.pool.DruidDataSource</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="创建实体类"><a href="#创建实体类" class="headerlink" title="创建实体类"></a>创建实体类</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Data</span></span><br><span class="line"><span class="meta">@TableName(&quot;`user`&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">User</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> Long id;</span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line">    <span class="keyword">private</span> Integer age;</span><br><span class="line">    <span class="keyword">private</span> String email;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="创建-mapper-接口"><a href="#创建-mapper-接口" class="headerlink" title="创建 mapper 接口"></a>创建 mapper 接口</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Mapper</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">UserMapper</span> <span class="keyword">extends</span> <span class="title class_">BaseMapper</span>&lt;User&gt; &#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="扫描-mapper-目录"><a href="#扫描-mapper-目录" class="headerlink" title="扫描 mapper 目录"></a>扫描 mapper 目录</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@SpringBootApplication</span></span><br><span class="line"><span class="meta">@MapperScan(&quot;com.example.mybatisplus.web.mapper&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">MybatisPlusApplication</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        SpringApplication.run(MybatisPlusApplication.class, args);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="创建-Dao-类"><a href="#创建-Dao-类" class="headerlink" title="创建 Dao 类"></a>创建 Dao 类</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Repository</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">UserDao</span> <span class="keyword">extends</span> <span class="title class_">ServiceImpl</span>&lt;UserMapper, User&gt; <span class="keyword">implements</span> <span class="title class_">IService</span>&lt;User&gt; &#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="数据库-SQL"><a href="#数据库-SQL" class="headerlink" title="数据库 SQL"></a>数据库 SQL</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">DROP</span> <span class="keyword">TABLE</span> IF <span class="keyword">EXISTS</span> `<span class="keyword">user</span>`;</span><br><span class="line"></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> `<span class="keyword">user</span>`</span><br><span class="line">(</span><br><span class="line">    id <span class="type">BIGINT</span> <span class="keyword">NOT</span> <span class="keyword">NULL</span> COMMENT <span class="string">&#x27;主键ID&#x27;</span>,</span><br><span class="line">    name <span class="type">VARCHAR</span>(<span class="number">30</span>) <span class="keyword">NULL</span> <span class="keyword">DEFAULT</span> <span class="keyword">NULL</span> COMMENT <span class="string">&#x27;姓名&#x27;</span>,</span><br><span class="line">    age <span class="type">INT</span> <span class="keyword">NULL</span> <span class="keyword">DEFAULT</span> <span class="keyword">NULL</span> COMMENT <span class="string">&#x27;年龄&#x27;</span>,</span><br><span class="line">    email <span class="type">VARCHAR</span>(<span class="number">50</span>) <span class="keyword">NULL</span> <span class="keyword">DEFAULT</span> <span class="keyword">NULL</span> COMMENT <span class="string">&#x27;邮箱&#x27;</span>,</span><br><span class="line">    <span class="keyword">PRIMARY</span> KEY (id)</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="keyword">DELETE</span> <span class="keyword">FROM</span> `<span class="keyword">user</span>`;</span><br><span class="line"></span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> `<span class="keyword">user</span>` (id, name, age, email) <span class="keyword">VALUES</span></span><br><span class="line">(<span class="number">1</span>, <span class="string">&#x27;Jone&#x27;</span>, <span class="number">18</span>, <span class="string">&#x27;test1@baomidou.com&#x27;</span>),</span><br><span class="line">(<span class="number">2</span>, <span class="string">&#x27;Jack&#x27;</span>, <span class="number">20</span>, <span class="string">&#x27;test2@baomidou.com&#x27;</span>),</span><br><span class="line">(<span class="number">3</span>, <span class="string">&#x27;Tom&#x27;</span>, <span class="number">28</span>, <span class="string">&#x27;test3@baomidou.com&#x27;</span>),</span><br><span class="line">(<span class="number">4</span>, <span class="string">&#x27;Sandy&#x27;</span>, <span class="number">21</span>, <span class="string">&#x27;test4@baomidou.com&#x27;</span>),</span><br><span class="line">(<span class="number">5</span>, <span class="string">&#x27;Billie&#x27;</span>, <span class="number">24</span>, <span class="string">&#x27;test5@baomidou.com&#x27;</span>);</span><br></pre></td></tr></table></figure>
+
+<h4 id="测试类"><a href="#测试类" class="headerlink" title="测试类"></a>测试类</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">test</span><span class="params">()</span> &#123;</span><br><span class="line">    List&lt;User&gt; users = userMapper.selectList(<span class="literal">null</span>);</span><br><span class="line">    users.forEach(System.out::println);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>测试结果：</p>
+<blockquote>
+<p>User(id&#x3D;1, name&#x3D;Jone, age&#x3D;18, email&#x3D;test1@baomidou.com)<br>User(id&#x3D;2, name&#x3D;Jack, age&#x3D;20, email&#x3D;test2@baomidou.com)<br>User(id&#x3D;3, name&#x3D;Tom, age&#x3D;28, email&#x3D;test3@baomidou.com)<br>User(id&#x3D;4, name&#x3D;Sandy, age&#x3D;21, email&#x3D;test4@baomidou.com)<br>User(id&#x3D;5, name&#x3D;Billie, age&#x3D;24, email&#x3D;test5@baomidou.com)</p>
+</blockquote>
+<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>MyBatis Plus 使用实体类映射表结构，通过 BaseMapper 接口实现了对单表的 SQL 操作。实体类的属性就是 SQL 查询的字段。</p>
+<h2 id="MyBatis-Plus-提供的注解"><a href="#MyBatis-Plus-提供的注解" class="headerlink" title="MyBatis Plus 提供的注解"></a>MyBatis Plus 提供的注解</h2><h3 id="TableName"><a href="#TableName" class="headerlink" title="@TableName"></a>@TableName</h3><p>实体类映射数据表。</p>
+<h3 id="TableId"><a href="#TableId" class="headerlink" title="@TableId"></a>@TableId</h3><p>实体类属性映射数据表主键。</p>
+<p>属性：</p>
+<ul>
+<li>type：指定主键类型，有以下取值。<ul>
+<li>IdType.AUTO：数据库自增。</li>
+<li>IdType.NONE：无状态，跟随全局设置。</li>
+<li>IdType.ASSIGN_ID：根据雪花算法生成 id。</li>
+</ul>
+</li>
+</ul>
+<h3 id="TableField"><a href="#TableField" class="headerlink" title="@TableField"></a>@TableField</h3><p>实体类属性映射数据库表字段。</p>
+<p>属性：</p>
+<ul>
+<li>exist：被注解标注的字段是否存在，默认为 true。</li>
+</ul>
+<h3 id="TableLogic"><a href="#TableLogic" class="headerlink" title="@TableLogic"></a>@TableLogic</h3><p>被标注的表字段用逻辑删除处理。</p>
+<p>属性：</p>
+<ul>
+<li>value：逻辑未删除值。</li>
+<li>delval：逻辑删除值。</li>
+</ul>
+<h2 id="MyBatis-Plus-相关配置"><a href="#MyBatis-Plus-相关配置" class="headerlink" title="MyBatis Plus 相关配置"></a>MyBatis Plus 相关配置</h2><figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># mapper.xml 文件所在的位置</span></span><br><span class="line"><span class="attr">mybatis-plus.mapper-locations</span>=<span class="string">classpath*:/mapper/**/*.xml</span></span><br><span class="line"><span class="comment"># 实体类别名扫描包</span></span><br><span class="line"><span class="attr">mybatis-plus.type-aliases-package</span>=<span class="string">com.example.mybatisplus.web.entity</span></span><br><span class="line"><span class="comment"># 是否开启驼峰规则映射下划线规则</span></span><br><span class="line"><span class="attr">mybatis-plus.configuration.map-underscore-to-camel-case</span>=<span class="string">true</span></span><br><span class="line"><span class="comment"># 是否开启二级缓存</span></span><br><span class="line"><span class="attr">mybatis-plus.configuration.cache-enabled</span>=<span class="string">true</span></span><br><span class="line"><span class="comment"># 更新策略，not_null 表示更新非空字段</span></span><br><span class="line"><span class="attr">mybatis-plus.global-config.db-config.update-strategy</span>=<span class="string">not_null</span></span><br><span class="line"><span class="comment"># id 生成策略，默认值为 assign_id（雪花算法）</span></span><br><span class="line"><span class="attr">mybatis-plus.global-config.db-config.id-type</span>=<span class="string">assign_id</span></span><br><span class="line"><span class="comment"># sql 打印日志</span></span><br><span class="line"><span class="attr">mybatis-plus.configuration.log-impl</span>=<span class="string">org.apache.ibatis.logging.stdout.StdOutImpl</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="条件构造器"><a href="#条件构造器" class="headerlink" title="条件构造器"></a>条件构造器</h2><h3 id="构造器"><a href="#构造器" class="headerlink" title="构造器"></a>构造器</h3><ul>
+<li>eq：字段 &#x3D; val</li>
+<li>ne：字段 !&#x3D; val</li>
+<li>gt：字段 &gt; val</li>
+<li>ge：字段 &gt;&#x3D; val</li>
+<li>lt：字段 &lt; val</li>
+<li>le：字段 &lt;&#x3D; val</li>
+<li>between：字段 between (v1, v2)</li>
+<li>like：字段 like ‘%值%’</li>
+<li>likeLeft：字段 like ‘%值’</li>
+<li>likeRight：字段 like ‘值%’</li>
+<li>isNull：字段 is null</li>
+<li>isNotNull：字段 is not null</li>
+<li>in：字段 in (v1, v2, v3 …)</li>
+<li>groupBy：group by 字段</li>
+<li>orderByAsc：order by 字段 asc</li>
+<li>orderByDesc：order by 字段 desc</li>
+<li>or：拼接 or。例如<ul>
+<li><code>or(i -&gt; i.eq(&quot;name&quot;, &quot;李白&quot;).ne(&quot;status&quot;, &quot;活着&quot;))---&gt;or (name = &#39;李白&#39; and status &lt;&gt; &#39;活着&#39;)</code></li>
+</ul>
+</li>
+<li>and：拼接 and<ul>
+<li><code>and(i -&gt; i.eq(&quot;name&quot;, &quot;李白&quot;).ne(&quot;status&quot;, &quot;活着&quot;))---&gt;and (name = &#39;李白&#39; and status &lt;&gt; &#39;活着&#39;)</code></li>
+</ul>
+</li>
+</ul>
+<h3 id="lambdaQuery-链式"><a href="#lambdaQuery-链式" class="headerlink" title="lambdaQuery 链式"></a>lambdaQuery 链式</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">this</span>.lambdaQuery()</span><br><span class="line">    .eq(User::getId, <span class="number">1</span>)</span><br><span class="line">    .list()</span><br></pre></td></tr></table></figure>
+
+<h3 id="lambdaUpdate-链式"><a href="#lambdaUpdate-链式" class="headerlink" title="lambdaUpdate 链式"></a>lambdaUpdate 链式</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">this</span>.lambdaUpdate()</span><br><span class="line">    .set(User::getAge, <span class="number">18</span>)</span><br><span class="line">    .eq(User::getId, <span class="number">1</span>)</span><br><span class="line">    .update()</span><br></pre></td></tr></table></figure>
+
+<h3 id="LambdaQueryWrapper-链式"><a href="#LambdaQueryWrapper-链式" class="headerlink" title="LambdaQueryWrapper 链式"></a>LambdaQueryWrapper 链式</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">LambdaQueryWrapper&lt;User&gt; userLambdaQueryWrapper = <span class="keyword">new</span> <span class="title class_">LambdaQueryWrapper</span>&lt;&gt;();</span><br><span class="line">userLambdaQueryWrapper.eq(User::getId, <span class="number">1</span>);</span><br><span class="line"><span class="built_in">this</span>.remove(userLambdaQueryWrapper);</span><br></pre></td></tr></table></figure>
+
+<h3 id="LambdaUpdateWrapper-链式"><a href="#LambdaUpdateWrapper-链式" class="headerlink" title="LambdaUpdateWrapper 链式"></a>LambdaUpdateWrapper 链式</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">LambdaUpdateWrapper&lt;User&gt; userLambdaUpdateWrapper = <span class="keyword">new</span> <span class="title class_">LambdaUpdateWrapper</span>&lt;&gt;();</span><br><span class="line">userLambdaUpdateWrapper.set(User::getAge, <span class="number">18</span>)</span><br><span class="line">    .eq(User::getId, <span class="number">1</span>);</span><br><span class="line"><span class="built_in">this</span>.update(userLambdaUpdateWrapper);</span><br></pre></td></tr></table></figure>
+
+<h2 id="单表-SQL"><a href="#单表-SQL" class="headerlink" title="单表 SQL"></a>单表 SQL</h2><h3 id="IService"><a href="#IService" class="headerlink" title="IService"></a>IService</h3><ul>
+<li>save</li>
+<li>saveOrUpdate</li>
+<li>remove</li>
+<li>update</li>
+<li>get</li>
+<li>list</li>
+<li>page</li>
+<li>count</li>
+<li>chain</li>
+</ul>
+<h3 id="BaseMapper"><a href="#BaseMapper" class="headerlink" title="BaseMapper"></a>BaseMapper</h3><ul>
+<li>insert</li>
+<li>delete</li>
+<li>update</li>
+<li>select</li>
+</ul>
+<h2 id="自定义-SQL-Wrapper"><a href="#自定义-SQL-Wrapper" class="headerlink" title="自定义 SQL + Wrapper"></a>自定义 SQL + Wrapper</h2><p>由 wrapper 对象来完成 SQL 中的 where 部分，SQL 的其它部分由我们来完成。</p>
+<blockquote>
+<p>mapper 接口：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Mapper</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">UserMapper</span> <span class="keyword">extends</span> <span class="title class_">BaseMapper</span>&lt;User&gt; &#123;</span><br><span class="line"> List&lt;User&gt; <span class="title function_">getUsers</span><span class="params">(<span class="meta">@Param(&quot;ew&quot;)</span>Wrapper wrapper)</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>mapper.xml：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">select</span> <span class="attr">id</span>=<span class="string">&quot;getUsers&quot;</span> <span class="attr">resultType</span>=<span class="string">&quot;com.example.mybatisplus.web.entity.User&quot;</span>&gt;</span></span><br><span class="line"> select * from user $&#123;ew.customSqlSegment&#125;</span><br><span class="line"><span class="tag">&lt;/<span class="name">select</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>测试类：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">testWrapper01</span><span class="params">()</span> &#123;</span><br><span class="line"> LambdaQueryWrapper&lt;User&gt; queryWrapper = <span class="keyword">new</span> <span class="title class_">LambdaQueryWrapper</span>&lt;&gt;();</span><br><span class="line"> queryWrapper.eq(User::getId, <span class="number">1</span>);</span><br><span class="line"> System.out.println(userMapper.getUsers(queryWrapper));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">testWrapper02</span><span class="params">()</span> &#123;</span><br><span class="line"> LambdaQueryWrapper&lt;User&gt; queryWrapper = <span class="keyword">new</span> <span class="title class_">LambdaQueryWrapper</span>&lt;&gt;();</span><br><span class="line"> queryWrapper.in(User::getId, Arrays.asList(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>));</span><br><span class="line"> System.out.println(userMapper.getUsers(queryWrapper));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<p><strong>注：</strong>使用该方式会导致 MyBatis Plus 无法自动处理逻辑删除。</p>
+<h2 id="IService-批量新增"><a href="#IService-批量新增" class="headerlink" title="IService 批量新增"></a>IService 批量新增</h2><p>插入 10 万条数据。</p>
+<p>for 循环一条一条插入：程序跟数据库 io 10 万次，执行 insert 语句 10万次。</p>
+<p>IService 每 1000 条批量插入：程序跟数据库 io 100 次，执行 insert 语句 10 万次。</p>
+<p>mysql url 添加 rewriteBatchedStatements&#x3D;true 参数：程序跟数据库 io 100 次，执行 insert 语句 100 次。</p>
+<h2 id="MyBatis-Plus-使用规范"><a href="#MyBatis-Plus-使用规范" class="headerlink" title="MyBatis Plus 使用规范"></a>MyBatis Plus 使用规范</h2><p>继承 ServiceImpl 类的类，不可以在继承类中编写链式查询和跟 wrapper 相关的代码。如果这么做会造成 mapper 层的代码入侵 service 层，使得 service 层的职责不那么明确。而且在复杂业务中，在 service 层编写本属于 mapper 层的代码，可能会导致 service 代码过长，导致 service 层代码的可读性差。</p>
+<blockquote>
+<p>解决方案-1：</p>
+<p>三层架构 controller 层、service 层、mapper 层。service 层不再继承 ServiceImpl 类，也不实现 IService 接口。</p>
+<p>解决方案-2：</p>
+<p>改成四层架构：controller 层、service 层、dao 层、mapper 层。dao 层继承 ServiceImpl 类。service 层引用 dao 层的对象，不需要引用 mapper 层的对象，因为通过 dao 对象可以获取到 mapper 对象。这样在 dao 层依然可以使用 MyBatis Plus 的功能，同时保证代码不会入侵 service 层。</p>
+</blockquote>
+</div>
+        </div>
+        
+        <footer class="kratos-entry-footer clearfix">
+            
+            <div class="footer-tag clearfix">
+                <div class="pull-left">
+                <i class="fa fa-tags"></i>
+                    <a class="tag-none-link" href="/blog/tags/Mybatis/" rel="tag">Mybatis</a>
+                </div>
+                <div class="pull-date">
+                    <time datetime="2026-01-04T05:51:48.252Z" itemprop="dateModified">最后编辑：2026-01-04</time>
+                </div>
+            </div>
+        </footer>
+    </div>
+    
+        <nav class="navigation post-navigation clearfix" role="navigation">
+            
+            <div class="nav-previous clearfix">
+                <a title=" 【Idea】功能" href="/blog/2024/03/13/Idea/IDEA功能/">&lt; 上一篇</a>
+            </div>
+            
+            
+            <div class="nav-next clearfix">
+                <a title=" 【Mybatis】MyBatis Plus 扩展功能" href="/blog/2024/03/19/Mybatis/mybatis_plus扩展功能/">下一篇 &gt;</a>
+            </div>
+            
+        </nav>
+    
+    
+</article>
+
+        
+
+            </section>
+
+        
+
+                
+            
+
+<section id="kratos-widget-area" class="col-md-4 hidden-xs hidden-sm">
+    <!-- 文章和页面根据splitter来分割，没有的话就从头开始设置为sticky -->
+    
+    
+                <aside id="krw-about" class="widget widget-kratos-about clearfix">
+    <div class="photo-background"></div>
+    <div class="photo-wrapper clearfix">
+        <div class="photo-wrapper-tip text-center">
+            <img class="about-photo" src="/blog/images/avatar.webp" loading="lazy" decoding="auto" />
+        </div>
+    </div>
+    <div class="textwidget">
+        <p class="text-center">极简主义</p>
+    </div>
+    <div class="site-meta">
+        <a class="meta-item" href="/blog/archives/">
+            <span class="title">
+                文章
+            </span>
+            <span class="count">
+                77
+            </span>
+        </a>
+        <a class="meta-item" href="/blog/categories/">
+            <span class="title">
+                分类
+            </span>
+            <span class="count">
+                10
+            </span>
+        </a>
+        <a class="meta-item" href="/blog/tags/">
+            <span class="title">
+                标签
+            </span>
+            <span class="count">
+                29
+            </span>
+        </a>
+    </div>
+</aside>
+            
+                    <div class="sticky-area">
+                
+                    <aside id="krw-toc" class="widget widget-kratos-toc clearfix toc-div-class" >
+    <div class="photo-background"></div>
+    <h4 class="widget-title no-after">
+        <i class="fa fa-compass"></i>
+        文章目录
+        <span class="toc-progress-bar" role="progressbar" aria-label="阅读进度："></span>
+    </h4>
+    <div class="textwidget">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#MyBatis-Plus-%E4%BB%8B%E7%BB%8D"><span class="toc-text">MyBatis Plus 介绍</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#MyBatis-Plus-%E7%AE%80%E4%BB%8B"><span class="toc-text">MyBatis Plus 简介</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#MyBatis-Plus-%E5%85%A5%E9%97%A8"><span class="toc-text">MyBatis Plus 入门</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AF%BC%E5%85%A5%E4%BE%9D%E8%B5%96"><span class="toc-text">导入依赖</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE%E6%95%B0%E6%8D%AE%E6%BA%90"><span class="toc-text">配置数据源</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E5%AE%9E%E4%BD%93%E7%B1%BB"><span class="toc-text">创建实体类</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA-mapper-%E6%8E%A5%E5%8F%A3"><span class="toc-text">创建 mapper 接口</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%89%AB%E6%8F%8F-mapper-%E7%9B%AE%E5%BD%95"><span class="toc-text">扫描 mapper 目录</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA-Dao-%E7%B1%BB"><span class="toc-text">创建 Dao 类</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93-SQL"><span class="toc-text">数据库 SQL</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%B5%8B%E8%AF%95%E7%B1%BB"><span class="toc-text">测试类</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-text">总结</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#MyBatis-Plus-%E6%8F%90%E4%BE%9B%E7%9A%84%E6%B3%A8%E8%A7%A3"><span class="toc-text">MyBatis Plus 提供的注解</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#TableName"><span class="toc-text">@TableName</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#TableId"><span class="toc-text">@TableId</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#TableField"><span class="toc-text">@TableField</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#TableLogic"><span class="toc-text">@TableLogic</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#MyBatis-Plus-%E7%9B%B8%E5%85%B3%E9%85%8D%E7%BD%AE"><span class="toc-text">MyBatis Plus 相关配置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9D%A1%E4%BB%B6%E6%9E%84%E9%80%A0%E5%99%A8"><span class="toc-text">条件构造器</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9E%84%E9%80%A0%E5%99%A8"><span class="toc-text">构造器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#lambdaQuery-%E9%93%BE%E5%BC%8F"><span class="toc-text">lambdaQuery 链式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#lambdaUpdate-%E9%93%BE%E5%BC%8F"><span class="toc-text">lambdaUpdate 链式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#LambdaQueryWrapper-%E9%93%BE%E5%BC%8F"><span class="toc-text">LambdaQueryWrapper 链式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#LambdaUpdateWrapper-%E9%93%BE%E5%BC%8F"><span class="toc-text">LambdaUpdateWrapper 链式</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8D%95%E8%A1%A8-SQL"><span class="toc-text">单表 SQL</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#IService"><span class="toc-text">IService</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#BaseMapper"><span class="toc-text">BaseMapper</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89-SQL-Wrapper"><span class="toc-text">自定义 SQL + Wrapper</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#IService-%E6%89%B9%E9%87%8F%E6%96%B0%E5%A2%9E"><span class="toc-text">IService 批量新增</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#MyBatis-Plus-%E4%BD%BF%E7%94%A8%E8%A7%84%E8%8C%83"><span class="toc-text">MyBatis Plus 使用规范</span></a></li></ol>
+    </div>
+</aside>
+                
+                
+  <aside id="krw-categories" class="widget widget-kratos-categories clearfix">
+    <h4 class="widget-title"><i class="fa fa-folder"></i>分类目录</h4>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Docker/">Docker</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Idea/">Idea</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Java/">Java</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/K8s/">K8s</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Linux/">Linux</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/MySQL/">MySQL</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Python/">Python</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Selenium/">Selenium</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/SpringBoot/">SpringBoot</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/SpringCloud/">SpringCloud</a><span class="category-list-count">13</span></li></ul>
+  </aside>
+
+
+            
+                
+  <aside id="krw-tags" class="widget widget-kratos-tags clearfix">
+    <h4 class="widget-title"><i class="fa fa-tags"></i>标签聚合</h4>
+      <div class="tag-clouds">
+        <a href="/blog/tags/CORS/" style="font-size: 0.8em;">CORS</a> <a href="/blog/tags/Docker/" style="font-size: 0.8em;">Docker</a> <a href="/blog/tags/Dubbo/" style="font-size: 0.8em;">Dubbo</a> <a href="/blog/tags/ELK/" style="font-size: 0.8em;">ELK</a> <a href="/blog/tags/Elasticsearch/" style="font-size: 0.8em;">Elasticsearch</a> <a href="/blog/tags/Eureka/" style="font-size: 0.8em;">Eureka</a> <a href="/blog/tags/Feign/" style="font-size: 0.8em;">Feign</a> <a href="/blog/tags/Gateway/" style="font-size: 0.8em;">Gateway</a> <a href="/blog/tags/Idea/" style="font-size: 0.8em;">Idea</a> <a href="/blog/tags/Java/" style="font-size: 0.8em;">Java</a> <a href="/blog/tags/JavaWeb/" style="font-size: 0.8em;">JavaWeb</a> <a href="/blog/tags/K8s/" style="font-size: 0.8em;">K8s</a> <a href="/blog/tags/Linux/" style="font-size: 0.8em;">Linux</a> <a href="/blog/tags/Maven/" style="font-size: 0.8em;">Maven</a> <a href="/blog/tags/MySQL/" style="font-size: 0.8em;">MySQL</a> <a href="/blog/tags/Mybatis/" style="font-size: 0.8em;">Mybatis</a> <a href="/blog/tags/Nacos/" style="font-size: 0.8em;">Nacos</a> <a href="/blog/tags/Pytest/" style="font-size: 0.8em;">Pytest</a>
+      </div>
+  </aside>
+
+            
+                
+  <aside id="krw-posts" class="widget widget-kratos-posts">
+  <h4 class="widget-title"><i class="fa fa-file"></i>最新文章</h4>
+  <div class="tab-content">
+      <ul class="list-group">
+        
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/01/25/K8s/K8s%E7%BB%84%E4%BB%B6/"><i class="fa  fa-book"></i> 【K8s】组件</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/01/24/K8s/K8s%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/"><i class="fa  fa-book"></i> 【K8s】常用命令</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/01/11/Idea/IDEA%E6%8F%92%E4%BB%B6/"><i class="fa  fa-book"></i> 【Idea】插件</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/01/04/Linux/Centos7%E9%97%AE%E9%A2%98%E5%A4%84%E7%90%86/"><i class="fa  fa-book"></i> Centos7问题处理</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2025/12/09/Trae/Trae%E5%AE%89%E8%A3%85%E6%8F%92%E4%BB%B6%E5%AE%9E%E7%8E%B0Java%E4%BB%A3%E7%A0%81%E7%BC%96%E5%86%99/"><i class="fa  fa-book"></i> 【Trae】安装插件实现Java代码编写</a>
+            
+          
+        
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+      </ul>
+  </div>
+  </aside>
+
+            
+    </div>
+</section>
+        
+        </div>
+    </div>
+</div>
+<footer>
+    <div id="footer"  >
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3 footer-list text-center">
+                    <ul class="kratos-social-icons">
+                        <!-- Keep for compatibility -->
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <!-- New links -->
+                        
+                    </ul>
+                    <ul class="kratos-copyright">
+                        <div>
+                            <li>&copy; 2026 溪岚花的博客 版权所有.</li>
+                            <li>本站已运行<span id="span_dt">Loading...</span></li>
+                        </div>
+                        <div>
+                            <li>Theme <a href="https://github.com/Candinya/Kratos-Rebirth" target="_blank">Kratos:Rebirth</a></li>
+                            <li>Site built with&nbsp;<i class="fa fa-heart throb" style="color:#d43f57"></i>&nbsp;by 林家隆.</li>
+                        </div>
+                        <div>
+                            <li>Powered by <a href="https://hexo.io" target="_blank" rel="nofollow">Hexo</a></li>
+                            <li>Hosted on <a href="https://gitee.com/" target="_blank">Gitee Pages</a></li>
+                        </div>
+                        <div>
+                            
+                            
+                        </div>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="kr-tool text-center">
+            <div class="tool">
+                
+                    <div class="box search-box">
+                        <a href="/blog/search/">
+                            <span class="fa fa-search"></span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="box theme-box" id="darkmode-switch">
+                        <span class="fa fa-adjust"></span>
+                    </div>
+                
+                
+                
+            </div>
+            <div class="box gotop-box">
+                <span class="fa fa-chevron-up"></span>
+            </div>
+        </div>
+    </div>
+</footer>
+</div>
+</div>
+
+        <script defer src="/blog/vendors/bootstrap@3.3.4/dist/js/bootstrap.min.js"></script>
+<script defer src="/blog/vendors/nprogress@0.2.0/nprogress.js"></script>
+<script>
+    if (!window.kr) {
+        window.kr = {};
+    }
+    window.kr.notMobile = (!(navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i)));
+    window.kr.siteRoot = "/blog/";
+</script>
+
+
+
+
+
+    <script defer src="/blog/vendors/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+
+<script defer src="/blog/js/kratosr.min.js"></script>
+<script defer src="/blog/js/pjax.min.js"></script>
+
+
+
+<!-- Extra support for third-party plguins  -->
+
+
+    </body>
+</html>

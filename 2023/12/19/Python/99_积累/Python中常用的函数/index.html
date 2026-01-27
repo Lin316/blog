@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+  <!-- 元数据 -->
+  <meta charset="utf-8">
+  <link rel="icon" href="/blog/images/logo.png">
+  
+  <title>【Python】常用函数 | 溪岚花的博客</title>
+  
+  <meta name="author" content="林家隆" />
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="robots" content="index,follow" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <meta name="format-detection" content="telphone=no, email=no" />
+  
+    <meta name="keywords" content="Python" />
+  
+  <meta name="description" content="字符串lower()12&gt;&gt;&gt; print(&amp;#x27;ABC&amp;#x27;.lower())abc  数据类型转换int()1234&gt;&gt;&gt; int(&amp;#x27;123&amp;#x27;)123&gt;&gt;&gt; int(12.34)12  float()12&gt;&gt;&gt; float(&amp;#x27;12.34&amp;#x27;)12.34  str()1234">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【Python】常用函数">
+<meta property="og:url" content="https://lin316.gitee.io/blog/2023/12/19/Python/99_%E7%A7%AF%E7%B4%AF/Python%E4%B8%AD%E5%B8%B8%E7%94%A8%E7%9A%84%E5%87%BD%E6%95%B0/index.html">
+<meta property="og:site_name" content="溪岚花的博客">
+<meta property="og:description" content="字符串lower()12&gt;&gt;&gt; print(&amp;#x27;ABC&amp;#x27;.lower())abc  数据类型转换int()1234&gt;&gt;&gt; int(&amp;#x27;123&amp;#x27;)123&gt;&gt;&gt; int(12.34)12  float()12&gt;&gt;&gt; float(&amp;#x27;12.34&amp;#x27;)12.34  str()1234">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://lin316.gitee.io/blog/2023/12/19/Python/99_%E7%A7%AF%E7%B4%AF/Python%E4%B8%AD%E5%B8%B8%E7%94%A8%E7%9A%84%E5%87%BD%E6%95%B0/article_imgs/Python-Logo.png">
+<meta property="article:published_time" content="2023-12-18T16:00:00.000Z">
+<meta property="article:modified_time" content="2026-01-04T05:51:48.259Z">
+<meta property="article:author" content="林家隆">
+<meta property="article:tag" content="Python">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://lin316.gitee.io/blog/2023/12/19/Python/99_%E7%A7%AF%E7%B4%AF/Python%E4%B8%AD%E5%B8%B8%E7%94%A8%E7%9A%84%E5%87%BD%E6%95%B0/article_imgs/Python-Logo.png">
+  
+  <!-- 站点验证相关 -->
+  
+    
+    
+    
+  
+  <!-- 样式表文件 -->
+  <link rel="stylesheet" id="kratos-css" href="/blog/css/kratosr.min.css" media="all"></script>
+  
+    <link rel="stylesheet" id="darkmode-css" href="/blog/css/kr-color-dark.min.css" media="(prefers-color-scheme: dark)"></script>
+    <script src="/blog/js/kr-dark.min.js"></script>
+  
+  
+    <link rel="stylesheet" id="highlight-css" href="/blog/css/highlight/night-eighties.min.css" media="all"></script>
+  
+  <link rel="stylesheet" id="fontawe-css" href="/blog/vendors/font-awesome@4.7.0/css/font-awesome.min.css" media="all"></script>
+  <link rel="stylesheet" id="nprogress-css" href="/blog/vendors/nprogress@0.2.0/nprogress.css" media="all"></script>
+  
+  
+  
+    <link rel="stylesheet" href="/blog/vendors/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css"></script>
+  
+  <!-- 不得不预先加载的一些JS文件 -->
+  <script src="/blog/vendors/jquery@3.6.0/dist/jquery.min.js"></script>
+  
+  
+  <style>
+    
+    
+  </style>
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+    <body class="custom-background">
+        <div id="kratos-wrapper">
+    <div id="kratos-page">
+        <div id="kratos-header">
+            <header id="kratos-desktop-topnav" class="kratos-topnav">
+                <div class="container">
+                    <div class="nav-header">
+                        <nav id="kratos-menu-wrap">
+                            <ul id="kratos-primary-menu" class="sf-menu">
+                                
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/">
+                                            
+                                                
+                                                    <i class="fa fa-home"></i>
+                                                
+                                                首页
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/archives/">
+                                            
+                                                
+                                                    <i class="fa fa-file"></i>
+                                                
+                                                归档
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/tags/">
+                                            
+                                                
+                                                    <i class="fa fa-tag"></i>
+                                                
+                                                标签
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/categories/">
+                                            
+                                                
+                                                    <i class="fa fa-folder"></i>
+                                                
+                                                目录
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/search/">
+                                            
+                                                
+                                                    <i class="fa fa-search"></i>
+                                                
+                                                搜索
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </header>
+            <header id="kratos-mobile-topnav" class="kratos-topnav">
+                <div class="container">
+                    <div class="color-logo"><a href="/blog/">溪岚花的博客</a></div>
+                    <div class="nav-toggle">
+                        <a class="kratos-nav-toggle js-kratos-nav-toggle">
+                            <i></i>
+                        </a>
+                    </div>
+                </div>
+            </header>
+        </div>
+        <div class="kratos-start kratos-hero-2">
+            <!-- <div class="kratos-overlay"></div> -->
+            <div class="kratos-cover kratos-cover-2 text-center">
+                <div class="desc desc2 animate-box">
+                    <a href="/blog/">
+                        <h2 style="opacity: 0.2;">溪岚花的博客</h2> <br />
+                        <span></span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div id="kratos-blog-post">
+            <div class="container">
+                <div id="main" class="row">
+                    
+
+        
+
+            <section class="col-md-8">
+
+        
+
+            <article itemscope itemtype="https://schema.org/Article">
+    
+    <link itemprop="mainEntityOfPage" href="https://lin316.gitee.io/blog/2023/12/19/Python/99_%E7%A7%AF%E7%B4%AF/Python%E4%B8%AD%E5%B8%B8%E7%94%A8%E7%9A%84%E5%87%BD%E6%95%B0/">
+    <div class="kratos-hentry kratos-post-inner clearfix">
+        <header class="kratos-entry-header">
+            
+                <h1 class="kratos-entry-title text-center" itemprop="name headline">【Python】常用函数</h1>
+            
+            
+            <ul class="kratos-post-meta text-center">
+                <li><time datetime="2023-12-18T16:00:00.000Z" itemprop="datePublished"><i class="fa fa-calendar"></i> 2023-12-19</time></li>
+                <li itemprop="author" itemscope itemtype="https://schema.org/Person">
+                    <i class="fa fa-user"></i> 作者 <span itemprop="name">林家隆</span>
+                </li>
+                
+                    <li>
+                        <i class="fa fa-edit"></i> 
+                        
+                        
+                            2.95K
+                        
+                        字
+                    </li>
+                
+                
+            </ul>
+        </header>
+        <div class="kratos-post-content">
+            
+            <div id="expire-alert" class="alert alert-warning hidden" role="alert">
+                <div class="icon"><i class="fa fa-warning"></i></div>
+                <div class="text"><p>本文最后编辑于 <time datetime="1767505908259"></time> 前，其中的内容可能需要更新。</p></div>
+            </div>
+            
+            
+            
+                <div class="kratos-post-inner-toc toc-div-class" >
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2"><span class="toc-number">1.</span> <span class="toc-text">字符串</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#lower"><span class="toc-number">1.1.</span> <span class="toc-text">lower()</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2"><span class="toc-number">2.</span> <span class="toc-text">数据类型转换</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#int"><span class="toc-number">2.1.</span> <span class="toc-text">int()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#float"><span class="toc-number">2.2.</span> <span class="toc-text">float()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#str"><span class="toc-number">2.3.</span> <span class="toc-text">str()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#bool"><span class="toc-number">2.4.</span> <span class="toc-text">bool()</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%9B%86%E5%90%88%E7%9B%B8%E5%85%B3%E7%9A%84"><span class="toc-number">3.</span> <span class="toc-text">集合相关的</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#len"><span class="toc-number">3.1.</span> <span class="toc-text">len()</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AF%B9%E8%B1%A1%E7%9B%B8%E5%85%B3%E7%9A%84"><span class="toc-number">4.</span> <span class="toc-text">对象相关的</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#isinstance"><span class="toc-number">4.1.</span> <span class="toc-text">isinstance()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#type"><span class="toc-number">4.2.</span> <span class="toc-text">type()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#dir"><span class="toc-number">4.3.</span> <span class="toc-text">dir()</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%AB%98%E9%98%B6%E5%87%BD%E6%95%B0"><span class="toc-number">5.</span> <span class="toc-text">高阶函数</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#map"><span class="toc-number">5.1.</span> <span class="toc-text">map</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#reduce"><span class="toc-number">5.2.</span> <span class="toc-text">reduce</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#filter"><span class="toc-number">5.3.</span> <span class="toc-text">filter</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#sorted"><span class="toc-number">5.4.</span> <span class="toc-text">sorted</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%B1%BB%E4%B8%AD%E7%89%B9%E6%AE%8A%E7%9A%84%E6%96%B9%E6%B3%95"><span class="toc-number">6.</span> <span class="toc-text">类中特殊的方法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#len-1"><span class="toc-number">6.1.</span> <span class="toc-text">__len__()</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%B1%BB%E4%B8%AD%E7%89%B9%E6%AE%8A%E7%9A%84%E5%B1%9E%E6%80%A7"><span class="toc-number">7.</span> <span class="toc-text">类中特殊的属性</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#bases"><span class="toc-number">7.1.</span> <span class="toc-text">__bases__</span></a></li></ol></li></ol>
+                </div>
+            
+            <hr />
+            <div itemprop="articleBody"><h2 id="字符串"><a href="#字符串" class="headerlink" title="字符串"></a><strong>字符串</strong></h2><h3 id="lower"><a href="#lower" class="headerlink" title="lower()"></a><strong>lower()</strong></h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">print</span>(<span class="string">&#x27;ABC&#x27;</span>.lower())</span><br><span class="line">abc</span><br></pre></td></tr></table></figure>
+
+<h2 id="数据类型转换"><a href="#数据类型转换" class="headerlink" title="数据类型转换"></a><strong>数据类型转换</strong></h2><h3 id="int"><a href="#int" class="headerlink" title="int()"></a><strong>int()</strong></h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">int</span>(<span class="string">&#x27;123&#x27;</span>)</span><br><span class="line"><span class="number">123</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">int</span>(<span class="number">12.34</span>)</span><br><span class="line"><span class="number">12</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="float"><a href="#float" class="headerlink" title="float()"></a><strong>float()</strong></h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">float</span>(<span class="string">&#x27;12.34&#x27;</span>)</span><br><span class="line"><span class="number">12.34</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="str"><a href="#str" class="headerlink" title="str()"></a><strong>str()</strong></h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">str</span>(<span class="number">1.23</span>)</span><br><span class="line"><span class="string">&#x27;1.23&#x27;</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">str</span>(<span class="number">100</span>)</span><br><span class="line"><span class="string">&#x27;100&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="bool"><a href="#bool" class="headerlink" title="bool()"></a><strong>bool()</strong></h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">bool</span>(<span class="number">1</span>)</span><br><span class="line"><span class="literal">True</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">bool</span>(<span class="string">&#x27;&#x27;</span>)</span><br><span class="line"><span class="literal">False</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="集合相关的"><a href="#集合相关的" class="headerlink" title="集合相关的"></a><strong>集合相关的</strong></h2><h3 id="len"><a href="#len" class="headerlink" title="len()"></a><strong>len()</strong></h3><p>获取元素的个数：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">len</span>([<span class="string">&#x27;lin&#x27;</span>, <span class="string">&#x27;cheng&#x27;</span>, <span class="string">&#x27;zhang&#x27;</span>])</span><br><span class="line"><span class="number">3</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="对象相关的"><a href="#对象相关的" class="headerlink" title="对象相关的"></a><strong>对象相关的</strong></h2><h3 id="isinstance"><a href="#isinstance" class="headerlink" title="isinstance()"></a><strong>isinstance()</strong></h3><p>判断对象的类型，如判断是否是一个可迭代对象：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">from</span> collections.abc <span class="keyword">import</span> Iterable</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">print</span>(<span class="built_in">isinstance</span>(<span class="string">&#x27;abc&#x27;</span>, Iterable))  <span class="comment"># str是否可迭代</span></span><br><span class="line"><span class="literal">True</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">print</span>(<span class="built_in">isinstance</span>([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>], Iterable))  <span class="comment"># list是否可迭代</span></span><br><span class="line"><span class="literal">True</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">print</span>(<span class="built_in">isinstance</span>(<span class="number">123</span>, Iterable))  <span class="comment"># 整数是否可迭代</span></span><br><span class="line"><span class="literal">False</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="type"><a href="#type" class="headerlink" title="type()"></a><strong>type()</strong></h3><p>查看对象的类型：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">type</span>(<span class="number">123</span>)</span><br><span class="line">&lt;<span class="keyword">class</span> <span class="string">&#x27;int&#x27;</span>&gt;</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">type</span>(<span class="string">&#x27;str&#x27;</span>)</span><br><span class="line">&lt;<span class="keyword">class</span> <span class="string">&#x27;str&#x27;</span>&gt;</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">type</span>(<span class="literal">None</span>)</span><br><span class="line">&lt;<span class="built_in">type</span>(<span class="literal">None</span>) <span class="string">&#x27;NoneType&#x27;</span>&gt;</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">type</span>(<span class="built_in">abs</span>)</span><br><span class="line">&lt;<span class="keyword">class</span> <span class="string">&#x27;builtin_function_or_method&#x27;</span>&gt;</span><br></pre></td></tr></table></figure>
+
+<h3 id="dir"><a href="#dir" class="headerlink" title="dir()"></a><strong>dir()</strong></h3><p>查询一个对象的所有属性和方法，包括私有属性和私有方法：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">dir</span>(<span class="string">&#x27;ABC&#x27;</span>)</span><br><span class="line">[<span class="string">&#x27;__add__&#x27;</span>, <span class="string">&#x27;__class__&#x27;</span>,..., <span class="string">&#x27;__subclasshook__&#x27;</span>, <span class="string">&#x27;capitalize&#x27;</span>, <span class="string">&#x27;casefold&#x27;</span>,..., <span class="string">&#x27;zfill&#x27;</span>]</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="高阶函数"><a href="#高阶函数" class="headerlink" title="高阶函数"></a><strong>高阶函数</strong></h2><h3 id="map"><a href="#map" class="headerlink" title="map"></a><strong>map</strong></h3><p><code>map()</code> 函数接收两个参数：一个是函数，一个是 <code>Iterable</code> 对象。 <code>map</code> 将传入的函数依次作用到序列的每个元素，并把结果作为新的 <code>Iterator</code> 返回。</p>
+<p>传入函数的特点：接收一个参数，返回一个值。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>L = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>, <span class="number">10</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">print</span>(<span class="built_in">list</span>(<span class="built_in">map</span>(<span class="keyword">lambda</span> x: x * x, L)))</span><br><span class="line">[<span class="number">1</span>, <span class="number">4</span>, <span class="number">9</span>, <span class="number">16</span>, <span class="number">25</span>, <span class="number">36</span>, <span class="number">49</span>, <span class="number">64</span>, <span class="number">81</span>, <span class="number">100</span>]</span><br></pre></td></tr></table></figure>
+
+<h3 id="reduce"><a href="#reduce" class="headerlink" title="reduce"></a><strong>reduce</strong></h3><p><code>reduce()</code> 函数接收两个参数：一个是函数，一个是 <code>Iterable</code> 对象。 <code>reduce</code> 把结果继续和序列的下一个元素做累积计算，其效果就是：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> functools <span class="keyword">import</span> reduce</span><br><span class="line">reduce(f, [x1, x2, x3, x4]) = f(f(f(x1, x2), x3), x4)</span><br></pre></td></tr></table></figure>
+
+<p>传入函数的特点：接收两个参数，返回一个值。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">from</span> functools <span class="keyword">import</span> reduce</span><br><span class="line">&gt;&gt;&gt;</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>L = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>, <span class="number">10</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">print</span>(reduce(<span class="keyword">lambda</span> x, y: x + y, L))</span><br><span class="line"><span class="number">55</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="filter"><a href="#filter" class="headerlink" title="filter"></a><strong>filter</strong></h3><p><code>filter()</code> 函数接收一个函数和一个序列。<code>filter()</code> 把传入的函数依次作用于每个元素，然后根据返回值 <code>True/False</code> 决定是否保留该元素。</p>
+<p>传入函数的特点：接收一个参数，返回 <code>True/False</code> 。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>L = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>, <span class="number">10</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">print</span>(<span class="built_in">list</span>(<span class="built_in">filter</span>(<span class="keyword">lambda</span> x: x % <span class="number">2</span> == <span class="number">0</span>, L)))</span><br><span class="line">[<span class="number">2</span>, <span class="number">4</span>, <span class="number">6</span>, <span class="number">8</span>, <span class="number">10</span>]</span><br></pre></td></tr></table></figure>
+
+<h3 id="sorted"><a href="#sorted" class="headerlink" title="sorted"></a><strong>sorted</strong></h3><p><code>sorted()</code> 函数接收三个参数：序列，key，reverse。其中 key 是个默认参数，接收一个映射函数。reverse 也是个默认参数，传入 <code>True/False</code> 表示是否反转排序后的序列。</p>
+<p><code>sorted()</code> 函数默认按从小到大排序。</p>
+<p>传入函数的特点：接收一个参数，返回 <code>int</code> 值。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>L = [-<span class="number">5</span>, <span class="number">4</span>, <span class="number">2</span>, -<span class="number">2</span>, <span class="number">1</span>, <span class="number">0</span>, -<span class="number">1</span>, <span class="number">5</span>, -<span class="number">4</span>, -<span class="number">3</span>, <span class="number">3</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">print</span>(<span class="built_in">sorted</span>(L))</span><br><span class="line">[-<span class="number">5</span>, -<span class="number">4</span>, -<span class="number">3</span>, -<span class="number">2</span>, -<span class="number">1</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">print</span>(<span class="built_in">sorted</span>(L, key=<span class="keyword">lambda</span> x: x * x))</span><br><span class="line">[<span class="number">0</span>, <span class="number">1</span>, -<span class="number">1</span>, <span class="number">2</span>, -<span class="number">2</span>, -<span class="number">3</span>, <span class="number">3</span>, <span class="number">4</span>, -<span class="number">4</span>, -<span class="number">5</span>, <span class="number">5</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">print</span>(<span class="built_in">sorted</span>(L, reverse=<span class="literal">True</span>))</span><br><span class="line">[<span class="number">5</span>, <span class="number">4</span>, <span class="number">3</span>, <span class="number">2</span>, <span class="number">1</span>, <span class="number">0</span>, -<span class="number">1</span>, -<span class="number">2</span>, -<span class="number">3</span>, -<span class="number">4</span>, -<span class="number">5</span>]</span><br></pre></td></tr></table></figure>
+
+<h2 id="类中特殊的方法"><a href="#类中特殊的方法" class="headerlink" title="类中特殊的方法"></a><strong>类中特殊的方法</strong></h2><p>类似 <code>__xxx__</code> 方法在 Python 中都是有特殊用途的。</p>
+<h3 id="len-1"><a href="#len-1" class="headerlink" title="__len__()"></a>__len__()</h3><p><code>__len__()</code>  方法返回对象的长度。调用 <code>len()</code> 函数获取一个对象的长度，实际上，在 <code>len()</code> 函数内部，它自动去调用该对象的 <code>__len__()</code> 方法。所以，下面的代码是等价的：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">len</span>(<span class="string">&#x27;ABC&#x27;</span>)</span><br><span class="line"><span class="number">3</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="string">&#x27;ABC&#x27;</span>.__len__()</span><br><span class="line"><span class="number">3</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="类中特殊的属性"><a href="#类中特殊的属性" class="headerlink" title="类中特殊的属性"></a><strong>类中特殊的属性</strong></h2><p>类似 <code>__xxx__</code> 属性在 Python 中都是有特殊用途的。</p>
+<h3 id="bases"><a href="#bases" class="headerlink" title="__bases__"></a><strong>__bases__</strong></h3><p>当一个对象表示数据类型时，比如 int 对象，它就具有了 <code>__bases__</code> 属性：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">print</span>(<span class="built_in">int</span>.__bases__)</span><br><span class="line">(&lt;<span class="keyword">class</span> <span class="string">&#x27;object&#x27;</span>&gt;,)</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+        </div>
+        
+        <footer class="kratos-entry-footer clearfix">
+            
+            <div class="footer-tag clearfix">
+                <div class="pull-left">
+                <i class="fa fa-tags"></i>
+                    <a class="tag-none-link" href="/blog/tags/Python/" rel="tag">Python</a>
+                </div>
+                <div class="pull-date">
+                    <time datetime="2026-01-04T05:51:48.259Z" itemprop="dateModified">最后编辑：2026-01-04</time>
+                </div>
+            </div>
+        </footer>
+    </div>
+    
+        <nav class="navigation post-navigation clearfix" role="navigation">
+            
+            <div class="nav-previous clearfix">
+                <a title=" 分布式事务理论基础" href="/blog/2023/07/01/SpringCloud/分布式事务/分布式事务理论基础/">&lt; 上一篇</a>
+            </div>
+            
+            
+            <div class="nav-next clearfix">
+                <a title=" 【Python】字符串" href="/blog/2023/12/19/Python/02_Python基础/Python中的字符串/">下一篇 &gt;</a>
+            </div>
+            
+        </nav>
+    
+    
+</article>
+
+        
+
+            </section>
+
+        
+
+                
+            
+
+<section id="kratos-widget-area" class="col-md-4 hidden-xs hidden-sm">
+    <!-- 文章和页面根据splitter来分割，没有的话就从头开始设置为sticky -->
+    
+    
+                <aside id="krw-about" class="widget widget-kratos-about clearfix">
+    <div class="photo-background"></div>
+    <div class="photo-wrapper clearfix">
+        <div class="photo-wrapper-tip text-center">
+            <img class="about-photo" src="/blog/images/avatar.webp" loading="lazy" decoding="auto" />
+        </div>
+    </div>
+    <div class="textwidget">
+        <p class="text-center">极简主义</p>
+    </div>
+    <div class="site-meta">
+        <a class="meta-item" href="/blog/archives/">
+            <span class="title">
+                文章
+            </span>
+            <span class="count">
+                77
+            </span>
+        </a>
+        <a class="meta-item" href="/blog/categories/">
+            <span class="title">
+                分类
+            </span>
+            <span class="count">
+                10
+            </span>
+        </a>
+        <a class="meta-item" href="/blog/tags/">
+            <span class="title">
+                标签
+            </span>
+            <span class="count">
+                29
+            </span>
+        </a>
+    </div>
+</aside>
+            
+                    <div class="sticky-area">
+                
+                    <aside id="krw-toc" class="widget widget-kratos-toc clearfix toc-div-class" >
+    <div class="photo-background"></div>
+    <h4 class="widget-title no-after">
+        <i class="fa fa-compass"></i>
+        文章目录
+        <span class="toc-progress-bar" role="progressbar" aria-label="阅读进度："></span>
+    </h4>
+    <div class="textwidget">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2"><span class="toc-text">字符串</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#lower"><span class="toc-text">lower()</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2"><span class="toc-text">数据类型转换</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#int"><span class="toc-text">int()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#float"><span class="toc-text">float()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#str"><span class="toc-text">str()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#bool"><span class="toc-text">bool()</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%9B%86%E5%90%88%E7%9B%B8%E5%85%B3%E7%9A%84"><span class="toc-text">集合相关的</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#len"><span class="toc-text">len()</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AF%B9%E8%B1%A1%E7%9B%B8%E5%85%B3%E7%9A%84"><span class="toc-text">对象相关的</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#isinstance"><span class="toc-text">isinstance()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#type"><span class="toc-text">type()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#dir"><span class="toc-text">dir()</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%AB%98%E9%98%B6%E5%87%BD%E6%95%B0"><span class="toc-text">高阶函数</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#map"><span class="toc-text">map</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#reduce"><span class="toc-text">reduce</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#filter"><span class="toc-text">filter</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#sorted"><span class="toc-text">sorted</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%B1%BB%E4%B8%AD%E7%89%B9%E6%AE%8A%E7%9A%84%E6%96%B9%E6%B3%95"><span class="toc-text">类中特殊的方法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#len-1"><span class="toc-text">__len__()</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%B1%BB%E4%B8%AD%E7%89%B9%E6%AE%8A%E7%9A%84%E5%B1%9E%E6%80%A7"><span class="toc-text">类中特殊的属性</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#bases"><span class="toc-text">__bases__</span></a></li></ol></li></ol>
+    </div>
+</aside>
+                
+                
+  <aside id="krw-categories" class="widget widget-kratos-categories clearfix">
+    <h4 class="widget-title"><i class="fa fa-folder"></i>分类目录</h4>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Docker/">Docker</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Idea/">Idea</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Java/">Java</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/K8s/">K8s</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Linux/">Linux</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/MySQL/">MySQL</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Python/">Python</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Selenium/">Selenium</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/SpringBoot/">SpringBoot</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/SpringCloud/">SpringCloud</a><span class="category-list-count">13</span></li></ul>
+  </aside>
+
+
+            
+                
+  <aside id="krw-tags" class="widget widget-kratos-tags clearfix">
+    <h4 class="widget-title"><i class="fa fa-tags"></i>标签聚合</h4>
+      <div class="tag-clouds">
+        <a href="/blog/tags/CORS/" style="font-size: 0.8em;">CORS</a> <a href="/blog/tags/Docker/" style="font-size: 0.8em;">Docker</a> <a href="/blog/tags/Dubbo/" style="font-size: 0.8em;">Dubbo</a> <a href="/blog/tags/ELK/" style="font-size: 0.8em;">ELK</a> <a href="/blog/tags/Elasticsearch/" style="font-size: 0.8em;">Elasticsearch</a> <a href="/blog/tags/Eureka/" style="font-size: 0.8em;">Eureka</a> <a href="/blog/tags/Feign/" style="font-size: 0.8em;">Feign</a> <a href="/blog/tags/Gateway/" style="font-size: 0.8em;">Gateway</a> <a href="/blog/tags/Idea/" style="font-size: 0.8em;">Idea</a> <a href="/blog/tags/Java/" style="font-size: 0.8em;">Java</a> <a href="/blog/tags/JavaWeb/" style="font-size: 0.8em;">JavaWeb</a> <a href="/blog/tags/K8s/" style="font-size: 0.8em;">K8s</a> <a href="/blog/tags/Linux/" style="font-size: 0.8em;">Linux</a> <a href="/blog/tags/Maven/" style="font-size: 0.8em;">Maven</a> <a href="/blog/tags/MySQL/" style="font-size: 0.8em;">MySQL</a> <a href="/blog/tags/Mybatis/" style="font-size: 0.8em;">Mybatis</a> <a href="/blog/tags/Nacos/" style="font-size: 0.8em;">Nacos</a> <a href="/blog/tags/Pytest/" style="font-size: 0.8em;">Pytest</a>
+      </div>
+  </aside>
+
+            
+                
+  <aside id="krw-posts" class="widget widget-kratos-posts">
+  <h4 class="widget-title"><i class="fa fa-file"></i>最新文章</h4>
+  <div class="tab-content">
+      <ul class="list-group">
+        
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/01/25/K8s/K8s%E7%BB%84%E4%BB%B6/"><i class="fa  fa-book"></i> 【K8s】组件</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/01/24/K8s/K8s%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/"><i class="fa  fa-book"></i> 【K8s】常用命令</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/01/11/Idea/IDEA%E6%8F%92%E4%BB%B6/"><i class="fa  fa-book"></i> 【Idea】插件</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/01/04/Linux/Centos7%E9%97%AE%E9%A2%98%E5%A4%84%E7%90%86/"><i class="fa  fa-book"></i> Centos7问题处理</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2025/12/09/Trae/Trae%E5%AE%89%E8%A3%85%E6%8F%92%E4%BB%B6%E5%AE%9E%E7%8E%B0Java%E4%BB%A3%E7%A0%81%E7%BC%96%E5%86%99/"><i class="fa  fa-book"></i> 【Trae】安装插件实现Java代码编写</a>
+            
+          
+        
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+      </ul>
+  </div>
+  </aside>
+
+            
+    </div>
+</section>
+        
+        </div>
+    </div>
+</div>
+<footer>
+    <div id="footer"  >
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3 footer-list text-center">
+                    <ul class="kratos-social-icons">
+                        <!-- Keep for compatibility -->
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <!-- New links -->
+                        
+                    </ul>
+                    <ul class="kratos-copyright">
+                        <div>
+                            <li>&copy; 2026 溪岚花的博客 版权所有.</li>
+                            <li>本站已运行<span id="span_dt">Loading...</span></li>
+                        </div>
+                        <div>
+                            <li>Theme <a href="https://github.com/Candinya/Kratos-Rebirth" target="_blank">Kratos:Rebirth</a></li>
+                            <li>Site built with&nbsp;<i class="fa fa-heart throb" style="color:#d43f57"></i>&nbsp;by 林家隆.</li>
+                        </div>
+                        <div>
+                            <li>Powered by <a href="https://hexo.io" target="_blank" rel="nofollow">Hexo</a></li>
+                            <li>Hosted on <a href="https://gitee.com/" target="_blank">Gitee Pages</a></li>
+                        </div>
+                        <div>
+                            
+                            
+                        </div>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="kr-tool text-center">
+            <div class="tool">
+                
+                    <div class="box search-box">
+                        <a href="/blog/search/">
+                            <span class="fa fa-search"></span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="box theme-box" id="darkmode-switch">
+                        <span class="fa fa-adjust"></span>
+                    </div>
+                
+                
+                
+            </div>
+            <div class="box gotop-box">
+                <span class="fa fa-chevron-up"></span>
+            </div>
+        </div>
+    </div>
+</footer>
+</div>
+</div>
+
+        <script defer src="/blog/vendors/bootstrap@3.3.4/dist/js/bootstrap.min.js"></script>
+<script defer src="/blog/vendors/nprogress@0.2.0/nprogress.js"></script>
+<script>
+    if (!window.kr) {
+        window.kr = {};
+    }
+    window.kr.notMobile = (!(navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i)));
+    window.kr.siteRoot = "/blog/";
+</script>
+
+
+
+
+
+    <script defer src="/blog/vendors/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+
+<script defer src="/blog/js/kratosr.min.js"></script>
+<script defer src="/blog/js/pjax.min.js"></script>
+
+
+
+<!-- Extra support for third-party plguins  -->
+
+
+    </body>
+</html>

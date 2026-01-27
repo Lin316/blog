@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+  <!-- 元数据 -->
+  <meta charset="utf-8">
+  <link rel="icon" href="/blog/images/logo.png">
+  
+  <title>标签: MySQL | 溪岚花的博客</title>
+  
+  <meta name="author" content="林家隆" />
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="robots" content="index,follow" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <meta name="format-detection" content="telphone=no, email=no" />
+  
+    <meta name="keywords" content="Java,Spring,SpringMvc,Mybatis,Redis,SpringBoot,SpringCluod,后端,程序员" />
+  
+  <meta name="description" content="极简主义">
+<meta property="og:type" content="website">
+<meta property="og:title" content="标签: MySQL">
+<meta property="og:url" content="https://lin316.gitee.io/blog/tags/MySQL/index.html">
+<meta property="og:site_name" content="溪岚花的博客">
+<meta property="og:description" content="极简主义">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://lin316.gitee.io/blog/blog/images/logo.png">
+<meta property="article:author" content="林家隆">
+<meta property="article:tag" content="Java,Spring,SpringMvc,Mybatis,Redis,SpringBoot,SpringCluod,后端,程序员">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://lin316.gitee.io/blog/blog/images/logo.png">
+  
+  <!-- 站点验证相关 -->
+  
+    
+    
+    
+  
+  <!-- 样式表文件 -->
+  <link rel="stylesheet" id="kratos-css" href="/blog/css/kratosr.min.css" media="all"></script>
+  
+    <link rel="stylesheet" id="darkmode-css" href="/blog/css/kr-color-dark.min.css" media="(prefers-color-scheme: dark)"></script>
+    <script src="/blog/js/kr-dark.min.js"></script>
+  
+  
+    <link rel="stylesheet" id="highlight-css" href="/blog/css/highlight/night-eighties.min.css" media="all"></script>
+  
+  <link rel="stylesheet" id="fontawe-css" href="/blog/vendors/font-awesome@4.7.0/css/font-awesome.min.css" media="all"></script>
+  <link rel="stylesheet" id="nprogress-css" href="/blog/vendors/nprogress@0.2.0/nprogress.css" media="all"></script>
+  
+  
+  
+    <link rel="stylesheet" href="/blog/vendors/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css"></script>
+  
+  <!-- 不得不预先加载的一些JS文件 -->
+  <script src="/blog/vendors/jquery@3.6.0/dist/jquery.min.js"></script>
+  
+  
+  <style>
+    
+    
+  </style>
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+    <body class="custom-background">
+        <div id="kratos-wrapper">
+    <div id="kratos-page">
+        <div id="kratos-header">
+            <header id="kratos-desktop-topnav" class="kratos-topnav">
+                <div class="container">
+                    <div class="nav-header">
+                        <nav id="kratos-menu-wrap">
+                            <ul id="kratos-primary-menu" class="sf-menu">
+                                
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/">
+                                            
+                                                
+                                                    <i class="fa fa-home"></i>
+                                                
+                                                首页
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/archives/">
+                                            
+                                                
+                                                    <i class="fa fa-file"></i>
+                                                
+                                                归档
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/tags/">
+                                            
+                                                
+                                                    <i class="fa fa-tag"></i>
+                                                
+                                                标签
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/categories/">
+                                            
+                                                
+                                                    <i class="fa fa-folder"></i>
+                                                
+                                                目录
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/search/">
+                                            
+                                                
+                                                    <i class="fa fa-search"></i>
+                                                
+                                                搜索
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </header>
+            <header id="kratos-mobile-topnav" class="kratos-topnav">
+                <div class="container">
+                    <div class="color-logo"><a href="/blog/">溪岚花的博客</a></div>
+                    <div class="nav-toggle">
+                        <a class="kratos-nav-toggle js-kratos-nav-toggle">
+                            <i></i>
+                        </a>
+                    </div>
+                </div>
+            </header>
+        </div>
+        <div class="kratos-start kratos-hero-2">
+            <!-- <div class="kratos-overlay"></div> -->
+            <div class="kratos-cover kratos-cover-2 text-center">
+                <div class="desc desc2 animate-box">
+                    <a href="/blog/">
+                        <h2 style="opacity: 0.2;">溪岚花的博客</h2> <br />
+                        <span></span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div id="kratos-blog-post">
+            <div class="container">
+                <div id="main" class="row">
+                    
+
+        
+
+            <section class="col-md-8">
+
+        
+
+            <!-- Breadcrumb for tag & category page -->
+
+    <article class="kratos-hentry kratos-entry-border-new clearfix">
+        <div class="kratos-breadcrumb">
+            <a href="/blog/">
+                <i class="fa fa-home"></i>
+            </a>
+            <i class="fa fa-angle-right"></i>
+            
+                <a href="/blog/tags/">
+                    标签
+                </a>
+                <i class="fa fa-angle-right"></i>
+                <a href="/blog/tags/MySQL">
+                    MySQL
+                </a>
+            
+            
+        </div>
+    </article>
+
+
+
+
+    
+    
+        <article class="kratos-hentry clearfix" itemscope itemtype="https://schema.org/Article">
+            <div class="kratos-entry-border-new clearfix">
+                
+                <div class="kratos-entry-thumb-new">
+                    <a href="/blog/2023/05/22/mysql/MySQL%E7%9A%84%E6%95%B0%E6%8D%AE%E7%9B%AE%E5%BD%95/">
+                        
+                            <img class="kratos-entry-thumb-new-img" alt="">
+                        
+                    </a>
+                </div>
+                <div class="kratos-post-inner-new">
+                    <header class="kratos-entry-header-new">
+                            <a class="label-link" href="/blog/categories/MySQL/">MySQL</a>
+                        <h2 class="kratos-entry-title-new"><a href="/blog/2023/05/22/mysql/MySQL%E7%9A%84%E6%95%B0%E6%8D%AE%E7%9B%AE%E5%BD%95/" itemprop="mainEntityOfPage"><span itemprop="name headline">MySQL 的数据目录</span></a>
+                    </header>
+                    <div class="kratos-entry-content-new">
+                        <p itemProp="description">
+                            
+                                 本章主要介绍 MySQL 系统的目录结构以及数据库和表在文件系统的表示方法。
+MySQL8 的主要目录结构数据库文件的存放路径show variables like &#39;datadir&#39; SQL 语句能够查询 MySQ...
+                            
+                        </p>
+                    </div>
+                </div>
+                <footer class="kratos-post-meta-new">
+                    <span class="pull-left">
+                        <time datetime="2023-05-21T16:00:00.000Z" itemprop="datePublished">
+                            <a><i class="fa fa-calendar"></i> 2023-05-22</a>
+                        </time>
+                        <a>
+                            
+                                <i class="fa fa-tags"></i>
+                                <a class="tag-none-link" href="/blog/tags/MySQL/" rel="tag">MySQL</a>
+                            
+                        </a>
+                        
+                        
+                    </span>
+                    <span class="pull-right">
+                        <a class="read-more" href="/blog/2023/05/22/mysql/MySQL%E7%9A%84%E6%95%B0%E6%8D%AE%E7%9B%AE%E5%BD%95/" title="阅读全文">阅读全文<i class="fa fa-chevron-circle-right"></i></a>
+                    </span>
+                </footer>
+            </div>
+        </article>
+    
+
+    
+    
+        <article class="kratos-hentry clearfix" itemscope itemtype="https://schema.org/Article">
+            <div class="kratos-entry-border-new clearfix">
+                
+                <div class="kratos-entry-thumb-new">
+                    <a href="/blog/2023/05/17/mysql/%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/">
+                        
+                            <img class="kratos-entry-thumb-new-img" alt="">
+                        
+                    </a>
+                </div>
+                <div class="kratos-post-inner-new">
+                    <header class="kratos-entry-header-new">
+                            <a class="label-link" href="/blog/categories/MySQL/">MySQL</a>
+                        <h2 class="kratos-entry-title-new"><a href="/blog/2023/05/17/mysql/%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/" itemprop="mainEntityOfPage"><span itemprop="name headline">MySQL 中的数据类型</span></a>
+                    </header>
+                    <div class="kratos-entry-content-new">
+                        <p itemProp="description">
+                            
+                                MySQL 中的数据类型如下：
+
+
+
+类型
+类型举例
+
+
+
+整数类型
+TINYINT、SMALLINT、MEDIUMINT、INT、BIGINT
+
+
+浮点类型
+FLOAT、DOUBLE
+
+
+定点数类型
+DECIMAL
+
+
+位类型
+BI...
+                            
+                        </p>
+                    </div>
+                </div>
+                <footer class="kratos-post-meta-new">
+                    <span class="pull-left">
+                        <time datetime="2023-05-16T16:00:00.000Z" itemprop="datePublished">
+                            <a><i class="fa fa-calendar"></i> 2023-05-17</a>
+                        </time>
+                        <a>
+                            
+                                <i class="fa fa-tags"></i>
+                                <a class="tag-none-link" href="/blog/tags/MySQL/" rel="tag">MySQL</a>
+                            
+                        </a>
+                        
+                        
+                    </span>
+                    <span class="pull-right">
+                        <a class="read-more" href="/blog/2023/05/17/mysql/%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/" title="阅读全文">阅读全文<i class="fa fa-chevron-circle-right"></i></a>
+                    </span>
+                </footer>
+            </div>
+        </article>
+    
+
+    
+    
+        <article class="kratos-hentry clearfix" itemscope itemtype="https://schema.org/Article">
+            <div class="kratos-entry-border-new clearfix">
+                
+                <div class="kratos-entry-thumb-new">
+                    <a href="/blog/2023/05/15/mysql/%E5%B8%B8%E7%94%A8%E5%87%BD%E6%95%B0/">
+                        
+                            <img class="kratos-entry-thumb-new-img" alt="">
+                        
+                    </a>
+                </div>
+                <div class="kratos-post-inner-new">
+                    <header class="kratos-entry-header-new">
+                            <a class="label-link" href="/blog/categories/MySQL/">MySQL</a>
+                        <h2 class="kratos-entry-title-new"><a href="/blog/2023/05/15/mysql/%E5%B8%B8%E7%94%A8%E5%87%BD%E6%95%B0/" itemprop="mainEntityOfPage"><span itemprop="name headline">MySQL 中常用的函数</span></a>
+                    </header>
+                    <div class="kratos-entry-content-new">
+                        <p itemProp="description">
+                            
+                                数值函数基本函数ABS(x)返回x的绝对值
+1select abs(-1); # 输出 -1
+
+SIGN(x)返回x的符号。正数返回1，负数返回-1，0返回0
+1select sign(-10), sign(10), sign(0);...
+                            
+                        </p>
+                    </div>
+                </div>
+                <footer class="kratos-post-meta-new">
+                    <span class="pull-left">
+                        <time datetime="2023-05-14T16:00:00.000Z" itemprop="datePublished">
+                            <a><i class="fa fa-calendar"></i> 2023-05-15</a>
+                        </time>
+                        <a>
+                            
+                                <i class="fa fa-tags"></i>
+                                <a class="tag-none-link" href="/blog/tags/MySQL/" rel="tag">MySQL</a>
+                            
+                        </a>
+                        
+                        
+                    </span>
+                    <span class="pull-right">
+                        <a class="read-more" href="/blog/2023/05/15/mysql/%E5%B8%B8%E7%94%A8%E5%87%BD%E6%95%B0/" title="阅读全文">阅读全文<i class="fa fa-chevron-circle-right"></i></a>
+                    </span>
+                </footer>
+            </div>
+        </article>
+    
+
+
+
+
+
+
+
+        
+
+            </section>
+
+        
+
+                
+            
+
+<section id="kratos-widget-area" class="col-md-4 hidden-xs hidden-sm">
+    <!-- 文章和页面根据splitter来分割，没有的话就从头开始设置为sticky -->
+    
+        <div class="sticky-area">
+    
+    
+                <aside id="krw-about" class="widget widget-kratos-about clearfix">
+    <div class="photo-background"></div>
+    <div class="photo-wrapper clearfix">
+        <div class="photo-wrapper-tip text-center">
+            <img class="about-photo" src="/blog/images/avatar.webp" loading="lazy" decoding="auto" />
+        </div>
+    </div>
+    <div class="textwidget">
+        <p class="text-center">极简主义</p>
+    </div>
+    <div class="site-meta">
+        <a class="meta-item" href="/blog/archives/">
+            <span class="title">
+                文章
+            </span>
+            <span class="count">
+                77
+            </span>
+        </a>
+        <a class="meta-item" href="/blog/categories/">
+            <span class="title">
+                分类
+            </span>
+            <span class="count">
+                10
+            </span>
+        </a>
+        <a class="meta-item" href="/blog/tags/">
+            <span class="title">
+                标签
+            </span>
+            <span class="count">
+                29
+            </span>
+        </a>
+    </div>
+</aside>
+            
+                
+  <aside id="krw-categories" class="widget widget-kratos-categories clearfix">
+    <h4 class="widget-title"><i class="fa fa-folder"></i>分类目录</h4>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Docker/">Docker</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Idea/">Idea</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Java/">Java</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/K8s/">K8s</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Linux/">Linux</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/MySQL/">MySQL</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Python/">Python</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Selenium/">Selenium</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/SpringBoot/">SpringBoot</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/SpringCloud/">SpringCloud</a><span class="category-list-count">13</span></li></ul>
+  </aside>
+
+
+            
+                
+  <aside id="krw-tags" class="widget widget-kratos-tags clearfix">
+    <h4 class="widget-title"><i class="fa fa-tags"></i>标签聚合</h4>
+      <div class="tag-clouds">
+        <a href="/blog/tags/CORS/" style="font-size: 0.8em;">CORS</a> <a href="/blog/tags/Docker/" style="font-size: 0.8em;">Docker</a> <a href="/blog/tags/Dubbo/" style="font-size: 0.8em;">Dubbo</a> <a href="/blog/tags/ELK/" style="font-size: 0.8em;">ELK</a> <a href="/blog/tags/Elasticsearch/" style="font-size: 0.8em;">Elasticsearch</a> <a href="/blog/tags/Eureka/" style="font-size: 0.8em;">Eureka</a> <a href="/blog/tags/Feign/" style="font-size: 0.8em;">Feign</a> <a href="/blog/tags/Gateway/" style="font-size: 0.8em;">Gateway</a> <a href="/blog/tags/Idea/" style="font-size: 0.8em;">Idea</a> <a href="/blog/tags/Java/" style="font-size: 0.8em;">Java</a> <a href="/blog/tags/JavaWeb/" style="font-size: 0.8em;">JavaWeb</a> <a href="/blog/tags/K8s/" style="font-size: 0.8em;">K8s</a> <a href="/blog/tags/Linux/" style="font-size: 0.8em;">Linux</a> <a href="/blog/tags/Maven/" style="font-size: 0.8em;">Maven</a> <a href="/blog/tags/MySQL/" style="font-size: 0.8em;">MySQL</a> <a href="/blog/tags/Mybatis/" style="font-size: 0.8em;">Mybatis</a> <a href="/blog/tags/Nacos/" style="font-size: 0.8em;">Nacos</a> <a href="/blog/tags/Pytest/" style="font-size: 0.8em;">Pytest</a>
+      </div>
+  </aside>
+
+            
+                
+  <aside id="krw-posts" class="widget widget-kratos-posts">
+  <h4 class="widget-title"><i class="fa fa-file"></i>最新文章</h4>
+  <div class="tab-content">
+      <ul class="list-group">
+        
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/01/25/K8s/K8s%E7%BB%84%E4%BB%B6/"><i class="fa  fa-book"></i> 【K8s】组件</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/01/24/K8s/K8s%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/"><i class="fa  fa-book"></i> 【K8s】常用命令</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/01/11/Idea/IDEA%E6%8F%92%E4%BB%B6/"><i class="fa  fa-book"></i> 【Idea】插件</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/01/04/Linux/Centos7%E9%97%AE%E9%A2%98%E5%A4%84%E7%90%86/"><i class="fa  fa-book"></i> Centos7问题处理</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2025/12/09/Trae/Trae%E5%AE%89%E8%A3%85%E6%8F%92%E4%BB%B6%E5%AE%9E%E7%8E%B0Java%E4%BB%A3%E7%A0%81%E7%BC%96%E5%86%99/"><i class="fa  fa-book"></i> 【Trae】安装插件实现Java代码编写</a>
+            
+          
+        
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+      </ul>
+  </div>
+  </aside>
+
+            
+    </div>
+</section>
+        
+        </div>
+    </div>
+</div>
+<footer>
+    <div id="footer"  >
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3 footer-list text-center">
+                    <ul class="kratos-social-icons">
+                        <!-- Keep for compatibility -->
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <!-- New links -->
+                        
+                    </ul>
+                    <ul class="kratos-copyright">
+                        <div>
+                            <li>&copy; 2026 溪岚花的博客 版权所有.</li>
+                            <li>本站已运行<span id="span_dt">Loading...</span></li>
+                        </div>
+                        <div>
+                            <li>Theme <a href="https://github.com/Candinya/Kratos-Rebirth" target="_blank">Kratos:Rebirth</a></li>
+                            <li>Site built with&nbsp;<i class="fa fa-heart throb" style="color:#d43f57"></i>&nbsp;by 林家隆.</li>
+                        </div>
+                        <div>
+                            <li>Powered by <a href="https://hexo.io" target="_blank" rel="nofollow">Hexo</a></li>
+                            <li>Hosted on <a href="https://gitee.com/" target="_blank">Gitee Pages</a></li>
+                        </div>
+                        <div>
+                            
+                            
+                        </div>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="kr-tool text-center">
+            <div class="tool">
+                
+                    <div class="box search-box">
+                        <a href="/blog/search/">
+                            <span class="fa fa-search"></span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="box theme-box" id="darkmode-switch">
+                        <span class="fa fa-adjust"></span>
+                    </div>
+                
+                
+                
+            </div>
+            <div class="box gotop-box">
+                <span class="fa fa-chevron-up"></span>
+            </div>
+        </div>
+    </div>
+</footer>
+</div>
+</div>
+
+        <script defer src="/blog/vendors/bootstrap@3.3.4/dist/js/bootstrap.min.js"></script>
+<script defer src="/blog/vendors/nprogress@0.2.0/nprogress.js"></script>
+<script>
+    if (!window.kr) {
+        window.kr = {};
+    }
+    window.kr.notMobile = (!(navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i)));
+    window.kr.siteRoot = "/blog/";
+</script>
+
+
+
+
+
+    <script defer src="/blog/vendors/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+
+<script defer src="/blog/js/kratosr.min.js"></script>
+<script defer src="/blog/js/pjax.min.js"></script>
+
+
+
+<!-- Extra support for third-party plguins  -->
+
+
+    </body>
+</html>

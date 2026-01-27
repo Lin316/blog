@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+  <!-- 元数据 -->
+  <meta charset="utf-8">
+  <link rel="icon" href="/blog/images/logo.png">
+  
+  <title>【Feign】基本使用 | 溪岚花的博客</title>
+  
+  <meta name="author" content="林家隆" />
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="robots" content="index,follow" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <meta name="format-detection" content="telphone=no, email=no" />
+  
+    <meta name="keywords" content="Feign, SpringCloud" />
+  
+  <meta name="description" content="Feign 介绍Feign 的作用：Feign 实现了类似 Dubbo 的操作，在 Consumer 实例中通过接口方法直接调用接口实现类方法的操作。 Feign 的使用示例 导入 Feign 的依赖包： 1234&lt;dependency&gt;    &lt;groupId&gt;org.springframework.cloud&lt;&#x2F;groupId&gt;    &lt;artifac">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【Feign】基本使用">
+<meta property="og:url" content="https://lin316.gitee.io/blog/2024/03/28/SpringCloud/Feign/Feign%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/index.html">
+<meta property="og:site_name" content="溪岚花的博客">
+<meta property="og:description" content="Feign 介绍Feign 的作用：Feign 实现了类似 Dubbo 的操作，在 Consumer 实例中通过接口方法直接调用接口实现类方法的操作。 Feign 的使用示例 导入 Feign 的依赖包： 1234&lt;dependency&gt;    &lt;groupId&gt;org.springframework.cloud&lt;&#x2F;groupId&gt;    &lt;artifac">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://lin316.gitee.io/blog/blog/images/logo.png">
+<meta property="article:published_time" content="2024-03-28T01:00:00.000Z">
+<meta property="article:modified_time" content="2026-01-04T05:51:48.286Z">
+<meta property="article:author" content="林家隆">
+<meta property="article:tag" content="SpringCloud">
+<meta property="article:tag" content="Feign">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://lin316.gitee.io/blog/blog/images/logo.png">
+  
+  <!-- 站点验证相关 -->
+  
+    
+    
+    
+  
+  <!-- 样式表文件 -->
+  <link rel="stylesheet" id="kratos-css" href="/blog/css/kratosr.min.css" media="all"></script>
+  
+    <link rel="stylesheet" id="darkmode-css" href="/blog/css/kr-color-dark.min.css" media="(prefers-color-scheme: dark)"></script>
+    <script src="/blog/js/kr-dark.min.js"></script>
+  
+  
+    <link rel="stylesheet" id="highlight-css" href="/blog/css/highlight/night-eighties.min.css" media="all"></script>
+  
+  <link rel="stylesheet" id="fontawe-css" href="/blog/vendors/font-awesome@4.7.0/css/font-awesome.min.css" media="all"></script>
+  <link rel="stylesheet" id="nprogress-css" href="/blog/vendors/nprogress@0.2.0/nprogress.css" media="all"></script>
+  
+  
+  
+    <link rel="stylesheet" href="/blog/vendors/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css"></script>
+  
+  <!-- 不得不预先加载的一些JS文件 -->
+  <script src="/blog/vendors/jquery@3.6.0/dist/jquery.min.js"></script>
+  
+  
+  <style>
+    
+    
+  </style>
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+    <body class="custom-background">
+        <div id="kratos-wrapper">
+    <div id="kratos-page">
+        <div id="kratos-header">
+            <header id="kratos-desktop-topnav" class="kratos-topnav">
+                <div class="container">
+                    <div class="nav-header">
+                        <nav id="kratos-menu-wrap">
+                            <ul id="kratos-primary-menu" class="sf-menu">
+                                
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/">
+                                            
+                                                
+                                                    <i class="fa fa-home"></i>
+                                                
+                                                首页
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/archives/">
+                                            
+                                                
+                                                    <i class="fa fa-file"></i>
+                                                
+                                                归档
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/tags/">
+                                            
+                                                
+                                                    <i class="fa fa-tag"></i>
+                                                
+                                                标签
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/categories/">
+                                            
+                                                
+                                                    <i class="fa fa-folder"></i>
+                                                
+                                                目录
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/search/">
+                                            
+                                                
+                                                    <i class="fa fa-search"></i>
+                                                
+                                                搜索
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </header>
+            <header id="kratos-mobile-topnav" class="kratos-topnav">
+                <div class="container">
+                    <div class="color-logo"><a href="/blog/">溪岚花的博客</a></div>
+                    <div class="nav-toggle">
+                        <a class="kratos-nav-toggle js-kratos-nav-toggle">
+                            <i></i>
+                        </a>
+                    </div>
+                </div>
+            </header>
+        </div>
+        <div class="kratos-start kratos-hero-2">
+            <!-- <div class="kratos-overlay"></div> -->
+            <div class="kratos-cover kratos-cover-2 text-center">
+                <div class="desc desc2 animate-box">
+                    <a href="/blog/">
+                        <h2 style="opacity: 0.2;">溪岚花的博客</h2> <br />
+                        <span></span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div id="kratos-blog-post">
+            <div class="container">
+                <div id="main" class="row">
+                    
+
+        
+
+            <section class="col-md-8">
+
+        
+
+            <article itemscope itemtype="https://schema.org/Article">
+    
+    <link itemprop="mainEntityOfPage" href="https://lin316.gitee.io/blog/2024/03/28/SpringCloud/Feign/Feign%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/">
+    <div class="kratos-hentry kratos-post-inner clearfix">
+        <header class="kratos-entry-header">
+            
+                <h1 class="kratos-entry-title text-center" itemprop="name headline">【Feign】基本使用</h1>
+            
+            
+            <ul class="kratos-post-meta text-center">
+                <li><time datetime="2024-03-28T01:00:00.000Z" itemprop="datePublished"><i class="fa fa-calendar"></i> 2024-03-28</time></li>
+                <li itemprop="author" itemscope itemtype="https://schema.org/Person">
+                    <i class="fa fa-user"></i> 作者 <span itemprop="name">林家隆</span>
+                </li>
+                
+                    <li>
+                        <i class="fa fa-edit"></i> 
+                        
+                        
+                            3.73K
+                        
+                        字
+                    </li>
+                
+                
+            </ul>
+        </header>
+        <div class="kratos-post-content">
+            
+            <div id="expire-alert" class="alert alert-warning hidden" role="alert">
+                <div class="icon"><i class="fa fa-warning"></i></div>
+                <div class="text"><p>本文最后编辑于 <time datetime="1767505908286"></time> 前，其中的内容可能需要更新。</p></div>
+            </div>
+            
+            
+            
+                <div class="kratos-post-inner-toc toc-div-class" >
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Feign-%E4%BB%8B%E7%BB%8D"><span class="toc-number">1.</span> <span class="toc-text">Feign 介绍</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Feign-%E7%9A%84%E4%BD%BF%E7%94%A8%E7%A4%BA%E4%BE%8B"><span class="toc-number">2.</span> <span class="toc-text">Feign 的使用示例</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Feign-%E7%9A%84%E7%9B%B8%E5%85%B3%E9%85%8D%E7%BD%AE"><span class="toc-number">3.</span> <span class="toc-text">Feign 的相关配置</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Feign-%E7%9A%84%E9%85%8D%E7%BD%AE"><span class="toc-number">3.1.</span> <span class="toc-text">Feign 的配置</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Feign-%E7%9A%84%E6%97%A5%E5%BF%97%E7%BA%A7%E5%88%AB"><span class="toc-number">3.1.1.</span> <span class="toc-text">Feign 的日志级别</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BF%AE%E6%94%B9%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E6%96%B9%E5%BC%8F"><span class="toc-number">3.2.</span> <span class="toc-text">修改配置文件方式</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E6%96%B9%E5%BC%8F"><span class="toc-number">3.2.1.</span> <span class="toc-text">配置文件方式</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E6%96%B9%E5%BC%8F"><span class="toc-number">3.2.2.</span> <span class="toc-text">代码方式</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8F%90%E9%AB%98-Feign-%E7%9A%84%E6%80%A7%E8%83%BD"><span class="toc-number">4.</span> <span class="toc-text">提高 Feign 的性能</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Feign-%E7%9A%84%E5%AE%9E%E8%B7%B5%E6%96%B9%E5%BC%8F"><span class="toc-number">5.</span> <span class="toc-text">Feign 的实践方式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98"><span class="toc-number">6.</span> <span class="toc-text">遇到的问题</span></a></li></ol>
+                </div>
+            
+            <hr />
+            <div itemprop="articleBody"><h2 id="Feign-介绍"><a href="#Feign-介绍" class="headerlink" title="Feign 介绍"></a>Feign 介绍</h2><p>Feign 的作用：Feign 实现了类似 Dubbo 的操作，在 Consumer 实例中通过接口方法直接调用接口实现类方法的操作。</p>
+<h2 id="Feign-的使用示例"><a href="#Feign-的使用示例" class="headerlink" title="Feign 的使用示例"></a>Feign 的使用示例</h2><blockquote>
+<p>导入 Feign 的依赖包：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.cloud<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-cloud-starter-openfeign<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>使用注解 @EnableFeignClients 开启 Feign 的功能：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@EnableFeignClients</span></span><br><span class="line"><span class="meta">@SpringBootApplication</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">ServiceConsumerApplication</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        SpringApplication.run(ServiceConsumerApplication.class, args);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>编写 Feign 客户端，配合 SpringMVC 的注解编写：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@FeignClient(&quot;nacos-provider&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">UserClient</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@GetMapping(&quot;/user/&#123;id&#125;&quot;)</span></span><br><span class="line">    User <span class="title function_">getById</span><span class="params">(<span class="meta">@PathVariable(&quot;id&quot;)</span> Integer id)</span>;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>测试 Feign 客户端：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="meta">@RequestMapping(&quot;/test&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">TestController</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> UserClient userClient;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@GetMapping(&quot;/user/&#123;id&#125;&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> User <span class="title function_">getById</span><span class="params">(<span class="meta">@PathVariable(&quot;id&quot;)</span> Integer id)</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> userClient.getById(id);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<h2 id="Feign-的相关配置"><a href="#Feign-的相关配置" class="headerlink" title="Feign 的相关配置"></a>Feign 的相关配置</h2><h3 id="Feign-的配置"><a href="#Feign-的配置" class="headerlink" title="Feign 的配置"></a>Feign 的配置</h3><table>
+<thead>
+<tr>
+<th>类型</th>
+<th>作用</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>feign.Logger.Level</strong></td>
+<td>修改日志级别</td>
+<td>包含四种不同的级别：NONE、BASIC、HEADERS、FULL</td>
+</tr>
+<tr>
+<td>feign.codec.Decoder</td>
+<td>响应结果的解析器</td>
+<td>http远程调用的结果做解析，例如解析json字符串为java对象</td>
+</tr>
+<tr>
+<td>feign.codec.Encoder</td>
+<td>请求参数编码</td>
+<td>将请求参数编码，便于通过http请求发送</td>
+</tr>
+<tr>
+<td>feign. Contract</td>
+<td>支持的注解格式</td>
+<td>默认是SpringMVC的注解</td>
+</tr>
+<tr>
+<td>feign. Retryer</td>
+<td>失败重试机制</td>
+<td>请求失败的重试机制，默认是没有，不过会使用Ribbon的重试</td>
+</tr>
+</tbody></table>
+<h4 id="Feign-的日志级别"><a href="#Feign-的日志级别" class="headerlink" title="Feign 的日志级别"></a>Feign 的日志级别</h4><ul>
+<li>NONE：不记录任何日志信息，默认值。</li>
+<li>BASIC：仅记录请求的方法，URL 以及响应状态码和执行时间。</li>
+<li>HEADERS：在 BASIC 的基础上，还记录了请求和响应的头信息。</li>
+<li>FULL：记录所有请求和响应的明细，包括头信息、请求体、元数据。</li>
+</ul>
+<p><strong>注：</strong>只有 debug 级别的日志才能看到 feign 输出的请求日志。</p>
+<h3 id="修改配置文件方式"><a href="#修改配置文件方式" class="headerlink" title="修改配置文件方式"></a>修改配置文件方式</h3><h4 id="配置文件方式"><a href="#配置文件方式" class="headerlink" title="配置文件方式"></a>配置文件方式</h4><figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 针对所有服务的配置</span></span><br><span class="line"><span class="attr">feign.client.config.default.loggerLevel</span>=<span class="string">FULL</span></span><br><span class="line"><span class="comment"># 针对某个服务的配置</span></span><br><span class="line"><span class="attr">feign.client.config.nacos-provider.loggerLevel</span>=<span class="string">FULL</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="代码方式"><a href="#代码方式" class="headerlink" title="代码方式"></a>代码方式</h4><blockquote>
+<p>声明一个类，然后再声明一个 Logger.Level 的对象：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 注意，这里没有配置类 @Configuration 注解</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">DefaultFeignConfiguration</span>  &#123;</span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="keyword">public</span> Logger.Level <span class="title function_">feignLogLevel</span><span class="params">()</span>&#123;</span><br><span class="line">        <span class="keyword">return</span> Logger.Level.BASIC;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>针对全服服务的配置：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@EnableFeignClients(defaultConfiguration = DefaultFeignConfiguration .class)</span> </span><br></pre></td></tr></table></figure>
+
+<p>针对某个服务的配置：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@FeignClient(value = &quot;userservice&quot;, configuration = DefaultFeignConfiguration .class)</span> </span><br></pre></td></tr></table></figure>
+</blockquote>
+<h2 id="提高-Feign-的性能"><a href="#提高-Feign-的性能" class="headerlink" title="提高 Feign 的性能"></a>提高 Feign 的性能</h2><p>Feign 底层是依赖其它框架发起 http 请求的，依赖的框架包括：</p>
+<ul>
+<li>URLConnection：默认实现，不支持连接池。</li>
+<li>Apache HttpClient：支持连接池。</li>
+<li>OKHttp：支持连接池。</li>
+</ul>
+<p>提高 Feign 的性能主要手段就是使用<strong>支持连接池</strong>的框架代替默认的 URLConnection 框架。</p>
+<blockquote>
+<p><strong>使用 Apache HttpClient 提高 Feign 性能示例</strong></p>
+<p>导入 HttpClient 依赖：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>io.github.openfeign<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>feign-httpclient<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>修改 Feign 的配置：</p>
+<figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 开启 feign 对 HttpClient 的支持</span></span><br><span class="line"><span class="attr">feign.httpclient.enabled</span>=<span class="string">true</span></span><br><span class="line"><span class="comment"># 最大的连接数</span></span><br><span class="line"><span class="attr">feign.httpclient.max-connections</span>=<span class="string">200</span></span><br><span class="line"><span class="comment"># 每个路径的最大连接数</span></span><br><span class="line"><span class="attr">feign.httpclient.max-connections-per-route</span>=<span class="string">50</span></span><br></pre></td></tr></table></figure>
+
+<p>在 FeignClientFactoryBean 类中的 loadBalance() 方法打断点，重新启动项目看 httpclient 有没有生效：</p>
+<p><img src="/blog/2024/03/28/SpringCloud/Feign/Feign%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20240327112547502.png"></p>
+</blockquote>
+<h2 id="Feign-的实践方式"><a href="#Feign-的实践方式" class="headerlink" title="Feign 的实践方式"></a>Feign 的实践方式</h2><p>我们喜欢把 Feign 的客户端接口都放到一个模块中，服务提供者导入该模块，然后实现 Feign 的客户端接口，服务消费者导入该模块，通过该接口方法发起调用。</p>
+<blockquote>
+<p>创建 Feign-Client 模块，把跟 Feign 相关的客户端接口都放入该模块中：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 在 Feign-Client 模块，创建 Feign 客户端接口</span></span><br><span class="line"><span class="meta">@FeignClient(&quot;nacos-provider&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">UserClient</span> &#123;、</span><br><span class="line">    <span class="meta">@GetMapping(&quot;/user/&#123;id&#125;&quot;)</span></span><br><span class="line">    User <span class="title function_">getById</span><span class="params">(<span class="meta">@PathVariable(&quot;id&quot;)</span> Integer id)</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>服务提供者实现 Feign 的客户端接口：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">UserClientImpl</span> <span class="keyword">implements</span> <span class="title class_">UserClient</span> &#123;</span><br><span class="line">    <span class="comment">// 注意：SpringMVC 有些注解是无法继承的，如果遇到无法继承的注解要在实现方法中再写一遍</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> User <span class="title function_">getById</span><span class="params">(Integer id)</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">User</span>(id);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>服务消费者使用 @EnableFeignClients 注解开启 Feign 功能，并指定需要加载的 Clent 接口：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 指定要加载的 Feign 接口</span></span><br><span class="line"><span class="meta">@EnableFeignClients(clients = &#123;UserClient.class&#125;)</span></span><br><span class="line"><span class="comment">// 指定要扫描的包路径</span></span><br><span class="line"><span class="meta">@EnableFeignClients(basePackages = &quot;blog.lin.common.client&quot;)</span></span><br></pre></td></tr></table></figure>
+</blockquote>
+<h2 id="遇到的问题"><a href="#遇到的问题" class="headerlink" title="遇到的问题"></a>遇到的问题</h2><blockquote>
+<p>问题1：<strong>将 Feign 的日志级别改为 FULL，但是没有输出请求日志</strong></p>
+<p>需要把 springboot 的日志级别改了debug，feign 才会输出请求信息。</p>
+<p><img src="/blog/2024/03/28/SpringCloud/Feign/Feign%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20240327111022686.png"></p>
+</blockquote>
+</div>
+        </div>
+        
+        <footer class="kratos-entry-footer clearfix">
+            
+            <div class="footer-tag clearfix">
+                <div class="pull-left">
+                <i class="fa fa-tags"></i>
+                    <a class="tag-none-link" href="/blog/tags/Feign/" rel="tag">Feign</a>, <a class="tag-none-link" href="/blog/tags/SpringCloud/" rel="tag">SpringCloud</a>
+                </div>
+                <div class="pull-date">
+                    <time datetime="2026-01-04T05:51:48.286Z" itemprop="dateModified">最后编辑：2026-01-04</time>
+                </div>
+            </div>
+        </footer>
+    </div>
+    
+        <nav class="navigation post-navigation clearfix" role="navigation">
+            
+            <div class="nav-previous clearfix">
+                <a title=" 【Nacos】基本使用" href="/blog/2024/03/27/SpringCloud/Nacos/Nacos基本使用/">&lt; 上一篇</a>
+            </div>
+            
+            
+            <div class="nav-next clearfix">
+                <a title=" 【Gateway】基本使用" href="/blog/2024/03/28/SpringCloud/Gateway/Gateway基本使用/">下一篇 &gt;</a>
+            </div>
+            
+        </nav>
+    
+    
+</article>
+
+        
+
+            </section>
+
+        
+
+                
+            
+
+<section id="kratos-widget-area" class="col-md-4 hidden-xs hidden-sm">
+    <!-- 文章和页面根据splitter来分割，没有的话就从头开始设置为sticky -->
+    
+    
+                <aside id="krw-about" class="widget widget-kratos-about clearfix">
+    <div class="photo-background"></div>
+    <div class="photo-wrapper clearfix">
+        <div class="photo-wrapper-tip text-center">
+            <img class="about-photo" src="/blog/images/avatar.webp" loading="lazy" decoding="auto" />
+        </div>
+    </div>
+    <div class="textwidget">
+        <p class="text-center">极简主义</p>
+    </div>
+    <div class="site-meta">
+        <a class="meta-item" href="/blog/archives/">
+            <span class="title">
+                文章
+            </span>
+            <span class="count">
+                77
+            </span>
+        </a>
+        <a class="meta-item" href="/blog/categories/">
+            <span class="title">
+                分类
+            </span>
+            <span class="count">
+                10
+            </span>
+        </a>
+        <a class="meta-item" href="/blog/tags/">
+            <span class="title">
+                标签
+            </span>
+            <span class="count">
+                29
+            </span>
+        </a>
+    </div>
+</aside>
+            
+                    <div class="sticky-area">
+                
+                    <aside id="krw-toc" class="widget widget-kratos-toc clearfix toc-div-class" >
+    <div class="photo-background"></div>
+    <h4 class="widget-title no-after">
+        <i class="fa fa-compass"></i>
+        文章目录
+        <span class="toc-progress-bar" role="progressbar" aria-label="阅读进度："></span>
+    </h4>
+    <div class="textwidget">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Feign-%E4%BB%8B%E7%BB%8D"><span class="toc-text">Feign 介绍</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Feign-%E7%9A%84%E4%BD%BF%E7%94%A8%E7%A4%BA%E4%BE%8B"><span class="toc-text">Feign 的使用示例</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Feign-%E7%9A%84%E7%9B%B8%E5%85%B3%E9%85%8D%E7%BD%AE"><span class="toc-text">Feign 的相关配置</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Feign-%E7%9A%84%E9%85%8D%E7%BD%AE"><span class="toc-text">Feign 的配置</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Feign-%E7%9A%84%E6%97%A5%E5%BF%97%E7%BA%A7%E5%88%AB"><span class="toc-text">Feign 的日志级别</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BF%AE%E6%94%B9%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E6%96%B9%E5%BC%8F"><span class="toc-text">修改配置文件方式</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E6%96%B9%E5%BC%8F"><span class="toc-text">配置文件方式</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E6%96%B9%E5%BC%8F"><span class="toc-text">代码方式</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8F%90%E9%AB%98-Feign-%E7%9A%84%E6%80%A7%E8%83%BD"><span class="toc-text">提高 Feign 的性能</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Feign-%E7%9A%84%E5%AE%9E%E8%B7%B5%E6%96%B9%E5%BC%8F"><span class="toc-text">Feign 的实践方式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98"><span class="toc-text">遇到的问题</span></a></li></ol>
+    </div>
+</aside>
+                
+                
+  <aside id="krw-categories" class="widget widget-kratos-categories clearfix">
+    <h4 class="widget-title"><i class="fa fa-folder"></i>分类目录</h4>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Docker/">Docker</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Idea/">Idea</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Java/">Java</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/K8s/">K8s</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Linux/">Linux</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/MySQL/">MySQL</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Python/">Python</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Selenium/">Selenium</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/SpringBoot/">SpringBoot</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/SpringCloud/">SpringCloud</a><span class="category-list-count">13</span></li></ul>
+  </aside>
+
+
+            
+                
+  <aside id="krw-tags" class="widget widget-kratos-tags clearfix">
+    <h4 class="widget-title"><i class="fa fa-tags"></i>标签聚合</h4>
+      <div class="tag-clouds">
+        <a href="/blog/tags/CORS/" style="font-size: 0.8em;">CORS</a> <a href="/blog/tags/Docker/" style="font-size: 0.8em;">Docker</a> <a href="/blog/tags/Dubbo/" style="font-size: 0.8em;">Dubbo</a> <a href="/blog/tags/ELK/" style="font-size: 0.8em;">ELK</a> <a href="/blog/tags/Elasticsearch/" style="font-size: 0.8em;">Elasticsearch</a> <a href="/blog/tags/Eureka/" style="font-size: 0.8em;">Eureka</a> <a href="/blog/tags/Feign/" style="font-size: 0.8em;">Feign</a> <a href="/blog/tags/Gateway/" style="font-size: 0.8em;">Gateway</a> <a href="/blog/tags/Idea/" style="font-size: 0.8em;">Idea</a> <a href="/blog/tags/Java/" style="font-size: 0.8em;">Java</a> <a href="/blog/tags/JavaWeb/" style="font-size: 0.8em;">JavaWeb</a> <a href="/blog/tags/K8s/" style="font-size: 0.8em;">K8s</a> <a href="/blog/tags/Linux/" style="font-size: 0.8em;">Linux</a> <a href="/blog/tags/Maven/" style="font-size: 0.8em;">Maven</a> <a href="/blog/tags/MySQL/" style="font-size: 0.8em;">MySQL</a> <a href="/blog/tags/Mybatis/" style="font-size: 0.8em;">Mybatis</a> <a href="/blog/tags/Nacos/" style="font-size: 0.8em;">Nacos</a> <a href="/blog/tags/Pytest/" style="font-size: 0.8em;">Pytest</a>
+      </div>
+  </aside>
+
+            
+                
+  <aside id="krw-posts" class="widget widget-kratos-posts">
+  <h4 class="widget-title"><i class="fa fa-file"></i>最新文章</h4>
+  <div class="tab-content">
+      <ul class="list-group">
+        
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/01/25/K8s/K8s%E7%BB%84%E4%BB%B6/"><i class="fa  fa-book"></i> 【K8s】组件</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/01/24/K8s/K8s%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/"><i class="fa  fa-book"></i> 【K8s】常用命令</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/01/11/Idea/IDEA%E6%8F%92%E4%BB%B6/"><i class="fa  fa-book"></i> 【Idea】插件</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/01/04/Linux/Centos7%E9%97%AE%E9%A2%98%E5%A4%84%E7%90%86/"><i class="fa  fa-book"></i> Centos7问题处理</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2025/12/09/Trae/Trae%E5%AE%89%E8%A3%85%E6%8F%92%E4%BB%B6%E5%AE%9E%E7%8E%B0Java%E4%BB%A3%E7%A0%81%E7%BC%96%E5%86%99/"><i class="fa  fa-book"></i> 【Trae】安装插件实现Java代码编写</a>
+            
+          
+        
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+      </ul>
+  </div>
+  </aside>
+
+            
+    </div>
+</section>
+        
+        </div>
+    </div>
+</div>
+<footer>
+    <div id="footer"  >
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3 footer-list text-center">
+                    <ul class="kratos-social-icons">
+                        <!-- Keep for compatibility -->
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <!-- New links -->
+                        
+                    </ul>
+                    <ul class="kratos-copyright">
+                        <div>
+                            <li>&copy; 2026 溪岚花的博客 版权所有.</li>
+                            <li>本站已运行<span id="span_dt">Loading...</span></li>
+                        </div>
+                        <div>
+                            <li>Theme <a href="https://github.com/Candinya/Kratos-Rebirth" target="_blank">Kratos:Rebirth</a></li>
+                            <li>Site built with&nbsp;<i class="fa fa-heart throb" style="color:#d43f57"></i>&nbsp;by 林家隆.</li>
+                        </div>
+                        <div>
+                            <li>Powered by <a href="https://hexo.io" target="_blank" rel="nofollow">Hexo</a></li>
+                            <li>Hosted on <a href="https://gitee.com/" target="_blank">Gitee Pages</a></li>
+                        </div>
+                        <div>
+                            
+                            
+                        </div>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="kr-tool text-center">
+            <div class="tool">
+                
+                    <div class="box search-box">
+                        <a href="/blog/search/">
+                            <span class="fa fa-search"></span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="box theme-box" id="darkmode-switch">
+                        <span class="fa fa-adjust"></span>
+                    </div>
+                
+                
+                
+            </div>
+            <div class="box gotop-box">
+                <span class="fa fa-chevron-up"></span>
+            </div>
+        </div>
+    </div>
+</footer>
+</div>
+</div>
+
+        <script defer src="/blog/vendors/bootstrap@3.3.4/dist/js/bootstrap.min.js"></script>
+<script defer src="/blog/vendors/nprogress@0.2.0/nprogress.js"></script>
+<script>
+    if (!window.kr) {
+        window.kr = {};
+    }
+    window.kr.notMobile = (!(navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i)));
+    window.kr.siteRoot = "/blog/";
+</script>
+
+
+
+
+
+    <script defer src="/blog/vendors/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+
+<script defer src="/blog/js/kratosr.min.js"></script>
+<script defer src="/blog/js/pjax.min.js"></script>
+
+
+
+<!-- Extra support for third-party plguins  -->
+
+
+    </body>
+</html>

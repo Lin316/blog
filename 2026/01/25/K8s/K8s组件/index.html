@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+  <!-- 元数据 -->
+  <meta charset="utf-8">
+  <link rel="icon" href="/blog/images/logo.png">
+  
+  <title>【K8s】组件 | 溪岚花的博客</title>
+  
+  <meta name="author" content="林家隆" />
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="robots" content="index,follow" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <meta name="format-detection" content="telphone=no, email=no" />
+  
+    <meta name="keywords" content="K8s" />
+  
+  <meta name="description" content="Namespace 组件Namespace 组件介绍 资源隔离：如测试环境下的资源，开发环境下的资源。 权限隔离：测试环境的 Namespace 只给测试用，开发环境 Namespace 只给开发用。 资源配额：可以为不同的 Namespace 分配硬件资源，如 CPU、内存等。  Namespace 的 yaml 配置文件1234apiVersion: v1   # 固定写法kind: Name">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【K8s】组件">
+<meta property="og:url" content="https://lin316.gitee.io/blog/2026/01/25/K8s/K8s%E7%BB%84%E4%BB%B6/index.html">
+<meta property="og:site_name" content="溪岚花的博客">
+<meta property="og:description" content="Namespace 组件Namespace 组件介绍 资源隔离：如测试环境下的资源，开发环境下的资源。 权限隔离：测试环境的 Namespace 只给测试用，开发环境 Namespace 只给开发用。 资源配额：可以为不同的 Namespace 分配硬件资源，如 CPU、内存等。  Namespace 的 yaml 配置文件1234apiVersion: v1   # 固定写法kind: Name">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://lin316.gitee.io/blog/blog/images/logo.png">
+<meta property="article:published_time" content="2026-01-25T02:00:00.000Z">
+<meta property="article:modified_time" content="2026-01-27T15:21:35.537Z">
+<meta property="article:author" content="林家隆">
+<meta property="article:tag" content="K8s">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://lin316.gitee.io/blog/blog/images/logo.png">
+  
+  <!-- 站点验证相关 -->
+  
+    
+    
+    
+  
+  <!-- 样式表文件 -->
+  <link rel="stylesheet" id="kratos-css" href="/blog/css/kratosr.min.css" media="all"></script>
+  
+    <link rel="stylesheet" id="darkmode-css" href="/blog/css/kr-color-dark.min.css" media="(prefers-color-scheme: dark)"></script>
+    <script src="/blog/js/kr-dark.min.js"></script>
+  
+  
+    <link rel="stylesheet" id="highlight-css" href="/blog/css/highlight/night-eighties.min.css" media="all"></script>
+  
+  <link rel="stylesheet" id="fontawe-css" href="/blog/vendors/font-awesome@4.7.0/css/font-awesome.min.css" media="all"></script>
+  <link rel="stylesheet" id="nprogress-css" href="/blog/vendors/nprogress@0.2.0/nprogress.css" media="all"></script>
+  
+  
+  
+    <link rel="stylesheet" href="/blog/vendors/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css"></script>
+  
+  <!-- 不得不预先加载的一些JS文件 -->
+  <script src="/blog/vendors/jquery@3.6.0/dist/jquery.min.js"></script>
+  
+  
+  <style>
+    
+    
+  </style>
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+    <body class="custom-background">
+        <div id="kratos-wrapper">
+    <div id="kratos-page">
+        <div id="kratos-header">
+            <header id="kratos-desktop-topnav" class="kratos-topnav">
+                <div class="container">
+                    <div class="nav-header">
+                        <nav id="kratos-menu-wrap">
+                            <ul id="kratos-primary-menu" class="sf-menu">
+                                
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/">
+                                            
+                                                
+                                                    <i class="fa fa-home"></i>
+                                                
+                                                首页
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/archives/">
+                                            
+                                                
+                                                    <i class="fa fa-file"></i>
+                                                
+                                                归档
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/tags/">
+                                            
+                                                
+                                                    <i class="fa fa-tag"></i>
+                                                
+                                                标签
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/categories/">
+                                            
+                                                
+                                                    <i class="fa fa-folder"></i>
+                                                
+                                                目录
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/search/">
+                                            
+                                                
+                                                    <i class="fa fa-search"></i>
+                                                
+                                                搜索
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </header>
+            <header id="kratos-mobile-topnav" class="kratos-topnav">
+                <div class="container">
+                    <div class="color-logo"><a href="/blog/">溪岚花的博客</a></div>
+                    <div class="nav-toggle">
+                        <a class="kratos-nav-toggle js-kratos-nav-toggle">
+                            <i></i>
+                        </a>
+                    </div>
+                </div>
+            </header>
+        </div>
+        <div class="kratos-start kratos-hero-2">
+            <!-- <div class="kratos-overlay"></div> -->
+            <div class="kratos-cover kratos-cover-2 text-center">
+                <div class="desc desc2 animate-box">
+                    <a href="/blog/">
+                        <h2 style="opacity: 0.2;">溪岚花的博客</h2> <br />
+                        <span></span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div id="kratos-blog-post">
+            <div class="container">
+                <div id="main" class="row">
+                    
+
+        
+
+            <section class="col-md-8">
+
+        
+
+            <article itemscope itemtype="https://schema.org/Article">
+    
+    <link itemprop="mainEntityOfPage" href="https://lin316.gitee.io/blog/2026/01/25/K8s/K8s%E7%BB%84%E4%BB%B6/">
+    <div class="kratos-hentry kratos-post-inner clearfix">
+        <header class="kratos-entry-header">
+            
+                <h1 class="kratos-entry-title text-center" itemprop="name headline">【K8s】组件</h1>
+            
+            
+            <ul class="kratos-post-meta text-center">
+                <li><time datetime="2026-01-25T02:00:00.000Z" itemprop="datePublished"><i class="fa fa-calendar"></i> 2026-01-25</time></li>
+                <li itemprop="author" itemscope itemtype="https://schema.org/Person">
+                    <i class="fa fa-user"></i> 作者 <span itemprop="name">林家隆</span>
+                </li>
+                
+                    <li>
+                        <i class="fa fa-edit"></i> 
+                        
+                        
+                            8.48K
+                        
+                        字
+                    </li>
+                
+                
+            </ul>
+        </header>
+        <div class="kratos-post-content">
+            
+            <div id="expire-alert" class="alert alert-warning hidden" role="alert">
+                <div class="icon"><i class="fa fa-warning"></i></div>
+                <div class="text"><p>本文最后编辑于 <time datetime="1769527295537"></time> 前，其中的内容可能需要更新。</p></div>
+            </div>
+            
+            
+            
+                <div class="kratos-post-inner-toc toc-div-class" >
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Namespace-%E7%BB%84%E4%BB%B6"><span class="toc-number">1.</span> <span class="toc-text">Namespace 组件</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Namespace-%E7%BB%84%E4%BB%B6%E4%BB%8B%E7%BB%8D"><span class="toc-number">1.1.</span> <span class="toc-text">Namespace 组件介绍</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Namespace-%E7%9A%84-yaml-%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="toc-number">1.2.</span> <span class="toc-text">Namespace 的 yaml 配置文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8-describe-%E6%9F%A5%E7%9C%8B%E8%AF%A6%E7%BB%86%E4%BF%A1%E6%81%AF"><span class="toc-number">1.3.</span> <span class="toc-text">使用 describe 查看详细信息</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Pod-%E7%BB%84%E4%BB%B6"><span class="toc-number">2.</span> <span class="toc-text">Pod 组件</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Pod-%E7%BB%84%E4%BB%B6%E4%BB%8B%E7%BB%8D"><span class="toc-number">2.1.</span> <span class="toc-text">Pod 组件介绍</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Pod-%E7%9A%84-yaml-%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="toc-number">2.2.</span> <span class="toc-text">Pod 的 yaml 配置文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8-o-wide-%E6%9F%A5%E7%9C%8B-Pod-%E4%BF%A1%E6%81%AF"><span class="toc-number">2.3.</span> <span class="toc-text">使用 -o wide 查看 Pod 信息</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8-describe-%E6%9F%A5%E7%9C%8B%E8%AF%A6%E7%BB%86%E4%BF%A1%E6%81%AF-1"><span class="toc-number">2.4.</span> <span class="toc-text">使用 describe 查看详细信息</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Deployment-%E7%BB%84%E4%BB%B6"><span class="toc-number">3.</span> <span class="toc-text">Deployment 组件</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Deployment-%E7%BB%84%E4%BB%B6%E4%BB%8B%E7%BB%8D"><span class="toc-number">3.1.</span> <span class="toc-text">Deployment 组件介绍</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Deployment-%E7%9A%84-yaml-%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="toc-number">3.2.</span> <span class="toc-text">Deployment 的 yaml 配置文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8-o-wide-%E6%9F%A5%E7%9C%8B-Deployment-%E4%BF%A1%E6%81%AF"><span class="toc-number">3.3.</span> <span class="toc-text">使用 -o wide 查看 Deployment 信息</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8-describe-%E6%9F%A5%E7%9C%8B%E8%AF%A6%E7%BB%86%E4%BF%A1%E6%81%AF-2"><span class="toc-number">3.4.</span> <span class="toc-text">使用 describe 查看详细信息</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Label-%E7%BB%84%E4%BB%B6"><span class="toc-number">4.</span> <span class="toc-text">Label 组件</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Label-%E7%BB%84%E4%BB%B6%E4%BB%8B%E7%BB%8D"><span class="toc-number">4.1.</span> <span class="toc-text">Label 组件介绍</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%93%8D%E4%BD%9C-Label-%E6%A0%87%E7%AD%BE"><span class="toc-number">4.2.</span> <span class="toc-text">操作 Label 标签</span></a></li></ol></li></ol>
+                </div>
+            
+            <hr />
+            <div itemprop="articleBody"><h2 id="Namespace-组件"><a href="#Namespace-组件" class="headerlink" title="Namespace 组件"></a>Namespace 组件</h2><h3 id="Namespace-组件介绍"><a href="#Namespace-组件介绍" class="headerlink" title="Namespace 组件介绍"></a>Namespace 组件介绍</h3><ol>
+<li>资源隔离：如测试环境下的资源，开发环境下的资源。</li>
+<li>权限隔离：测试环境的 Namespace 只给测试用，开发环境 Namespace 只给开发用。</li>
+<li>资源配额：可以为不同的 Namespace 分配硬件资源，如 CPU、内存等。</li>
+</ol>
+<h3 id="Namespace-的-yaml-配置文件"><a href="#Namespace-的-yaml-配置文件" class="headerlink" title="Namespace 的 yaml 配置文件"></a>Namespace 的 yaml 配置文件</h3><figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span>   <span class="comment"># 固定写法</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Namespace</span>  <span class="comment"># 用于说明 yaml 操作的资源类型</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">dev</span>      <span class="comment"># 指定命名空间的名称</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="使用-describe-查看详细信息"><a href="#使用-describe-查看详细信息" class="headerlink" title="使用 describe 查看详细信息"></a>使用 describe 查看详细信息</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[root@master130 ~]# kubectl describe ns default</span><br><span class="line">Name:         default  # 命名空间的名称</span><br><span class="line">Labels:       &lt;none&gt;</span><br><span class="line">Annotations:  &lt;none&gt;</span><br><span class="line">Status:       Active   # Active：命名空间正在使用中，Terminating：正在删除命名空间</span><br><span class="line"></span><br><span class="line">No resource quota. # 描述对该命名空间做的资源限制</span><br><span class="line"></span><br><span class="line">No LimitRange resource. # 描述对该命名空间中的每个组件做的资源限制</span><br></pre></td></tr></table></figure>
+
+<h2 id="Pod-组件"><a href="#Pod-组件" class="headerlink" title="Pod 组件"></a>Pod 组件</h2><h3 id="Pod-组件介绍"><a href="#Pod-组件介绍" class="headerlink" title="Pod 组件介绍"></a>Pod 组件介绍</h3><p>程序运行在容器中，容器运行在 Pod 中，k8s 通过管理 Pod 进而管理程序。</p>
+<p>一个 Pod 里面可以运行一个或多个容器。</p>
+<h3 id="Pod-的-yaml-配置文件"><a href="#Pod-的-yaml-配置文件" class="headerlink" title="Pod 的 yaml 配置文件"></a>Pod 的 yaml 配置文件</h3><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span>                <span class="comment"># 固定写法</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Pod</span>                     <span class="comment"># 用于说明 yaml 操作的资源类型</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">nginx-pod</span>             <span class="comment"># 指定 pod 的名称</span></span><br><span class="line">  <span class="attr">namespace:</span> <span class="string">dev</span>              <span class="comment"># 指定 pod 的命名空间</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">containers:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">image:</span> <span class="string">nginx:1.17.1</span>       <span class="comment"># 指定容器从哪个镜像创建</span></span><br><span class="line">    <span class="attr">name:</span> <span class="string">my-nginx</span>            <span class="comment"># 指定容器的名称</span></span><br><span class="line">    <span class="attr">ports:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">nginx-port</span></span><br><span class="line">      <span class="attr">containerPort:</span> <span class="number">80</span></span><br><span class="line">      <span class="attr">protocol:</span> <span class="string">TCP</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="使用-o-wide-查看-Pod-信息"><a href="#使用-o-wide-查看-Pod-信息" class="headerlink" title="使用 -o wide 查看 Pod 信息"></a>使用 -o wide 查看 Pod 信息</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@master130 k8s]# kubectl get pod -o wide</span><br><span class="line">NAME                      READY   STATUS    RESTARTS   AGE   IP           NODE      NOMINATED NODE   READINESS GATES</span><br><span class="line">nginx-6867cdf567-nn5t5    1/1     Running   0          15h   10.244.1.8   node131   &lt;none&gt;           &lt;none&gt;</span><br><span class="line">nginx2-79f55f49d8-9l4vt   1/1     Running   0          15h   10.244.1.9   node131   &lt;none&gt;           &lt;none&gt;</span><br></pre></td></tr></table></figure>
+
+<table>
+<thead>
+<tr>
+<th>列名称</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>NAME</td>
+<td>pod 的名称。</td>
+</tr>
+<tr>
+<td>READY</td>
+<td>描述 pod 里面有多少个容器，有多少个容器正在运行中。</td>
+</tr>
+<tr>
+<td>STATUS</td>
+<td>描述 pod 的状态，Running 指运行中，Terminating 指正在删除 pod。</td>
+</tr>
+<tr>
+<td>RESTARTS</td>
+<td>pod 重启次数。</td>
+</tr>
+<tr>
+<td>AGE</td>
+<td>pod 运行了多少时间。</td>
+</tr>
+<tr>
+<td>IP</td>
+<td>k8s 给 pod 分配的 ip。</td>
+</tr>
+<tr>
+<td>NODE</td>
+<td>pod 运行在集群哪个节点上。</td>
+</tr>
+</tbody></table>
+<h3 id="使用-describe-查看详细信息-1"><a href="#使用-describe-查看详细信息-1" class="headerlink" title="使用 describe 查看详细信息"></a>使用 describe 查看详细信息</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl describe pod pod名称 -n 命名空间名称 # 查看 pod 详细信息</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">Name:</span>         <span class="string">nginx-6867cdf567-nn5t5</span>   <span class="comment"># pod 名称</span></span><br><span class="line"><span class="attr">Namespace:</span>    <span class="string">default</span>                  <span class="comment"># pod 所在的命名空间</span></span><br><span class="line"><span class="attr">Priority:</span>     <span class="number">0</span>                        </span><br><span class="line"><span class="attr">Node:</span>         <span class="string">node131/192.168.134.131</span>  <span class="comment"># pod 所在集群的节点，以及对应集群节点的 ip</span></span><br><span class="line"><span class="attr">Start Time:</span>   <span class="string">Sat,</span> <span class="number">24</span> <span class="string">Jan</span> <span class="number">2026 20:48:43</span> <span class="string">+0800</span>   <span class="comment"># 创建 pod 的时间</span></span><br><span class="line"><span class="attr">Labels:</span>       <span class="string">app=nginx</span></span><br><span class="line">              <span class="string">pod-template-hash=6867cdf567</span></span><br><span class="line"><span class="attr">Annotations:</span>  <span class="string">&lt;none&gt;</span></span><br><span class="line"><span class="attr">Status:</span>       <span class="string">Running</span>                  <span class="comment"># pod 的状态：Running 指运行中，Terminating 指正在删除 pod</span></span><br><span class="line"><span class="attr">IP:</span>           <span class="number">10.244</span><span class="number">.1</span><span class="number">.8</span>               <span class="comment"># k8s 给该 pod 分配的 ip</span></span><br><span class="line"><span class="attr">IPs:</span></span><br><span class="line">  <span class="attr">IP:</span>           <span class="number">10.244</span><span class="number">.1</span><span class="number">.8</span></span><br><span class="line"><span class="attr">Controlled By:</span>  <span class="string">ReplicaSet/nginx-6867cdf567</span></span><br><span class="line"><span class="attr">Containers:</span>                            <span class="comment"># 这个 pod 里面的容器信息</span></span><br><span class="line">  <span class="attr">nginx:</span></span><br><span class="line">    <span class="attr">Container ID:</span>   <span class="string">docker://1eb4f212867bc5b9e7b8188c870ef72230c4fff24e37a76f8ab32ae255a3e19a</span></span><br><span class="line">    <span class="attr">Image:</span>          <span class="string">nginx:1.14-alpine</span></span><br><span class="line">    <span class="attr">Image ID:</span>       <span class="string">docker-pullable://nginx@sha256:485b610fefec7ff6c463ced9623314a04ed67e3945b9c08d7e53a47f6d108dc7</span></span><br><span class="line">    <span class="attr">Port:</span>           <span class="string">&lt;none&gt;</span></span><br><span class="line">    <span class="attr">Host Port:</span>      <span class="string">&lt;none&gt;</span></span><br><span class="line">    <span class="attr">State:</span>          <span class="string">Running</span></span><br><span class="line">      <span class="attr">Started:</span>      <span class="string">Sat,</span> <span class="number">24</span> <span class="string">Jan</span> <span class="number">2026 20:48:44</span> <span class="string">+0800</span></span><br><span class="line">    <span class="attr">Ready:</span>          <span class="literal">True</span></span><br><span class="line">    <span class="attr">Restart Count:</span>  <span class="number">0</span></span><br><span class="line">    <span class="attr">Environment:</span>    <span class="string">&lt;none&gt;</span></span><br><span class="line">    <span class="attr">Mounts:</span></span><br><span class="line">      <span class="string">/var/run/secrets/kubernetes.io/serviceaccount</span> <span class="string">from</span> <span class="string">default-token-5f97w</span> <span class="string">(ro)</span></span><br><span class="line"><span class="attr">Conditions:</span></span><br><span class="line">  <span class="string">Type</span>              <span class="string">Status</span></span><br><span class="line">  <span class="string">Initialized</span>       <span class="literal">True</span> </span><br><span class="line">  <span class="string">Ready</span>             <span class="literal">True</span> </span><br><span class="line">  <span class="string">ContainersReady</span>   <span class="literal">True</span> </span><br><span class="line">  <span class="string">PodScheduled</span>      <span class="literal">True</span> </span><br><span class="line"><span class="attr">Volumes:</span></span><br><span class="line">  <span class="attr">default-token-5f97w:</span></span><br><span class="line">    <span class="attr">Type:</span>        <span class="string">Secret</span> <span class="string">(a</span> <span class="string">volume</span> <span class="string">populated</span> <span class="string">by</span> <span class="string">a</span> <span class="string">Secret)</span></span><br><span class="line">    <span class="attr">SecretName:</span>  <span class="string">default-token-5f97w</span></span><br><span class="line">    <span class="attr">Optional:</span>    <span class="literal">false</span></span><br><span class="line"><span class="attr">QoS Class:</span>       <span class="string">BestEffort</span></span><br><span class="line"><span class="attr">Node-Selectors:</span>  <span class="string">&lt;none&gt;</span></span><br><span class="line"><span class="attr">Tolerations:</span>     <span class="string">node.kubernetes.io/not-ready:NoExecute</span> <span class="string">for</span> <span class="string">300s</span></span><br><span class="line">                 <span class="string">node.kubernetes.io/unreachable:NoExecute</span> <span class="string">for</span> <span class="string">300s</span></span><br><span class="line"><span class="attr">Events:</span>          <span class="string">&lt;none&gt;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="Deployment-组件"><a href="#Deployment-组件" class="headerlink" title="Deployment 组件"></a>Deployment 组件</h2><h3 id="Deployment-组件介绍"><a href="#Deployment-组件介绍" class="headerlink" title="Deployment 组件介绍"></a>Deployment 组件介绍</h3><p>Deployment 是 Pod 控制器，用来管理 Pod 的生命周期。Deployment 能够在 Pod 出现故障时，自动重启 Pod 或创建 Pod。</p>
+<h3 id="Deployment-的-yaml-配置文件"><a href="#Deployment-的-yaml-配置文件" class="headerlink" title="Deployment 的 yaml 配置文件"></a>Deployment 的 yaml 配置文件</h3><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">apps/v1</span>             <span class="comment"># 固定写法</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Deployment</span>                <span class="comment"># 用于说明 yaml 操作的资源类型</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">nginx</span>                   <span class="comment"># 指定 deployment 的名称</span></span><br><span class="line">  <span class="attr">namespace:</span> <span class="string">dev</span>                <span class="comment"># 指定 deployment 的命名空间</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">replicas:</span> <span class="number">3</span>                   <span class="comment"># 需要创建 pod 的个数</span></span><br><span class="line">  <span class="attr">selector:</span>                     <span class="comment"># 标签选择器，通过标签选择器来确定控制哪些 pod</span></span><br><span class="line">    <span class="attr">matchLabels:</span></span><br><span class="line">      <span class="attr">run:</span> <span class="string">nginx</span></span><br><span class="line">  <span class="attr">template:</span>                     <span class="comment"># pod 的 yaml 配置文件模板</span></span><br><span class="line">    <span class="attr">metadata:</span></span><br><span class="line">      <span class="comment"># name: nginx-xxx         # 不用指定 pod 名称了，deployment会自动生成名称：deployment 名称 + 随机字符串</span></span><br><span class="line">      <span class="comment"># namespace: dev          # 不用指定 pod 的命名空间了，跟 deployment 一样</span></span><br><span class="line">      <span class="attr">labels:</span>                   <span class="comment"># 需要指定 pod 的标签，并且需要跟 deployment 的标签选择器一样，以便被 deployment 控制</span></span><br><span class="line">        <span class="attr">run:</span> <span class="string">nginx</span></span><br><span class="line">    <span class="attr">spec:</span>                       <span class="comment"># 从这之后看 pod 的 yaml 配置文件</span></span><br><span class="line">      <span class="attr">containers:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">image:</span> <span class="string">nginx:1.17.1</span></span><br><span class="line">        <span class="attr">name:</span> <span class="string">nginx</span></span><br><span class="line">        <span class="attr">ports:</span></span><br><span class="line">        <span class="bullet">-</span> <span class="attr">containerPort:</span> <span class="number">80</span></span><br><span class="line">          <span class="attr">protocol:</span> <span class="string">TCP</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="使用-o-wide-查看-Deployment-信息"><a href="#使用-o-wide-查看-Deployment-信息" class="headerlink" title="使用 -o wide 查看 Deployment 信息"></a>使用 -o wide 查看 Deployment 信息</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl get deploy -n ns名称 -o wide # 查看 pod 控制器更多信息，如控制哪些 pod</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@master130 k8s]# kubectl get deploy -n dev -o wide</span><br><span class="line">NAME    READY   UP-TO-DATE   AVAILABLE   AGE   CONTAINERS   IMAGES         SELECTOR</span><br><span class="line">nginx   3/3     3            3           70s   nginx        nginx:1.17.1   run=nginx</span><br></pre></td></tr></table></figure>
+
+<table>
+<thead>
+<tr>
+<th>列名称</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>NAME</td>
+<td>deployment 的名称。</td>
+</tr>
+<tr>
+<td>READY</td>
+<td>描述 deployment 里面有多少个 pod，有多少个 pod 正在运行中。</td>
+</tr>
+<tr>
+<td>UP-TO-DATE</td>
+<td>有多少 pod 使用的是当前 deployment 最新配置。</td>
+</tr>
+<tr>
+<td>AVAILABLE</td>
+<td>可以对外提供服务的 pod 数。</td>
+</tr>
+<tr>
+<td>AGE</td>
+<td>deployment 运行了多少时间。</td>
+</tr>
+<tr>
+<td>CONTAINERS</td>
+<td>pod 中容器的名字。</td>
+</tr>
+<tr>
+<td>IMAGES</td>
+<td>容器使用的镜像。</td>
+</tr>
+<tr>
+<td>SELECTOR</td>
+<td>标签选择器，通过标签选择器来确定控制哪些 pod。</td>
+</tr>
+</tbody></table>
+<h3 id="使用-describe-查看详细信息-2"><a href="#使用-describe-查看详细信息-2" class="headerlink" title="使用 describe 查看详细信息"></a>使用 describe 查看详细信息</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl describe deploy deploy名称 -n ns名称 # 查看 pod 控制器详细信息</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">[root@master130 k8s]# kubectl describe deploy -n dev nginx</span><br><span class="line">Name:                   nginx   # deployment 名称</span><br><span class="line">Namespace:              dev     # deployment 所在的命名空间</span><br><span class="line">CreationTimestamp:      Tue, 27 Jan 2026 22:55:46 +0800   # deployment 的创建时间</span><br><span class="line">Labels:                 &lt;none&gt;  # deployment 的标签</span><br><span class="line">Annotations:            deployment.kubernetes.io/revision: 2</span><br><span class="line">                        kubectl.kubernetes.io/last-applied-configuration:</span><br><span class="line">                          &#123;&quot;apiVersion&quot;:&quot;apps/v1&quot;,&quot;kind&quot;:&quot;Deployment&quot;,&quot;metadata&quot;:&#123;&quot;annotations&quot;:&#123;&#125;,&quot;name&quot;:&quot;nginx&quot;,&quot;namespace&quot;:&quot;dev&quot;&#125;,&quot;spec&quot;:&#123;&quot;replicas&quot;:3,&quot;selector&quot;...</span><br><span class="line">Selector:               run=nginx   # deployment 的标签选择器，通过标签选择器来确定控制哪些 pod</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">desired：期望的 pod 数、updated：使用最新模板的 pod 数、total：实际存在的 pod 数。</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">available：能够对外提供服务的 pod 数、unavailable：不可用的 pod 数。</span></span><br><span class="line">Replicas:               3 desired | 3 updated | 3 total | 3 available | 0 unavailable</span><br><span class="line">StrategyType:           RollingUpdate   # 升级策略</span><br><span class="line">MinReadySeconds:        0</span><br><span class="line">RollingUpdateStrategy:  25% max unavailable, 25% max surge</span><br><span class="line">Pod Template:   # 创建 pod 的 yaml 模板</span><br><span class="line">  Labels:  run=nginx</span><br><span class="line">  Containers:</span><br><span class="line">   nginx12:</span><br><span class="line">    Image:        nginx:1.17.1</span><br><span class="line">    Port:         80/TCP</span><br><span class="line">    Host Port:    0/TCP</span><br><span class="line">    Environment:  &lt;none&gt;</span><br><span class="line">    Mounts:       &lt;none&gt;</span><br><span class="line">  Volumes:        &lt;none&gt;</span><br><span class="line">Conditions:</span><br><span class="line">  Type           Status  Reason</span><br><span class="line">  ----           ------  ------</span><br><span class="line">  Available      True    MinimumReplicasAvailable</span><br><span class="line">  Progressing    True    NewReplicaSetAvailable</span><br><span class="line">OldReplicaSets:  &lt;none&gt;</span><br><span class="line">NewReplicaSet:   nginx-597c547b79 (3/3 replicas created)</span><br><span class="line">Events:</span><br><span class="line">  Type    Reason             Age    From                   Message</span><br><span class="line">  ----    ------             ----   ----                   -------</span><br><span class="line">  Normal  ScalingReplicaSet  10m    deployment-controller  Scaled up replica set nginx-64777cd554 to 3</span><br><span class="line">  Normal  ScalingReplicaSet  2m55s  deployment-controller  Scaled up replica set nginx-597c547b79 to 1</span><br><span class="line">  Normal  ScalingReplicaSet  2m53s  deployment-controller  Scaled down replica set nginx-64777cd554 to 2</span><br><span class="line">  Normal  ScalingReplicaSet  2m53s  deployment-controller  Scaled up replica set nginx-597c547b79 to 2</span><br><span class="line">  Normal  ScalingReplicaSet  2m52s  deployment-controller  Scaled down replica set nginx-64777cd554 to 1</span><br><span class="line">  Normal  ScalingReplicaSet  2m52s  deployment-controller  Scaled up replica set nginx-597c547b79 to 3</span><br><span class="line">  Normal  ScalingReplicaSet  2m50s  deployment-controller  Scaled down replica set nginx-64777cd554 to 0</span><br></pre></td></tr></table></figure>
+
+<h2 id="Label-组件"><a href="#Label-组件" class="headerlink" title="Label 组件"></a>Label 组件</h2><h3 id="Label-组件介绍"><a href="#Label-组件介绍" class="headerlink" title="Label 组件介绍"></a>Label 组件介绍</h3><p>给资源对象添加标签，通过管理标签来管理一组资源对象，如管理一组 node 节点，管理一组 pod 对象，管理一组 service 对象等。</p>
+<h3 id="操作-Label-标签"><a href="#操作-Label-标签" class="headerlink" title="操作 Label 标签"></a>操作 Label 标签</h3><p>给 pod 添加标签：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Pod</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">nginx</span></span><br><span class="line">  <span class="attr">namespace:</span> <span class="string">dev</span></span><br><span class="line">  <span class="attr">labels:</span>             <span class="comment"># 给 pod 新增标签</span></span><br><span class="line">    <span class="attr">version:</span> <span class="string">&quot;1.0&quot;</span>    <span class="comment"># 添加 version=3.0 的标签</span></span><br><span class="line">    <span class="attr">env:</span> <span class="string">&quot;test&quot;</span>       <span class="comment"># 添加 env=test 的标签</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">containers:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">image:</span> <span class="string">nginx:1.17.1</span></span><br><span class="line">    <span class="attr">name:</span> <span class="string">pod</span></span><br><span class="line">    <span class="attr">ports:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">nginx-port</span></span><br><span class="line">      <span class="attr">containerPort:</span> <span class="number">80</span></span><br><span class="line">      <span class="attr">protocol:</span> <span class="string">TCP</span></span><br></pre></td></tr></table></figure>
+
+<p>根据标签查询 pod：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">kubectl get pod pod名称 -n ns名称 --show-labels # 查询 pod 的标签信息</span><br><span class="line"></span><br><span class="line">kubectl get pod -n dev -l key=value  --show-labels # 查询标签为 &quot;key=value&quot; 的 pod 信息</span><br><span class="line"></span><br><span class="line">kubectl get pod -n dev -l key!=value  --show-labels # 查询标签为 &quot;key!=value&quot; 的 pod 信息</span><br></pre></td></tr></table></figure>
+
+</div>
+        </div>
+        
+        <footer class="kratos-entry-footer clearfix">
+            
+            <div class="footer-tag clearfix">
+                <div class="pull-left">
+                <i class="fa fa-tags"></i>
+                    <a class="tag-none-link" href="/blog/tags/K8s/" rel="tag">K8s</a>
+                </div>
+                <div class="pull-date">
+                    <time datetime="2026-01-27T15:21:35.537Z" itemprop="dateModified">最后编辑：2026-01-27</time>
+                </div>
+            </div>
+        </footer>
+    </div>
+    
+        <nav class="navigation post-navigation clearfix" role="navigation">
+            
+            <div class="nav-previous clearfix">
+                <a title=" 【K8s】常用命令" href="/blog/2026/01/24/K8s/K8s常用命令/">&lt; 上一篇</a>
+            </div>
+            
+            
+        </nav>
+    
+    
+</article>
+
+        
+
+            </section>
+
+        
+
+                
+            
+
+<section id="kratos-widget-area" class="col-md-4 hidden-xs hidden-sm">
+    <!-- 文章和页面根据splitter来分割，没有的话就从头开始设置为sticky -->
+    
+    
+                <aside id="krw-about" class="widget widget-kratos-about clearfix">
+    <div class="photo-background"></div>
+    <div class="photo-wrapper clearfix">
+        <div class="photo-wrapper-tip text-center">
+            <img class="about-photo" src="/blog/images/avatar.webp" loading="lazy" decoding="auto" />
+        </div>
+    </div>
+    <div class="textwidget">
+        <p class="text-center">极简主义</p>
+    </div>
+    <div class="site-meta">
+        <a class="meta-item" href="/blog/archives/">
+            <span class="title">
+                文章
+            </span>
+            <span class="count">
+                77
+            </span>
+        </a>
+        <a class="meta-item" href="/blog/categories/">
+            <span class="title">
+                分类
+            </span>
+            <span class="count">
+                10
+            </span>
+        </a>
+        <a class="meta-item" href="/blog/tags/">
+            <span class="title">
+                标签
+            </span>
+            <span class="count">
+                29
+            </span>
+        </a>
+    </div>
+</aside>
+            
+                    <div class="sticky-area">
+                
+                    <aside id="krw-toc" class="widget widget-kratos-toc clearfix toc-div-class" >
+    <div class="photo-background"></div>
+    <h4 class="widget-title no-after">
+        <i class="fa fa-compass"></i>
+        文章目录
+        <span class="toc-progress-bar" role="progressbar" aria-label="阅读进度："></span>
+    </h4>
+    <div class="textwidget">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Namespace-%E7%BB%84%E4%BB%B6"><span class="toc-text">Namespace 组件</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Namespace-%E7%BB%84%E4%BB%B6%E4%BB%8B%E7%BB%8D"><span class="toc-text">Namespace 组件介绍</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Namespace-%E7%9A%84-yaml-%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="toc-text">Namespace 的 yaml 配置文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8-describe-%E6%9F%A5%E7%9C%8B%E8%AF%A6%E7%BB%86%E4%BF%A1%E6%81%AF"><span class="toc-text">使用 describe 查看详细信息</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Pod-%E7%BB%84%E4%BB%B6"><span class="toc-text">Pod 组件</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Pod-%E7%BB%84%E4%BB%B6%E4%BB%8B%E7%BB%8D"><span class="toc-text">Pod 组件介绍</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Pod-%E7%9A%84-yaml-%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="toc-text">Pod 的 yaml 配置文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8-o-wide-%E6%9F%A5%E7%9C%8B-Pod-%E4%BF%A1%E6%81%AF"><span class="toc-text">使用 -o wide 查看 Pod 信息</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8-describe-%E6%9F%A5%E7%9C%8B%E8%AF%A6%E7%BB%86%E4%BF%A1%E6%81%AF-1"><span class="toc-text">使用 describe 查看详细信息</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Deployment-%E7%BB%84%E4%BB%B6"><span class="toc-text">Deployment 组件</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Deployment-%E7%BB%84%E4%BB%B6%E4%BB%8B%E7%BB%8D"><span class="toc-text">Deployment 组件介绍</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Deployment-%E7%9A%84-yaml-%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="toc-text">Deployment 的 yaml 配置文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8-o-wide-%E6%9F%A5%E7%9C%8B-Deployment-%E4%BF%A1%E6%81%AF"><span class="toc-text">使用 -o wide 查看 Deployment 信息</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8-describe-%E6%9F%A5%E7%9C%8B%E8%AF%A6%E7%BB%86%E4%BF%A1%E6%81%AF-2"><span class="toc-text">使用 describe 查看详细信息</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Label-%E7%BB%84%E4%BB%B6"><span class="toc-text">Label 组件</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Label-%E7%BB%84%E4%BB%B6%E4%BB%8B%E7%BB%8D"><span class="toc-text">Label 组件介绍</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%93%8D%E4%BD%9C-Label-%E6%A0%87%E7%AD%BE"><span class="toc-text">操作 Label 标签</span></a></li></ol></li></ol>
+    </div>
+</aside>
+                
+                
+  <aside id="krw-categories" class="widget widget-kratos-categories clearfix">
+    <h4 class="widget-title"><i class="fa fa-folder"></i>分类目录</h4>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Docker/">Docker</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Idea/">Idea</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Java/">Java</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/K8s/">K8s</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Linux/">Linux</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/MySQL/">MySQL</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Python/">Python</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Selenium/">Selenium</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/SpringBoot/">SpringBoot</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/SpringCloud/">SpringCloud</a><span class="category-list-count">13</span></li></ul>
+  </aside>
+
+
+            
+                
+  <aside id="krw-tags" class="widget widget-kratos-tags clearfix">
+    <h4 class="widget-title"><i class="fa fa-tags"></i>标签聚合</h4>
+      <div class="tag-clouds">
+        <a href="/blog/tags/CORS/" style="font-size: 0.8em;">CORS</a> <a href="/blog/tags/Docker/" style="font-size: 0.8em;">Docker</a> <a href="/blog/tags/Dubbo/" style="font-size: 0.8em;">Dubbo</a> <a href="/blog/tags/ELK/" style="font-size: 0.8em;">ELK</a> <a href="/blog/tags/Elasticsearch/" style="font-size: 0.8em;">Elasticsearch</a> <a href="/blog/tags/Eureka/" style="font-size: 0.8em;">Eureka</a> <a href="/blog/tags/Feign/" style="font-size: 0.8em;">Feign</a> <a href="/blog/tags/Gateway/" style="font-size: 0.8em;">Gateway</a> <a href="/blog/tags/Idea/" style="font-size: 0.8em;">Idea</a> <a href="/blog/tags/Java/" style="font-size: 0.8em;">Java</a> <a href="/blog/tags/JavaWeb/" style="font-size: 0.8em;">JavaWeb</a> <a href="/blog/tags/K8s/" style="font-size: 0.8em;">K8s</a> <a href="/blog/tags/Linux/" style="font-size: 0.8em;">Linux</a> <a href="/blog/tags/Maven/" style="font-size: 0.8em;">Maven</a> <a href="/blog/tags/MySQL/" style="font-size: 0.8em;">MySQL</a> <a href="/blog/tags/Mybatis/" style="font-size: 0.8em;">Mybatis</a> <a href="/blog/tags/Nacos/" style="font-size: 0.8em;">Nacos</a> <a href="/blog/tags/Pytest/" style="font-size: 0.8em;">Pytest</a>
+      </div>
+  </aside>
+
+            
+                
+  <aside id="krw-posts" class="widget widget-kratos-posts">
+  <h4 class="widget-title"><i class="fa fa-file"></i>最新文章</h4>
+  <div class="tab-content">
+      <ul class="list-group">
+        
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/01/25/K8s/K8s%E7%BB%84%E4%BB%B6/"><i class="fa  fa-book"></i> 【K8s】组件</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/01/24/K8s/K8s%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/"><i class="fa  fa-book"></i> 【K8s】常用命令</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/01/11/Idea/IDEA%E6%8F%92%E4%BB%B6/"><i class="fa  fa-book"></i> 【Idea】插件</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/01/04/Linux/Centos7%E9%97%AE%E9%A2%98%E5%A4%84%E7%90%86/"><i class="fa  fa-book"></i> Centos7问题处理</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2025/12/09/Trae/Trae%E5%AE%89%E8%A3%85%E6%8F%92%E4%BB%B6%E5%AE%9E%E7%8E%B0Java%E4%BB%A3%E7%A0%81%E7%BC%96%E5%86%99/"><i class="fa  fa-book"></i> 【Trae】安装插件实现Java代码编写</a>
+            
+          
+        
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+      </ul>
+  </div>
+  </aside>
+
+            
+    </div>
+</section>
+        
+        </div>
+    </div>
+</div>
+<footer>
+    <div id="footer"  >
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3 footer-list text-center">
+                    <ul class="kratos-social-icons">
+                        <!-- Keep for compatibility -->
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <!-- New links -->
+                        
+                    </ul>
+                    <ul class="kratos-copyright">
+                        <div>
+                            <li>&copy; 2026 溪岚花的博客 版权所有.</li>
+                            <li>本站已运行<span id="span_dt">Loading...</span></li>
+                        </div>
+                        <div>
+                            <li>Theme <a href="https://github.com/Candinya/Kratos-Rebirth" target="_blank">Kratos:Rebirth</a></li>
+                            <li>Site built with&nbsp;<i class="fa fa-heart throb" style="color:#d43f57"></i>&nbsp;by 林家隆.</li>
+                        </div>
+                        <div>
+                            <li>Powered by <a href="https://hexo.io" target="_blank" rel="nofollow">Hexo</a></li>
+                            <li>Hosted on <a href="https://gitee.com/" target="_blank">Gitee Pages</a></li>
+                        </div>
+                        <div>
+                            
+                            
+                        </div>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="kr-tool text-center">
+            <div class="tool">
+                
+                    <div class="box search-box">
+                        <a href="/blog/search/">
+                            <span class="fa fa-search"></span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="box theme-box" id="darkmode-switch">
+                        <span class="fa fa-adjust"></span>
+                    </div>
+                
+                
+                
+            </div>
+            <div class="box gotop-box">
+                <span class="fa fa-chevron-up"></span>
+            </div>
+        </div>
+    </div>
+</footer>
+</div>
+</div>
+
+        <script defer src="/blog/vendors/bootstrap@3.3.4/dist/js/bootstrap.min.js"></script>
+<script defer src="/blog/vendors/nprogress@0.2.0/nprogress.js"></script>
+<script>
+    if (!window.kr) {
+        window.kr = {};
+    }
+    window.kr.notMobile = (!(navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i)));
+    window.kr.siteRoot = "/blog/";
+</script>
+
+
+
+
+
+    <script defer src="/blog/vendors/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+
+<script defer src="/blog/js/kratosr.min.js"></script>
+<script defer src="/blog/js/pjax.min.js"></script>
+
+
+
+<!-- Extra support for third-party plguins  -->
+
+
+    </body>
+</html>

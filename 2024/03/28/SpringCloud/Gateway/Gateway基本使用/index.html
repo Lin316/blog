@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+  <!-- 元数据 -->
+  <meta charset="utf-8">
+  <link rel="icon" href="/blog/images/logo.png">
+  
+  <title>【Gateway】基本使用 | 溪岚花的博客</title>
+  
+  <meta name="author" content="林家隆" />
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="robots" content="index,follow" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <meta name="format-detection" content="telphone=no, email=no" />
+  
+    <meta name="keywords" content="Gateway, SpringCloud" />
+  
+  <meta name="description" content="Gateway 介绍Gateway  是一个网关微服务框架，是所有微服务程序的统一入口。  网关的核心功能有：  权限控制：Gateway 作为微服务入口，需要校验用户是否有请求资格，如果没有则进行拦截。 请求路由：用户的所有请求都必须先经过 Gateway，但 Gateway 不处理业务，而是根据某种规则，把请求转发到目标服务。如果路由的目标服务有多个，还需要做负载均衡。 限流：当请求流量过高时">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【Gateway】基本使用">
+<meta property="og:url" content="https://lin316.gitee.io/blog/2024/03/28/SpringCloud/Gateway/Gateway%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/index.html">
+<meta property="og:site_name" content="溪岚花的博客">
+<meta property="og:description" content="Gateway 介绍Gateway  是一个网关微服务框架，是所有微服务程序的统一入口。  网关的核心功能有：  权限控制：Gateway 作为微服务入口，需要校验用户是否有请求资格，如果没有则进行拦截。 请求路由：用户的所有请求都必须先经过 Gateway，但 Gateway 不处理业务，而是根据某种规则，把请求转发到目标服务。如果路由的目标服务有多个，还需要做负载均衡。 限流：当请求流量过高时">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://lin316.gitee.io/blog/blog/images/logo.png">
+<meta property="article:published_time" content="2024-03-28T06:00:00.000Z">
+<meta property="article:modified_time" content="2026-01-04T05:51:48.288Z">
+<meta property="article:author" content="林家隆">
+<meta property="article:tag" content="SpringCloud">
+<meta property="article:tag" content="Gateway">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://lin316.gitee.io/blog/blog/images/logo.png">
+  
+  <!-- 站点验证相关 -->
+  
+    
+    
+    
+  
+  <!-- 样式表文件 -->
+  <link rel="stylesheet" id="kratos-css" href="/blog/css/kratosr.min.css" media="all"></script>
+  
+    <link rel="stylesheet" id="darkmode-css" href="/blog/css/kr-color-dark.min.css" media="(prefers-color-scheme: dark)"></script>
+    <script src="/blog/js/kr-dark.min.js"></script>
+  
+  
+    <link rel="stylesheet" id="highlight-css" href="/blog/css/highlight/night-eighties.min.css" media="all"></script>
+  
+  <link rel="stylesheet" id="fontawe-css" href="/blog/vendors/font-awesome@4.7.0/css/font-awesome.min.css" media="all"></script>
+  <link rel="stylesheet" id="nprogress-css" href="/blog/vendors/nprogress@0.2.0/nprogress.css" media="all"></script>
+  
+  
+  
+    <link rel="stylesheet" href="/blog/vendors/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css"></script>
+  
+  <!-- 不得不预先加载的一些JS文件 -->
+  <script src="/blog/vendors/jquery@3.6.0/dist/jquery.min.js"></script>
+  
+  
+  <style>
+    
+    
+  </style>
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+    <body class="custom-background">
+        <div id="kratos-wrapper">
+    <div id="kratos-page">
+        <div id="kratos-header">
+            <header id="kratos-desktop-topnav" class="kratos-topnav">
+                <div class="container">
+                    <div class="nav-header">
+                        <nav id="kratos-menu-wrap">
+                            <ul id="kratos-primary-menu" class="sf-menu">
+                                
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/">
+                                            
+                                                
+                                                    <i class="fa fa-home"></i>
+                                                
+                                                首页
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/archives/">
+                                            
+                                                
+                                                    <i class="fa fa-file"></i>
+                                                
+                                                归档
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/tags/">
+                                            
+                                                
+                                                    <i class="fa fa-tag"></i>
+                                                
+                                                标签
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/categories/">
+                                            
+                                                
+                                                    <i class="fa fa-folder"></i>
+                                                
+                                                目录
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/search/">
+                                            
+                                                
+                                                    <i class="fa fa-search"></i>
+                                                
+                                                搜索
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </header>
+            <header id="kratos-mobile-topnav" class="kratos-topnav">
+                <div class="container">
+                    <div class="color-logo"><a href="/blog/">溪岚花的博客</a></div>
+                    <div class="nav-toggle">
+                        <a class="kratos-nav-toggle js-kratos-nav-toggle">
+                            <i></i>
+                        </a>
+                    </div>
+                </div>
+            </header>
+        </div>
+        <div class="kratos-start kratos-hero-2">
+            <!-- <div class="kratos-overlay"></div> -->
+            <div class="kratos-cover kratos-cover-2 text-center">
+                <div class="desc desc2 animate-box">
+                    <a href="/blog/">
+                        <h2 style="opacity: 0.2;">溪岚花的博客</h2> <br />
+                        <span></span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div id="kratos-blog-post">
+            <div class="container">
+                <div id="main" class="row">
+                    
+
+        
+
+            <section class="col-md-8">
+
+        
+
+            <article itemscope itemtype="https://schema.org/Article">
+    
+    <link itemprop="mainEntityOfPage" href="https://lin316.gitee.io/blog/2024/03/28/SpringCloud/Gateway/Gateway%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/">
+    <div class="kratos-hentry kratos-post-inner clearfix">
+        <header class="kratos-entry-header">
+            
+                <h1 class="kratos-entry-title text-center" itemprop="name headline">【Gateway】基本使用</h1>
+            
+            
+            <ul class="kratos-post-meta text-center">
+                <li><time datetime="2024-03-28T06:00:00.000Z" itemprop="datePublished"><i class="fa fa-calendar"></i> 2024-03-28</time></li>
+                <li itemprop="author" itemscope itemtype="https://schema.org/Person">
+                    <i class="fa fa-user"></i> 作者 <span itemprop="name">林家隆</span>
+                </li>
+                
+                    <li>
+                        <i class="fa fa-edit"></i> 
+                        
+                        
+                            8.75K
+                        
+                        字
+                    </li>
+                
+                
+            </ul>
+        </header>
+        <div class="kratos-post-content">
+            
+            <div id="expire-alert" class="alert alert-warning hidden" role="alert">
+                <div class="icon"><i class="fa fa-warning"></i></div>
+                <div class="text"><p>本文最后编辑于 <time datetime="1767505908288"></time> 前，其中的内容可能需要更新。</p></div>
+            </div>
+            
+            
+            
+                <div class="kratos-post-inner-toc toc-div-class" >
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Gateway-%E4%BB%8B%E7%BB%8D"><span class="toc-number">1.</span> <span class="toc-text">Gateway 介绍</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Gateway-%E7%9A%84%E4%BD%BF%E7%94%A8%E7%A4%BA%E4%BE%8B"><span class="toc-number">2.</span> <span class="toc-text">Gateway 的使用示例</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B7%AF%E7%94%B1%E6%96%AD%E8%A8%80"><span class="toc-number">3.</span> <span class="toc-text">路由断言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%87%E6%BB%A4%E5%99%A8"><span class="toc-number">4.</span> <span class="toc-text">过滤器</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Gateway-%E8%BF%87%E6%BB%A4%E5%99%A8%E4%BB%8B%E7%BB%8D"><span class="toc-number">4.1.</span> <span class="toc-text">Gateway 过滤器介绍</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Gateway-%E6%8F%90%E4%BE%9B%E7%9A%84%E8%BF%87%E6%BB%A4%E5%99%A8"><span class="toc-number">4.2.</span> <span class="toc-text">Gateway 提供的过滤器</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#StripPrefix"><span class="toc-number">4.2.1.</span> <span class="toc-text">StripPrefix</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#RewritePath"><span class="toc-number">4.2.2.</span> <span class="toc-text">RewritePath</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#PrefixPath"><span class="toc-number">4.2.3.</span> <span class="toc-text">PrefixPath</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#AddRequestHeader"><span class="toc-number">4.2.4.</span> <span class="toc-text">AddRequestHeader</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#RemoveRequestHeader"><span class="toc-number">4.2.5.</span> <span class="toc-text">RemoveRequestHeader</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#AddResponseHeader"><span class="toc-number">4.2.6.</span> <span class="toc-text">AddResponseHeader</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#RemoveResponseHeader"><span class="toc-number">4.2.7.</span> <span class="toc-text">RemoveResponseHeader</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE%E8%BF%87%E6%BB%A4%E5%99%A8"><span class="toc-number">4.3.</span> <span class="toc-text">配置过滤器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89%E8%BF%87%E6%BB%A4%E5%99%A8"><span class="toc-number">4.4.</span> <span class="toc-text">自定义过滤器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%87%E6%BB%A4%E5%99%A8%E7%9A%84%E6%89%A7%E8%A1%8C%E9%A1%BA%E5%BA%8F"><span class="toc-number">4.5.</span> <span class="toc-text">过滤器的执行顺序</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B7%A8%E5%9F%9F%E8%AF%B7%E6%B1%82"><span class="toc-number">5.</span> <span class="toc-text">跨域请求</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98"><span class="toc-number">6.</span> <span class="toc-text">遇到的问题</span></a></li></ol>
+                </div>
+            
+            <hr />
+            <div itemprop="articleBody"><h2 id="Gateway-介绍"><a href="#Gateway-介绍" class="headerlink" title="Gateway 介绍"></a>Gateway 介绍</h2><p>Gateway  是一个网关微服务框架，是所有微服务程序的统一入口。</p>
+<blockquote>
+<p>网关的<strong>核心功能</strong>有：</p>
+<ul>
+<li><strong>权限控制：</strong>Gateway 作为微服务入口，需要校验用户是否有请求资格，如果没有则进行拦截。</li>
+<li><strong>请求路由：</strong>用户的所有请求都必须先经过 Gateway，但 Gateway 不处理业务，而是根据某种规则，把请求转发到目标服务。如果路由的目标服务有多个，还需要做负载均衡。</li>
+<li><strong>限流：</strong>当请求流量过高时，Gateway 根据指定策略对请求进行放行，避免服务压力过大。</li>
+</ul>
+</blockquote>
+<h2 id="Gateway-的使用示例"><a href="#Gateway-的使用示例" class="headerlink" title="Gateway 的使用示例"></a>Gateway 的使用示例</h2><blockquote>
+<p>导入 gateway 依赖：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.cloud<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-cloud-starter-gateway<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.alibaba.cloud<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-cloud-starter-alibaba-nacos-discovery<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>编写 gateway 配置：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 项目端口</span></span><br><span class="line"><span class="attr">server:</span></span><br><span class="line">  <span class="attr">port:</span> <span class="number">10010</span></span><br><span class="line"><span class="attr">spring:</span></span><br><span class="line">  <span class="attr">application:</span></span><br><span class="line">    <span class="comment"># 项目名称</span></span><br><span class="line">    <span class="attr">name:</span> <span class="string">gateway</span></span><br><span class="line">  <span class="attr">cloud:</span></span><br><span class="line">    <span class="attr">nacos:</span></span><br><span class="line">      <span class="comment"># nacos 地址</span></span><br><span class="line">      <span class="attr">server-addr:</span> &#123;<span class="string">nacos</span> <span class="string">ip</span>&#125;<span class="string">:&#123;nacos</span> <span class="string">port&#125;</span></span><br><span class="line">    <span class="attr">gateway:</span></span><br><span class="line">      <span class="comment"># rouote 请求路由</span></span><br><span class="line">      <span class="attr">routes:</span></span><br><span class="line">        <span class="bullet">-</span> <span class="attr">id:</span> <span class="string">user-service</span> <span class="comment"># 路由 id，唯一即可</span></span><br><span class="line">          <span class="attr">uri:</span> <span class="string">lb://userservice</span> <span class="comment"># 路径的目标地址，项目的id，lb是指负载均衡</span></span><br><span class="line">          <span class="attr">predicates:</span> <span class="comment"># 路由断言，满足断言的就走路由目标地址</span></span><br><span class="line">            <span class="bullet">-</span> <span class="string">Path=/user/**</span> <span class="comment"># 根据路径匹配，只要以 /user/ 开头就符合要求</span></span><br></pre></td></tr></table></figure>
+
+<p>gateway 流程图：</p>
+<p><img src="/blog/2024/03/28/SpringCloud/Gateway/Gateway%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210714211742956.png"></p>
+</blockquote>
+<blockquote>
+<p>路由的配置内容包括：</p>
+<ul>
+<li><p><strong>路由 id：</strong>路由的唯一标识。</p>
+</li>
+<li><p><strong>路由目标 uri：</strong>路由的目标地址，http 开头代表固定地址，lb 开头代表根据项目的 id负载均衡。</p>
+</li>
+<li><p><strong>路由断言 predicates：</strong>判断路由的规则。</p>
+</li>
+<li><p><strong>路由过滤器 filters：</strong>对请求或响应做处理。</p>
+</li>
+</ul>
+</blockquote>
+<h2 id="路由断言"><a href="#路由断言" class="headerlink" title="路由断言"></a>路由断言</h2><ul>
+<li><strong>Path</strong>：请求路径必须符合指定规则才能路由到目标地址。如果有多个规则，满足其中一个就行。示例：<ul>
+<li><code>Path=/user/**</code>：只要是以 user 开头的路径都符合要求。</li>
+<li><code>Path=/red/&#123;segment&#125;</code>：{segment} 是一个路径占位符，后续可以通过路径占位符获取值。</li>
+</ul>
+</li>
+<li>After：某个时间点之后的请求才符合要求，时间点之前的不符合要求。例如：<ul>
+<li>After&#x3D;2037-01-20T17:42:47.789-07:00[America&#x2F;Denver]</li>
+</ul>
+</li>
+<li>Before：某个时间点之前的请求才符合要求，时间点之后的不符合要求。例如：<ul>
+<li>Before&#x3D;2031-04-13T15:14:47.433+08:00[Asia&#x2F;Shanghai]</li>
+</ul>
+</li>
+<li>Between：两个时间点之间的请求才符合要求，不在这个区间的不符合要求。例如：<ul>
+<li>Between&#x3D;2037-01-20T17:42:47.789-07:00[America&#x2F;Denver],  2037-01-21T17:42:47.789-07:00[America&#x2F;Denver]</li>
+</ul>
+</li>
+<li>Cookie：请求必须包含指定 cookie。例如：<ul>
+<li><code>Cookie=token</code>：cookie 中必须要有 token。</li>
+<li><code>Cookie=token,123</code>：cokie中必须要有 token，且值为 123。</li>
+</ul>
+</li>
+<li>Header：请求必须包含指定 header。例如：<ul>
+<li><code>Header=token</code>：请求头中必须要有 token。</li>
+<li><code>Header=token,123</code>：请求头中必须要有 token，且值为 123。</li>
+</ul>
+</li>
+<li>Method：请求必须时指定的方法。例如：<ul>
+<li>Method&#x3D;GET,POST</li>
+</ul>
+</li>
+<li>Query：请求参数必须包含指定的参数名。例如：<ul>
+<li><code>Query=name</code>：url 中必须要携带 name 的参数名。</li>
+<li><code>Query=name,lin</code>：url 中必须要携带 name 的参数名，且值为 lin。</li>
+</ul>
+</li>
+<li><strong>RemoteAddr</strong>：在范围内的 ip 才能符合要求。例如：<ul>
+<li>RemoteAddr&#x3D;192.168.1.1&#x2F;24</li>
+</ul>
+</li>
+<li>Host：请求必须是指定的访问域名。例如：<ul>
+<li><code>Host=**.lin.blog:81</code>：请求的 url 的二级域名为 lin，顶级域名为 blog，三级域名随便，可以没有，端口为 81。</li>
+</ul>
+</li>
+<li>Weight：权重处理。</li>
+</ul>
+<blockquote>
+<p><strong>以 Query 路由断言示例</strong></p>
+<p>断言规则：url 要以 user 开头，且 url 要携带 name 和 age 参数，且值必须为 lin 和 18。</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">spring:</span></span><br><span class="line">  <span class="attr">cloud:</span></span><br><span class="line">    <span class="attr">gateway:</span></span><br><span class="line">      <span class="attr">routes:</span></span><br><span class="line">        <span class="bullet">-</span> <span class="attr">id:</span> <span class="string">user-service</span></span><br><span class="line">          <span class="attr">uri:</span> <span class="string">lb://userservice</span></span><br><span class="line">          <span class="attr">predicates:</span></span><br><span class="line">            <span class="bullet">-</span> <span class="string">Path=/user/**</span></span><br><span class="line">            <span class="bullet">-</span> <span class="string">Query=name,lin</span></span><br><span class="line">            <span class="bullet">-</span> <span class="string">Query=age,18</span></span><br></pre></td></tr></table></figure>
+
+<p>模拟场景：</p>
+<p>http:&#x2F;&#x2F;127.0.0.1:10010&#x2F;user&#x2F;1?name&#x3D;lin&amp;age&#x3D;18（符合要求）</p>
+<p>http:&#x2F;&#x2F;127.0.0.1:10010&#x2F;user&#x2F;1?name&#x3D;lin&amp;age&#x3D;19（不符合要求，age 值不为 18）</p>
+<p>http:&#x2F;&#x2F;127.0.0.1:10010&#x2F;user&#x2F;1?name&#x3D;lin（不符合要求，缺少 age 参数）</p>
+</blockquote>
+<h2 id="过滤器"><a href="#过滤器" class="headerlink" title="过滤器"></a>过滤器</h2><h3 id="Gateway-过滤器介绍"><a href="#Gateway-过滤器介绍" class="headerlink" title="Gateway 过滤器介绍"></a>Gateway 过滤器介绍</h3><p>Gateway 的过滤器可以对<strong>进入 Gateway 的请求</strong>和返回的响应做处理。</p>
+<p><img src="/blog/2024/03/28/SpringCloud/Gateway/Gateway%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210714212312871.png"></p>
+<h3 id="Gateway-提供的过滤器"><a href="#Gateway-提供的过滤器" class="headerlink" title="Gateway 提供的过滤器"></a>Gateway 提供的过滤器</h3><h4 id="StripPrefix"><a href="#StripPrefix" class="headerlink" title="StripPrefix"></a>StripPrefix</h4><p>跳过指定路径。</p>
+<blockquote>
+<p>StripPrefix 示例</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">spring:</span></span><br><span class="line">  <span class="attr">cloud:</span></span><br><span class="line">    <span class="attr">gateway:</span></span><br><span class="line">      <span class="attr">routes:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">id:</span> <span class="string">nameRoot</span></span><br><span class="line">        <span class="attr">uri:</span> <span class="string">https://nameservice</span></span><br><span class="line">        <span class="attr">predicates:</span></span><br><span class="line">        <span class="bullet">-</span> <span class="string">Path=/name/**</span></span><br><span class="line">        <span class="attr">filters:</span></span><br><span class="line">        <span class="bullet">-</span> <span class="string">StripPrefix=2</span></span><br></pre></td></tr></table></figure>
+
+<p>发起 &#x2F;name&#x2F;blue&#x2F;red 请求会被路由到 https:&#x2F;&#x2F;nameservice&#x2F;red，如果StripPrefix&#x3D;1，那么会被路由到 https:&#x2F;&#x2F;nameservice&#x2F;blue&#x2F;red。</p>
+</blockquote>
+<h4 id="RewritePath"><a href="#RewritePath" class="headerlink" title="RewritePath"></a>RewritePath</h4><p>修改请求路径。</p>
+<blockquote>
+<p>RewritePath 示例</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">spring:</span></span><br><span class="line">  <span class="attr">cloud:</span></span><br><span class="line">    <span class="attr">gateway:</span></span><br><span class="line">      <span class="attr">routes:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">id:</span> <span class="string">rewritepath_route</span></span><br><span class="line">        <span class="attr">uri:</span> <span class="string">https://example.org</span></span><br><span class="line">        <span class="attr">predicates:</span></span><br><span class="line">        <span class="bullet">-</span> <span class="string">Path=/red/**</span></span><br><span class="line">        <span class="attr">filters:</span></span><br><span class="line">        <span class="bullet">-</span> <span class="string">RewritePath=/red(?&lt;segment&gt;/?.*),</span> <span class="string">/red_v2/$\&#123;segment&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>发起 &#x2F;red&#x2F;blue 请求会被路由到 https:&#x2F;&#x2F;example.org&#x2F;red_v2&#x2F;blue。由于 YAML 的语法问题，$ 符号后面应该加上 \。</p>
+</blockquote>
+<h4 id="PrefixPath"><a href="#PrefixPath" class="headerlink" title="PrefixPath"></a>PrefixPath</h4><p>给请求路径添加前缀。</p>
+<blockquote>
+<p>PrefixPath 示例</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">spring:</span></span><br><span class="line">  <span class="attr">cloud:</span></span><br><span class="line">    <span class="attr">gateway:</span></span><br><span class="line">      <span class="attr">routes:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">id:</span> <span class="string">prefixpath_route</span></span><br><span class="line">        <span class="attr">uri:</span> <span class="string">https://example.org</span></span><br><span class="line">        <span class="attr">filters:</span></span><br><span class="line">        <span class="bullet">-</span> <span class="string">PrefixPath=/mypath</span></span><br></pre></td></tr></table></figure>
+
+<p>发起 &#x2F;hello 的请求会被路由到 https:&#x2F;&#x2F;example.org&#x2F;mypath&#x2F;hello。</p>
+</blockquote>
+<h4 id="AddRequestHeader"><a href="#AddRequestHeader" class="headerlink" title="AddRequestHeader"></a>AddRequestHeader</h4><p>给当前请求添加一个请求头</p>
+<h4 id="RemoveRequestHeader"><a href="#RemoveRequestHeader" class="headerlink" title="RemoveRequestHeader"></a>RemoveRequestHeader</h4><p>移除请求中的一个请求头</p>
+<h4 id="AddResponseHeader"><a href="#AddResponseHeader" class="headerlink" title="AddResponseHeader"></a>AddResponseHeader</h4><p>给响应结果中添加一个响应头</p>
+<h4 id="RemoveResponseHeader"><a href="#RemoveResponseHeader" class="headerlink" title="RemoveResponseHeader"></a>RemoveResponseHeader</h4><p>从响应结果中移除有一个响应头</p>
+<h3 id="配置过滤器"><a href="#配置过滤器" class="headerlink" title="配置过滤器"></a>配置过滤器</h3><blockquote>
+<p><strong>针对某个路由添加过滤器：</strong></p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">spring:</span></span><br><span class="line">  <span class="attr">cloud:</span></span><br><span class="line">    <span class="attr">gateway:</span></span><br><span class="line">      <span class="attr">routes:</span></span><br><span class="line">        <span class="bullet">-</span> <span class="attr">id:</span> <span class="string">user-service</span></span><br><span class="line">          <span class="attr">uri:</span> <span class="string">lb://userservice</span></span><br><span class="line">          <span class="attr">predicates:</span></span><br><span class="line">            <span class="bullet">-</span> <span class="string">Path=/user/**</span></span><br><span class="line">          <span class="attr">filters:</span></span><br><span class="line">            <span class="comment"># 添加 name 请求头，值为 lin</span></span><br><span class="line">            <span class="bullet">-</span> <span class="string">AddRequestHeader=name,lin</span></span><br><span class="line">            <span class="comment"># 添加 age 请求头，值为 18</span></span><br><span class="line">            <span class="bullet">-</span> <span class="string">AddRequestHeader=age,18</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>针对所有路由添加过滤器：</strong></p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">spring:</span></span><br><span class="line">  <span class="attr">cloud:</span></span><br><span class="line">    <span class="attr">gateway:</span></span><br><span class="line">      <span class="attr">routes:</span></span><br><span class="line">        <span class="bullet">-</span> <span class="attr">id:</span> <span class="string">user-service</span></span><br><span class="line">          <span class="attr">uri:</span> <span class="string">lb://userservice</span></span><br><span class="line">          <span class="attr">predicates:</span></span><br><span class="line">            <span class="bullet">-</span> <span class="string">Path=/user/**</span></span><br><span class="line">      <span class="attr">default-filters:</span></span><br><span class="line">        <span class="bullet">-</span> <span class="string">AddRequestHeader=name,lin</span></span><br><span class="line">        <span class="bullet">-</span> <span class="string">AddRequestHeader=age,18</span></span><br></pre></td></tr></table></figure>
+</blockquote>
+<h3 id="自定义过滤器"><a href="#自定义过滤器" class="headerlink" title="自定义过滤器"></a>自定义过滤器</h3><p>通过实现 <strong>GlobalFilter</strong> 接口来自定义过滤器，自定义的过滤器作用于全部路由。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">GlobalFilter</span> &#123;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     *  处理当前请求，有必要的话通过&#123;<span class="doctag">@link</span> GatewayFilterChain&#125;将请求交给下一个过滤器处理</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> exchange 请求上下文，里面可以获取Request、Response等信息</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> chain 用来把请求委托给下一个过滤器 </span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> &#123;<span class="doctag">@code</span> Mono&lt;Void&gt;&#125; 返回标示当前过滤器业务结束</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    Mono&lt;Void&gt; <span class="title function_">filter</span><span class="params">(ServerWebExchange exchange, GatewayFilterChain chain)</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>注：</strong>exchange 对象是指请求上下文。请求从进入网关到返回响应内容，整个过程都共享 exchange 对象。</p>
+<blockquote>
+<p><strong>自定义过滤器示例</strong></p>
+<p>需求：如果请求头携带 authorization 参数，并且值为 admin 就放行，否则拦截请求。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// @Order 注解用来指定拦截器的优先级，值越小优先级越高</span></span><br><span class="line"><span class="meta">@Order(-1)</span></span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">MyFilter</span> <span class="keyword">implements</span> <span class="title class_">GlobalFilter</span> &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> Mono&lt;Void&gt; <span class="title function_">filter</span><span class="params">(ServerWebExchange exchange, GatewayFilterChain chain)</span> &#123;</span><br><span class="line">        <span class="type">ServerHttpRequest</span> <span class="variable">req</span> <span class="operator">=</span> exchange.getRequest();</span><br><span class="line">        <span class="comment">// 获取请求头中的 authorization 参数值</span></span><br><span class="line">        <span class="type">String</span> <span class="variable">authorization</span> <span class="operator">=</span> req.getHeaders().getFirst(<span class="string">&quot;authorization&quot;</span>);</span><br><span class="line">        <span class="keyword">if</span> (<span class="string">&quot;admin&quot;</span>.equals(authorization)) &#123;</span><br><span class="line">            <span class="comment">// 如果 authorization 的值为 admin 就放行</span></span><br><span class="line">            <span class="keyword">return</span> chain.filter(exchange);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 如果 authorization 的值不为 admin，拦截请求</span></span><br><span class="line">        exchange.getResponse().setStatusCode(HttpStatus.FORBIDDEN);</span><br><span class="line">        <span class="keyword">return</span> exchange.getResponse().setComplete();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<h3 id="过滤器的执行顺序"><a href="#过滤器的执行顺序" class="headerlink" title="过滤器的执行顺序"></a>过滤器的执行顺序</h3><blockquote>
+<p>已知有三种过滤器：</p>
+<ul>
+<li>针对单个路由配置的过滤器。</li>
+<li>针对全部路由配置的过滤器（DefaultFilter）。</li>
+<li>自定义的过滤器（GlobalFilter）。</li>
+</ul>
+</blockquote>
+<blockquote>
+<p>排序规则：</p>
+<ul>
+<li>每个过滤器都有一个 order 值，order 值越小，优先级越高，执行顺序越靠前。</li>
+<li>GlobalFilter 通过实现 Ordered 接口，或者添加 @Order 注解来指定 order 值。通过配置声明的过滤器，默认按声明顺序从 1 开始递增。</li>
+<li>当过滤器的 order 值一样时，会按照  defaultFilter &gt; 路由过滤器 &gt; GlobalFilter 的顺序执行。</li>
+</ul>
+</blockquote>
+<blockquote>
+<p>模拟场景：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">spring:</span></span><br><span class="line">  <span class="attr">cloud:</span></span><br><span class="line">    <span class="attr">gateway:</span></span><br><span class="line">      <span class="attr">routes:</span></span><br><span class="line">        <span class="bullet">-</span> <span class="attr">id:</span> <span class="string">user-service</span></span><br><span class="line">          <span class="attr">uri:</span> <span class="string">lb://userservice</span></span><br><span class="line">          <span class="attr">predicates:</span></span><br><span class="line">            <span class="bullet">-</span> <span class="string">Path=/user/**</span></span><br><span class="line">          <span class="attr">filters:</span></span><br><span class="line">            <span class="bullet">-</span> <span class="string">AddRequestHeader=name,lin（order=1）</span></span><br><span class="line">            <span class="bullet">-</span> <span class="string">AddRequestHeader=age,18（order=2）</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">spring:</span></span><br><span class="line">  <span class="attr">cloud:</span></span><br><span class="line">    <span class="attr">gateway:</span></span><br><span class="line">      <span class="attr">routes:</span></span><br><span class="line">        <span class="bullet">-</span> <span class="attr">id:</span> <span class="string">user-service</span></span><br><span class="line">          <span class="attr">uri:</span> <span class="string">lb://userservice</span></span><br><span class="line">          <span class="attr">predicates:</span></span><br><span class="line">            <span class="bullet">-</span> <span class="string">Path=/user/**</span></span><br><span class="line">      <span class="attr">default-filters:</span></span><br><span class="line">        <span class="bullet">-</span> <span class="string">AddRequestHeader=name,lin（order=1）</span></span><br><span class="line">        <span class="bullet">-</span> <span class="string">AddRequestHeader=age,18（order=2）</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">spring:</span></span><br><span class="line">  <span class="attr">cloud:</span></span><br><span class="line">    <span class="attr">gateway:</span></span><br><span class="line">      <span class="attr">routes:</span></span><br><span class="line">        <span class="bullet">-</span> <span class="attr">id:</span> <span class="string">user-service</span></span><br><span class="line">          <span class="attr">uri:</span> <span class="string">lb://userservice</span></span><br><span class="line">          <span class="attr">predicates:</span></span><br><span class="line">            <span class="bullet">-</span> <span class="string">Path=/user/**</span></span><br><span class="line">          <span class="attr">filters:</span></span><br><span class="line">            <span class="bullet">-</span> <span class="string">AddRequestHeader=name,lin（order=1）</span></span><br><span class="line">      <span class="attr">default-filters:</span></span><br><span class="line">        <span class="bullet">-</span> <span class="string">AddRequestHeader=age,18（order=1）</span></span><br></pre></td></tr></table></figure>
+</blockquote>
+<h2 id="跨域请求"><a href="#跨域请求" class="headerlink" title="跨域请求"></a>跨域请求</h2><blockquote>
+<p>Gateway 处理跨域请求：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">spring:</span></span><br><span class="line"><span class="attr">cloud:</span></span><br><span class="line"> <span class="attr">gateway:</span></span><br><span class="line">   <span class="comment"># 全局的跨域处理</span></span><br><span class="line">   <span class="attr">globalcors:</span></span><br><span class="line">     <span class="comment"># 为 true 表示让网关不要拦截 options 请求</span></span><br><span class="line">     <span class="attr">add-to-simple-url-handler-mapping:</span> <span class="literal">true</span></span><br><span class="line">     <span class="attr">corsConfigurations:</span></span><br><span class="line">   	<span class="string">&#x27;[/**]&#x27;</span><span class="string">:</span></span><br><span class="line">            <span class="comment"># 允许哪些网站的跨域请求</span></span><br><span class="line">            <span class="attr">allowedOrigins:</span></span><br><span class="line">                <span class="bullet">-</span> <span class="string">&quot;http://&#123;ip 地址&#125;:&#123;port 端口&#125;&quot;</span></span><br><span class="line">            <span class="comment"># 允许的跨域 ajax 的请求方式</span></span><br><span class="line">            <span class="attr">allowedMethods:</span></span><br><span class="line">              <span class="bullet">-</span> <span class="string">&quot;GET&quot;</span></span><br><span class="line">              <span class="bullet">-</span> <span class="string">&quot;POST&quot;</span></span><br><span class="line">              <span class="bullet">-</span> <span class="string">&quot;DELETE&quot;</span></span><br><span class="line">              <span class="bullet">-</span> <span class="string">&quot;PUT&quot;</span></span><br><span class="line">              <span class="bullet">-</span> <span class="string">&quot;OPTIONS&quot;</span></span><br><span class="line">            <span class="comment"># 允许在请求中携带的头信息</span></span><br><span class="line">            <span class="attr">allowedHeaders:</span> <span class="string">&quot;*&quot;</span></span><br><span class="line">            <span class="comment"># 是否允许携带cookie</span></span><br><span class="line">            <span class="attr">allowCredentials:</span> <span class="literal">true</span></span><br><span class="line">            <span class="comment"># 这次跨域检测的有效期，在有效期内不需要重复发送 options 请求</span></span><br><span class="line">            <span class="attr">maxAge:</span> <span class="number">360000</span></span><br><span class="line">	<span class="string">&#x27;[/user/**]&#x27;</span><span class="string">:</span></span><br><span class="line">            <span class="attr">allowedOrigins:</span></span><br><span class="line">              <span class="bullet">-</span> <span class="string">&quot;http://&#123;ip 地址&#125;:&#123;port 端口&#125;&quot;</span></span><br><span class="line">            <span class="attr">allowedMethods:</span></span><br><span class="line">              <span class="bullet">-</span> <span class="string">&quot;GET&quot;</span></span><br><span class="line">            <span class="attr">allowedHeaders:</span> <span class="string">&quot;Token&quot;</span></span><br><span class="line">            <span class="attr">allowCredentials:</span> <span class="literal">true</span></span><br><span class="line">            <span class="attr">maxAge:</span> <span class="number">360000</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p><code>add-to-simple-url-handler-mapping：true</code>：表示将 corsConfigurations 配置信息添加到 SimpleUrlHandlerMapping 处理器中。</p>
+</li>
+<li><p><code>&#39;[/**]&#39; 或 &#39;[/user/**]&#39;</code>：为指定的资源路径定义跨域规则，资源路径可以用正则表达式编写。如果一个路径匹配多个跨域规则，选择第一个匹配的跨域规则。根据声明的顺序从上到下依次匹配。</p>
+</li>
+</ul>
+</blockquote>
+<h2 id="遇到的问题"><a href="#遇到的问题" class="headerlink" title="遇到的问题"></a>遇到的问题</h2><blockquote>
+<p>问题1：<strong>正确导入 Gateway 依赖包，Gateway 相关配置也是正确的，但是访问显示 503</strong></p>
+<p>在 Spring Cloud Gateway 的早期版本中，Ribbon 被用作默认的负载均衡器。然而，从 Spring Cloud 2020.0.0 版本开始，Ribbon 被废弃，Spring Cloud LoadBalancer 成为了推荐的负载均衡方案。</p>
+<p>在这个版本变动中，为了提供更大的灵活性，spring-cloud-starter-loadbalancer 被标记为了可选依赖，不再默认包含在 Spring Cloud Gateway 中。如果没有显式包含这个依赖，就会导致无法处理 lb:&#x2F;&#x2F;URI，从而返回503错误。</p>
+</blockquote>
+</div>
+        </div>
+        
+        <footer class="kratos-entry-footer clearfix">
+            
+            <div class="footer-tag clearfix">
+                <div class="pull-left">
+                <i class="fa fa-tags"></i>
+                    <a class="tag-none-link" href="/blog/tags/Gateway/" rel="tag">Gateway</a>, <a class="tag-none-link" href="/blog/tags/SpringCloud/" rel="tag">SpringCloud</a>
+                </div>
+                <div class="pull-date">
+                    <time datetime="2026-01-04T05:51:48.288Z" itemprop="dateModified">最后编辑：2026-01-04</time>
+                </div>
+            </div>
+        </footer>
+    </div>
+    
+        <nav class="navigation post-navigation clearfix" role="navigation">
+            
+            <div class="nav-previous clearfix">
+                <a title=" 【Feign】基本使用" href="/blog/2024/03/28/SpringCloud/Feign/Feign基本使用/">&lt; 上一篇</a>
+            </div>
+            
+            
+            <div class="nav-next clearfix">
+                <a title=" 【CORS】跨域资源共享" href="/blog/2024/03/29/JavaWeb/CORS/">下一篇 &gt;</a>
+            </div>
+            
+        </nav>
+    
+    
+</article>
+
+        
+
+            </section>
+
+        
+
+                
+            
+
+<section id="kratos-widget-area" class="col-md-4 hidden-xs hidden-sm">
+    <!-- 文章和页面根据splitter来分割，没有的话就从头开始设置为sticky -->
+    
+    
+                <aside id="krw-about" class="widget widget-kratos-about clearfix">
+    <div class="photo-background"></div>
+    <div class="photo-wrapper clearfix">
+        <div class="photo-wrapper-tip text-center">
+            <img class="about-photo" src="/blog/images/avatar.webp" loading="lazy" decoding="auto" />
+        </div>
+    </div>
+    <div class="textwidget">
+        <p class="text-center">极简主义</p>
+    </div>
+    <div class="site-meta">
+        <a class="meta-item" href="/blog/archives/">
+            <span class="title">
+                文章
+            </span>
+            <span class="count">
+                77
+            </span>
+        </a>
+        <a class="meta-item" href="/blog/categories/">
+            <span class="title">
+                分类
+            </span>
+            <span class="count">
+                10
+            </span>
+        </a>
+        <a class="meta-item" href="/blog/tags/">
+            <span class="title">
+                标签
+            </span>
+            <span class="count">
+                29
+            </span>
+        </a>
+    </div>
+</aside>
+            
+                    <div class="sticky-area">
+                
+                    <aside id="krw-toc" class="widget widget-kratos-toc clearfix toc-div-class" >
+    <div class="photo-background"></div>
+    <h4 class="widget-title no-after">
+        <i class="fa fa-compass"></i>
+        文章目录
+        <span class="toc-progress-bar" role="progressbar" aria-label="阅读进度："></span>
+    </h4>
+    <div class="textwidget">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Gateway-%E4%BB%8B%E7%BB%8D"><span class="toc-text">Gateway 介绍</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Gateway-%E7%9A%84%E4%BD%BF%E7%94%A8%E7%A4%BA%E4%BE%8B"><span class="toc-text">Gateway 的使用示例</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B7%AF%E7%94%B1%E6%96%AD%E8%A8%80"><span class="toc-text">路由断言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%87%E6%BB%A4%E5%99%A8"><span class="toc-text">过滤器</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Gateway-%E8%BF%87%E6%BB%A4%E5%99%A8%E4%BB%8B%E7%BB%8D"><span class="toc-text">Gateway 过滤器介绍</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Gateway-%E6%8F%90%E4%BE%9B%E7%9A%84%E8%BF%87%E6%BB%A4%E5%99%A8"><span class="toc-text">Gateway 提供的过滤器</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#StripPrefix"><span class="toc-text">StripPrefix</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#RewritePath"><span class="toc-text">RewritePath</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#PrefixPath"><span class="toc-text">PrefixPath</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#AddRequestHeader"><span class="toc-text">AddRequestHeader</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#RemoveRequestHeader"><span class="toc-text">RemoveRequestHeader</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#AddResponseHeader"><span class="toc-text">AddResponseHeader</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#RemoveResponseHeader"><span class="toc-text">RemoveResponseHeader</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE%E8%BF%87%E6%BB%A4%E5%99%A8"><span class="toc-text">配置过滤器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89%E8%BF%87%E6%BB%A4%E5%99%A8"><span class="toc-text">自定义过滤器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%87%E6%BB%A4%E5%99%A8%E7%9A%84%E6%89%A7%E8%A1%8C%E9%A1%BA%E5%BA%8F"><span class="toc-text">过滤器的执行顺序</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B7%A8%E5%9F%9F%E8%AF%B7%E6%B1%82"><span class="toc-text">跨域请求</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98"><span class="toc-text">遇到的问题</span></a></li></ol>
+    </div>
+</aside>
+                
+                
+  <aside id="krw-categories" class="widget widget-kratos-categories clearfix">
+    <h4 class="widget-title"><i class="fa fa-folder"></i>分类目录</h4>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Docker/">Docker</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Idea/">Idea</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Java/">Java</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/K8s/">K8s</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Linux/">Linux</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/MySQL/">MySQL</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Python/">Python</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Selenium/">Selenium</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/SpringBoot/">SpringBoot</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/SpringCloud/">SpringCloud</a><span class="category-list-count">13</span></li></ul>
+  </aside>
+
+
+            
+                
+  <aside id="krw-tags" class="widget widget-kratos-tags clearfix">
+    <h4 class="widget-title"><i class="fa fa-tags"></i>标签聚合</h4>
+      <div class="tag-clouds">
+        <a href="/blog/tags/CORS/" style="font-size: 0.8em;">CORS</a> <a href="/blog/tags/Docker/" style="font-size: 0.8em;">Docker</a> <a href="/blog/tags/Dubbo/" style="font-size: 0.8em;">Dubbo</a> <a href="/blog/tags/ELK/" style="font-size: 0.8em;">ELK</a> <a href="/blog/tags/Elasticsearch/" style="font-size: 0.8em;">Elasticsearch</a> <a href="/blog/tags/Eureka/" style="font-size: 0.8em;">Eureka</a> <a href="/blog/tags/Feign/" style="font-size: 0.8em;">Feign</a> <a href="/blog/tags/Gateway/" style="font-size: 0.8em;">Gateway</a> <a href="/blog/tags/Idea/" style="font-size: 0.8em;">Idea</a> <a href="/blog/tags/Java/" style="font-size: 0.8em;">Java</a> <a href="/blog/tags/JavaWeb/" style="font-size: 0.8em;">JavaWeb</a> <a href="/blog/tags/K8s/" style="font-size: 0.8em;">K8s</a> <a href="/blog/tags/Linux/" style="font-size: 0.8em;">Linux</a> <a href="/blog/tags/Maven/" style="font-size: 0.8em;">Maven</a> <a href="/blog/tags/MySQL/" style="font-size: 0.8em;">MySQL</a> <a href="/blog/tags/Mybatis/" style="font-size: 0.8em;">Mybatis</a> <a href="/blog/tags/Nacos/" style="font-size: 0.8em;">Nacos</a> <a href="/blog/tags/Pytest/" style="font-size: 0.8em;">Pytest</a>
+      </div>
+  </aside>
+
+            
+                
+  <aside id="krw-posts" class="widget widget-kratos-posts">
+  <h4 class="widget-title"><i class="fa fa-file"></i>最新文章</h4>
+  <div class="tab-content">
+      <ul class="list-group">
+        
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/01/25/K8s/K8s%E7%BB%84%E4%BB%B6/"><i class="fa  fa-book"></i> 【K8s】组件</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/01/24/K8s/K8s%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/"><i class="fa  fa-book"></i> 【K8s】常用命令</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/01/11/Idea/IDEA%E6%8F%92%E4%BB%B6/"><i class="fa  fa-book"></i> 【Idea】插件</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/01/04/Linux/Centos7%E9%97%AE%E9%A2%98%E5%A4%84%E7%90%86/"><i class="fa  fa-book"></i> Centos7问题处理</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2025/12/09/Trae/Trae%E5%AE%89%E8%A3%85%E6%8F%92%E4%BB%B6%E5%AE%9E%E7%8E%B0Java%E4%BB%A3%E7%A0%81%E7%BC%96%E5%86%99/"><i class="fa  fa-book"></i> 【Trae】安装插件实现Java代码编写</a>
+            
+          
+        
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+      </ul>
+  </div>
+  </aside>
+
+            
+    </div>
+</section>
+        
+        </div>
+    </div>
+</div>
+<footer>
+    <div id="footer"  >
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3 footer-list text-center">
+                    <ul class="kratos-social-icons">
+                        <!-- Keep for compatibility -->
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <!-- New links -->
+                        
+                    </ul>
+                    <ul class="kratos-copyright">
+                        <div>
+                            <li>&copy; 2026 溪岚花的博客 版权所有.</li>
+                            <li>本站已运行<span id="span_dt">Loading...</span></li>
+                        </div>
+                        <div>
+                            <li>Theme <a href="https://github.com/Candinya/Kratos-Rebirth" target="_blank">Kratos:Rebirth</a></li>
+                            <li>Site built with&nbsp;<i class="fa fa-heart throb" style="color:#d43f57"></i>&nbsp;by 林家隆.</li>
+                        </div>
+                        <div>
+                            <li>Powered by <a href="https://hexo.io" target="_blank" rel="nofollow">Hexo</a></li>
+                            <li>Hosted on <a href="https://gitee.com/" target="_blank">Gitee Pages</a></li>
+                        </div>
+                        <div>
+                            
+                            
+                        </div>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="kr-tool text-center">
+            <div class="tool">
+                
+                    <div class="box search-box">
+                        <a href="/blog/search/">
+                            <span class="fa fa-search"></span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="box theme-box" id="darkmode-switch">
+                        <span class="fa fa-adjust"></span>
+                    </div>
+                
+                
+                
+            </div>
+            <div class="box gotop-box">
+                <span class="fa fa-chevron-up"></span>
+            </div>
+        </div>
+    </div>
+</footer>
+</div>
+</div>
+
+        <script defer src="/blog/vendors/bootstrap@3.3.4/dist/js/bootstrap.min.js"></script>
+<script defer src="/blog/vendors/nprogress@0.2.0/nprogress.js"></script>
+<script>
+    if (!window.kr) {
+        window.kr = {};
+    }
+    window.kr.notMobile = (!(navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i)));
+    window.kr.siteRoot = "/blog/";
+</script>
+
+
+
+
+
+    <script defer src="/blog/vendors/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+
+<script defer src="/blog/js/kratosr.min.js"></script>
+<script defer src="/blog/js/pjax.min.js"></script>
+
+
+
+<!-- Extra support for third-party plguins  -->
+
+
+    </body>
+</html>

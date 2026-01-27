@@ -1,0 +1,1212 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+  <!-- 元数据 -->
+  <meta charset="utf-8">
+  <link rel="icon" href="/blog/images/logo.png">
+  
+  <title>MySQL 中的数据类型 | 溪岚花的博客</title>
+  
+  <meta name="author" content="林家隆" />
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="robots" content="index,follow" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <meta name="format-detection" content="telphone=no, email=no" />
+  
+    <meta name="keywords" content="MySQL" />
+  
+  <meta name="description" content="MySQL 中的数据类型如下：    类型 类型举例    整数类型 TINYINT、SMALLINT、MEDIUMINT、INT、BIGINT   浮点类型 FLOAT、DOUBLE   定点数类型 DECIMAL   位类型 BIT   日期时间类型 YEAR、TIME、DATE、DATETIME、TIMESTAMP   文本字符串类型 CHAR、VARCHAR、TINYTEXT、TEXT、M">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MySQL 中的数据类型">
+<meta property="og:url" content="https://lin316.gitee.io/blog/2023/05/17/mysql/%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/index.html">
+<meta property="og:site_name" content="溪岚花的博客">
+<meta property="og:description" content="MySQL 中的数据类型如下：    类型 类型举例    整数类型 TINYINT、SMALLINT、MEDIUMINT、INT、BIGINT   浮点类型 FLOAT、DOUBLE   定点数类型 DECIMAL   位类型 BIT   日期时间类型 YEAR、TIME、DATE、DATETIME、TIMESTAMP   文本字符串类型 CHAR、VARCHAR、TINYTEXT、TEXT、M">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://lin316.gitee.io/blog/blog/images/logo.png">
+<meta property="article:published_time" content="2023-05-16T16:00:00.000Z">
+<meta property="article:modified_time" content="2026-01-04T05:51:48.300Z">
+<meta property="article:author" content="林家隆">
+<meta property="article:tag" content="MySQL">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://lin316.gitee.io/blog/blog/images/logo.png">
+  
+  <!-- 站点验证相关 -->
+  
+    
+    
+    
+  
+  <!-- 样式表文件 -->
+  <link rel="stylesheet" id="kratos-css" href="/blog/css/kratosr.min.css" media="all"></script>
+  
+    <link rel="stylesheet" id="darkmode-css" href="/blog/css/kr-color-dark.min.css" media="(prefers-color-scheme: dark)"></script>
+    <script src="/blog/js/kr-dark.min.js"></script>
+  
+  
+    <link rel="stylesheet" id="highlight-css" href="/blog/css/highlight/night-eighties.min.css" media="all"></script>
+  
+  <link rel="stylesheet" id="fontawe-css" href="/blog/vendors/font-awesome@4.7.0/css/font-awesome.min.css" media="all"></script>
+  <link rel="stylesheet" id="nprogress-css" href="/blog/vendors/nprogress@0.2.0/nprogress.css" media="all"></script>
+  
+  
+  
+    <link rel="stylesheet" href="/blog/vendors/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css"></script>
+  
+  <!-- 不得不预先加载的一些JS文件 -->
+  <script src="/blog/vendors/jquery@3.6.0/dist/jquery.min.js"></script>
+  
+  
+  <style>
+    
+    
+  </style>
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+    <body class="custom-background">
+        <div id="kratos-wrapper">
+    <div id="kratos-page">
+        <div id="kratos-header">
+            <header id="kratos-desktop-topnav" class="kratos-topnav">
+                <div class="container">
+                    <div class="nav-header">
+                        <nav id="kratos-menu-wrap">
+                            <ul id="kratos-primary-menu" class="sf-menu">
+                                
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/">
+                                            
+                                                
+                                                    <i class="fa fa-home"></i>
+                                                
+                                                首页
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/archives/">
+                                            
+                                                
+                                                    <i class="fa fa-file"></i>
+                                                
+                                                归档
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/tags/">
+                                            
+                                                
+                                                    <i class="fa fa-tag"></i>
+                                                
+                                                标签
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/categories/">
+                                            
+                                                
+                                                    <i class="fa fa-folder"></i>
+                                                
+                                                目录
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/search/">
+                                            
+                                                
+                                                    <i class="fa fa-search"></i>
+                                                
+                                                搜索
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </header>
+            <header id="kratos-mobile-topnav" class="kratos-topnav">
+                <div class="container">
+                    <div class="color-logo"><a href="/blog/">溪岚花的博客</a></div>
+                    <div class="nav-toggle">
+                        <a class="kratos-nav-toggle js-kratos-nav-toggle">
+                            <i></i>
+                        </a>
+                    </div>
+                </div>
+            </header>
+        </div>
+        <div class="kratos-start kratos-hero-2">
+            <!-- <div class="kratos-overlay"></div> -->
+            <div class="kratos-cover kratos-cover-2 text-center">
+                <div class="desc desc2 animate-box">
+                    <a href="/blog/">
+                        <h2 style="opacity: 0.2;">溪岚花的博客</h2> <br />
+                        <span></span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div id="kratos-blog-post">
+            <div class="container">
+                <div id="main" class="row">
+                    
+
+        
+
+            <section class="col-md-8">
+
+        
+
+            <article itemscope itemtype="https://schema.org/Article">
+    
+    <link itemprop="mainEntityOfPage" href="https://lin316.gitee.io/blog/2023/05/17/mysql/%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/">
+    <div class="kratos-hentry kratos-post-inner clearfix">
+        <header class="kratos-entry-header">
+            
+                <h1 class="kratos-entry-title text-center" itemprop="name headline">MySQL 中的数据类型</h1>
+            
+            
+            <ul class="kratos-post-meta text-center">
+                <li><time datetime="2023-05-16T16:00:00.000Z" itemprop="datePublished"><i class="fa fa-calendar"></i> 2023-05-17</time></li>
+                <li itemprop="author" itemscope itemtype="https://schema.org/Person">
+                    <i class="fa fa-user"></i> 作者 <span itemprop="name">林家隆</span>
+                </li>
+                
+                    <li>
+                        <i class="fa fa-edit"></i> 
+                        
+                        
+                            28.83K
+                        
+                        字
+                    </li>
+                
+                
+            </ul>
+        </header>
+        <div class="kratos-post-content">
+            
+            <div id="expire-alert" class="alert alert-warning hidden" role="alert">
+                <div class="icon"><i class="fa fa-warning"></i></div>
+                <div class="text"><p>本文最后编辑于 <time datetime="1767505908300"></time> 前，其中的内容可能需要更新。</p></div>
+            </div>
+            
+            
+            
+                <div class="kratos-post-inner-toc toc-div-class" >
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B4%E6%95%B0%E7%B1%BB%E5%9E%8B"><span class="toc-number">1.</span> <span class="toc-text">整数类型</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%B1%BB%E5%9E%8B%E4%BB%8B%E7%BB%8D"><span class="toc-number">1.1.</span> <span class="toc-text">类型介绍</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%AF%E9%80%89%E5%B1%9E%E6%80%A7"><span class="toc-number">1.2.</span> <span class="toc-text">可选属性</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#M%EF%BC%88%E6%98%BE%E7%A4%BA%E5%AE%BD%E5%BA%A6%EF%BC%89"><span class="toc-number">1.2.1.</span> <span class="toc-text">M（显示宽度）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#ZEROFILL"><span class="toc-number">1.2.2.</span> <span class="toc-text">ZEROFILL</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#UNSIGNED"><span class="toc-number">1.2.3.</span> <span class="toc-text">UNSIGNED</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B5%AE%E7%82%B9%E7%B1%BB%E5%9E%8B"><span class="toc-number">2.</span> <span class="toc-text">浮点类型</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%B1%BB%E5%9E%8B%E4%BB%8B%E7%BB%8D-1"><span class="toc-number">2.1.</span> <span class="toc-text">类型介绍</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%B2%BE%E5%BA%A6%E8%AF%AF%E5%B7%AE%E8%AF%B4%E6%98%8E"><span class="toc-number">2.2.</span> <span class="toc-text">精度误差说明</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9A%E7%82%B9%E6%95%B0%E7%B1%BB%E5%9E%8B"><span class="toc-number">3.</span> <span class="toc-text">定点数类型</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%B1%BB%E5%9E%8B%E4%BB%8B%E7%BB%8D-2"><span class="toc-number">3.1.</span> <span class="toc-text">类型介绍</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%8D%E7%B1%BB%E5%9E%8B"><span class="toc-number">4.</span> <span class="toc-text">位类型</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%B1%BB%E5%9E%8B%E4%BB%8B%E7%BB%8D-3"><span class="toc-number">4.1.</span> <span class="toc-text">类型介绍</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%97%A5%E6%9C%9F%E4%B8%8E%E6%97%B6%E9%97%B4%E7%B1%BB%E5%9E%8B"><span class="toc-number">5.</span> <span class="toc-text">日期与时间类型</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#YEAR-%E7%B1%BB%E5%9E%8B"><span class="toc-number">5.1.</span> <span class="toc-text">YEAR 类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#DATE-%E7%B1%BB%E5%9E%8B"><span class="toc-number">5.2.</span> <span class="toc-text">DATE 类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#TIME-%E7%B1%BB%E5%9E%8B"><span class="toc-number">5.3.</span> <span class="toc-text">TIME 类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#DATETIME-%E7%B1%BB%E5%9E%8B"><span class="toc-number">5.4.</span> <span class="toc-text">DATETIME 类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#TIMESTAMP-%E7%B1%BB%E5%9E%8B"><span class="toc-number">5.5.</span> <span class="toc-text">TIMESTAMP 类型</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%87%E6%9C%AC%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%B1%BB%E5%9E%8B"><span class="toc-number">6.</span> <span class="toc-text">文本字符串类型</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#CHAR-%E4%B8%8E-VARCHAR-%E7%B1%BB%E5%9E%8B"><span class="toc-number">6.1.</span> <span class="toc-text">CHAR 与 VARCHAR 类型</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#CHAR-%E7%B1%BB%E5%9E%8B"><span class="toc-number">6.1.1.</span> <span class="toc-text">CHAR 类型</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#VARCHAR-%E7%B1%BB%E5%9E%8B"><span class="toc-number">6.1.2.</span> <span class="toc-text">VARCHAR 类型</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#TEXT-%E7%B1%BB%E5%9E%8B"><span class="toc-number">6.2.</span> <span class="toc-text">TEXT 类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ENUM-%E7%B1%BB%E5%9E%8B"><span class="toc-number">6.3.</span> <span class="toc-text">ENUM 类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#SET-%E7%B1%BB%E5%9E%8B"><span class="toc-number">6.4.</span> <span class="toc-text">SET 类型</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E8%BF%9B%E5%88%B6%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%B1%BB%E5%9E%8B"><span class="toc-number">7.</span> <span class="toc-text">二进制字符串类型</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#BINARY-%E4%B8%8E-VARBINARY-%E7%B1%BB%E5%9E%8B"><span class="toc-number">7.1.</span> <span class="toc-text">BINARY 与 VARBINARY 类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#BLOB-%E7%B1%BB%E5%9E%8B"><span class="toc-number">7.2.</span> <span class="toc-text">BLOB 类型</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#JSON-%E7%B1%BB%E5%9E%8B"><span class="toc-number">8.</span> <span class="toc-text">JSON 类型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%A9%BA%E9%97%B4%E7%B1%BB%E5%9E%8B"><span class="toc-number">9.</span> <span class="toc-text">空间类型</span></a></li></ol>
+                </div>
+            
+            <hr />
+            <div itemprop="articleBody"><p><code>MySQL</code> 中的数据类型如下：</p>
+<table>
+<thead>
+<tr>
+<th align="left">类型</th>
+<th align="left">类型举例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">整数类型</td>
+<td align="left">TINYINT、SMALLINT、MEDIUMINT、INT、BIGINT</td>
+</tr>
+<tr>
+<td align="left">浮点类型</td>
+<td align="left">FLOAT、DOUBLE</td>
+</tr>
+<tr>
+<td align="left">定点数类型</td>
+<td align="left">DECIMAL</td>
+</tr>
+<tr>
+<td align="left">位类型</td>
+<td align="left">BIT</td>
+</tr>
+<tr>
+<td align="left">日期时间类型</td>
+<td align="left">YEAR、TIME、DATE、DATETIME、TIMESTAMP</td>
+</tr>
+<tr>
+<td align="left">文本字符串类型</td>
+<td align="left">CHAR、VARCHAR、TINYTEXT、TEXT、MEDIUMTEXT、LONGTEXT</td>
+</tr>
+<tr>
+<td align="left">枚举类型</td>
+<td align="left">ENUM</td>
+</tr>
+<tr>
+<td align="left">集合类型</td>
+<td align="left">SET</td>
+</tr>
+<tr>
+<td align="left">二进制字符串类型</td>
+<td align="left">BINARY、VARBINARY、TINYBLOB、BLOB、MEDIUMBLOB、LONGBLOB</td>
+</tr>
+<tr>
+<td align="left">JSON类型</td>
+<td align="left">JSON对象、JSON数组</td>
+</tr>
+<tr>
+<td align="left">空间数据类型</td>
+<td align="left">单值类型：GEOMETRY、POINT、LINESTRING、POLYGON；<br>集合类型：MULTIPOINT、MULTILINESTRING、MULTIPOLYGON、GEOMETRYCOLLECTION</td>
+</tr>
+</tbody></table>
+<p>常见数据类型的属性，如下：</p>
+<table>
+<thead>
+<tr>
+<th align="left">MySQL 关键字</th>
+<th align="left">含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">NULL</td>
+<td align="left">数据列可包含NULL值</td>
+</tr>
+<tr>
+<td align="left">NOT NULL</td>
+<td align="left">数据列不允许包含NULL值</td>
+</tr>
+<tr>
+<td align="left">DEFAULT</td>
+<td align="left">默认值</td>
+</tr>
+<tr>
+<td align="left">PRIMARY KEY</td>
+<td align="left">主键</td>
+</tr>
+<tr>
+<td align="left">AUTO_INCREMENT</td>
+<td align="left">自动递增，适用于整数类型</td>
+</tr>
+<tr>
+<td align="left">UNSIGNED</td>
+<td align="left">无符号</td>
+</tr>
+<tr>
+<td align="left">CHARACTER SET name</td>
+<td align="left">指定一个字符集</td>
+</tr>
+</tbody></table>
+<h2 id="整数类型"><a href="#整数类型" class="headerlink" title="整数类型"></a>整数类型</h2><h3 id="类型介绍"><a href="#类型介绍" class="headerlink" title="类型介绍"></a>类型介绍</h3><p>在 MySQL 中，整数类型一共有 5 种，分别是 <code>TINYINT</code>、<code>SMALLINT</code>、<code>MEDIUMINT</code>、<code>INT</code> 和 <code>BIGINT</code>。它们的区别如下表所示：</p>
+<table>
+<thead>
+<tr>
+<th align="center">整数类型</th>
+<th>字节</th>
+<th align="center">有符号数取值范围</th>
+<th align="center">无符号数取值范围</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">TINYINT</td>
+<td>1</td>
+<td align="center">-128~127</td>
+<td align="center">0~255</td>
+</tr>
+<tr>
+<td align="center">SMALLINT</td>
+<td>2</td>
+<td align="center">-32768~32767</td>
+<td align="center">0~65535</td>
+</tr>
+<tr>
+<td align="center">MEDIUMINT</td>
+<td>3</td>
+<td align="center">-8388608~8388607</td>
+<td align="center">0~16777215</td>
+</tr>
+<tr>
+<td align="center">INT</td>
+<td>4</td>
+<td align="center">-2147483648~2147483647</td>
+<td align="center">0~4294967295</td>
+</tr>
+<tr>
+<td align="center">BIGINT</td>
+<td>8</td>
+<td align="center">-9223372036854775808~9223372036854775807</td>
+<td align="center">0~18446744073709551615</td>
+</tr>
+</tbody></table>
+<h3 id="可选属性"><a href="#可选属性" class="headerlink" title="可选属性"></a>可选属性</h3><p>整数类型有三个可选属性：<code>M</code>（显示宽度）、<code>ZEROFILL</code>（0填充）、<code>UNSIGNED</code>（无符号类型）。</p>
+<h4 id="M（显示宽度）"><a href="#M（显示宽度）" class="headerlink" title="M（显示宽度）"></a>M（显示宽度）</h4><p><code>M</code> 表示显示宽度，取值范围是(0, 255)。例如 int(5)：当数据宽度小于 5 位时在数字前用字符填满宽度。该项功能需要配合 <code>ZEROFILL</code> 使用，表示用 <code>0</code> 填满宽度，否则指定显示宽度无效。在 <code>int(M)</code> 中，<code>M</code>  的值跟 <code>int(M)</code> 所占多少存储空间并无任何关系。 int(3)、int(4)、int(8) 在磁盘上都是占用 4 bytes 的存储空间。如果插入的数据宽度超过显示宽度，不会影响插入结果。如果在定义表的时候未指定数据宽度，系统为每一种类型指定默认的宽度值。<strong>从 <code>MySQL 8.0.17</code> 开始，整数数据类型不推荐使用显示宽度属性。</strong></p>
+<p>示例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"># 建表语句</span><br><span class="line">drop table if exists test_int01;</span><br><span class="line">create table test_int01(</span><br><span class="line">    f1 tinyint,</span><br><span class="line">    f2 smallint,</span><br><span class="line">    f3 mediumint,</span><br><span class="line">    f4 int,</span><br><span class="line">    f5 bigint</span><br><span class="line">);</span><br><span class="line">desc test_int01;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"># MySQL5.7 显示的表结构</span><br><span class="line">mysql&gt; desc test_int01;</span><br><span class="line">+-------+--------------+------+-----+---------+-------+</span><br><span class="line">| Field | Type         | Null | Key | Default | Extra |</span><br><span class="line">+-------+--------------+------+-----+---------+-------+</span><br><span class="line">| f1    | tinyint(4)   | YES  |     | NULL    |       |</span><br><span class="line">| f2    | smallint(6)  | YES  |     | NULL    |       |</span><br><span class="line">| f3    | mediumint(9) | YES  |     | NULL    |       |</span><br><span class="line">| f4    | int(11)      | YES  |     | NULL    |       |</span><br><span class="line">| f5    | bigint(20)   | YES  |     | NULL    |       |</span><br><span class="line">+-------+--------------+------+-----+---------+-------+</span><br><span class="line">5 rows in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"># MySQL8.0.25 显示的表结构</span><br><span class="line">mysql&gt; desc test_int01;</span><br><span class="line">+-------+-----------+------+-----+---------+-------+</span><br><span class="line">| Field | Type      | Null | Key | Default | Extra |</span><br><span class="line">+-------+-----------+------+-----+---------+-------+</span><br><span class="line">| f1    | tinyint   | YES  |     | NULL    |       |</span><br><span class="line">| f2    | smallint  | YES  |     | NULL    |       |</span><br><span class="line">| f3    | mediumint | YES  |     | NULL    |       |</span><br><span class="line">| f4    | int       | YES  |     | NULL    |       |</span><br><span class="line">| f5    | bigint    | YES  |     | NULL    |       |</span><br><span class="line">+-------+-----------+------+-----+---------+-------+</span><br><span class="line">5 rows in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+
+<h4 id="ZEROFILL"><a href="#ZEROFILL" class="headerlink" title="ZEROFILL"></a>ZEROFILL</h4><p><code>ZEROFILL</code>：<code>0</code> 填充，如果指定了 <code>ZEROFILL</code> 只是表示不够 <code>M</code> 位时，用 <code>0</code> 在整数左边填充。如果某列是 <code>ZEROFILL</code>，那么 <code>MySQL</code> 会自动为当前列添加 <code>UNSIGNED</code> 属性。最后， <strong><code>int(M)</code> 必须和 <code>UNSIGNED</code> 和 <code>ZEROFILL</code> 一起使用才有意义。</strong></p>
+<p>示例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"># 建表语句</span><br><span class="line">drop table if exists test_int02;</span><br><span class="line">create table test_int02</span><br><span class="line">(</span><br><span class="line">    f1 int,</span><br><span class="line">    f2 int(5),</span><br><span class="line">    f3 int(5) zerofill</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line">insert into test_int02(f1, f2, f3)</span><br><span class="line">values (1, 123, 123);</span><br><span class="line"></span><br><span class="line">insert into test_int02(f1, f2, f3)</span><br><span class="line">values (123456, 123456, 123456);</span><br><span class="line"></span><br><span class="line">insert into test_int02(f1, f2)</span><br><span class="line">values (123456, 123456);</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"># MySQL5.7 显示的结果</span><br><span class="line">mysql&gt; desc test_int02;</span><br><span class="line">+-------+--------------------------+------+-----+---------+-------+</span><br><span class="line">| Field | Type                     | Null | Key | Default | Extra |</span><br><span class="line">+-------+--------------------------+------+-----+---------+-------+</span><br><span class="line">| f1    | int(11)                  | YES  |     | NULL    |       |</span><br><span class="line">| f2    | int(5)                   | YES  |     | NULL    |       |</span><br><span class="line">| f3    | int(5) unsigned zerofill | YES  |     | NULL    |       |</span><br><span class="line">+-------+--------------------------+------+-----+---------+-------+</span><br><span class="line">3 rows in set (0.01 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; select * from test_int02;</span><br><span class="line">+--------+--------+--------+</span><br><span class="line">| f1     | f2     | f3     |</span><br><span class="line">+--------+--------+--------+</span><br><span class="line">|      1 |    123 |  00123 |</span><br><span class="line">| 123456 | 123456 | 123456 |</span><br><span class="line">| 123456 | 123456 |   NULL |</span><br><span class="line">+--------+--------+--------+</span><br><span class="line">3 rows in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"># MySQL8.0.25 显示的结果</span><br><span class="line">mysql&gt; desc test_int02;</span><br><span class="line">+-------+--------------------------+------+-----+---------+-------+</span><br><span class="line">| Field | Type                     | Null | Key | Default | Extra |</span><br><span class="line">+-------+--------------------------+------+-----+---------+-------+</span><br><span class="line">| f1    | int                      | YES  |     | NULL    |       |</span><br><span class="line">| f2    | int                      | YES  |     | NULL    |       |</span><br><span class="line">| f3    | int(5) unsigned zerofill | YES  |     | NULL    |       |</span><br><span class="line">+-------+--------------------------+------+-----+---------+-------+</span><br><span class="line">3 rows in set (0.01 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; select * from test_int02;</span><br><span class="line">+--------+--------+--------+</span><br><span class="line">| f1     | f2     | f3     |</span><br><span class="line">+--------+--------+--------+</span><br><span class="line">|      1 |    123 |  00123 |</span><br><span class="line">| 123456 | 123456 | 123456 |</span><br><span class="line">| 123456 | 123456 |   NULL |</span><br><span class="line">+--------+--------+--------+</span><br><span class="line">3 rows in set (0.00 sec)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h4 id="UNSIGNED"><a href="#UNSIGNED" class="headerlink" title="UNSIGNED"></a>UNSIGNED</h4><p><code>UNSIGNED</code>: 无符号类型（非负），无符号整数类型的最小取值为0。<code>int</code> 类型默认显示宽度为 <code>int(11)</code>，无符号 <code>int</code> 类型默认显示宽度为 <code>int(10)</code>。</p>
+<p>示例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">drop table if exists test_int03;</span><br><span class="line">create table test_int03(</span><br><span class="line">    f1 int unsigned</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; desc test_int03;</span><br><span class="line">+-------+------------------+------+-----+---------+-------+</span><br><span class="line">| Field | Type             | Null | Key | Default | Extra |</span><br><span class="line">+-------+------------------+------+-----+---------+-------+</span><br><span class="line">| f1    | int(10) unsigned | YES  |     | NULL    |       |</span><br><span class="line">+-------+------------------+------+-----+---------+-------+</span><br><span class="line">1 row in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+
+<h2 id="浮点类型"><a href="#浮点类型" class="headerlink" title="浮点类型"></a>浮点类型</h2><h3 id="类型介绍-1"><a href="#类型介绍-1" class="headerlink" title="类型介绍"></a>类型介绍</h3><p>在 MySQL 中，浮点类型一共有 2 种，分别是 <code>FLOAT</code> 和 <code>DOUBLE</code>，它们的区别如下表所示：</p>
+<table>
+<thead>
+<tr>
+<th align="center">浮点类型</th>
+<th align="center">字节</th>
+<th align="center">有符号数取值范围</th>
+<th align="center">无符号数取值范围</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">FLOAT</td>
+<td align="center">4</td>
+<td align="center">(-3.402823466E+38, -1.175494351E-38)<br> 0<br>(1.175494351E-38, 3.402823466E+38)</td>
+<td align="center">0<br>(1.175494351E-38, 3.402823466E+38)</td>
+</tr>
+<tr>
+<td align="center">DOUBLE</td>
+<td align="center">8</td>
+<td align="center">(-1.7976931348623157E+308, -2.2250738585072014E-308)<br>0<br>(2.2250738585072014E-308, 1.7976931348623157E+308)</td>
+<td align="center">0<br>(2.2250738585072014E-308, 1.7976931348623157E+308)</td>
+</tr>
+</tbody></table>
+<p>注：MySQL 存储浮点数的格式为：<code>符号(S)</code>、<code>尾数(M)</code> 和 <code>阶码(E)</code>。无论有没有 UNSIGNED 修饰，MySQL 的浮点数都会存储表示符号的部分。所以，无符号数的取值范围，其实就是有符号数的取值范围大于等于零的部分。</p>
+<h3 id="精度误差说明"><a href="#精度误差说明" class="headerlink" title="精度误差说明"></a>精度误差说明</h3><p>浮点数类型有个缺陷，就是不精准。比如，我们设计一个表，有 f1 这个 double 类型的字段，插入值分别为 0.47 ,0.44 , 0.19，我们期待的运行结果是：0.47 + 0.44 + 0.19 &#x3D; 1.1。而使用 sum 之后查询：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">drop table if exists  test_double01;</span><br><span class="line">create table test_double01</span><br><span class="line">(</span><br><span class="line">    f1 double</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line">insert into test_double01</span><br><span class="line">values (0.47),</span><br><span class="line">       (0.44),</span><br><span class="line">       (0.19);</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"># 查询结果</span><br><span class="line">mysql&gt; select sum(f1) from test_double01;</span><br><span class="line">+--------------------+</span><br><span class="line">| sum(f1)            |</span><br><span class="line">+--------------------+</span><br><span class="line">| 1.0999999999999999 |</span><br><span class="line">+--------------------+</span><br><span class="line">1 row in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+
+<p>查询结果是 1.0999999999999999。虽然误差很小，但确实有误差。原因是 MySQL 用二进制的方式来存储浮点类型数据。比如 9.625，用二进制来表达，就是 1001.101。如果尾数不是 0 或 5（比如 9.624），你就无法用一个二进制数来精确表达。进而，就只好在取值允许的范围内进行四舍五入。在 MySQL 中也有精准的数据类型，就是定点数类型：<code>DECIMAL</code>。</p>
+<h2 id="定点数类型"><a href="#定点数类型" class="headerlink" title="定点数类型"></a>定点数类型</h2><h3 id="类型介绍-2"><a href="#类型介绍-2" class="headerlink" title="类型介绍"></a>类型介绍</h3><p>在 MySQL 中，定点数类型只有 <code>DECIMAL</code> 一种类型。</p>
+<table>
+<thead>
+<tr>
+<th align="center">数据类型</th>
+<th align="center">字节数</th>
+<th align="center">含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">DECIMAL(M,D)</td>
+<td align="center">M+2 字节</td>
+<td align="center">有效范围由 M 和 D 决定</td>
+</tr>
+</tbody></table>
+<p>使用 <code>DECIMAL(M,D)</code> 的方式表示高精度小数。其中，<code>M</code> 被称为精度，<code>D</code> 被称为标度。M &gt; D，0 &lt;&#x3D; M &lt;&#x3D; 65，0 &lt;&#x3D; D &lt;&#x3D; 30。例如，定义 <code>DECIMAL（5,2）</code> 的类型，表示该列取值范围是 <code>-999.99~999.99</code> 。当 <code>DECIMAL</code> 类型不指定精度和标度时，其默认为 <code>DECIMAL(10,0)</code>。当数据的精度超出了定点数类型的精度范围时， <code>MySQL</code> 会进行四舍五入处理。</p>
+<p>示例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">drop table if exists test_decimal01;</span><br><span class="line">create table test_decimal01</span><br><span class="line">(</span><br><span class="line">    f1 decimal,</span><br><span class="line">    f2 decimal(5, 2)</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line">insert into test_decimal01</span><br><span class="line">values (1, 1.24),</span><br><span class="line">       (1.4, 1.244),</span><br><span class="line">       (1.5, 1.245);</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"># 当 DECIMAL 类型不指定精度和标度时，其默认为 DECIMAL(10,0)。</span><br><span class="line">mysql&gt; desc test_decimal01;</span><br><span class="line">+-------+---------------+------+-----+---------+-------+</span><br><span class="line">| Field | Type          | Null | Key | Default | Extra |</span><br><span class="line">+-------+---------------+------+-----+---------+-------+</span><br><span class="line">| f1    | decimal(10,0) | YES  |     | NULL    |       |</span><br><span class="line">| f2    | decimal(5,2)  | YES  |     | NULL    |       |</span><br><span class="line">+-------+---------------+------+-----+---------+-------+</span><br><span class="line">2 rows in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"># 当数据的精度超出了定点数类型的精度范围时，MySQL 会进行四舍五入处理。</span><br><span class="line">mysql&gt; select * from test_decimal01;</span><br><span class="line">+------+------+</span><br><span class="line">| f1   | f2   |</span><br><span class="line">+------+------+</span><br><span class="line">|    1 | 1.24 |</span><br><span class="line">|    1 | 1.24 |</span><br><span class="line">|    2 | 1.25 |</span><br><span class="line">+------+------+</span><br><span class="line">3 rows in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"># 如果是整数部分超出范围时，MySQL 会报错。</span><br><span class="line">mysql&gt; insert into test_decimal01 (f2) values (999.01);</span><br><span class="line">Query OK, 1 row affected (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; insert into test_decimal01 (f2) values (1000.01);</span><br><span class="line">ERROR 1264 (22003): Out of range value for column &#x27;f2&#x27; at row 1</span><br><span class="line"></span><br><span class="line">mysql&gt; insert into test_decimal01 (f2) values (999.994);</span><br><span class="line">Query OK, 1 row affected, 1 warning (0.01 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; insert into test_decimal01 (f2) values (999.995);</span><br><span class="line">ERROR 1264 (22003): Out of range value for column &#x27;f2&#x27; at row 1</span><br></pre></td></tr></table></figure>
+
+<p><strong><code>DECIMAL(M,D)</code> 的最大取值范围与 <code>DOUBLE</code> 类型一样</strong>，但是有效的数据范围是由 <code>M</code> 和 <code>D</code> 决定的。<code>DECIMAL</code> 的存储空间并不是固定的，由精度值 <code>M</code> 决定，总共占用的存储空间为 <code>M + 2</code> 个字节。也就是说，在一些对精度要求不高的场景下，比起占用同样字节长度的定点数，浮点数表达的数值范围可以更大一些。定点数在 <code>MySQL</code> 内部是以<code>字符串</code>的形式进行存储，这就决定了它一定是精准的。</p>
+<h2 id="位类型"><a href="#位类型" class="headerlink" title="位类型"></a>位类型</h2><h3 id="类型介绍-3"><a href="#类型介绍-3" class="headerlink" title="类型介绍"></a>类型介绍</h3><p><code>BIT</code> 类型中存储的是二进制值，类似 010110。</p>
+<table>
+<thead>
+<tr>
+<th align="center">二进制字符串类型</th>
+<th align="center">长度</th>
+<th align="center">长度范围</th>
+<th align="center">占用空间</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">BIT(M)</td>
+<td align="center">M</td>
+<td align="center">1 &lt;&#x3D; M &lt;&#x3D; 64</td>
+<td align="center">约为(M + 7)&#x2F;8个字节</td>
+</tr>
+</tbody></table>
+<p>示例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"># 建表语句</span><br><span class="line">drop table if exists test_bit01;</span><br><span class="line">create table test_bit01</span><br><span class="line">(</span><br><span class="line">    f1 BIT,</span><br><span class="line">    f2 BIT(5),</span><br><span class="line">    f3 BIT(64)</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line">insert into test_bit01(f1)</span><br><span class="line">values (1);</span><br><span class="line"></span><br><span class="line">insert into test_bit01(f2)</span><br><span class="line">values (23);</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"># 如果没有指定 (M)，默认是 1 位。</span><br><span class="line">mysql&gt; desc test_bit01;</span><br><span class="line">+-------+---------+------+-----+---------+-------+</span><br><span class="line">| Field | Type    | Null | Key | Default | Extra |</span><br><span class="line">+-------+---------+------+-----+---------+-------+</span><br><span class="line">| f1    | bit(1)  | YES  |     | NULL    |       |</span><br><span class="line">| f2    | bit(5)  | YES  |     | NULL    |       |</span><br><span class="line">| f3    | bit(64) | YES  |     | NULL    |       |</span><br><span class="line">+-------+---------+------+-----+---------+-------+</span><br><span class="line">3 rows in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"># 查询结果</span><br><span class="line">mysql&gt; select * from test_bit01;</span><br><span class="line">+------------+------------+------------+</span><br><span class="line">| f1         | f2         | f3         |</span><br><span class="line">+------------+------------+------------+</span><br><span class="line">| true       | NULL       | NULL       |</span><br><span class="line">| NULL       | 10111      | NULL       |</span><br><span class="line">+------------+------------+------------+</span><br><span class="line">2 rows in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># 在向 BIT 类型的字段中插入数据时，一定要确保插入的数据在 BIT 类型支持的范围内，否则报错。</span><br><span class="line">mysql&gt; insert into test_bit01(f1) values(2);</span><br><span class="line">ERROR 1406 (22001): Data too long for column &#x27;f1&#x27; at row 1</span><br></pre></td></tr></table></figure>
+
+<h2 id="日期与时间类型"><a href="#日期与时间类型" class="headerlink" title="日期与时间类型"></a>日期与时间类型</h2><p>MySQL 有多种表示日期和时间的数据类型，不同的版本可能有所差异，<code>MySQL8.0</code> 版本支持的日期和时间类型主要有：<code>YEAR</code> 类型、<code>TIME</code> 类型、<code>DATE</code> 类型、<code>DATETIME</code> 类型和 <code>TIMESTAMP</code> 类型。</p>
+<ul>
+<li><code>YEAR</code>类型用来表示年</li>
+<li><code>DATE</code>类型用来表示年、月、日</li>
+<li><code>TIME</code>类型用来表示时、分、秒</li>
+<li><code>DATETIME</code>类型用来表示年、月、日、时、分、秒</li>
+<li><code>TIMESTAMP</code>类型用来表示带时区的年、月、日、时、分、秒</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th align="center">类型</th>
+<th align="center">名称</th>
+<th align="center">字节</th>
+<th align="center">日期格式</th>
+<th align="center">最小值</th>
+<th align="center">最大值</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">YEAR</td>
+<td align="center">年</td>
+<td align="center">1</td>
+<td align="center">YYYY</td>
+<td align="center">1901</td>
+<td align="center">2155</td>
+</tr>
+<tr>
+<td align="center">TIME</td>
+<td align="center">时间</td>
+<td align="center">3</td>
+<td align="center">HH:MM:SS</td>
+<td align="center">-838:59:59</td>
+<td align="center">838:59:59</td>
+</tr>
+<tr>
+<td align="center">DATE</td>
+<td align="center">日期</td>
+<td align="center">3</td>
+<td align="center">YYYY-MM-DD</td>
+<td align="center">1000-01-01</td>
+<td align="center">9999-12-03</td>
+</tr>
+<tr>
+<td align="center">DATETIME</td>
+<td align="center">日期时间</td>
+<td align="center">8</td>
+<td align="center">YYYY-MM-DD HH:MM:SS</td>
+<td align="center">1000-01-01 00:00:00</td>
+<td align="center">9999-12-31 23:59:59</td>
+</tr>
+<tr>
+<td align="center">TIMESTAMP</td>
+<td align="center">日期时间</td>
+<td align="center">4</td>
+<td align="center">YYYY-MM-DD HH:MM:SS</td>
+<td align="center">1970-01-01 00:00:00 UTC</td>
+<td align="center">2038-01-19 03:14:07UTC</td>
+</tr>
+</tbody></table>
+<p><code>TIME</code> 类型的取值范围不是 <code>-23:59:59～23:59:59</code>，是因为 MySQL 设计的 TIME 类型，不光表示一天之内的时间，而且可以用来表示一个时间间隔，这个时间间隔可以超过 24 小时。</p>
+<h3 id="YEAR-类型"><a href="#YEAR-类型" class="headerlink" title="YEAR 类型"></a>YEAR 类型</h3><p><code>YEAR</code> 类型用来表示年份，<strong>从 <code>MySQL5.5.27</code> 开始，2 位格式的 <code>YEAR</code> 不推荐使用</strong>，所以本章不演示 2 位格式的用法。<code>YEAR</code> 默认格式是 <code>YYYY</code>，所以没必要写成 <code>YEAR(4)</code>。</p>
+<p>示例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"># 建表语句</span><br><span class="line">drop table if exists test_year01;</span><br><span class="line">create table test_year01</span><br><span class="line">(</span><br><span class="line">    f1 year,</span><br><span class="line">    f2 year(4)</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line">insert into test_year01</span><br><span class="line">values (2022, 2023);</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"># YEAR 默认格式是 YYYY，所以没必要写成 YEAR(4)。</span><br><span class="line">mysql&gt; desc test_year01;</span><br><span class="line">+-------+---------+------+-----+---------+-------+</span><br><span class="line">| Field | Type    | Null | Key | Default | Extra |</span><br><span class="line">+-------+---------+------+-----+---------+-------+</span><br><span class="line">| f1    | year(4) | YES  |     | NULL    |       |</span><br><span class="line">| f2    | year(4) | YES  |     | NULL    |       |</span><br><span class="line">+-------+---------+------+-----+---------+-------+</span><br><span class="line">2 rows in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"># 查询结果</span><br><span class="line">mysql&gt; select * from test_year01;</span><br><span class="line">+------+------+</span><br><span class="line">| f1   | f2   |</span><br><span class="line">+------+------+</span><br><span class="line">| 2022 | 2023 |</span><br><span class="line">+------+------+</span><br><span class="line">1 row in set (0.01 sec)</span><br></pre></td></tr></table></figure>
+
+<h3 id="DATE-类型"><a href="#DATE-类型" class="headerlink" title="DATE 类型"></a>DATE 类型</h3><p><code>DATE</code> 类型表示日期，没有时间部分，格式为<code>YYYY-MM-DD</code>，其中，<code>YYYY</code> 表示年份，<code>MM</code> 表示月份，<code>DD</code> 表示日期。在向 <code>DATE</code> 类型的字段插入数据时，字符串日期需要满足 <code>YYYY-MM-DD</code> 格式或者 <code>YYYYMMDD</code> 格式，其最小取值为1000-01-01，最大取值为9999-12-03。使用 <code>CURDATE()</code> 或者 <code>NOW()</code> 函数，会插入当前系统的日期。</p>
+<p>示例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"># 建表语句</span><br><span class="line">drop table if exists test_date01;</span><br><span class="line">create table test_date01(</span><br><span class="line">    f1 date</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line">insert into test_date01</span><br><span class="line">values (&#x27;2023-01-01&#x27;),</span><br><span class="line">       (&#x27;20230101&#x27;),</span><br><span class="line">       (now()),</span><br><span class="line">       (curdate());</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"># 查询结果</span><br><span class="line">mysql&gt; select * from test_date01;</span><br><span class="line">+------------+</span><br><span class="line">| f1         |</span><br><span class="line">+------------+</span><br><span class="line">| 2023-01-01 |</span><br><span class="line">| 2023-01-01 |</span><br><span class="line">| 2023-05-17 |</span><br><span class="line">| 2023-05-17 |</span><br><span class="line">+------------+</span><br><span class="line">4 rows in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+
+<h3 id="TIME-类型"><a href="#TIME-类型" class="headerlink" title="TIME 类型"></a>TIME 类型</h3><p><code>TIME</code> 类型用来表示时间，不包含日期部分。可以使用 <code>HH:MM:SS</code> 格式来表示 <code>TIME</code> 类型，其中，<code>HH</code> 表示小时，<code>MM</code> 表示分钟，<code>SS</code> 表示秒。</p>
+<p>在 <code>MySQL</code> 中，向 <code>TIME</code> 类型的字段插入数据时，也可以使用几种不同的格式。<br>（1）可以使用带有冒号的字符串，比如 <code>HH:MM:SS</code>、<code>D HH:MM:SS</code>、<code>HH:MM</code>、<code>D HH:MM</code>、<code>D HH</code>或<code>SS</code>格式，都能被正确地插入 <code>TIME</code> 类型的字段中。其中 <code>D</code> 表示天，其最小值为 <code>0</code>，最大值为 <code>34</code>。如果使用带有 <code>D</code> 格式的字符串插入 <code>TIME</code> 类型的字段时，<code>D</code> 会被转化为小时，计算格式为 <code>D * 24 + HH</code>。<br>（2）可以使用不带有冒号的字符串或者数字，格式为 <code>HHMMSS</code> 或 <code>MMSS</code>。比如 <code>1210</code>，<code>MySQL</code> 会将最右边的两位解析成秒，表示 <code>00:12:10</code>，而不是 <code>12:10:00</code>。<br>（3）使用 <code>CURRENT_TIME()</code> 或者 <code>NOW()</code>，会插入当前系统的时间。</p>
+<p>示例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"># 建表语句</span><br><span class="line">drop table if exists test_time01;</span><br><span class="line">create table test_time01(</span><br><span class="line">    f1 time</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line">insert into test_time01</span><br><span class="line">values (&#x27;12:30:45&#x27;),</span><br><span class="line">       (&#x27;1 12:30:45&#x27;),</span><br><span class="line">       (&#x27;12:30&#x27;),</span><br><span class="line">       (&#x27;1 12:30&#x27;),</span><br><span class="line">       (&#x27;1 12&#x27;),</span><br><span class="line">       (&#x27;45&#x27;),</span><br><span class="line">       (&#x27;123045&#x27;),</span><br><span class="line">       (&#x27;3045&#x27;),</span><br><span class="line">       (curtime()),</span><br><span class="line">       (now());</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"># 查询结果</span><br><span class="line">mysql&gt; select * from test_time01;</span><br><span class="line">+----------+</span><br><span class="line">| f1       |</span><br><span class="line">+----------+</span><br><span class="line">| 12:30:45 |</span><br><span class="line">| 36:30:45 |</span><br><span class="line">| 12:30:00 |</span><br><span class="line">| 36:30:00 |</span><br><span class="line">| 36:00:00 |</span><br><span class="line">| 00:00:45 |</span><br><span class="line">| 12:30:45 |</span><br><span class="line">| 00:30:45 |</span><br><span class="line">| 21:31:06 |</span><br><span class="line">| 21:31:06 |</span><br><span class="line">+----------+</span><br><span class="line">10 rows in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+
+<h3 id="DATETIME-类型"><a href="#DATETIME-类型" class="headerlink" title="DATETIME 类型"></a>DATETIME 类型</h3><p><code>DATETIME</code> 类型在格式上为 <code>DATE</code> 类型和 <code>TIME</code> 类型的组合，可以表示为 <code>YYYY-MM-DD HH:MM:SS</code>，其中 <code>YYYY</code> 表示年份，<code>MM</code> 表示月份，<code>DD</code> 表示日期，<code>HH</code> 表示小时，<code>MM</code> 表示分钟，<code>SS</code> 表示秒。以 <code>YYYY-MM-DD HH:MM:SS</code> 格式或者 <code>YYYYMMDDHHMMSS</code> 格式的字符串插入 <code>DATETIME</code> 类型的字段时，最小值为 <code>1000-01-01 00:00:00</code>，最大值为 <code>9999-12-03 23:59:59</code>。使用函数 <code>NOW()</code>，可以向 <code>DATETIME</code> 类型的字段插入系统的当前日期和时间。</p>
+<p>示例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">/*DATETIME 类型*/</span><br><span class="line">drop table if exists test_datetime01;</span><br><span class="line">create table test_datetime01(</span><br><span class="line">    f1 datetime</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line">insert into test_datetime01</span><br><span class="line">values (&#x27;2023-01-01 12:00:00&#x27;),</span><br><span class="line">       (&#x27;20230101120000&#x27;),</span><br><span class="line">       (now());</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"># 查询结果</span><br><span class="line">mysql&gt; select * from test_datetime01;</span><br><span class="line">+---------------------+</span><br><span class="line">| f1                  |</span><br><span class="line">+---------------------+</span><br><span class="line">| 2023-01-01 12:00:00 |</span><br><span class="line">| 2023-01-01 12:00:00 |</span><br><span class="line">| 2023-05-18 09:17:32 |</span><br><span class="line">+---------------------+</span><br><span class="line">3 rows in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+
+<h3 id="TIMESTAMP-类型"><a href="#TIMESTAMP-类型" class="headerlink" title="TIMESTAMP 类型"></a>TIMESTAMP 类型</h3><p><code>TIMESTAMP</code> 类型也可以表示日期时间，其显示格式与 <code>DATETIME</code> 类型相同，都是 <code>YYYY-MM-DD HH:MM:SS</code>。<code>TIMESTAMP</code> 存储的时间范围比 <code>DATETIME</code> 要小很多，只能存储 <code>1970-01-01 00:00:01 UTC</code> 到 <code>2038-01-19 03:14:07 UTC</code> 之间的时间。如果向 <code>TIMESTAMP</code> 类型的字段插入的时间超出了 <code>TIMESTAMP</code> 类型的范围，则 <code>MySQL</code> 会抛出错误信息。存储数据的时候 <code>MySQL</code> 会对当前时间所在的时区进行转换，查询数据的时候再将时间转换回当前的时区。因此，使用 <code>TIMESTAMP</code> 存储的同一个时间值，在不同的时区查询时会显示不同的时间。</p>
+<p>示例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">/*TIMESTAMP 类型*/</span><br><span class="line">drop table if exists test_timestamp01;</span><br><span class="line">create table test_timestamp01(</span><br><span class="line">    f1 timestamp</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line">insert into test_timestamp01</span><br><span class="line">values (&#x27;1970-01-01 08:00:01&#x27;);</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line">/*存储数据的时候 MySQL 会对当前时间所在的时区进行转换，</span><br><span class="line">  查询数据的时候再将时间转换回当前的时区。因此，使用 </span><br><span class="line">  TIMESTAMP 存储的同一个时间值，在不同的时区查询时会显示</span><br><span class="line">  不同的时间。*/</span><br><span class="line">  </span><br><span class="line"># MySQL 时区跟随系统，系统时区为北京时间，比 UTC 快 8 小时</span><br><span class="line">mysql&gt; show variables like &#x27;%time_zone%&#x27;;</span><br><span class="line">+------------------+--------+</span><br><span class="line">| Variable_name    | Value  |</span><br><span class="line">+------------------+--------+</span><br><span class="line">| system_time_zone | CST    |</span><br><span class="line">| time_zone        | SYSTEM |</span><br><span class="line">+------------------+--------+</span><br><span class="line">2 rows in set (0.00 sec)</span><br><span class="line"></span><br><span class="line"># 查询结果</span><br><span class="line">mysql&gt; select * from test_timestamp01;</span><br><span class="line">+---------------------+</span><br><span class="line">| f1                  |</span><br><span class="line">+---------------------+</span><br><span class="line">| 1970-01-01 09:00:00 |</span><br><span class="line">| 1970-01-01 08:00:01 |</span><br><span class="line">+---------------------+</span><br><span class="line">2 rows in set (0.00 sec)</span><br><span class="line"></span><br><span class="line"># MySQL 跟 UTC 时区的时差</span><br><span class="line">mysql&gt; set time_zone = &#x27;+0:00&#x27;;</span><br><span class="line">Query OK, 0 rows affected (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; show variables like &#x27;%time_zone%&#x27;;</span><br><span class="line">+------------------+--------+</span><br><span class="line">| Variable_name    | Value  |</span><br><span class="line">+------------------+--------+</span><br><span class="line">| system_time_zone | CST    |</span><br><span class="line">| time_zone        | +00:00 |</span><br><span class="line">+------------------+--------+</span><br><span class="line">2 rows in set (0.00 sec)</span><br><span class="line"></span><br><span class="line"># 查询结果</span><br><span class="line">mysql&gt; select * from test_timestamp01;</span><br><span class="line">+---------------------+</span><br><span class="line">| f1                  |</span><br><span class="line">+---------------------+</span><br><span class="line">| 1970-01-01 01:00:00 |</span><br><span class="line">| 1970-01-01 00:00:01 |</span><br><span class="line">+---------------------+</span><br><span class="line">2 rows in set (0.00 sec)</span><br><span class="line"></span><br><span class="line"># 复原 MySQL 时区</span><br><span class="line">mysql&gt; set time_zone = &#x27;SYSTEM&#x27;;</span><br><span class="line">Query OK, 0 rows affected (0.00 sec)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># 只能存储 1970-01-01 00:00:01 UTC 到 2038-01-19 03:14:07 UTC 之间的时间。如果超出了 TIMESTAMP 类型的范围，MySQL 会抛出错误信息。</span><br><span class="line">mysql&gt; insert into test_timestamp01 values(&#x27;2040-01-01 00:00:00&#x27;);</span><br><span class="line">ERROR 1292 (22007): Incorrect datetime value: &#x27;2040-01-01 00:00:00&#x27; for column &#x27;f1&#x27; at row 1</span><br></pre></td></tr></table></figure>
+
+<h2 id="文本字符串类型"><a href="#文本字符串类型" class="headerlink" title="文本字符串类型"></a>文本字符串类型</h2><h3 id="CHAR-与-VARCHAR-类型"><a href="#CHAR-与-VARCHAR-类型" class="headerlink" title="CHAR 与 VARCHAR 类型"></a>CHAR 与 VARCHAR 类型</h3><p><code>CHAR</code> 和 <code>VARCHAR</code> 类型都是存储比较短的字符串，它们的区别如下表所示：</p>
+<table>
+<thead>
+<tr>
+<th align="center">字符串（文本）类型</th>
+<th align="center">特点</th>
+<th align="center">长度范围（字符）</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">CHAR(M)</td>
+<td align="center">字符长度固定，字节长度不固定</td>
+<td align="center">0 &lt;&#x3D; M &lt;&#x3D; 255</td>
+</tr>
+<tr>
+<td align="center">VARCHAR(M)</td>
+<td align="center">字符长度不固定，字节长度不固定</td>
+<td align="center">0 &lt;&#x3D; M &lt;&#x3D; 21845</td>
+</tr>
+</tbody></table>
+<h4 id="CHAR-类型"><a href="#CHAR-类型" class="headerlink" title="CHAR 类型"></a>CHAR 类型</h4><ul>
+<li>CHAR(M) 类型一般需要预先定义字符串长度。如果不指定 (M)，则表示长度默认是 <code>1 个字符</code>。在 MySQL 中，一个字母是一个字符，一个汉字也是一个字符，但在 utf8mb4 编码中，一个字母用一个字节存储，一个汉字用三个字节存储，所以 CHAR(M) 的字符长度固定，但字节长度并不固定。</li>
+<li>如果保存时，数据的实际长度比 CHAR 类型声明的长度小，则会在右侧填充空格以达到指定的长度。当 MySQL 检索 CHAR 类型的数据时，CHAR 类型的字段会去除尾部的空格。如果插入的数据中尾部有空格，也会被除去。</li>
+</ul>
+<p>示例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">/*CHAR 类型*/</span><br><span class="line">drop table if exists test_char01;</span><br><span class="line">create table test_char01</span><br><span class="line">(</span><br><span class="line">    f1 char,</span><br><span class="line">    f2 char(5)</span><br><span class="line">);</span><br><span class="line">insert into test_char01</span><br><span class="line">values (&#x27;a&#x27;, null);</span><br><span class="line">insert into test_char01</span><br><span class="line">values (&#x27;好&#x27;, null);</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"># 不指定 (M)，默认长度是 1 个字符。</span><br><span class="line">mysql&gt; desc test_char01;</span><br><span class="line">+-------+---------+------+-----+---------+-------+</span><br><span class="line">| Field | Type    | Null | Key | Default | Extra |</span><br><span class="line">+-------+---------+------+-----+---------+-------+</span><br><span class="line">| f1    | char(1) | YES  |     | NULL    |       |</span><br><span class="line">| f2    | char(5) | YES  |     | NULL    |       |</span><br><span class="line">+-------+---------+------+-----+---------+-------+</span><br><span class="line">2 rows in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"># CHAR(M) 的字符长度固定，但字节长度不固定。</span><br><span class="line">mysql&gt; select char_length(f1), char_length(f2) from test_char01;</span><br><span class="line">+-----------------+-----------------+</span><br><span class="line">| char_length(f1) | char_length(f2) |</span><br><span class="line">+-----------------+-----------------+</span><br><span class="line">|               1 |            NULL |</span><br><span class="line">|               1 |            NULL |</span><br><span class="line">+-----------------+-----------------+</span><br><span class="line">2 rows in set (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; select length(f1), length(f2) from test_char01;</span><br><span class="line">+------------+------------+</span><br><span class="line">| length(f1) | length(f2) |</span><br><span class="line">+------------+------------+</span><br><span class="line">|          1 |       NULL |</span><br><span class="line">|          3 |       NULL |</span><br><span class="line">+------------+------------+</span><br><span class="line">2 rows in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># 插入数据</span><br><span class="line">insert into test_char01 values (null, &#x27;a&#x27;);</span><br><span class="line">insert into test_char01 values (null, &#x27;a   &#x27;);</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"># 如果插入的数据中尾部有空格，也会被除去。</span><br><span class="line">mysql&gt; select * from test_char01;</span><br><span class="line">+------+------+</span><br><span class="line">| f1   | f2   |</span><br><span class="line">+------+------+</span><br><span class="line">| a    | NULL |</span><br><span class="line">| 好   | NULL |</span><br><span class="line">| NULL | a    |</span><br><span class="line">| NULL | a    |</span><br><span class="line">+------+------+</span><br><span class="line">4 rows in set (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; select length(f1), length(f2) from test_char01;</span><br><span class="line">+------------+------------+</span><br><span class="line">| length(f1) | length(f2) |</span><br><span class="line">+------------+------------+</span><br><span class="line">|          1 |       NULL |</span><br><span class="line">|          3 |       NULL |</span><br><span class="line">|       NULL |          1 |</span><br><span class="line">|       NULL |          1 |</span><br><span class="line">+------------+------------+</span><br><span class="line">4 rows in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+
+<h4 id="VARCHAR-类型"><a href="#VARCHAR-类型" class="headerlink" title="VARCHAR 类型"></a>VARCHAR 类型</h4><ul>
+<li>VARCHAR(M) 定义时，<code>必须指定</code>长度 M，否则报错。</li>
+<li>MySQL5.0 版本以上，varchar(20) 指的是 <code>20 字符</code>。</li>
+<li>检索 VARCHAR 类型的字段数据时，会保留数据尾部的空格。VARCHAR 类型的字段会多用1个字节用来存储长度信息。</li>
+</ul>
+<p>示例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">/*VARCHAR 类型*/</span><br><span class="line">drop table if exists test_varchar01;</span><br><span class="line">create table test_varchar01(</span><br><span class="line">    f1 varchar(5)</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line">insert into test_varchar01 values (&#x27;a&#x27;), (&#x27;ab&#x27;);</span><br><span class="line">insert into test_varchar01 values (&#x27;好&#x27;), (&#x27;你好&#x27;);</span><br><span class="line">insert into test_varchar01 values (&#x27;a   &#x27;), (&#x27;ab   &#x27;);</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"># 查询结果</span><br><span class="line">mysql&gt; select * from test_varchar01;</span><br><span class="line">+--------+</span><br><span class="line">| f1     |</span><br><span class="line">+--------+</span><br><span class="line">| a      |</span><br><span class="line">| ab     |</span><br><span class="line">| 好     |</span><br><span class="line">| 你好   |</span><br><span class="line">| a      |</span><br><span class="line">| ab     |</span><br><span class="line">+--------+</span><br><span class="line">6 rows in set (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; select length(f1) from test_varchar01;</span><br><span class="line">+------------+</span><br><span class="line">| length(f1) |</span><br><span class="line">+------------+</span><br><span class="line">|          1 |</span><br><span class="line">|          2 |</span><br><span class="line">|          3 |</span><br><span class="line">|          6 |</span><br><span class="line">|          4 |</span><br><span class="line">|          5 |</span><br><span class="line">+------------+</span><br><span class="line">6 rows in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+
+<h3 id="TEXT-类型"><a href="#TEXT-类型" class="headerlink" title="TEXT 类型"></a>TEXT 类型</h3><p>在 MySQL 中，TEXT 用来保存文本类型的字符串，总共包含4种类型，分别为 <code>TINYTEXT</code>、<code>TEXT</code>、<code>MEDIUMTEXT</code> 和 <code>LONGTEXT</code> 类型。</p>
+<p>在向 TEXT 类型的字段保存和查询数据时，系统自动按照实际长度存储，不需要预先定义长度。</p>
+<p>检索 TEXT 类型的字段数据时，会保留数据尾部的空格。</p>
+<p>它们的区别如下表所示：</p>
+<table>
+<thead>
+<tr>
+<th align="center">文本字符串类型</th>
+<th align="center">特点</th>
+<th align="center">长度</th>
+<th align="center">长度范围（字节）</th>
+<th align="center">占用的存储空间</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">TINYTEXT</td>
+<td align="center">小文本、可变长度</td>
+<td align="center">L</td>
+<td align="center">0 &lt;&#x3D; L &lt;&#x3D; 255（256B）</td>
+<td align="center">L + 2 个字节</td>
+</tr>
+<tr>
+<td align="center">TEXT</td>
+<td align="center">文本、可变长度</td>
+<td align="center">L</td>
+<td align="center">0 &lt;&#x3D; L &lt;&#x3D; 65535（64KB）</td>
+<td align="center">L + 2 个字节</td>
+</tr>
+<tr>
+<td align="center">MEDIUMTEXT</td>
+<td align="center">中等文本、可变长度</td>
+<td align="center">L</td>
+<td align="center">0 &lt;&#x3D; L &lt;&#x3D; 16777215（16MB）</td>
+<td align="center">L + 3 个字节</td>
+</tr>
+<tr>
+<td align="center">LONGTEXT</td>
+<td align="center">大文本、可变长度</td>
+<td align="center">L</td>
+<td align="center">0 &lt;&#x3D; L&lt;&#x3D; 4294967295（4GB）</td>
+<td align="center">L + 4 个字节</td>
+</tr>
+</tbody></table>
+<p>TEXT 类型的长度范围是以字节为单位，例如 TINYTEXT 类型最大存储空间可支持 255 个字节，那么 TINYTEXT 类型的字段在 utf8mb4 编码格式中可存储 255 个英文字母或 85 个汉字。<strong>MySQL 不允许 TEXT 类型的字段做主键</strong>。</p>
+<p>示例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">/*TEXT 类型*/</span><br><span class="line">drop table if exists test_text01;</span><br><span class="line">create table test_text01(</span><br><span class="line">    f1 tinytext,</span><br><span class="line">    f2 text,</span><br><span class="line">    f3 mediumtext,</span><br><span class="line">    f4 longtext</span><br><span class="line">);</span><br><span class="line">insert into test_text01 values (&#x27;a  &#x27;, &#x27;b  &#x27;, &#x27;c  &#x27;, &#x27;d  &#x27;);</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"># 检索 TEXT 类型的字段数据时，会保留数据尾部的空格。</span><br><span class="line">mysql&gt; select * from test_text01;</span><br><span class="line">+------+------+------+------+</span><br><span class="line">| f1   | f2   | f3   | f4   |</span><br><span class="line">+------+------+------+------+</span><br><span class="line">| a    | b    | c    | d    |</span><br><span class="line">+------+------+------+------+</span><br><span class="line">1 row in set (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; select length(f1), length(f2), length(f3), length(f4) from test_text01;</span><br><span class="line">+------------+------------+------------+------------+</span><br><span class="line">| length(f1) | length(f2) | length(f3) | length(f4) |</span><br><span class="line">+------------+------------+------------+------------+</span><br><span class="line">|          3 |          3 |          3 |          3 |</span><br><span class="line">+------------+------------+------------+------------+</span><br><span class="line">1 row in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+
+<h3 id="ENUM-类型"><a href="#ENUM-类型" class="headerlink" title="ENUM 类型"></a>ENUM 类型</h3><p>ENUM 类型也叫作枚举类型。当ENUM类型包含1～255个成员时，需要1个字节的存储空间；当ENUM类型包含256～65535个成员时，需要2个字节的存储空间。</p>
+<table>
+<thead>
+<tr>
+<th>文本字符串类型</th>
+<th>长度</th>
+<th>长度范围</th>
+<th>占用的存储空间</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>ENUM</td>
+<td>L</td>
+<td>1 &lt;&#x3D; L &lt;&#x3D; 65535</td>
+<td>1 或 2 个字节</td>
+</tr>
+</tbody></table>
+<p>示例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">/*ENUM 类型*/</span><br><span class="line">drop table if exists test_enum01;</span><br><span class="line">create table test_enum01(</span><br><span class="line">    f1 enum(&#x27;spring&#x27;, &#x27;summer&#x27;, &#x27;autumn&#x27;, &#x27;winter&#x27;, &#x27;unknown&#x27;)</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"># 表结构</span><br><span class="line">mysql&gt; desc test_enum01;</span><br><span class="line">+-------+-----------------------------------------------------+------+-----+---------+-------+</span><br><span class="line">| Field | Type                                                | Null | Key | Default | Extra |</span><br><span class="line">+-------+-----------------------------------------------------+------+-----+---------+-------+</span><br><span class="line">| f1    | enum(&#x27;spring&#x27;,&#x27;summer&#x27;,&#x27;autumn&#x27;,&#x27;winter&#x27;,&#x27;unknown&#x27;) | YES  |     | NULL    |       |</span><br><span class="line">+-------+-----------------------------------------------------+------+-----+---------+-------+</span><br><span class="line">1 row in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"># 添加数据</span><br><span class="line">insert into test_enum01 values (&#x27;spring&#x27;);</span><br><span class="line"># 忽视大小写</span><br><span class="line">insert into test_enum01 values (&#x27;SPRING&#x27;);</span><br><span class="line"># 允许按照角标的方式获取指定索引位置的枚举值</span><br><span class="line">insert into test_enum01 values (1);</span><br><span class="line"># 当 ENUM 类型的字段没有声明为 NOT NULL 时，插入 NULL 也是有效的</span><br><span class="line">insert into test_enum01 values (null);</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"># 查询结果</span><br><span class="line">mysql&gt; select * from test_enum01;</span><br><span class="line">+--------+</span><br><span class="line">| f1     |</span><br><span class="line">+--------+</span><br><span class="line">| spring |</span><br><span class="line">| spring |</span><br><span class="line">| spring |</span><br><span class="line">| NULL   |</span><br><span class="line">+--------+</span><br><span class="line">4 rows in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># 插入不存在的的枚举值时，MySQL 会报错</span><br><span class="line">mysql&gt; insert into test_enum01 values(&#x27;abc&#x27;);</span><br><span class="line">ERROR 1265 (01000): Data truncated for column &#x27;f1&#x27; at row 1</span><br></pre></td></tr></table></figure>
+
+<h3 id="SET-类型"><a href="#SET-类型" class="headerlink" title="SET 类型"></a>SET 类型</h3><p>SET 表示一个字符串对象，可以包含 0 个或多个成员，但成员个数的上限为 64。设置字段值时，可以取取值范围内的 0 个或多个值，这一点与 ENUM 类型不同。</p>
+<p>当 SET 类型包含的成员个数不同时，其所占用的存储空间也是不同的，具体如下：</p>
+<table>
+<thead>
+<tr>
+<th align="center">成员个数范围（L表示实际成员个数）</th>
+<th align="center">占用的存储空间</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">1 &lt;&#x3D; L &lt;&#x3D; 8</td>
+<td align="center">1个字节</td>
+</tr>
+<tr>
+<td align="center">9 &lt;&#x3D; L &lt;&#x3D; 16</td>
+<td align="center">2个字节</td>
+</tr>
+<tr>
+<td align="center">17 &lt;&#x3D; L &lt;&#x3D; 24</td>
+<td align="center">3个字节</td>
+</tr>
+<tr>
+<td align="center">25 &lt;&#x3D; L &lt;&#x3D; 32</td>
+<td align="center">4个字节</td>
+</tr>
+<tr>
+<td align="center">33 &lt;&#x3D; L &lt;&#x3D; 64</td>
+<td align="center">8个字节</td>
+</tr>
+</tbody></table>
+<p>示例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">/*SET 类型*/</span><br><span class="line">drop table if exists test_set01;</span><br><span class="line">create table test_set01(</span><br><span class="line">    f1 set(&#x27;a&#x27;, &#x27;b&#x27;, &#x27;c&#x27;)</span><br><span class="line">);</span><br><span class="line"># 允许插入多个值，这一点与 ENUM 类型不同。</span><br><span class="line">insert into test_set01 values (&#x27;a,b&#x27;);</span><br><span class="line"># 插入重复的 SET 类型成员时，MySQL 会自动删除重复的成员</span><br><span class="line">insert into test_set01 values (&#x27;a,b,c,a,b,c&#x27;);</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"># 表结构</span><br><span class="line">mysql&gt; desc test_set01;</span><br><span class="line">+-------+------------------+------+-----+---------+-------+</span><br><span class="line">| Field | Type             | Null | Key | Default | Extra |</span><br><span class="line">+-------+------------------+------+-----+---------+-------+</span><br><span class="line">| f1    | set(&#x27;a&#x27;,&#x27;b&#x27;,&#x27;c&#x27;) | YES  |     | NULL    |       |</span><br><span class="line">+-------+------------------+------+-----+---------+-------+</span><br><span class="line">1 row in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"># 查询结果</span><br><span class="line">mysql&gt; select * from test_set01;</span><br><span class="line">+-------+</span><br><span class="line">| f1    |</span><br><span class="line">+-------+</span><br><span class="line">| a,b   |</span><br><span class="line">| a,b,c |</span><br><span class="line">+-------+</span><br><span class="line">2 rows in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+
+<h2 id="二进制字符串类型"><a href="#二进制字符串类型" class="headerlink" title="二进制字符串类型"></a>二进制字符串类型</h2><p>MySQL 中的二进制字符串类型主要存储一些二进制数据，比如可以存储图片、音频和视频等二进制数据。在实际开发中，这种类型的字段很少遇到。</p>
+<p>MySQL 中支持的二进制字符串类型主要包括 <code>BINARY</code>、<code>VARBINARY</code>、<code>TINYBLOB</code>、<code>BLOB</code>、<code>MEDIUMBLOB</code> 和 <code>LONGBLOB</code> 类型。</p>
+<h3 id="BINARY-与-VARBINARY-类型"><a href="#BINARY-与-VARBINARY-类型" class="headerlink" title="BINARY 与 VARBINARY 类型"></a>BINARY 与 VARBINARY 类型</h3><p>BINARY(M) 为固定长度的二进制字符串，M 表示最多能存储的<code>字节数</code>，取值范围是 0~255 个字符。如果未指定 (M)，默认值为 1。如果字段值不足 (M) 个字节，将在右边填充 \0 以补齐指定长度。</p>
+<p>VARBINARY(M) 为可变长度的二进制字符串，M 表示最多能存储的<code>字节数</code>，总字节数不能超过 65535。另外还要考虑额外字节开销，VARBINARY 类型的数据除了存储数据本身外，还需要 1 或 2 个字节来存储数据的字节数。VARBINARY类型<code>必须指定 (M)</code>，否则报错。</p>
+<p>它们的区别如下表所示：</p>
+<table>
+<thead>
+<tr>
+<th align="center">二进制字符串类型</th>
+<th align="center">特点</th>
+<th align="center">值的长度（字节）</th>
+<th align="center">占用空间</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">BINARY(M)</td>
+<td align="center">固定长度</td>
+<td align="center">M （0 &lt;&#x3D; M &lt;&#x3D; 255）</td>
+<td align="center">M个字节</td>
+</tr>
+<tr>
+<td align="center">VARBINARY(M)</td>
+<td align="center">可变长度</td>
+<td align="center">M（0 &lt;&#x3D; M &lt;&#x3D; 65535）</td>
+<td align="center">M+1个字节</td>
+</tr>
+</tbody></table>
+<p>有人会将 BINARY 和 VARBINARY 跟 CHAR 和 VARCHAR 进行类比，确实有相似的地方，那么我列举几个不同点：</p>
+<ol>
+<li>BINARY 和 VARBINARY 类型的值的长度以字节为单位，而 CHAR 和 VARCHAR 以字符为单位。</li>
+<li>BINARY 字段值不足 (M) 个字节时，将在右边填充 \0 以补齐指定长度，在检索时不会除去 \0。而 CHAR 不足(M) 个字节，将在右边填充空格，但在检索时会除去空格。</li>
+</ol>
+<p>示例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">/*BINARY 与 VARBINARY 类型*/</span><br><span class="line">drop table if exists test_binary01;</span><br><span class="line">create table test_binary01</span><br><span class="line">(</span><br><span class="line">    f1 binary,</span><br><span class="line">    f2 binary(5),</span><br><span class="line">    f3 varbinary(5)</span><br><span class="line">);</span><br><span class="line">insert into test_binary01 values (&#x27;a&#x27;, &#x27;a&#x27;, &#x27;a&#x27;);</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"># 表结构</span><br><span class="line">mysql&gt; desc test_binary01;</span><br><span class="line">+-------+--------------+------+-----+---------+-------+</span><br><span class="line">| Field | Type         | Null | Key | Default | Extra |</span><br><span class="line">+-------+--------------+------+-----+---------+-------+</span><br><span class="line">| f1    | binary(1)    | YES  |     | NULL    |       |</span><br><span class="line">| f2    | binary(5)    | YES  |     | NULL    |       |</span><br><span class="line">| f3    | varbinary(5) | YES  |     | NULL    |       |</span><br><span class="line">+-------+--------------+------+-----+---------+-------+</span><br><span class="line">3 rows in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"># 查询结果</span><br><span class="line">mysql&gt; select * from test_binary01;</span><br><span class="line">+------+-------+------+</span><br><span class="line">| f1   | f2    | f3   |</span><br><span class="line">+------+-------+------+</span><br><span class="line">| a    | a     | a    |</span><br><span class="line">+------+-------+------+</span><br><span class="line">1 row in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"># 在检索时不会除去 \0</span><br><span class="line">mysql&gt; select length(f1), length(f2), length(f3) from test_binary01;</span><br><span class="line">+------------+------------+------------+</span><br><span class="line">| length(f1) | length(f2) | length(f3) |</span><br><span class="line">+------------+------------+------------+</span><br><span class="line">|          1 |          5 |          1 |</span><br><span class="line">+------------+------------+------------+</span><br><span class="line">1 row in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+
+<h3 id="BLOB-类型"><a href="#BLOB-类型" class="headerlink" title="BLOB 类型"></a>BLOB 类型</h3><p>BLOB是一个<code>二进制大对象</code>，可以容纳可变数量的数据。类型包括 <code>TINYBLOB</code>、<code>BLOB</code>、<code>MEDIUMBLOB</code> 和 <code>LONGBLOB</code>，它们的区别如下表所示：</p>
+<table>
+<thead>
+<tr>
+<th align="center">二进制字符串类型</th>
+<th align="center">值的长度</th>
+<th align="center">长度范围</th>
+<th align="center">占用空间</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">TINYBLOB</td>
+<td align="center">L</td>
+<td align="center">0 &lt;&#x3D; L &lt;&#x3D; 255（256B）</td>
+<td align="center">L + 1 个字节</td>
+</tr>
+<tr>
+<td align="center">BLOB</td>
+<td align="center">L</td>
+<td align="center">0 &lt;&#x3D; L &lt;&#x3D; 65535（64KB）</td>
+<td align="center">L + 2 个字节</td>
+</tr>
+<tr>
+<td align="center">MEDIUMBLOB</td>
+<td align="center">L</td>
+<td align="center">0 &lt;&#x3D; L &lt;&#x3D; 16777215 （16MB）</td>
+<td align="center">L + 3 个字节</td>
+</tr>
+<tr>
+<td align="center">LONGBLOB</td>
+<td align="center">L</td>
+<td align="center">0 &lt;&#x3D; L &lt;&#x3D; 4294967295（4GB）</td>
+<td align="center">L + 4 个字节</td>
+</tr>
+</tbody></table>
+<p>在实际工作中，往往不会在 MySQL 数据库中使用 BLOB 类型存储大对象数据，通常会将图片、音频和视频文件存储到服务器的磁盘上，并将图片、音频和视频的访问路径存储到 MySQL 中。</p>
+<h2 id="JSON-类型"><a href="#JSON-类型" class="headerlink" title="JSON 类型"></a>JSON 类型</h2><p>在 MySQL 5.7 中，就已经支持 JSON 数据类型。在 MySQL 8.x 版本中，JSON 类型提供了可以进行自动验证的 JSON 文档和优化存储结构，使得在 MySQL 中存储和读取 JSON 类型的数据更加方便和高效。<br>示例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">/*JSON 类型*/</span><br><span class="line">drop table if exists test_json01;</span><br><span class="line">create table test_json01</span><br><span class="line">(</span><br><span class="line">    f1 json</span><br><span class="line">);</span><br><span class="line">insert into test_json01</span><br><span class="line">values (&#x27;&#123;</span><br><span class="line">  &quot;name&quot;: &quot;溪岚花&quot;,</span><br><span class="line">  &quot;age&quot;: 18,</span><br><span class="line">  &quot;address&quot;: &#123;</span><br><span class="line">    &quot;province&quot;: &quot;beijing&quot;,</span><br><span class="line">    &quot;city&quot;: &quot;beijing&quot;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;&#x27;);</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"># 查询结果</span><br><span class="line">mysql&gt; select * from test_json01;</span><br><span class="line">+-----------------------------------------------------------------------------------------+</span><br><span class="line">| f1                                                                                      |</span><br><span class="line">+-----------------------------------------------------------------------------------------+</span><br><span class="line">| &#123;&quot;age&quot;: 18, &quot;name&quot;: &quot;溪岚花&quot;, &quot;address&quot;: &#123;&quot;city&quot;: &quot;beijing&quot;, &quot;province&quot;: &quot;beijing&quot;&#125;&#125;    |</span><br><span class="line">+-----------------------------------------------------------------------------------------+</span><br><span class="line">1 row in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"># 查询结果</span><br><span class="line">mysql&gt; select f1-&gt;&#x27;$.name&#x27;, f1-&gt;&#x27;$.address.city&#x27; from test_json01;</span><br><span class="line">+--------------+----------------------+</span><br><span class="line">| f1-&gt;&#x27;$.name&#x27; | f1-&gt;&#x27;$.address.city&#x27; |</span><br><span class="line">+--------------+----------------------+</span><br><span class="line">| &quot;溪岚花&quot;     | &quot;beijing&quot;            |</span><br><span class="line">+--------------+----------------------+</span><br><span class="line">1 row in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+
+<h2 id="空间类型"><a href="#空间类型" class="headerlink" title="空间类型"></a>空间类型</h2><p>MySQL 空间类型支持地理特征的生成、存储和分析。这里的地理特征表示世界上具有位置的任何东西，可以是一个实体，例如一座山；可以是空间，例如一座办公楼；也可以是一个可定义的位置，例如一个十字路口等等。MySQL 中使用 <code>Geometry（几何）</code> 来表示所有地理特征。Geometry 指一个点或点的集合，代表世界上任何具有位置的事物。</p>
+<p>MySQL 的空间数据类型对应于 OpenGIS 类，包括单值类型：<code>GEOMETRY</code>、<code>POINT</code>、<code>LINESTRING</code>、<code>POLYGON</code>以及集合类型：<code>MULTIPOINT</code>、<code>MULTILINESTRING</code>、<code>MULTIPOLYGON</code>、<code>GEOMETRYCOLLECTION</code> 。</p>
+<p>Geometry 是所有空间集合类型的基类，其他类型如 POINT、LINESTRING、POLYGON 都是 Geometry 的子类。</p>
+<ul>
+<li>Point：用坐标值表示一个点，例如 POINT(121.213342 31.234532)、POINT(30 10)，坐标值支持DECIMAL类型，经度在前，维度在后，用空格分隔。</li>
+<li>LineString：由一系列点表示线，例如 LINESTRING(30 10,10 30,40 40)，点与点之间用逗号分隔，一个点中的经纬度用空格分隔，与 POINT 格式一致。</li>
+<li>Polygon：由多条线表示多边形，例如POLYGON((0 0,10 0,10 10, 0 10))。</li>
+</ul>
+<p>下面展示几种常见的几何图形元素：</p>
+<p><img src="/blog/2023/05/17/mysql/%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/image-20230520163013259.png"></p>
+<p>MultiPoint、MultiLineString、MultiPolygon、GeometryCollection 这4种类型都是集合类，是多个 Point、LineString 或 Polygon 组合而成。</p>
+<p>下面展示的是多个同类或异类几何图形元素的组合：</p>
+<p><img src="/blog/2023/05/17/mysql/%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/image-20230520163050583.png"></p>
+<p>示例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">/*空间类型*/</span><br><span class="line">drop table if exists test_geo01;</span><br><span class="line">create table test_geo01(</span><br><span class="line">    point point,</span><br><span class="line">    line linestring,</span><br><span class="line">    polygon polygon</span><br><span class="line">);</span><br><span class="line">insert into test_geo01</span><br><span class="line">values (point(30, 10),</span><br><span class="line">        linestring(point(30, 10), point(10, 30), point(40, 40)),</span><br><span class="line">        ST_GeomFromText(&#x27;POLYGON((35 10, 45 45, 15 40, 10 20, 35 10), (20 30, 35 35, 30 20, 20 30))&#x27;));</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"># 查询结果</span><br><span class="line">mysql&gt; select ST_AsText(point), ST_AsText(line), ST_AsText(polygon) from test_geo01;</span><br><span class="line">+------------------+-------------------------------+--------------------------------------------------------------------+</span><br><span class="line">| ST_AsText(point) | ST_AsText(line)               | ST_AsText(polygon)                                                 |</span><br><span class="line">+------------------+-------------------------------+--------------------------------------------------------------------+</span><br><span class="line">| POINT(30 10)     | LINESTRING(30 10,10 30,40 40) | POLYGON((35 10,45 45,15 40,10 20,35 10),(20 30,35 35,30 20,20 30)) |</span><br><span class="line">+------------------+-------------------------------+--------------------------------------------------------------------+</span><br><span class="line">1 row in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+
+</div>
+        </div>
+        
+        <footer class="kratos-entry-footer clearfix">
+            
+            <div class="footer-tag clearfix">
+                <div class="pull-left">
+                <i class="fa fa-tags"></i>
+                    <a class="tag-none-link" href="/blog/tags/MySQL/" rel="tag">MySQL</a>
+                </div>
+                <div class="pull-date">
+                    <time datetime="2026-01-04T05:51:48.300Z" itemprop="dateModified">最后编辑：2026-01-04</time>
+                </div>
+            </div>
+        </footer>
+    </div>
+    
+        <nav class="navigation post-navigation clearfix" role="navigation">
+            
+            <div class="nav-previous clearfix">
+                <a title=" MySQL 中常用的函数" href="/blog/2023/05/15/mysql/常用函数/">&lt; 上一篇</a>
+            </div>
+            
+            
+            <div class="nav-next clearfix">
+                <a title=" 【Java 8 新特性】时间类：ZonedDateTime" href="/blog/2023/05/21/Java8/time/ZonedDateTime/">下一篇 &gt;</a>
+            </div>
+            
+        </nav>
+    
+    
+</article>
+
+        
+
+            </section>
+
+        
+
+                
+            
+
+<section id="kratos-widget-area" class="col-md-4 hidden-xs hidden-sm">
+    <!-- 文章和页面根据splitter来分割，没有的话就从头开始设置为sticky -->
+    
+    
+                <aside id="krw-about" class="widget widget-kratos-about clearfix">
+    <div class="photo-background"></div>
+    <div class="photo-wrapper clearfix">
+        <div class="photo-wrapper-tip text-center">
+            <img class="about-photo" src="/blog/images/avatar.webp" loading="lazy" decoding="auto" />
+        </div>
+    </div>
+    <div class="textwidget">
+        <p class="text-center">极简主义</p>
+    </div>
+    <div class="site-meta">
+        <a class="meta-item" href="/blog/archives/">
+            <span class="title">
+                文章
+            </span>
+            <span class="count">
+                77
+            </span>
+        </a>
+        <a class="meta-item" href="/blog/categories/">
+            <span class="title">
+                分类
+            </span>
+            <span class="count">
+                10
+            </span>
+        </a>
+        <a class="meta-item" href="/blog/tags/">
+            <span class="title">
+                标签
+            </span>
+            <span class="count">
+                29
+            </span>
+        </a>
+    </div>
+</aside>
+            
+                    <div class="sticky-area">
+                
+                    <aside id="krw-toc" class="widget widget-kratos-toc clearfix toc-div-class" >
+    <div class="photo-background"></div>
+    <h4 class="widget-title no-after">
+        <i class="fa fa-compass"></i>
+        文章目录
+        <span class="toc-progress-bar" role="progressbar" aria-label="阅读进度："></span>
+    </h4>
+    <div class="textwidget">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B4%E6%95%B0%E7%B1%BB%E5%9E%8B"><span class="toc-text">整数类型</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%B1%BB%E5%9E%8B%E4%BB%8B%E7%BB%8D"><span class="toc-text">类型介绍</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%AF%E9%80%89%E5%B1%9E%E6%80%A7"><span class="toc-text">可选属性</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#M%EF%BC%88%E6%98%BE%E7%A4%BA%E5%AE%BD%E5%BA%A6%EF%BC%89"><span class="toc-text">M（显示宽度）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#ZEROFILL"><span class="toc-text">ZEROFILL</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#UNSIGNED"><span class="toc-text">UNSIGNED</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B5%AE%E7%82%B9%E7%B1%BB%E5%9E%8B"><span class="toc-text">浮点类型</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%B1%BB%E5%9E%8B%E4%BB%8B%E7%BB%8D-1"><span class="toc-text">类型介绍</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%B2%BE%E5%BA%A6%E8%AF%AF%E5%B7%AE%E8%AF%B4%E6%98%8E"><span class="toc-text">精度误差说明</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9A%E7%82%B9%E6%95%B0%E7%B1%BB%E5%9E%8B"><span class="toc-text">定点数类型</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%B1%BB%E5%9E%8B%E4%BB%8B%E7%BB%8D-2"><span class="toc-text">类型介绍</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%8D%E7%B1%BB%E5%9E%8B"><span class="toc-text">位类型</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%B1%BB%E5%9E%8B%E4%BB%8B%E7%BB%8D-3"><span class="toc-text">类型介绍</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%97%A5%E6%9C%9F%E4%B8%8E%E6%97%B6%E9%97%B4%E7%B1%BB%E5%9E%8B"><span class="toc-text">日期与时间类型</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#YEAR-%E7%B1%BB%E5%9E%8B"><span class="toc-text">YEAR 类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#DATE-%E7%B1%BB%E5%9E%8B"><span class="toc-text">DATE 类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#TIME-%E7%B1%BB%E5%9E%8B"><span class="toc-text">TIME 类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#DATETIME-%E7%B1%BB%E5%9E%8B"><span class="toc-text">DATETIME 类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#TIMESTAMP-%E7%B1%BB%E5%9E%8B"><span class="toc-text">TIMESTAMP 类型</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%87%E6%9C%AC%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%B1%BB%E5%9E%8B"><span class="toc-text">文本字符串类型</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#CHAR-%E4%B8%8E-VARCHAR-%E7%B1%BB%E5%9E%8B"><span class="toc-text">CHAR 与 VARCHAR 类型</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#CHAR-%E7%B1%BB%E5%9E%8B"><span class="toc-text">CHAR 类型</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#VARCHAR-%E7%B1%BB%E5%9E%8B"><span class="toc-text">VARCHAR 类型</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#TEXT-%E7%B1%BB%E5%9E%8B"><span class="toc-text">TEXT 类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ENUM-%E7%B1%BB%E5%9E%8B"><span class="toc-text">ENUM 类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#SET-%E7%B1%BB%E5%9E%8B"><span class="toc-text">SET 类型</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E8%BF%9B%E5%88%B6%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%B1%BB%E5%9E%8B"><span class="toc-text">二进制字符串类型</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#BINARY-%E4%B8%8E-VARBINARY-%E7%B1%BB%E5%9E%8B"><span class="toc-text">BINARY 与 VARBINARY 类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#BLOB-%E7%B1%BB%E5%9E%8B"><span class="toc-text">BLOB 类型</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#JSON-%E7%B1%BB%E5%9E%8B"><span class="toc-text">JSON 类型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%A9%BA%E9%97%B4%E7%B1%BB%E5%9E%8B"><span class="toc-text">空间类型</span></a></li></ol>
+    </div>
+</aside>
+                
+                
+  <aside id="krw-categories" class="widget widget-kratos-categories clearfix">
+    <h4 class="widget-title"><i class="fa fa-folder"></i>分类目录</h4>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Docker/">Docker</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Idea/">Idea</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Java/">Java</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/K8s/">K8s</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Linux/">Linux</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/MySQL/">MySQL</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Python/">Python</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Selenium/">Selenium</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/SpringBoot/">SpringBoot</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/SpringCloud/">SpringCloud</a><span class="category-list-count">13</span></li></ul>
+  </aside>
+
+
+            
+                
+  <aside id="krw-tags" class="widget widget-kratos-tags clearfix">
+    <h4 class="widget-title"><i class="fa fa-tags"></i>标签聚合</h4>
+      <div class="tag-clouds">
+        <a href="/blog/tags/CORS/" style="font-size: 0.8em;">CORS</a> <a href="/blog/tags/Docker/" style="font-size: 0.8em;">Docker</a> <a href="/blog/tags/Dubbo/" style="font-size: 0.8em;">Dubbo</a> <a href="/blog/tags/ELK/" style="font-size: 0.8em;">ELK</a> <a href="/blog/tags/Elasticsearch/" style="font-size: 0.8em;">Elasticsearch</a> <a href="/blog/tags/Eureka/" style="font-size: 0.8em;">Eureka</a> <a href="/blog/tags/Feign/" style="font-size: 0.8em;">Feign</a> <a href="/blog/tags/Gateway/" style="font-size: 0.8em;">Gateway</a> <a href="/blog/tags/Idea/" style="font-size: 0.8em;">Idea</a> <a href="/blog/tags/Java/" style="font-size: 0.8em;">Java</a> <a href="/blog/tags/JavaWeb/" style="font-size: 0.8em;">JavaWeb</a> <a href="/blog/tags/K8s/" style="font-size: 0.8em;">K8s</a> <a href="/blog/tags/Linux/" style="font-size: 0.8em;">Linux</a> <a href="/blog/tags/Maven/" style="font-size: 0.8em;">Maven</a> <a href="/blog/tags/MySQL/" style="font-size: 0.8em;">MySQL</a> <a href="/blog/tags/Mybatis/" style="font-size: 0.8em;">Mybatis</a> <a href="/blog/tags/Nacos/" style="font-size: 0.8em;">Nacos</a> <a href="/blog/tags/Pytest/" style="font-size: 0.8em;">Pytest</a>
+      </div>
+  </aside>
+
+            
+                
+  <aside id="krw-posts" class="widget widget-kratos-posts">
+  <h4 class="widget-title"><i class="fa fa-file"></i>最新文章</h4>
+  <div class="tab-content">
+      <ul class="list-group">
+        
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/01/25/K8s/K8s%E7%BB%84%E4%BB%B6/"><i class="fa  fa-book"></i> 【K8s】组件</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/01/24/K8s/K8s%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/"><i class="fa  fa-book"></i> 【K8s】常用命令</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/01/11/Idea/IDEA%E6%8F%92%E4%BB%B6/"><i class="fa  fa-book"></i> 【Idea】插件</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/01/04/Linux/Centos7%E9%97%AE%E9%A2%98%E5%A4%84%E7%90%86/"><i class="fa  fa-book"></i> Centos7问题处理</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2025/12/09/Trae/Trae%E5%AE%89%E8%A3%85%E6%8F%92%E4%BB%B6%E5%AE%9E%E7%8E%B0Java%E4%BB%A3%E7%A0%81%E7%BC%96%E5%86%99/"><i class="fa  fa-book"></i> 【Trae】安装插件实现Java代码编写</a>
+            
+          
+        
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+      </ul>
+  </div>
+  </aside>
+
+            
+    </div>
+</section>
+        
+        </div>
+    </div>
+</div>
+<footer>
+    <div id="footer"  >
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3 footer-list text-center">
+                    <ul class="kratos-social-icons">
+                        <!-- Keep for compatibility -->
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <!-- New links -->
+                        
+                    </ul>
+                    <ul class="kratos-copyright">
+                        <div>
+                            <li>&copy; 2026 溪岚花的博客 版权所有.</li>
+                            <li>本站已运行<span id="span_dt">Loading...</span></li>
+                        </div>
+                        <div>
+                            <li>Theme <a href="https://github.com/Candinya/Kratos-Rebirth" target="_blank">Kratos:Rebirth</a></li>
+                            <li>Site built with&nbsp;<i class="fa fa-heart throb" style="color:#d43f57"></i>&nbsp;by 林家隆.</li>
+                        </div>
+                        <div>
+                            <li>Powered by <a href="https://hexo.io" target="_blank" rel="nofollow">Hexo</a></li>
+                            <li>Hosted on <a href="https://gitee.com/" target="_blank">Gitee Pages</a></li>
+                        </div>
+                        <div>
+                            
+                            
+                        </div>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="kr-tool text-center">
+            <div class="tool">
+                
+                    <div class="box search-box">
+                        <a href="/blog/search/">
+                            <span class="fa fa-search"></span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="box theme-box" id="darkmode-switch">
+                        <span class="fa fa-adjust"></span>
+                    </div>
+                
+                
+                
+            </div>
+            <div class="box gotop-box">
+                <span class="fa fa-chevron-up"></span>
+            </div>
+        </div>
+    </div>
+</footer>
+</div>
+</div>
+
+        <script defer src="/blog/vendors/bootstrap@3.3.4/dist/js/bootstrap.min.js"></script>
+<script defer src="/blog/vendors/nprogress@0.2.0/nprogress.js"></script>
+<script>
+    if (!window.kr) {
+        window.kr = {};
+    }
+    window.kr.notMobile = (!(navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i)));
+    window.kr.siteRoot = "/blog/";
+</script>
+
+
+
+
+
+    <script defer src="/blog/vendors/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+
+<script defer src="/blog/js/kratosr.min.js"></script>
+<script defer src="/blog/js/pjax.min.js"></script>
+
+
+
+<!-- Extra support for third-party plguins  -->
+
+
+    </body>
+</html>

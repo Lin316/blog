@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+  <!-- 元数据 -->
+  <meta charset="utf-8">
+  <link rel="icon" href="/blog/images/logo.png">
+  
+  <title>【Nacos】基本使用 | 溪岚花的博客</title>
+  
+  <meta name="author" content="林家隆" />
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="robots" content="index,follow" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <meta name="format-detection" content="telphone=no, email=no" />
+  
+    <meta name="keywords" content="Nacos, SpringCloud" />
+  
+  <meta name="description" content="Nacos 介绍Nacos 是一个服务注册中心和配置中心组件。主要用来注册&#x2F;发现服务，配置和管理微服务。 使用 Docker 搭建 Nacos 服务端环境。 Nacos 官网下载地址。  因为 Nacos 是 alibaba 的微服务组件，所以需要在 &lt;dependencyManagement&gt; 中导入 SpringCloudAlibaba 依赖： 1234567&lt;de">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【Nacos】基本使用">
+<meta property="og:url" content="https://lin316.gitee.io/blog/2024/03/27/SpringCloud/Nacos/Nacos%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/index.html">
+<meta property="og:site_name" content="溪岚花的博客">
+<meta property="og:description" content="Nacos 介绍Nacos 是一个服务注册中心和配置中心组件。主要用来注册&#x2F;发现服务，配置和管理微服务。 使用 Docker 搭建 Nacos 服务端环境。 Nacos 官网下载地址。  因为 Nacos 是 alibaba 的微服务组件，所以需要在 &lt;dependencyManagement&gt; 中导入 SpringCloudAlibaba 依赖： 1234567&lt;de">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://lin316.gitee.io/blog/blog/images/logo.png">
+<meta property="article:published_time" content="2024-03-27T01:00:00.000Z">
+<meta property="article:modified_time" content="2026-01-04T05:51:48.288Z">
+<meta property="article:author" content="林家隆">
+<meta property="article:tag" content="SpringCloud">
+<meta property="article:tag" content="Nacos">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://lin316.gitee.io/blog/blog/images/logo.png">
+  
+  <!-- 站点验证相关 -->
+  
+    
+    
+    
+  
+  <!-- 样式表文件 -->
+  <link rel="stylesheet" id="kratos-css" href="/blog/css/kratosr.min.css" media="all"></script>
+  
+    <link rel="stylesheet" id="darkmode-css" href="/blog/css/kr-color-dark.min.css" media="(prefers-color-scheme: dark)"></script>
+    <script src="/blog/js/kr-dark.min.js"></script>
+  
+  
+    <link rel="stylesheet" id="highlight-css" href="/blog/css/highlight/night-eighties.min.css" media="all"></script>
+  
+  <link rel="stylesheet" id="fontawe-css" href="/blog/vendors/font-awesome@4.7.0/css/font-awesome.min.css" media="all"></script>
+  <link rel="stylesheet" id="nprogress-css" href="/blog/vendors/nprogress@0.2.0/nprogress.css" media="all"></script>
+  
+  
+  
+    <link rel="stylesheet" href="/blog/vendors/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css"></script>
+  
+  <!-- 不得不预先加载的一些JS文件 -->
+  <script src="/blog/vendors/jquery@3.6.0/dist/jquery.min.js"></script>
+  
+  
+  <style>
+    
+    
+  </style>
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+    <body class="custom-background">
+        <div id="kratos-wrapper">
+    <div id="kratos-page">
+        <div id="kratos-header">
+            <header id="kratos-desktop-topnav" class="kratos-topnav">
+                <div class="container">
+                    <div class="nav-header">
+                        <nav id="kratos-menu-wrap">
+                            <ul id="kratos-primary-menu" class="sf-menu">
+                                
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/">
+                                            
+                                                
+                                                    <i class="fa fa-home"></i>
+                                                
+                                                首页
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/archives/">
+                                            
+                                                
+                                                    <i class="fa fa-file"></i>
+                                                
+                                                归档
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/tags/">
+                                            
+                                                
+                                                    <i class="fa fa-tag"></i>
+                                                
+                                                标签
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/categories/">
+                                            
+                                                
+                                                    <i class="fa fa-folder"></i>
+                                                
+                                                目录
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/search/">
+                                            
+                                                
+                                                    <i class="fa fa-search"></i>
+                                                
+                                                搜索
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </header>
+            <header id="kratos-mobile-topnav" class="kratos-topnav">
+                <div class="container">
+                    <div class="color-logo"><a href="/blog/">溪岚花的博客</a></div>
+                    <div class="nav-toggle">
+                        <a class="kratos-nav-toggle js-kratos-nav-toggle">
+                            <i></i>
+                        </a>
+                    </div>
+                </div>
+            </header>
+        </div>
+        <div class="kratos-start kratos-hero-2">
+            <!-- <div class="kratos-overlay"></div> -->
+            <div class="kratos-cover kratos-cover-2 text-center">
+                <div class="desc desc2 animate-box">
+                    <a href="/blog/">
+                        <h2 style="opacity: 0.2;">溪岚花的博客</h2> <br />
+                        <span></span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div id="kratos-blog-post">
+            <div class="container">
+                <div id="main" class="row">
+                    
+
+        
+
+            <section class="col-md-8">
+
+        
+
+            <article itemscope itemtype="https://schema.org/Article">
+    
+    <link itemprop="mainEntityOfPage" href="https://lin316.gitee.io/blog/2024/03/27/SpringCloud/Nacos/Nacos%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/">
+    <div class="kratos-hentry kratos-post-inner clearfix">
+        <header class="kratos-entry-header">
+            
+                <h1 class="kratos-entry-title text-center" itemprop="name headline">【Nacos】基本使用</h1>
+            
+            
+            <ul class="kratos-post-meta text-center">
+                <li><time datetime="2024-03-27T01:00:00.000Z" itemprop="datePublished"><i class="fa fa-calendar"></i> 2024-03-27</time></li>
+                <li itemprop="author" itemscope itemtype="https://schema.org/Person">
+                    <i class="fa fa-user"></i> 作者 <span itemprop="name">林家隆</span>
+                </li>
+                
+                    <li>
+                        <i class="fa fa-edit"></i> 
+                        
+                        
+                            6.13K
+                        
+                        字
+                    </li>
+                
+                
+            </ul>
+        </header>
+        <div class="kratos-post-content">
+            
+            <div id="expire-alert" class="alert alert-warning hidden" role="alert">
+                <div class="icon"><i class="fa fa-warning"></i></div>
+                <div class="text"><p>本文最后编辑于 <time datetime="1767505908288"></time> 前，其中的内容可能需要更新。</p></div>
+            </div>
+            
+            
+            
+                <div class="kratos-post-inner-toc toc-div-class" >
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Nacos-%E4%BB%8B%E7%BB%8D"><span class="toc-number">1.</span> <span class="toc-text">Nacos 介绍</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B3%A8%E5%86%8C-x2F-%E5%8F%91%E7%8E%B0%E6%9C%8D%E5%8A%A1"><span class="toc-number">2.</span> <span class="toc-text">注册&#x2F;发现服务</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%90%AD%E5%BB%BA-Nacos-%E7%8E%AF%E5%A2%83"><span class="toc-number">2.1.</span> <span class="toc-text">搭建 Nacos 环境</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9C%8D%E5%8A%A1%E6%8F%90%E4%BE%9B%E8%80%85"><span class="toc-number">2.1.1.</span> <span class="toc-text">服务提供者</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9C%8D%E5%8A%A1%E6%B6%88%E8%B4%B9%E8%80%85"><span class="toc-number">2.1.2.</span> <span class="toc-text">服务消费者</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%8E%AF%E5%A2%83%E9%9A%94%E7%A6%BB"><span class="toc-number">2.2.</span> <span class="toc-text">环境隔离</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E4%BE%8B%E5%88%86%E7%BB%84"><span class="toc-number">2.3.</span> <span class="toc-text">实例分组</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1"><span class="toc-number">2.4.</span> <span class="toc-text">负载均衡</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%9F%E4%B8%80%E9%85%8D%E7%BD%AE%E7%AE%A1%E7%90%86"><span class="toc-number">3.</span> <span class="toc-text">统一配置管理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8B%89%E5%8F%96%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="toc-number">3.1.</span> <span class="toc-text">拉取配置文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE%E7%83%AD%E6%9B%B4%E6%96%B0"><span class="toc-number">3.2.</span> <span class="toc-text">配置热更新</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AF%BB%E5%8F%96%E5%A4%9A%E4%B8%AA%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="toc-number">3.3.</span> <span class="toc-text">读取多个配置文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A4%9A%E4%B8%AA%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E7%9A%84%E4%BC%98%E5%85%88%E7%BA%A7"><span class="toc-number">3.4.</span> <span class="toc-text">多个配置文件的优先级</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Nacos-%E7%9B%B8%E5%85%B3%E9%85%8D%E7%BD%AE"><span class="toc-number">4.</span> <span class="toc-text">Nacos 相关配置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98"><span class="toc-number">5.</span> <span class="toc-text">遇到的问题</span></a></li></ol>
+                </div>
+            
+            <hr />
+            <div itemprop="articleBody"><h2 id="Nacos-介绍"><a href="#Nacos-介绍" class="headerlink" title="Nacos 介绍"></a>Nacos 介绍</h2><p><strong>Nacos 是一个服务注册中心和配置中心组件。</strong>主要用来注册&#x2F;发现服务，配置和管理微服务。</p>
+<p>使用 Docker 搭建 Nacos 服务端环境。</p>
+<p>Nacos <a target="_blank" rel="noopener" href="https://github.com/alibaba/nacos/releases">官网下载地址</a>。</p>
+<blockquote>
+<p>因为 Nacos 是 alibaba 的微服务组件，所以需要在 <strong>&lt;dependencyManagement&gt;</strong> 中导入 <strong>SpringCloudAlibaba</strong> 依赖：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">       <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.alibaba.cloud<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">       <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-cloud-alibaba-dependencies<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">       <span class="tag">&lt;<span class="name">version</span>&gt;</span>$&#123;spring-cloud-alibaba.version&#125;<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">       <span class="tag">&lt;<span class="name">type</span>&gt;</span>pom<span class="tag">&lt;/<span class="name">type</span>&gt;</span></span><br><span class="line">       <span class="tag">&lt;<span class="name">scope</span>&gt;</span>import<span class="tag">&lt;/<span class="name">scope</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>注意：SpringCloudAlibaba 跟 SpringCloud 版本的兼容关系</strong>。</p>
+</blockquote>
+<h2 id="注册-x2F-发现服务"><a href="#注册-x2F-发现服务" class="headerlink" title="注册&#x2F;发现服务"></a>注册&#x2F;发现服务</h2><h3 id="搭建-Nacos-环境"><a href="#搭建-Nacos-环境" class="headerlink" title="搭建 Nacos 环境"></a>搭建 Nacos 环境</h3><h4 id="服务提供者"><a href="#服务提供者" class="headerlink" title="服务提供者"></a>服务提供者</h4><blockquote>
+<p> 导入 nacos discover 依赖包：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">       <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.alibaba.cloud<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">       <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-cloud-starter-alibaba-nacos-discovery<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>编写 nacos 配置：</p>
+<figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 项目端口</span></span><br><span class="line"><span class="attr">server.port</span>=<span class="string">10001</span></span><br><span class="line"><span class="comment"># 项目名称</span></span><br><span class="line"><span class="attr">spring.application.name</span>=<span class="string">nacos-provider</span></span><br><span class="line"><span class="comment"># nacos 服务端地址</span></span><br><span class="line"><span class="attr">spring.cloud.nacos.server-addr</span>=<span class="string">http://&#123;nacos ip&#125;:&#123;nacos port&#125;</span></span><br></pre></td></tr></table></figure>
+</blockquote>
+<h4 id="服务消费者"><a href="#服务消费者" class="headerlink" title="服务消费者"></a>服务消费者</h4><blockquote>
+<p>导入 nacos discover 依赖包：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">       <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.alibaba.cloud<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">       <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-cloud-starter-alibaba-nacos-discovery<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">       <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.cloud<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">       <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-cloud-starter-loadbalancer<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>编写 nacos 配置：</p>
+<figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 项目端口</span></span><br><span class="line"><span class="attr">server.port</span>=<span class="string">10010</span></span><br><span class="line"><span class="comment"># 项目名称</span></span><br><span class="line"><span class="attr">spring.application.name</span>=<span class="string">nacos-consumer</span></span><br><span class="line"><span class="comment"># nacos 服务端地址</span></span><br><span class="line"><span class="attr">spring.cloud.nacos.server-addr</span>=<span class="string">http://&#123;nacos ip&#125;:&#123;nacos port&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>注册 RestTemplate Bean 对象：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">SpringConfig</span> &#123;</span><br><span class="line">       <span class="meta">@Bean</span></span><br><span class="line">       <span class="meta">@LoadBalanced</span></span><br><span class="line">       <span class="keyword">public</span> RestTemplate <span class="title function_">restTemplate</span><span class="params">()</span> &#123;</span><br><span class="line">           <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">RestTemplate</span>();</span><br><span class="line">       &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>测试代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="meta">@RequestMapping(&quot;/test&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">TestController</span> &#123;</span><br><span class="line">       <span class="meta">@Autowired</span></span><br><span class="line">       <span class="keyword">private</span> RestTemplate restTemplate;</span><br><span class="line"></span><br><span class="line">       <span class="meta">@GetMapping(&quot;/user/&#123;id&#125;&quot;)</span></span><br><span class="line">       <span class="keyword">public</span> User <span class="title function_">testUser</span><span class="params">(<span class="meta">@PathVariable(&quot;id&quot;)</span> Integer id)</span> &#123;</span><br><span class="line">           <span class="type">String</span> <span class="variable">url</span> <span class="operator">=</span> <span class="string">&quot;http://nacos-provider/user/&quot;</span> + id;</span><br><span class="line">           <span class="type">User</span> <span class="variable">user</span> <span class="operator">=</span> restTemplate.getForObject(url, User.class);</span><br><span class="line">           <span class="keyword">return</span> user;</span><br><span class="line">       &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<h3 id="环境隔离"><a href="#环境隔离" class="headerlink" title="环境隔离"></a>环境隔离</h3><p>处于 dev 环境的消费实例只能调用处于 dev 环境的服务实例提供的服务，不能访问 test、pro 等其它环境的服务实例。</p>
+<blockquote>
+<p>再 nacos 服务端创建环境：</p>
+<p><img src="/blog/2024/03/27/SpringCloud/Nacos/Nacos%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20240326160145248.png"></p>
+</blockquote>
+<p>在服务实例或消费实例中配置所属环境：</p>
+<figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 配置服务实例/消费实例所属的环境，使用环境的 id</span></span><br><span class="line"><span class="attr">spring.cloud.nacos.discovery.namespace</span>=<span class="string">79080fcd-cf61-4824-8a44-6381888aa1fd</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="实例分组"><a href="#实例分组" class="headerlink" title="实例分组"></a>实例分组</h3><p>一个服务提供者如果有多个实例，nacos 可以将这些实例分组，每个组就是一个集群。</p>
+<p>nacos 集群划分的维度：服务提供者的 id + 所属的环境 + 所属的组名。</p>
+<p>添加以下配置来分组：</p>
+<figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 说明该服务提供者的实例或者服务消费者的实例在哪个组</span></span><br><span class="line"><span class="attr">spring.cloud.nacos.discovery.cluster-name</span>=<span class="string">c1</span></span><br></pre></td></tr></table></figure>
+
+<p>修改服务消费者的负载均衡模式，要求优先访问同组的服务提供者，并且是根据服务实例的权重随机访问。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Bean</span></span><br><span class="line"><span class="keyword">public</span> IRule <span class="title function_">iRule</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">NacosRule</span>();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/blog/2024/03/27/SpringCloud/Nacos/Nacos%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20240326154124040.png" alt="根据服务的权重进行随机访问"></p>
+<blockquote>
+<p><strong>模拟场景</strong></p>
+<p>同一个服务提供者有以下实例：</p>
+<ul>
+<li>service-provider1，在 c1 组。</li>
+<li>service-provider2，在 c2 组。</li>
+<li>service-provider3，在 c2 组。</li>
+</ul>
+<p>服务消费者的实例在 c2 组，那么服务消费者的实例需要调用服务的时候，只会调用 service-provider2 和 service-provider3 的服务，并且是根据权重随机调用。如果 service-provider2 和 service-provider3 都挂了，那么就会访问 service-provider1 的服务。</p>
+</blockquote>
+<h3 id="负载均衡"><a href="#负载均衡" class="headerlink" title="负载均衡"></a>负载均衡</h3><blockquote>
+<p>第一种方式，注入 IRule 的实现类，全局修改：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Bean</span></span><br><span class="line"><span class="keyword">public</span> IRule <span class="title function_">iRule</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">NacosRule</span>();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>第二种方式，通过配置文件方式，针对指定的服务进行修改：</p>
+<figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">nacos-provider.ribbon.NFLoadBalancerRuleClassName</span>=<span class="string">com.alibaba.cloud.nacos.ribbon.NacosRule</span></span><br></pre></td></tr></table></figure>
+</blockquote>
+<p><strong>注：</strong>因为 Netflix 官方停止了对 Ribbon 负载均衡组件的维护，所以 nacos 在某个版本之后就不再引入 Ribbon 组件了，也不能再通过以上方式修改，需要使用其它方式修改。</p>
+<h2 id="统一配置管理"><a href="#统一配置管理" class="headerlink" title="统一配置管理"></a>统一配置管理</h2><h3 id="拉取配置文件"><a href="#拉取配置文件" class="headerlink" title="拉取配置文件"></a>拉取配置文件</h3><blockquote>
+<p>导入 nacos 配置管理的依赖包：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.alibaba.cloud<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-cloud-starter-alibaba-nacos-config<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>在 nacos 服务端创建配置文件：</p>
+<p><img src="/blog/2024/03/27/SpringCloud/Nacos/Nacos%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20240326183316055.png"></p>
+<p>在  bootstrap.yml 配置文件中编写配置：</p>
+<figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 项目的端口</span></span><br><span class="line"><span class="attr">server.port</span>=<span class="string">10021</span></span><br><span class="line"><span class="comment"># 项目名称</span></span><br><span class="line"><span class="attr">spring.application.name</span>=<span class="string">configDemo</span></span><br><span class="line"><span class="comment"># 项目使用的环境</span></span><br><span class="line"><span class="attr">spring.profiles.active</span>=<span class="string">dev</span></span><br><span class="line"><span class="comment"># nacos 服务端地址</span></span><br><span class="line"><span class="attr">spring.cloud.nacos.server-addr</span>=<span class="string">http://&#123;nacos ip&#125;:&#123;nacos port&#125;</span></span><br><span class="line"><span class="comment"># 指定使用 nacos 的环境</span></span><br><span class="line"><span class="attr">spring.cloud.nacos.config.namespace</span>=<span class="string">79080fcd-cf61-4824-8a44-6381888aa1fd</span></span><br><span class="line"><span class="comment"># 读取 nacos 配置文件的类型</span></span><br><span class="line"><span class="attr">spring.cloud.nacos.config.file-extension</span>=<span class="string">yml</span></span><br></pre></td></tr></table></figure>
+
+<p>注：配置文件名称是由<strong>nacos 环境、项目名称、项目使用的环境、文件类型</strong>确定的。</p>
+</blockquote>
+<h3 id="配置热更新"><a href="#配置热更新" class="headerlink" title="配置热更新"></a>配置热更新</h3><p>配置热更新：nacos 管理的配置文件做了修改，运行中程序立马能获得修改后的配置信息，无需重启项目。</p>
+<p>springboot 读取配置主要有两种方式，一个是通过 @Value 注解读取，另一种是通过 @ConfigurationProperties 注解读取。</p>
+<p>nacos 针对 springboot 读取配置的两种方式都有热更新处理措施。</p>
+<blockquote>
+<p>针对 @Value 注解的热更新，需要配合 @RefreshScope 注解使用：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Data</span></span><br><span class="line"><span class="meta">@RefreshScope</span></span><br><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">SpringConfig</span> &#123;</span><br><span class="line">    <span class="meta">@Value(&quot;$&#123;msg&#125;&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> String msg;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<blockquote>
+<p>针对 @ConfigurationProperties 注解的热更新，不需要做什么，在 nacos 中自带热更新功能</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Data</span></span><br><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="meta">@ConfigurationProperties(prefix = &quot;&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">SpringConfig</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> String msg;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<h3 id="读取多个配置文件"><a href="#读取多个配置文件" class="headerlink" title="读取多个配置文件"></a>读取多个配置文件</h3><p>nacos 除了会读取由<strong>项目名称、项目使用的环境、文件类型</strong>组成的配置文件名称，还会读取由<strong>项目名称、文件类型</strong>组成的配置文件名称。这个配置文件不包含环境，因此可以被多个环境共享。</p>
+<p>例如项目名称为 configDemo 的项目，使用了 dev 环境，以下两个文件都能够读取：</p>
+<p><img src="/blog/2024/03/27/SpringCloud/Nacos/Nacos%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20240326193424375.png"></p>
+<h3 id="多个配置文件的优先级"><a href="#多个配置文件的优先级" class="headerlink" title="多个配置文件的优先级"></a>多个配置文件的优先级</h3><p>相同配置，优先级高的生效，优先级从高到低排序：</p>
+<ul>
+<li>nacos 带环境的配置文件</li>
+<li>nacos 不带环境的配置文件</li>
+<li>本地 application.yml 配置文件</li>
+<li>本地 bootstrap.yml 配置文件</li>
+</ul>
+<h2 id="Nacos-相关配置"><a href="#Nacos-相关配置" class="headerlink" title="Nacos 相关配置"></a>Nacos 相关配置</h2><figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 项目名称</span></span><br><span class="line"><span class="attr">spring.application.name</span>=<span class="string">nacos-consumer</span></span><br><span class="line"><span class="comment"># nacos 服务端地址</span></span><br><span class="line"><span class="attr">spring.cloud.nacos.server-addr</span>=<span class="string">http://&#123;nacos ip&#125;:&#123;nacos port&#125;</span></span><br><span class="line"><span class="comment"># 配置服务实例/消费实例所属的环境</span></span><br><span class="line"><span class="attr">spring.cloud.nacos.discovery.namespace</span>=<span class="string">79080fcd-cf61-4824-8a44-6381888aa1fd</span></span><br><span class="line"><span class="comment"># 服务实例或消费实例所属的组名</span></span><br><span class="line"><span class="attr">spring.cloud.nacos.discovery.cluster-name</span>=<span class="string">c1</span></span><br><span class="line"><span class="comment"># 配置文件类型</span></span><br><span class="line"><span class="attr">spring.cloud.nacos.config.file-extension</span>=<span class="string">yml</span></span><br><span class="line"><span class="comment"># 旧版本还可以通过该方式修改服务实例的负载均衡策略</span></span><br><span class="line"><span class="attr">nacos-provider.ribbon.NFLoadBalancerRuleClassName</span>=<span class="string">com.alibaba.cloud.nacos.ribbon.NacosRule</span></span><br><span class="line"><span class="comment"># 配置服务实例为非临时实例，也就是永久实例。当服务挂了一段时间，nacos 的服务列表也不会消失</span></span><br><span class="line"><span class="attr">spring.cloud.nacos.discovery.ephemeral</span>=<span class="string">false</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="遇到的问题"><a href="#遇到的问题" class="headerlink" title="遇到的问题"></a>遇到的问题</h2><blockquote>
+<p> 问题1：<strong>客户端 nacos 无法连接服务端 nacos</strong></p>
+<p>服务端 nacos 的版本为 2.3.1，客户端使用的 nacos 版本为 2.2.0。因为 nacos 客户端 2.0 以上的版本新增了长连接方式，采用的 gPRC 通信，此时客户端需要通过服务端的 9848 端口进行通信。如果没有把服务端的 9848 端口（主端口偏移 1000）暴露出来就无法连接 nacos 服务端。</p>
+<p>将 nacos 客户端的 版本改为 1.4.1 也可以，因为 nacos 客户端 2.0 以下版本依旧采用短连接方式，不需要使用服务端的 9489 端口。</p>
+<p>问题2：<strong>无法通过服务提供者的 id，获取服务提供者的地址</strong></p>
+<p>因为 nacos 在某个版本之后就没有自带 ribbon 的整合，所以需要引入 loadbalancer 依赖包，以及注册 RestTemplate 时需要使用 @LoadBalanced 注解标注。</p>
+<p>问题3：<strong>无法读取 bootstrap.yml 文件</strong></p>
+<p>SpringCloud 2020.* 以后的版本把 bootstrap 禁用了，导致在读取文件的时候读取不到而报错。需要把 boostrap 依赖包导入才会生效。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.cloud<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-cloud-starter-bootstrap<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>3.0.3<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+</blockquote>
+</div>
+        </div>
+        
+        <footer class="kratos-entry-footer clearfix">
+            
+            <div class="footer-tag clearfix">
+                <div class="pull-left">
+                <i class="fa fa-tags"></i>
+                    <a class="tag-none-link" href="/blog/tags/Nacos/" rel="tag">Nacos</a>, <a class="tag-none-link" href="/blog/tags/SpringCloud/" rel="tag">SpringCloud</a>
+                </div>
+                <div class="pull-date">
+                    <time datetime="2026-01-04T05:51:48.288Z" itemprop="dateModified">最后编辑：2026-01-04</time>
+                </div>
+            </div>
+        </footer>
+    </div>
+    
+        <nav class="navigation post-navigation clearfix" role="navigation">
+            
+            <div class="nav-previous clearfix">
+                <a title=" 【Eureka】基本使用" href="/blog/2024/03/26/SpringCloud/Eureka/Eureka基本使用/">&lt; 上一篇</a>
+            </div>
+            
+            
+            <div class="nav-next clearfix">
+                <a title=" 【Feign】基本使用" href="/blog/2024/03/28/SpringCloud/Feign/Feign基本使用/">下一篇 &gt;</a>
+            </div>
+            
+        </nav>
+    
+    
+</article>
+
+        
+
+            </section>
+
+        
+
+                
+            
+
+<section id="kratos-widget-area" class="col-md-4 hidden-xs hidden-sm">
+    <!-- 文章和页面根据splitter来分割，没有的话就从头开始设置为sticky -->
+    
+    
+                <aside id="krw-about" class="widget widget-kratos-about clearfix">
+    <div class="photo-background"></div>
+    <div class="photo-wrapper clearfix">
+        <div class="photo-wrapper-tip text-center">
+            <img class="about-photo" src="/blog/images/avatar.webp" loading="lazy" decoding="auto" />
+        </div>
+    </div>
+    <div class="textwidget">
+        <p class="text-center">极简主义</p>
+    </div>
+    <div class="site-meta">
+        <a class="meta-item" href="/blog/archives/">
+            <span class="title">
+                文章
+            </span>
+            <span class="count">
+                77
+            </span>
+        </a>
+        <a class="meta-item" href="/blog/categories/">
+            <span class="title">
+                分类
+            </span>
+            <span class="count">
+                10
+            </span>
+        </a>
+        <a class="meta-item" href="/blog/tags/">
+            <span class="title">
+                标签
+            </span>
+            <span class="count">
+                29
+            </span>
+        </a>
+    </div>
+</aside>
+            
+                    <div class="sticky-area">
+                
+                    <aside id="krw-toc" class="widget widget-kratos-toc clearfix toc-div-class" >
+    <div class="photo-background"></div>
+    <h4 class="widget-title no-after">
+        <i class="fa fa-compass"></i>
+        文章目录
+        <span class="toc-progress-bar" role="progressbar" aria-label="阅读进度："></span>
+    </h4>
+    <div class="textwidget">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Nacos-%E4%BB%8B%E7%BB%8D"><span class="toc-text">Nacos 介绍</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B3%A8%E5%86%8C-x2F-%E5%8F%91%E7%8E%B0%E6%9C%8D%E5%8A%A1"><span class="toc-text">注册&#x2F;发现服务</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%90%AD%E5%BB%BA-Nacos-%E7%8E%AF%E5%A2%83"><span class="toc-text">搭建 Nacos 环境</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9C%8D%E5%8A%A1%E6%8F%90%E4%BE%9B%E8%80%85"><span class="toc-text">服务提供者</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9C%8D%E5%8A%A1%E6%B6%88%E8%B4%B9%E8%80%85"><span class="toc-text">服务消费者</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%8E%AF%E5%A2%83%E9%9A%94%E7%A6%BB"><span class="toc-text">环境隔离</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E4%BE%8B%E5%88%86%E7%BB%84"><span class="toc-text">实例分组</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1"><span class="toc-text">负载均衡</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%9F%E4%B8%80%E9%85%8D%E7%BD%AE%E7%AE%A1%E7%90%86"><span class="toc-text">统一配置管理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8B%89%E5%8F%96%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="toc-text">拉取配置文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE%E7%83%AD%E6%9B%B4%E6%96%B0"><span class="toc-text">配置热更新</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AF%BB%E5%8F%96%E5%A4%9A%E4%B8%AA%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="toc-text">读取多个配置文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A4%9A%E4%B8%AA%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E7%9A%84%E4%BC%98%E5%85%88%E7%BA%A7"><span class="toc-text">多个配置文件的优先级</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Nacos-%E7%9B%B8%E5%85%B3%E9%85%8D%E7%BD%AE"><span class="toc-text">Nacos 相关配置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98"><span class="toc-text">遇到的问题</span></a></li></ol>
+    </div>
+</aside>
+                
+                
+  <aside id="krw-categories" class="widget widget-kratos-categories clearfix">
+    <h4 class="widget-title"><i class="fa fa-folder"></i>分类目录</h4>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Docker/">Docker</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Idea/">Idea</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Java/">Java</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/K8s/">K8s</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Linux/">Linux</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/MySQL/">MySQL</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Python/">Python</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Selenium/">Selenium</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/SpringBoot/">SpringBoot</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/SpringCloud/">SpringCloud</a><span class="category-list-count">13</span></li></ul>
+  </aside>
+
+
+            
+                
+  <aside id="krw-tags" class="widget widget-kratos-tags clearfix">
+    <h4 class="widget-title"><i class="fa fa-tags"></i>标签聚合</h4>
+      <div class="tag-clouds">
+        <a href="/blog/tags/CORS/" style="font-size: 0.8em;">CORS</a> <a href="/blog/tags/Docker/" style="font-size: 0.8em;">Docker</a> <a href="/blog/tags/Dubbo/" style="font-size: 0.8em;">Dubbo</a> <a href="/blog/tags/ELK/" style="font-size: 0.8em;">ELK</a> <a href="/blog/tags/Elasticsearch/" style="font-size: 0.8em;">Elasticsearch</a> <a href="/blog/tags/Eureka/" style="font-size: 0.8em;">Eureka</a> <a href="/blog/tags/Feign/" style="font-size: 0.8em;">Feign</a> <a href="/blog/tags/Gateway/" style="font-size: 0.8em;">Gateway</a> <a href="/blog/tags/Idea/" style="font-size: 0.8em;">Idea</a> <a href="/blog/tags/Java/" style="font-size: 0.8em;">Java</a> <a href="/blog/tags/JavaWeb/" style="font-size: 0.8em;">JavaWeb</a> <a href="/blog/tags/K8s/" style="font-size: 0.8em;">K8s</a> <a href="/blog/tags/Linux/" style="font-size: 0.8em;">Linux</a> <a href="/blog/tags/Maven/" style="font-size: 0.8em;">Maven</a> <a href="/blog/tags/MySQL/" style="font-size: 0.8em;">MySQL</a> <a href="/blog/tags/Mybatis/" style="font-size: 0.8em;">Mybatis</a> <a href="/blog/tags/Nacos/" style="font-size: 0.8em;">Nacos</a> <a href="/blog/tags/Pytest/" style="font-size: 0.8em;">Pytest</a>
+      </div>
+  </aside>
+
+            
+                
+  <aside id="krw-posts" class="widget widget-kratos-posts">
+  <h4 class="widget-title"><i class="fa fa-file"></i>最新文章</h4>
+  <div class="tab-content">
+      <ul class="list-group">
+        
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/01/25/K8s/K8s%E7%BB%84%E4%BB%B6/"><i class="fa  fa-book"></i> 【K8s】组件</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/01/24/K8s/K8s%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/"><i class="fa  fa-book"></i> 【K8s】常用命令</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/01/11/Idea/IDEA%E6%8F%92%E4%BB%B6/"><i class="fa  fa-book"></i> 【Idea】插件</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/01/04/Linux/Centos7%E9%97%AE%E9%A2%98%E5%A4%84%E7%90%86/"><i class="fa  fa-book"></i> Centos7问题处理</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2025/12/09/Trae/Trae%E5%AE%89%E8%A3%85%E6%8F%92%E4%BB%B6%E5%AE%9E%E7%8E%B0Java%E4%BB%A3%E7%A0%81%E7%BC%96%E5%86%99/"><i class="fa  fa-book"></i> 【Trae】安装插件实现Java代码编写</a>
+            
+          
+        
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+      </ul>
+  </div>
+  </aside>
+
+            
+    </div>
+</section>
+        
+        </div>
+    </div>
+</div>
+<footer>
+    <div id="footer"  >
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3 footer-list text-center">
+                    <ul class="kratos-social-icons">
+                        <!-- Keep for compatibility -->
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <!-- New links -->
+                        
+                    </ul>
+                    <ul class="kratos-copyright">
+                        <div>
+                            <li>&copy; 2026 溪岚花的博客 版权所有.</li>
+                            <li>本站已运行<span id="span_dt">Loading...</span></li>
+                        </div>
+                        <div>
+                            <li>Theme <a href="https://github.com/Candinya/Kratos-Rebirth" target="_blank">Kratos:Rebirth</a></li>
+                            <li>Site built with&nbsp;<i class="fa fa-heart throb" style="color:#d43f57"></i>&nbsp;by 林家隆.</li>
+                        </div>
+                        <div>
+                            <li>Powered by <a href="https://hexo.io" target="_blank" rel="nofollow">Hexo</a></li>
+                            <li>Hosted on <a href="https://gitee.com/" target="_blank">Gitee Pages</a></li>
+                        </div>
+                        <div>
+                            
+                            
+                        </div>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="kr-tool text-center">
+            <div class="tool">
+                
+                    <div class="box search-box">
+                        <a href="/blog/search/">
+                            <span class="fa fa-search"></span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="box theme-box" id="darkmode-switch">
+                        <span class="fa fa-adjust"></span>
+                    </div>
+                
+                
+                
+            </div>
+            <div class="box gotop-box">
+                <span class="fa fa-chevron-up"></span>
+            </div>
+        </div>
+    </div>
+</footer>
+</div>
+</div>
+
+        <script defer src="/blog/vendors/bootstrap@3.3.4/dist/js/bootstrap.min.js"></script>
+<script defer src="/blog/vendors/nprogress@0.2.0/nprogress.js"></script>
+<script>
+    if (!window.kr) {
+        window.kr = {};
+    }
+    window.kr.notMobile = (!(navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i)));
+    window.kr.siteRoot = "/blog/";
+</script>
+
+
+
+
+
+    <script defer src="/blog/vendors/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+
+<script defer src="/blog/js/kratosr.min.js"></script>
+<script defer src="/blog/js/pjax.min.js"></script>
+
+
+
+<!-- Extra support for third-party plguins  -->
+
+
+    </body>
+</html>

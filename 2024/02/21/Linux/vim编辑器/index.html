@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+  <!-- 元数据 -->
+  <meta charset="utf-8">
+  <link rel="icon" href="/blog/images/logo.png">
+  
+  <title>【Linux】vim 编辑器 | 溪岚花的博客</title>
+  
+  <meta name="author" content="林家隆" />
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="robots" content="index,follow" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <meta name="format-detection" content="telphone=no, email=no" />
+  
+    <meta name="keywords" content="Linux" />
+  
+  <meta name="description" content="vi 介绍vi 编辑器是所有 Unix 及 Linux 系统下标准的文本编辑器。由于在 Unix 及 Linux 系统的任何版本，vi 编辑器是完全相同的，因此可以在其它任何介绍 vi 的地方了解它。vi 也是 Linux 中最基本的文本编辑器，学会它后，我们将在 Linux 的世界里畅行无阻，尤其是在终端中。 vi 和 vim 都是 Linux 中的编辑器，不同的是，vim 比较高级，可以视为">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【Linux】vim 编辑器">
+<meta property="og:url" content="https://lin316.gitee.io/blog/2024/02/21/Linux/vim%E7%BC%96%E8%BE%91%E5%99%A8/index.html">
+<meta property="og:site_name" content="溪岚花的博客">
+<meta property="og:description" content="vi 介绍vi 编辑器是所有 Unix 及 Linux 系统下标准的文本编辑器。由于在 Unix 及 Linux 系统的任何版本，vi 编辑器是完全相同的，因此可以在其它任何介绍 vi 的地方了解它。vi 也是 Linux 中最基本的文本编辑器，学会它后，我们将在 Linux 的世界里畅行无阻，尤其是在终端中。 vi 和 vim 都是 Linux 中的编辑器，不同的是，vim 比较高级，可以视为">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://lin316.gitee.io/blog/blog/images/logo.png">
+<meta property="article:published_time" content="2024-02-21T01:00:00.000Z">
+<meta property="article:modified_time" content="2026-01-04T05:51:48.245Z">
+<meta property="article:author" content="林家隆">
+<meta property="article:tag" content="Linux">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://lin316.gitee.io/blog/blog/images/logo.png">
+  
+  <!-- 站点验证相关 -->
+  
+    
+    
+    
+  
+  <!-- 样式表文件 -->
+  <link rel="stylesheet" id="kratos-css" href="/blog/css/kratosr.min.css" media="all"></script>
+  
+    <link rel="stylesheet" id="darkmode-css" href="/blog/css/kr-color-dark.min.css" media="(prefers-color-scheme: dark)"></script>
+    <script src="/blog/js/kr-dark.min.js"></script>
+  
+  
+    <link rel="stylesheet" id="highlight-css" href="/blog/css/highlight/night-eighties.min.css" media="all"></script>
+  
+  <link rel="stylesheet" id="fontawe-css" href="/blog/vendors/font-awesome@4.7.0/css/font-awesome.min.css" media="all"></script>
+  <link rel="stylesheet" id="nprogress-css" href="/blog/vendors/nprogress@0.2.0/nprogress.css" media="all"></script>
+  
+  
+  
+    <link rel="stylesheet" href="/blog/vendors/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css"></script>
+  
+  <!-- 不得不预先加载的一些JS文件 -->
+  <script src="/blog/vendors/jquery@3.6.0/dist/jquery.min.js"></script>
+  
+  
+  <style>
+    
+    
+  </style>
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+    <body class="custom-background">
+        <div id="kratos-wrapper">
+    <div id="kratos-page">
+        <div id="kratos-header">
+            <header id="kratos-desktop-topnav" class="kratos-topnav">
+                <div class="container">
+                    <div class="nav-header">
+                        <nav id="kratos-menu-wrap">
+                            <ul id="kratos-primary-menu" class="sf-menu">
+                                
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/">
+                                            
+                                                
+                                                    <i class="fa fa-home"></i>
+                                                
+                                                首页
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/archives/">
+                                            
+                                                
+                                                    <i class="fa fa-file"></i>
+                                                
+                                                归档
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/tags/">
+                                            
+                                                
+                                                    <i class="fa fa-tag"></i>
+                                                
+                                                标签
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/categories/">
+                                            
+                                                
+                                                    <i class="fa fa-folder"></i>
+                                                
+                                                目录
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/search/">
+                                            
+                                                
+                                                    <i class="fa fa-search"></i>
+                                                
+                                                搜索
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </header>
+            <header id="kratos-mobile-topnav" class="kratos-topnav">
+                <div class="container">
+                    <div class="color-logo"><a href="/blog/">溪岚花的博客</a></div>
+                    <div class="nav-toggle">
+                        <a class="kratos-nav-toggle js-kratos-nav-toggle">
+                            <i></i>
+                        </a>
+                    </div>
+                </div>
+            </header>
+        </div>
+        <div class="kratos-start kratos-hero-2">
+            <!-- <div class="kratos-overlay"></div> -->
+            <div class="kratos-cover kratos-cover-2 text-center">
+                <div class="desc desc2 animate-box">
+                    <a href="/blog/">
+                        <h2 style="opacity: 0.2;">溪岚花的博客</h2> <br />
+                        <span></span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div id="kratos-blog-post">
+            <div class="container">
+                <div id="main" class="row">
+                    
+
+        
+
+            <section class="col-md-8">
+
+        
+
+            <article itemscope itemtype="https://schema.org/Article">
+    
+    <link itemprop="mainEntityOfPage" href="https://lin316.gitee.io/blog/2024/02/21/Linux/vim%E7%BC%96%E8%BE%91%E5%99%A8/">
+    <div class="kratos-hentry kratos-post-inner clearfix">
+        <header class="kratos-entry-header">
+            
+                <h1 class="kratos-entry-title text-center" itemprop="name headline">【Linux】vim 编辑器</h1>
+            
+            
+            <ul class="kratos-post-meta text-center">
+                <li><time datetime="2024-02-21T01:00:00.000Z" itemprop="datePublished"><i class="fa fa-calendar"></i> 2024-02-21</time></li>
+                <li itemprop="author" itemscope itemtype="https://schema.org/Person">
+                    <i class="fa fa-user"></i> 作者 <span itemprop="name">林家隆</span>
+                </li>
+                
+                    <li>
+                        <i class="fa fa-edit"></i> 
+                        
+                        
+                            1.83K
+                        
+                        字
+                    </li>
+                
+                
+            </ul>
+        </header>
+        <div class="kratos-post-content">
+            
+            <div id="expire-alert" class="alert alert-warning hidden" role="alert">
+                <div class="icon"><i class="fa fa-warning"></i></div>
+                <div class="text"><p>本文最后编辑于 <time datetime="1767505908245"></time> 前，其中的内容可能需要更新。</p></div>
+            </div>
+            
+            
+            
+                <div class="kratos-post-inner-toc toc-div-class" >
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#vi-%E4%BB%8B%E7%BB%8D"><span class="toc-number">1.</span> <span class="toc-text">vi 介绍</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#vim-%E4%B8%89%E7%A7%8D%E6%A8%A1%E5%BC%8F"><span class="toc-number">1.1.</span> <span class="toc-text">vim 三种模式</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%91%BD%E4%BB%A4%E6%A8%A1%E5%BC%8F"><span class="toc-number">2.</span> <span class="toc-text">命令模式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%89%E6%A0%87%E7%A7%BB%E5%8A%A8"><span class="toc-number">2.1.</span> <span class="toc-text">光标移动</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A4%8D%E5%88%B6%E6%93%8D%E4%BD%9C"><span class="toc-number">2.2.</span> <span class="toc-text">复制操作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%89%AA%E5%88%87-x2F-%E5%88%A0%E9%99%A4"><span class="toc-number">2.3.</span> <span class="toc-text">剪切&#x2F;删除</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%92%A4%E9%94%80-x2F-%E6%81%A2%E5%A4%8D"><span class="toc-number">2.4.</span> <span class="toc-text">撤销&#x2F;恢复</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%AB%E8%A1%8C%E6%A8%A1%E5%BC%8F"><span class="toc-number">3.</span> <span class="toc-text">末行模式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BF%9D%E6%8C%81%E6%93%8D%E4%BD%9C"><span class="toc-number">3.1.</span> <span class="toc-text">保持操作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%80%80%E5%87%BA"><span class="toc-number">3.2.</span> <span class="toc-text">退出</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%90%9C%E7%B4%A2-x2F-%E6%9F%A5%E6%89%BE"><span class="toc-number">3.3.</span> <span class="toc-text">搜索&#x2F;查找</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%98%BE%E7%A4%BA%E8%A1%8C%E5%8F%B7"><span class="toc-number">3.4.</span> <span class="toc-text">显示行号</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E7%94%A8%E5%8A%9F%E8%83%BD"><span class="toc-number">4.</span> <span class="toc-text">实用功能</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E7%9D%80%E8%89%B2"><span class="toc-number">4.1.</span> <span class="toc-text">代码着色</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#vim-%E4%B8%AD%E4%BD%BF%E7%94%A8%E8%AE%A1%E7%AE%97%E5%99%A8"><span class="toc-number">4.2.</span> <span class="toc-text">vim 中使用计算器</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#vim-%E7%9A%84%E6%89%A9%E5%B1%95"><span class="toc-number">5.</span> <span class="toc-text">vim 的扩展</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#vim-%E7%9A%84%E9%85%8D%E7%BD%AE"><span class="toc-number">5.1.</span> <span class="toc-text">vim 的配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BC%82%E5%B8%B8%E9%80%80%E5%87%BA"><span class="toc-number">5.2.</span> <span class="toc-text">异常退出</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%80%80%E5%87%BA%E6%96%B9%E5%BC%8F"><span class="toc-number">5.3.</span> <span class="toc-text">退出方式</span></a></li></ol></li></ol>
+                </div>
+            
+            <hr />
+            <div itemprop="articleBody"><h2 id="vi-介绍"><a href="#vi-介绍" class="headerlink" title="vi 介绍"></a>vi 介绍</h2><p>vi 编辑器是所有 Unix 及 Linux 系统下标准的文本编辑器。由于在 Unix 及 Linux 系统的任何版本，vi 编辑器是完全相同的，因此可以在其它任何介绍 vi 的地方了解它。vi 也是 Linux 中最基本的文本编辑器，学会它后，我们将在 Linux 的世界里畅行无阻，<strong>尤其是在终端中</strong>。</p>
+<p>vi 和 vim 都是 Linux 中的编辑器，不同的是，vim 比较高级，可以视为 vi 的升级版本。vi 使用于文本编辑，但是vim更适用于写代码的。</p>
+<p> <strong>vim 重点是光标的移动，模式切换，删除，查找，替换，复制，粘贴，撤销命令的使用</strong>。</p>
+<h3 id="vim-三种模式"><a href="#vim-三种模式" class="headerlink" title="vim 三种模式"></a>vim 三种模式</h3><p>vim 的三种模式：命令模式、编辑模式、末行模式。</p>
+<p>命令模式：在该模式下是不能对文件直接编辑，可以输入快捷键进行一些操作（删除行，复制行，移动光标，粘贴等等）。</p>
+<p>编辑模式：在该模式下可以对文件的内容进行编辑。</p>
+<p>末行模式：可以在末行输入命令来对文件进行操作（搜索、替换、保存、退出、撤销、高亮等等）。</p>
+<p><strong>模式间的切换</strong></p>
+<blockquote>
+<p>命令模式 -&gt; 编辑模式：<code>i</code></p>
+<p>编辑模式 -&gt; 命令模式：<code>esc</code></p>
+<p>命令模式 -&gt; 末行模式：<code>：英文</code></p>
+<p>末行模式 -&gt; 命令模式：<code>esc</code></p>
+</blockquote>
+<h2 id="命令模式"><a href="#命令模式" class="headerlink" title="命令模式"></a>命令模式</h2><h3 id="光标移动"><a href="#光标移动" class="headerlink" title="光标移动"></a>光标移动</h3><p>光标移动到行首：<code>shift + 6</code></p>
+<p>光标移动到行尾：<code>shift + 4</code></p>
+<p>光标移动到首行：<code>gg</code></p>
+<p>光标移动到末行：<code>G</code></p>
+<p>向上翻屏：<code>ctrl + b</code></p>
+<p>向下翻屏：<code>ctrl + f</code></p>
+<p>快速将光标移动到指定行：<code>数字 + G</code></p>
+<p>以当前光标为准向上&#x2F;向下移动 n 行：<code>数字 + ↑，数字 + ↓</code></p>
+<h3 id="复制操作"><a href="#复制操作" class="headerlink" title="复制操作"></a>复制操作</h3><p>复制光标所在行：<code>yy</code></p>
+<p>以光标所在行为准（包含当前行），向下复制指定的行数：<code>数字 + yy</code></p>
+<p>可视化复制：<code>ctrl + v</code>，然后按下 ↑↓←→ 方向键来选中需要复制的区块，按下 y 键进行复制。</p>
+<p>粘贴：<code>p</code></p>
+<h3 id="剪切-x2F-删除"><a href="#剪切-x2F-删除" class="headerlink" title="剪切&#x2F;删除"></a>剪切&#x2F;删除</h3><p>剪切&#x2F;删除光标所在行：<code>dd</code></p>
+<p>剪切&#x2F;删除光标所在的当前以及行之后的内容，删除之后下一行上移：<code>数字 + dd</code></p>
+<p>剪切&#x2F;删除光标所在的当前以及行之后的内容，但是删除之后下一行不上移：<code>D</code></p>
+<p>可视化删除：<code>ctrl + v</code>，然后按下 ↑↓←→ 方向键来选中需要删除的区块。按下D表示删除选中行，d表示删选中块。</p>
+<h3 id="撤销-x2F-恢复"><a href="#撤销-x2F-恢复" class="headerlink" title="撤销&#x2F;恢复"></a>撤销&#x2F;恢复</h3><p>撤销：<code>u</code></p>
+<p>恢复：<code>ctrl + r</code></p>
+<h2 id="末行模式"><a href="#末行模式" class="headerlink" title="末行模式"></a>末行模式</h2><h3 id="保持操作"><a href="#保持操作" class="headerlink" title="保持操作"></a>保持操作</h3><p>保持文件：<code>:w</code></p>
+<p>另存为：<code>:w 文件路径</code></p>
+<h3 id="退出"><a href="#退出" class="headerlink" title="退出"></a>退出</h3><p>退出文件：<code>:q</code></p>
+<p>强制退出：<code>:q!</code>，做的修改不保存。</p>
+<h3 id="搜索-x2F-查找"><a href="#搜索-x2F-查找" class="headerlink" title="搜索&#x2F;查找"></a>搜索&#x2F;查找</h3><p>搜索&#x2F;查找：<code>/关键词</code></p>
+<p>切换上下结果：<code>N/n</code></p>
+<p>取消高亮：<code>:nohl</code></p>
+<p>替换：</p>
+<blockquote>
+<p>替换光标所在行的第一处符合条件的内容：<code>:s/搜索的关键词/新的内容               </code></p>
+<p>替换光标所在行的全部符合条件的内容：<code>:s/搜索的关键词/新的内容/g</code></p>
+<p>替换整个文档中每行第一个符合条件的内容：<code>:%s/搜索的关键词/新的内容</code></p>
+<p>替换整个文档的符合条件的内容：<code>:%s/搜索的关键词/新的内容/g</code></p>
+<p>% 表示整个文件</p>
+<p>g 表示全局（global）</p>
+</blockquote>
+<h3 id="显示行号"><a href="#显示行号" class="headerlink" title="显示行号"></a>显示行号</h3><p>显示行号：<code>:set nu</code></p>
+<p>取消显示：<code>:set nonu</code></p>
+<h2 id="实用功能"><a href="#实用功能" class="headerlink" title="实用功能"></a>实用功能</h2><h3 id="代码着色"><a href="#代码着色" class="headerlink" title="代码着色"></a>代码着色</h3><p>显示：<code>:syntax on</code></p>
+<p>关闭显示：<code>:syntax off</code></p>
+<h3 id="vim-中使用计算器"><a href="#vim-中使用计算器" class="headerlink" title="vim 中使用计算器"></a>vim 中使用计算器</h3><ol>
+<li>进入编辑模式</li>
+<li>按下按键 <code>ctrl + r</code>，然后输入 <code>=</code>，此时光标会变到最后一行</li>
+<li>输入需要计算的内容，按下回车</li>
+</ol>
+<h2 id="vim-的扩展"><a href="#vim-的扩展" class="headerlink" title="vim 的扩展"></a>vim 的扩展</h2><h3 id="vim-的配置"><a href="#vim-的配置" class="headerlink" title="vim 的配置"></a>vim 的配置</h3><p>vim 的配置有三种情况：</p>
+<ol>
+<li>在末行模式下输入的配置，临时的。</li>
+<li>个人配置文件（~&#x2F;.vimrc），如果没有可以自行新建。</li>
+<li>全局配置文件（&#x2F;etc&#x2F;vimrc）</li>
+</ol>
+<p>注：如果某个配置项，在个人配置与全局配置产生冲突的时候，以个人配置为准。</p>
+<h3 id="异常退出"><a href="#异常退出" class="headerlink" title="异常退出"></a>异常退出</h3><p>在编辑文件之后并没有正常的去 wq，而是遇到突然关闭终端或者断电的情况，则会显示下面的效果：</p>
+<p><img src="/blog/2024/02/21/Linux/vim%E7%BC%96%E8%BE%91%E5%99%A8/image-20240218150709688.png"></p>
+<p>解决方式：将交换文件（在编程过程中产生的临时文件）删除即可。</p>
+<h3 id="退出方式"><a href="#退出方式" class="headerlink" title="退出方式"></a>退出方式</h3><p>vim 的退出方式除了 <code>:q</code> 和 <code>:wq</code>，还有第三种方式 <code>:x</code>。</p>
+<p><code>:x</code> 文件没有修改的情况下，表示直接退出，在文件修改的情况下表示保存并退出。</p>
+<p>如果文件没有被修改，但是使用 wq 进行退出的话，则文件的修改时间会被更新；但是如果文件没有被修改，使用 x 进行退出的话，则文件修改时间不会被更新的；</p>
+<p>建议以后都使用 <code>:x</code> 对文件保存退出。</p>
+<p><strong>注：</strong>不要使用 X，X 表示对文件进行加密操作。</p>
+</div>
+        </div>
+        
+        <footer class="kratos-entry-footer clearfix">
+            
+            <div class="footer-tag clearfix">
+                <div class="pull-left">
+                <i class="fa fa-tags"></i>
+                    <a class="tag-none-link" href="/blog/tags/Linux/" rel="tag">Linux</a>
+                </div>
+                <div class="pull-date">
+                    <time datetime="2026-01-04T05:51:48.245Z" itemprop="dateModified">最后编辑：2026-01-04</time>
+                </div>
+            </div>
+        </footer>
+    </div>
+    
+        <nav class="navigation post-navigation clearfix" role="navigation">
+            
+            <div class="nav-previous clearfix">
+                <a title=" 【Linux】常用命令" href="/blog/2024/02/20/Linux/常用命令/">&lt; 上一篇</a>
+            </div>
+            
+            
+            <div class="nav-next clearfix">
+                <a title=" 【Linux】系统管理" href="/blog/2024/02/21/Linux/系统管理/">下一篇 &gt;</a>
+            </div>
+            
+        </nav>
+    
+    
+</article>
+
+        
+
+            </section>
+
+        
+
+                
+            
+
+<section id="kratos-widget-area" class="col-md-4 hidden-xs hidden-sm">
+    <!-- 文章和页面根据splitter来分割，没有的话就从头开始设置为sticky -->
+    
+    
+                <aside id="krw-about" class="widget widget-kratos-about clearfix">
+    <div class="photo-background"></div>
+    <div class="photo-wrapper clearfix">
+        <div class="photo-wrapper-tip text-center">
+            <img class="about-photo" src="/blog/images/avatar.webp" loading="lazy" decoding="auto" />
+        </div>
+    </div>
+    <div class="textwidget">
+        <p class="text-center">极简主义</p>
+    </div>
+    <div class="site-meta">
+        <a class="meta-item" href="/blog/archives/">
+            <span class="title">
+                文章
+            </span>
+            <span class="count">
+                77
+            </span>
+        </a>
+        <a class="meta-item" href="/blog/categories/">
+            <span class="title">
+                分类
+            </span>
+            <span class="count">
+                10
+            </span>
+        </a>
+        <a class="meta-item" href="/blog/tags/">
+            <span class="title">
+                标签
+            </span>
+            <span class="count">
+                29
+            </span>
+        </a>
+    </div>
+</aside>
+            
+                    <div class="sticky-area">
+                
+                    <aside id="krw-toc" class="widget widget-kratos-toc clearfix toc-div-class" >
+    <div class="photo-background"></div>
+    <h4 class="widget-title no-after">
+        <i class="fa fa-compass"></i>
+        文章目录
+        <span class="toc-progress-bar" role="progressbar" aria-label="阅读进度："></span>
+    </h4>
+    <div class="textwidget">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#vi-%E4%BB%8B%E7%BB%8D"><span class="toc-text">vi 介绍</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#vim-%E4%B8%89%E7%A7%8D%E6%A8%A1%E5%BC%8F"><span class="toc-text">vim 三种模式</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%91%BD%E4%BB%A4%E6%A8%A1%E5%BC%8F"><span class="toc-text">命令模式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%89%E6%A0%87%E7%A7%BB%E5%8A%A8"><span class="toc-text">光标移动</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A4%8D%E5%88%B6%E6%93%8D%E4%BD%9C"><span class="toc-text">复制操作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%89%AA%E5%88%87-x2F-%E5%88%A0%E9%99%A4"><span class="toc-text">剪切&#x2F;删除</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%92%A4%E9%94%80-x2F-%E6%81%A2%E5%A4%8D"><span class="toc-text">撤销&#x2F;恢复</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%AB%E8%A1%8C%E6%A8%A1%E5%BC%8F"><span class="toc-text">末行模式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BF%9D%E6%8C%81%E6%93%8D%E4%BD%9C"><span class="toc-text">保持操作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%80%80%E5%87%BA"><span class="toc-text">退出</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%90%9C%E7%B4%A2-x2F-%E6%9F%A5%E6%89%BE"><span class="toc-text">搜索&#x2F;查找</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%98%BE%E7%A4%BA%E8%A1%8C%E5%8F%B7"><span class="toc-text">显示行号</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E7%94%A8%E5%8A%9F%E8%83%BD"><span class="toc-text">实用功能</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E7%9D%80%E8%89%B2"><span class="toc-text">代码着色</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#vim-%E4%B8%AD%E4%BD%BF%E7%94%A8%E8%AE%A1%E7%AE%97%E5%99%A8"><span class="toc-text">vim 中使用计算器</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#vim-%E7%9A%84%E6%89%A9%E5%B1%95"><span class="toc-text">vim 的扩展</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#vim-%E7%9A%84%E9%85%8D%E7%BD%AE"><span class="toc-text">vim 的配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BC%82%E5%B8%B8%E9%80%80%E5%87%BA"><span class="toc-text">异常退出</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%80%80%E5%87%BA%E6%96%B9%E5%BC%8F"><span class="toc-text">退出方式</span></a></li></ol></li></ol>
+    </div>
+</aside>
+                
+                
+  <aside id="krw-categories" class="widget widget-kratos-categories clearfix">
+    <h4 class="widget-title"><i class="fa fa-folder"></i>分类目录</h4>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Docker/">Docker</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Idea/">Idea</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Java/">Java</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/K8s/">K8s</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Linux/">Linux</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/MySQL/">MySQL</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Python/">Python</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Selenium/">Selenium</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/SpringBoot/">SpringBoot</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/SpringCloud/">SpringCloud</a><span class="category-list-count">13</span></li></ul>
+  </aside>
+
+
+            
+                
+  <aside id="krw-tags" class="widget widget-kratos-tags clearfix">
+    <h4 class="widget-title"><i class="fa fa-tags"></i>标签聚合</h4>
+      <div class="tag-clouds">
+        <a href="/blog/tags/CORS/" style="font-size: 0.8em;">CORS</a> <a href="/blog/tags/Docker/" style="font-size: 0.8em;">Docker</a> <a href="/blog/tags/Dubbo/" style="font-size: 0.8em;">Dubbo</a> <a href="/blog/tags/ELK/" style="font-size: 0.8em;">ELK</a> <a href="/blog/tags/Elasticsearch/" style="font-size: 0.8em;">Elasticsearch</a> <a href="/blog/tags/Eureka/" style="font-size: 0.8em;">Eureka</a> <a href="/blog/tags/Feign/" style="font-size: 0.8em;">Feign</a> <a href="/blog/tags/Gateway/" style="font-size: 0.8em;">Gateway</a> <a href="/blog/tags/Idea/" style="font-size: 0.8em;">Idea</a> <a href="/blog/tags/Java/" style="font-size: 0.8em;">Java</a> <a href="/blog/tags/JavaWeb/" style="font-size: 0.8em;">JavaWeb</a> <a href="/blog/tags/K8s/" style="font-size: 0.8em;">K8s</a> <a href="/blog/tags/Linux/" style="font-size: 0.8em;">Linux</a> <a href="/blog/tags/Maven/" style="font-size: 0.8em;">Maven</a> <a href="/blog/tags/MySQL/" style="font-size: 0.8em;">MySQL</a> <a href="/blog/tags/Mybatis/" style="font-size: 0.8em;">Mybatis</a> <a href="/blog/tags/Nacos/" style="font-size: 0.8em;">Nacos</a> <a href="/blog/tags/Pytest/" style="font-size: 0.8em;">Pytest</a>
+      </div>
+  </aside>
+
+            
+                
+  <aside id="krw-posts" class="widget widget-kratos-posts">
+  <h4 class="widget-title"><i class="fa fa-file"></i>最新文章</h4>
+  <div class="tab-content">
+      <ul class="list-group">
+        
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/01/25/K8s/K8s%E7%BB%84%E4%BB%B6/"><i class="fa  fa-book"></i> 【K8s】组件</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/01/24/K8s/K8s%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/"><i class="fa  fa-book"></i> 【K8s】常用命令</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/01/11/Idea/IDEA%E6%8F%92%E4%BB%B6/"><i class="fa  fa-book"></i> 【Idea】插件</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/01/04/Linux/Centos7%E9%97%AE%E9%A2%98%E5%A4%84%E7%90%86/"><i class="fa  fa-book"></i> Centos7问题处理</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2025/12/09/Trae/Trae%E5%AE%89%E8%A3%85%E6%8F%92%E4%BB%B6%E5%AE%9E%E7%8E%B0Java%E4%BB%A3%E7%A0%81%E7%BC%96%E5%86%99/"><i class="fa  fa-book"></i> 【Trae】安装插件实现Java代码编写</a>
+            
+          
+        
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+      </ul>
+  </div>
+  </aside>
+
+            
+    </div>
+</section>
+        
+        </div>
+    </div>
+</div>
+<footer>
+    <div id="footer"  >
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3 footer-list text-center">
+                    <ul class="kratos-social-icons">
+                        <!-- Keep for compatibility -->
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <!-- New links -->
+                        
+                    </ul>
+                    <ul class="kratos-copyright">
+                        <div>
+                            <li>&copy; 2026 溪岚花的博客 版权所有.</li>
+                            <li>本站已运行<span id="span_dt">Loading...</span></li>
+                        </div>
+                        <div>
+                            <li>Theme <a href="https://github.com/Candinya/Kratos-Rebirth" target="_blank">Kratos:Rebirth</a></li>
+                            <li>Site built with&nbsp;<i class="fa fa-heart throb" style="color:#d43f57"></i>&nbsp;by 林家隆.</li>
+                        </div>
+                        <div>
+                            <li>Powered by <a href="https://hexo.io" target="_blank" rel="nofollow">Hexo</a></li>
+                            <li>Hosted on <a href="https://gitee.com/" target="_blank">Gitee Pages</a></li>
+                        </div>
+                        <div>
+                            
+                            
+                        </div>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="kr-tool text-center">
+            <div class="tool">
+                
+                    <div class="box search-box">
+                        <a href="/blog/search/">
+                            <span class="fa fa-search"></span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="box theme-box" id="darkmode-switch">
+                        <span class="fa fa-adjust"></span>
+                    </div>
+                
+                
+                
+            </div>
+            <div class="box gotop-box">
+                <span class="fa fa-chevron-up"></span>
+            </div>
+        </div>
+    </div>
+</footer>
+</div>
+</div>
+
+        <script defer src="/blog/vendors/bootstrap@3.3.4/dist/js/bootstrap.min.js"></script>
+<script defer src="/blog/vendors/nprogress@0.2.0/nprogress.js"></script>
+<script>
+    if (!window.kr) {
+        window.kr = {};
+    }
+    window.kr.notMobile = (!(navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i)));
+    window.kr.siteRoot = "/blog/";
+</script>
+
+
+
+
+
+    <script defer src="/blog/vendors/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+
+<script defer src="/blog/js/kratosr.min.js"></script>
+<script defer src="/blog/js/pjax.min.js"></script>
+
+
+
+<!-- Extra support for third-party plguins  -->
+
+
+    </body>
+</html>

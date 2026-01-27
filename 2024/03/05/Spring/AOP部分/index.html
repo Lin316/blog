@@ -1,0 +1,914 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+  <!-- 元数据 -->
+  <meta charset="utf-8">
+  <link rel="icon" href="/blog/images/logo.png">
+  
+  <title>【Spring】AOP 部分 | 溪岚花的博客</title>
+  
+  <meta name="author" content="林家隆" />
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="robots" content="index,follow" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <meta name="format-detection" content="telphone=no, email=no" />
+  
+    <meta name="keywords" content="Spring" />
+  
+  <meta name="description" content="AOP 相关概念   概念 单词 描述    目标对象 Target 被增强的方法所在的对象   代理对象 Proxy 对目标对象进行增强后的对象，客户端实际调用的对象   连接点 Joinpoint 目标对象中可以被增强的方法   切入点 Pointcut 目标对象中实际被增强的方法   通知 Advice 增强部分的代码逻辑   切面 Aspect 增强和切入点的组合   织入 Weaving">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【Spring】AOP 部分">
+<meta property="og:url" content="https://lin316.gitee.io/blog/2024/03/05/Spring/AOP%E9%83%A8%E5%88%86/index.html">
+<meta property="og:site_name" content="溪岚花的博客">
+<meta property="og:description" content="AOP 相关概念   概念 单词 描述    目标对象 Target 被增强的方法所在的对象   代理对象 Proxy 对目标对象进行增强后的对象，客户端实际调用的对象   连接点 Joinpoint 目标对象中可以被增强的方法   切入点 Pointcut 目标对象中实际被增强的方法   通知 Advice 增强部分的代码逻辑   切面 Aspect 增强和切入点的组合   织入 Weaving">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://lin316.gitee.io/blog/blog/images/logo.png">
+<meta property="article:published_time" content="2024-03-05T01:00:00.000Z">
+<meta property="article:modified_time" content="2026-01-04T05:51:48.269Z">
+<meta property="article:author" content="林家隆">
+<meta property="article:tag" content="Spring">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://lin316.gitee.io/blog/blog/images/logo.png">
+  
+  <!-- 站点验证相关 -->
+  
+    
+    
+    
+  
+  <!-- 样式表文件 -->
+  <link rel="stylesheet" id="kratos-css" href="/blog/css/kratosr.min.css" media="all"></script>
+  
+    <link rel="stylesheet" id="darkmode-css" href="/blog/css/kr-color-dark.min.css" media="(prefers-color-scheme: dark)"></script>
+    <script src="/blog/js/kr-dark.min.js"></script>
+  
+  
+    <link rel="stylesheet" id="highlight-css" href="/blog/css/highlight/night-eighties.min.css" media="all"></script>
+  
+  <link rel="stylesheet" id="fontawe-css" href="/blog/vendors/font-awesome@4.7.0/css/font-awesome.min.css" media="all"></script>
+  <link rel="stylesheet" id="nprogress-css" href="/blog/vendors/nprogress@0.2.0/nprogress.css" media="all"></script>
+  
+  
+  
+    <link rel="stylesheet" href="/blog/vendors/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css"></script>
+  
+  <!-- 不得不预先加载的一些JS文件 -->
+  <script src="/blog/vendors/jquery@3.6.0/dist/jquery.min.js"></script>
+  
+  
+  <style>
+    
+    
+  </style>
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+    <body class="custom-background">
+        <div id="kratos-wrapper">
+    <div id="kratos-page">
+        <div id="kratos-header">
+            <header id="kratos-desktop-topnav" class="kratos-topnav">
+                <div class="container">
+                    <div class="nav-header">
+                        <nav id="kratos-menu-wrap">
+                            <ul id="kratos-primary-menu" class="sf-menu">
+                                
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/">
+                                            
+                                                
+                                                    <i class="fa fa-home"></i>
+                                                
+                                                首页
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/archives/">
+                                            
+                                                
+                                                    <i class="fa fa-file"></i>
+                                                
+                                                归档
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/tags/">
+                                            
+                                                
+                                                    <i class="fa fa-tag"></i>
+                                                
+                                                标签
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/categories/">
+                                            
+                                                
+                                                    <i class="fa fa-folder"></i>
+                                                
+                                                目录
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/search/">
+                                            
+                                                
+                                                    <i class="fa fa-search"></i>
+                                                
+                                                搜索
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </header>
+            <header id="kratos-mobile-topnav" class="kratos-topnav">
+                <div class="container">
+                    <div class="color-logo"><a href="/blog/">溪岚花的博客</a></div>
+                    <div class="nav-toggle">
+                        <a class="kratos-nav-toggle js-kratos-nav-toggle">
+                            <i></i>
+                        </a>
+                    </div>
+                </div>
+            </header>
+        </div>
+        <div class="kratos-start kratos-hero-2">
+            <!-- <div class="kratos-overlay"></div> -->
+            <div class="kratos-cover kratos-cover-2 text-center">
+                <div class="desc desc2 animate-box">
+                    <a href="/blog/">
+                        <h2 style="opacity: 0.2;">溪岚花的博客</h2> <br />
+                        <span></span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div id="kratos-blog-post">
+            <div class="container">
+                <div id="main" class="row">
+                    
+
+        
+
+            <section class="col-md-8">
+
+        
+
+            <article itemscope itemtype="https://schema.org/Article">
+    
+    <link itemprop="mainEntityOfPage" href="https://lin316.gitee.io/blog/2024/03/05/Spring/AOP%E9%83%A8%E5%88%86/">
+    <div class="kratos-hentry kratos-post-inner clearfix">
+        <header class="kratos-entry-header">
+            
+                <h1 class="kratos-entry-title text-center" itemprop="name headline">【Spring】AOP 部分</h1>
+            
+            
+            <ul class="kratos-post-meta text-center">
+                <li><time datetime="2024-03-05T01:00:00.000Z" itemprop="datePublished"><i class="fa fa-calendar"></i> 2024-03-05</time></li>
+                <li itemprop="author" itemscope itemtype="https://schema.org/Person">
+                    <i class="fa fa-user"></i> 作者 <span itemprop="name">林家隆</span>
+                </li>
+                
+                    <li>
+                        <i class="fa fa-edit"></i> 
+                        
+                        
+                            14.63K
+                        
+                        字
+                    </li>
+                
+                
+            </ul>
+        </header>
+        <div class="kratos-post-content">
+            
+            <div id="expire-alert" class="alert alert-warning hidden" role="alert">
+                <div class="icon"><i class="fa fa-warning"></i></div>
+                <div class="text"><p>本文最后编辑于 <time datetime="1767505908269"></time> 前，其中的内容可能需要更新。</p></div>
+            </div>
+            
+            
+            
+                <div class="kratos-post-inner-toc toc-div-class" >
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#AOP-%E7%9B%B8%E5%85%B3%E6%A6%82%E5%BF%B5"><span class="toc-number">1.</span> <span class="toc-text">AOP 相关概念</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%BA%E4%BA%8E-XML-%E9%85%8D%E7%BD%AE%E7%9A%84-AOP"><span class="toc-number">2.</span> <span class="toc-text">基于 XML 配置的 AOP</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BB%E8%A6%81%E9%85%8D%E7%BD%AE%E5%86%85%E5%AE%B9"><span class="toc-number">2.1.</span> <span class="toc-text">主要配置内容</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#XML-%E9%85%8D%E7%BD%AE%E8%AF%A6%E6%83%85"><span class="toc-number">2.2.</span> <span class="toc-text">XML 配置详情</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%87%E7%82%B9%E8%A1%A8%E8%BE%BE%E5%BC%8F%E7%9A%84%E9%85%8D%E7%BD%AE%E6%96%B9%E5%BC%8F"><span class="toc-number">2.2.1.</span> <span class="toc-text">切点表达式的配置方式</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%87%E7%82%B9%E8%A1%A8%E8%BE%BE%E5%BC%8F%E8%AF%AD%E6%B3%95"><span class="toc-number">2.2.2.</span> <span class="toc-text">切点表达式语法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%80%9A%E7%9F%A5%E7%9A%84%E4%BD%8D%E7%BD%AE"><span class="toc-number">2.2.3.</span> <span class="toc-text">通知的位置</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%80%9A%E7%9F%A5%E6%96%B9%E6%B3%95%E5%8F%82%E6%95%B0"><span class="toc-number">2.2.4.</span> <span class="toc-text">通知方法参数</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9F%BA%E4%BA%8E-advisor-%E6%A0%87%E7%AD%BE%E5%AE%9E%E7%8E%B0%E9%80%9A%E7%9F%A5"><span class="toc-number">2.3.</span> <span class="toc-text">基于 advisor 标签实现通知</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%BA%E4%BA%8E%E6%B3%A8%E8%A7%A3%E9%85%8D%E7%BD%AE%E7%9A%84-AOP"><span class="toc-number">3.</span> <span class="toc-text">基于注解配置的 AOP</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BC%80%E5%90%AF-AOP-%E6%B3%A8%E8%A7%A3%E8%A7%A3%E6%9E%90"><span class="toc-number">3.1.</span> <span class="toc-text">开启 AOP 注解解析</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%80%9A%E7%9F%A5%E7%B1%BB%E5%9E%8B"><span class="toc-number">3.2.</span> <span class="toc-text">通知类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8A%BD%E5%8F%96%E5%88%87%E7%82%B9%E8%A1%A8%E8%BE%BE%E5%BC%8F"><span class="toc-number">3.3.</span> <span class="toc-text">抽取切点表达式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%B1%BB%E8%B0%83%E7%94%A8%E8%87%AA%E5%B7%B1%E6%96%B9%E6%B3%95%E7%9A%84%E6%83%85%E5%86%B5"><span class="toc-number">3.4.</span> <span class="toc-text">类调用自己方法的情况</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8A%A8%E6%80%81%E4%BB%A3%E7%90%86%E7%9A%84%E5%AE%9E%E7%8E%B0%E6%96%B9%E5%BC%8F"><span class="toc-number">4.</span> <span class="toc-text">动态代理的实现方式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#JDK-%E5%8A%A8%E6%80%81%E4%BB%A3%E7%90%86%E6%8A%80%E6%9C%AF"><span class="toc-number">4.1.</span> <span class="toc-text">JDK 动态代理技术</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Cglib-%E5%8A%A8%E6%80%81%E4%BB%A3%E7%90%86%E6%8A%80%E6%9C%AF"><span class="toc-number">4.2.</span> <span class="toc-text">Cglib 动态代理技术</span></a></li></ol></li></ol>
+                </div>
+            
+            <hr />
+            <div itemprop="articleBody"><h2 id="AOP-相关概念"><a href="#AOP-相关概念" class="headerlink" title="AOP 相关概念"></a>AOP 相关概念</h2><table>
+<thead>
+<tr>
+<th>概念</th>
+<th>单词</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>目标对象</strong></td>
+<td>Target</td>
+<td>被增强的方法所在的对象</td>
+</tr>
+<tr>
+<td><strong>代理对象</strong></td>
+<td>Proxy</td>
+<td>对目标对象进行增强后的对象，客户端实际调用的对象</td>
+</tr>
+<tr>
+<td><strong>连接点</strong></td>
+<td>Joinpoint</td>
+<td>目标对象中可以被增强的方法</td>
+</tr>
+<tr>
+<td><strong>切入点</strong></td>
+<td>Pointcut</td>
+<td>目标对象中实际被增强的方法</td>
+</tr>
+<tr>
+<td><strong>通知</strong></td>
+<td>Advice</td>
+<td>增强部分的代码逻辑</td>
+</tr>
+<tr>
+<td><strong>切面</strong></td>
+<td>Aspect</td>
+<td>增强和切入点的组合</td>
+</tr>
+<tr>
+<td><strong>织入</strong></td>
+<td>Weaving</td>
+<td>将通知和切入点组合动态组合的过程</td>
+</tr>
+</tbody></table>
+<p>AOP 离不开以下五个因素：</p>
+<ul>
+<li>要被增强的对象，需要被 Spring 管理。</li>
+<li>被增强的方法。</li>
+<li>包含增强方法的对象，需要被 Spring 管理。</li>
+<li>增强方法。</li>
+<li>被增强方法和增强方法的位置关系说明。</li>
+</ul>
+<h2 id="基于-XML-配置的-AOP"><a href="#基于-XML-配置的-AOP" class="headerlink" title="基于 XML 配置的 AOP"></a>基于 XML 配置的 AOP</h2><h3 id="主要配置内容"><a href="#主要配置内容" class="headerlink" title="主要配置内容"></a>主要配置内容</h3><ul>
+<li>配置哪些包、哪些类、哪些方法需要被增强。</li>
+<li>配置目标方法要被哪些通知方法增强，以及在哪个位置增强。</li>
+</ul>
+<blockquote>
+<p><strong>Spring AOP 的依赖包：</strong></p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.aspectj<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>aspectjweaver<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.9.6<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>注：</strong>注意 aop 依赖包跟 Spring 版本的兼容问题。</p>
+</blockquote>
+<blockquote>
+<p><strong>入门实例：</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">AdviceClass</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">log</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="type">DateTimeFormatter</span> <span class="variable">formatter</span> <span class="operator">=</span> DateTimeFormatter.ofPattern(<span class="string">&quot;yyyy-MM-dd HH:mm:ss&quot;</span>);</span><br><span class="line">        <span class="type">LocalDateTime</span> <span class="variable">now</span> <span class="operator">=</span> LocalDateTime.now();</span><br><span class="line">        System.out.println(now.format(formatter));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">TargetClass</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">operation</span><span class="params">()</span> &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;detail business code ...&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;adviceObj&quot;</span> <span class="attr">class</span>=<span class="string">&quot;blog.lin.aop.advice.AdviceClass&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;targetObj&quot;</span> <span class="attr">class</span>=<span class="string">&quot;blog.lin.aop.target.TargetClass&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">aop:config</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 配置切点 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">aop:pointcut</span> <span class="attr">id</span>=<span class="string">&quot;opration-point&quot;</span> <span class="attr">expression</span>=<span class="string">&quot;execution(void blog.lin.aop.target.TargetClass.operation())&quot;</span>/&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 配置切面。切面：切点 + 通知 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">aop:aspect</span> <span class="attr">ref</span>=<span class="string">&quot;adviceObj&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">aop:before</span> <span class="attr">method</span>=<span class="string">&quot;log&quot;</span> <span class="attr">pointcut-ref</span>=<span class="string">&quot;opration-point&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">aop:before</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">aop:after</span> <span class="attr">method</span>=<span class="string">&quot;log&quot;</span> <span class="attr">pointcut-ref</span>=<span class="string">&quot;opration-point&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">aop:after</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">aop:aspect</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">aop:config</span>&gt;</span></span><br></pre></td></tr></table></figure>
+</blockquote>
+<h3 id="XML-配置详情"><a href="#XML-配置详情" class="headerlink" title="XML 配置详情"></a>XML 配置详情</h3><h4 id="切点表达式的配置方式"><a href="#切点表达式的配置方式" class="headerlink" title="切点表达式的配置方式"></a>切点表达式的配置方式</h4><blockquote>
+<p><strong>直接将切点表达式配置在通知上：</strong></p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;adviceObj&quot;</span> <span class="attr">class</span>=<span class="string">&quot;blog.lin.aop.advice.AdviceClass&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;targetObj&quot;</span> <span class="attr">class</span>=<span class="string">&quot;blog.lin.aop.target.TargetClass&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">aop:config</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">aop:aspect</span> <span class="attr">ref</span>=<span class="string">&quot;adviceObj&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">aop:before</span> <span class="attr">method</span>=<span class="string">&quot;log&quot;</span> <span class="attr">pointcut</span>=<span class="string">&quot;execution(void blog.lin.aop.target.TargetClass.operation())&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">aop:before</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">aop:aspect</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">aop:config</span>&gt;</span></span><br></pre></td></tr></table></figure>
+</blockquote>
+<blockquote>
+<p><strong>将切点表达式抽取到外面，在通知上进行引用：</strong></p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;adviceObj&quot;</span> <span class="attr">class</span>=<span class="string">&quot;blog.lin.aop.advice.AdviceClass&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;targetObj&quot;</span> <span class="attr">class</span>=<span class="string">&quot;blog.lin.aop.target.TargetClass&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">aop:config</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">aop:pointcut</span> <span class="attr">id</span>=<span class="string">&quot;opration-point&quot;</span> <span class="attr">expression</span>=<span class="string">&quot;execution(void blog.lin.aop.target.TargetClass.operation())&quot;</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">aop:aspect</span> <span class="attr">ref</span>=<span class="string">&quot;adviceObj&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">aop:before</span> <span class="attr">method</span>=<span class="string">&quot;log&quot;</span> <span class="attr">pointcut-ref</span>=<span class="string">&quot;opration-point&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">aop:before</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">aop:after</span> <span class="attr">method</span>=<span class="string">&quot;log&quot;</span> <span class="attr">pointcut-ref</span>=<span class="string">&quot;opration-point&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">aop:after</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">aop:aspect</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">aop:config</span>&gt;</span></span><br></pre></td></tr></table></figure>
+</blockquote>
+<h4 id="切点表达式语法"><a href="#切点表达式语法" class="headerlink" title="切点表达式语法"></a>切点表达式语法</h4><blockquote>
+<p><strong>execution 表达式：</strong></p>
+<p>语法：<strong>execution([访问修饰符]返回值类型 包名.类名.方法名(参数))</strong></p>
+<p>作用：匹配方法、类、包。</p>
+<p><strong>说明：</strong></p>
+<ul>
+<li>访问修饰符可以省略不写。</li>
+<li>返回值类型、某一级包名、类名、方法名，都可以使用 <code>*</code> 表示任意。</li>
+<li>包名与类名之间使用单点 <code>.</code> 表示该包下的类，使用双点 <code>..</code> 表示该包及其子包下的类。</li>
+<li>参数列表可以使用两个点 <code>..</code> 表示任意参数。</li>
+</ul>
+<blockquote>
+<p><strong>示例：</strong></p>
+<figure class="highlight tex"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">// 表示访问修饰符为 public、无返回值、在 com.aop 包下的 TargetImpl 类的无参方法 show</span><br><span class="line">execution(public void com.aop.TargetImpl.show())</span><br><span class="line">// 表述 com.aop 包下的 TargetImpl 类的任意方法</span><br><span class="line">execution(* com.aop.TargetImpl.*(..))</span><br><span class="line">// 表示 com.aop 包下的任意类的任意方法</span><br><span class="line">execution(* com.aop.*.*(..))</span><br><span class="line">// 表示 com.aop 包及其子包下的任意类的任意方法</span><br><span class="line">execution(* com.aop..*.*(..))</span><br><span class="line">// 表示任意包中的任意类的任意方法</span><br><span class="line">execution(* *..*.*(..))</span><br></pre></td></tr></table></figure>
+</blockquote>
+</blockquote>
+<blockquote>
+<p><strong>within 表达式：</strong></p>
+<p>语法：<strong>within(declaring-type)</strong></p>
+<p>作用：匹配指定类的任意方法，不能匹配接口。</p>
+<blockquote>
+<p><strong>示例：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">// 匹配 service 包的类</span><br><span class="line">within(com.xyz.service.*)</span><br><span class="line">// 匹配 service 包及其子包的类</span><br><span class="line">within(com.xyz.service..*)</span><br><span class="line">// 匹配 AccountServiceImpl 类</span><br><span class="line">within(com.xyz.service.AccountServiceImpl)</span><br></pre></td></tr></table></figure>
+</blockquote>
+</blockquote>
+<blockquote>
+<p><strong>@within 表达式：</strong></p>
+<p>作用：匹配被指定注解标注的类的方法，但在接口上使用注解不匹配。</p>
+<blockquote>
+<p><strong>示例：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">// 匹配使用了 Demo 注解的类</span><br><span class="line">@within(cn.codeartist.spring.aop.pointcut.Demo)</span><br></pre></td></tr></table></figure>
+</blockquote>
+</blockquote>
+<blockquote>
+<p><strong>@target 表达式：</strong></p>
+<p>作用：匹配被指定注解标注的对象的方法，在接口上使用注解不匹配。</p>
+<blockquote>
+<p><strong>示例：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">// 匹配对象实例使用了 Demo 注解的类</span><br><span class="line">@target(cn.codeartist.spring.aop.pointcut.Demo)</span><br></pre></td></tr></table></figure>
+</blockquote>
+</blockquote>
+<blockquote>
+<p><strong>@annotation 表达式：</strong></p>
+<p>作用：匹配被指定注解标注的方法，在接口方法上使用注解不匹配。</p>
+<blockquote>
+<p><strong>示例：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">// 匹配使用了 Demo 注解的方法</span><br><span class="line">@annotation(cn.codeartist.spring.aop.pointcut.Demo)</span><br></pre></td></tr></table></figure>
+</blockquote>
+</blockquote>
+<h4 id="通知的位置"><a href="#通知的位置" class="headerlink" title="通知的位置"></a>通知的位置</h4><table>
+<thead>
+<tr>
+<th>通知名称</th>
+<th>配置方法</th>
+<th>执行时机</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>前置通知</strong></td>
+<td>&lt;aop:before&gt;</td>
+<td>目标方法执行之前执行</td>
+</tr>
+<tr>
+<td><strong>后置通知</strong></td>
+<td>&lt;aop:after-returning&gt;</td>
+<td>目标方法执行之后执行<br>目标方法异常时，不再执行</td>
+</tr>
+<tr>
+<td><strong>异常通知</strong></td>
+<td>&lt;aop:after-throwing&gt;</td>
+<td>目标方法抛出异常时执行</td>
+</tr>
+<tr>
+<td><strong>最终通知</strong></td>
+<td>&lt;aop:after&gt;</td>
+<td>不管目标方法是否有异常，最终都会执行</td>
+</tr>
+<tr>
+<td><strong>环绕通知</strong></td>
+<td>&lt;aop:around&gt;</td>
+<td>目标方法执行前后执行<br>目标方法异常时，环绕后方法不在执行</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p> <strong>通知位置示例：</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    <span class="comment">// 前置通知</span></span><br><span class="line">    <span class="comment">// 目标方法</span></span><br><span class="line">    <span class="comment">// 后置通知</span></span><br><span class="line">&#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">    <span class="comment">// 异常通知</span></span><br><span class="line">&#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">    <span class="comment">// 最终通知</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<blockquote>
+<p><strong>环绕通知示例：</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">AdviceClass</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">log</span><span class="params">(ProceedingJoinPoint joinPoint)</span> <span class="keyword">throws</span> Throwable &#123;</span><br><span class="line">        <span class="type">DateTimeFormatter</span> <span class="variable">formatter</span> <span class="operator">=</span> DateTimeFormatter.ofPattern(<span class="string">&quot;yyyy-MM-dd HH:mm:ss&quot;</span>);</span><br><span class="line"></span><br><span class="line">        System.out.println(LocalDateTime.now().format(formatter));</span><br><span class="line">        <span class="comment">// 目标方法</span></span><br><span class="line">        joinPoint.proceed();</span><br><span class="line">        System.out.println(LocalDateTime.now().format(formatter));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">TargetClass</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">operation</span><span class="params">()</span> &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;detail business code ...&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;adviceObj&quot;</span> <span class="attr">class</span>=<span class="string">&quot;blog.lin.aop.advice.AdviceClass&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;targetObj&quot;</span> <span class="attr">class</span>=<span class="string">&quot;blog.lin.aop.target.TargetClass&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">aop:config</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">aop:aspect</span> <span class="attr">ref</span>=<span class="string">&quot;adviceObj&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">aop:around</span> <span class="attr">method</span>=<span class="string">&quot;log&quot;</span> <span class="attr">pointcut</span>=<span class="string">&quot;execution(* blog.lin.aop.target.TargetClass.operation())&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">aop:around</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">aop:aspect</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">aop:config</span>&gt;</span></span><br></pre></td></tr></table></figure>
+</blockquote>
+<h4 id="通知方法参数"><a href="#通知方法参数" class="headerlink" title="通知方法参数"></a>通知方法参数</h4><table>
+<thead>
+<tr>
+<th>参数类型</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>JoinPoint</strong></td>
+<td>连接点对象，任何通知都可使用。<br>可以获得当前目标对象、目标方法参数等信息。</td>
+</tr>
+<tr>
+<td><strong>ProceedingJoinPoint</strong></td>
+<td>JoinPoint 子类对象。<br>主要是在环绕通知中执行 proceed()，进而执行目标方法。</td>
+</tr>
+<tr>
+<td><strong>Throwable</strong></td>
+<td>异常对象，使用在异常通知中。<br>需要在配置文件中指出异常对象名称。</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>JoinPoint 对象的使用：</p>
+<table>
+<thead>
+<tr>
+<th align="left">方法名</th>
+<th align="left">功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">Signature getSignature();</td>
+<td align="left">通过该对象中可以获取到目标方法名，所属类的 Class 等信息</td>
+</tr>
+<tr>
+<td align="left">Object[] getArgs();</td>
+<td align="left">获取传入目标方法的参数对象</td>
+</tr>
+<tr>
+<td align="left">Object getTarget();</td>
+<td align="left">获取被代理的对象</td>
+</tr>
+<tr>
+<td align="left">Object getThis();</td>
+<td align="left">获取代理对象</td>
+</tr>
+</tbody></table>
+</blockquote>
+<blockquote>
+<p><strong>ProceedingJoinPoint 使用实例：</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">AdviceClass</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> Object <span class="title function_">printTargetMsg</span><span class="params">(ProceedingJoinPoint joinPoint)</span> <span class="keyword">throws</span> Throwable &#123;</span><br><span class="line">        <span class="comment">// 获得传入目标方法的参数，返回值 Object[]</span></span><br><span class="line">        System.out.println(Arrays.toString(joinPoint.getArgs()));</span><br><span class="line">        <span class="comment">// 获得目标对象，返回值 Object</span></span><br><span class="line">        System.out.println(joinPoint.getTarget());</span><br><span class="line">        <span class="comment">// 获得目标方法的切点表达式（精确的）</span></span><br><span class="line">        System.out.println(joinPoint.getStaticPart());</span><br><span class="line">        <span class="comment">// 获取目录方法的执行结果</span></span><br><span class="line">        <span class="type">Object</span> <span class="variable">result</span> <span class="operator">=</span> joinPoint.proceed();</span><br><span class="line">        System.out.println(<span class="string">&quot;【返回值-循环通知内部】 result=&quot;</span> + result);</span><br><span class="line">        <span class="keyword">return</span> result == <span class="literal">null</span> ? result : result + <span class="string">&quot;-循环通知处理后的结果&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">TargetClass</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">operation</span><span class="params">()</span> &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;detail business code ...&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">operation</span><span class="params">(String args)</span> &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;detail business code ...&quot;</span>);</span><br><span class="line">        System.out.println(<span class="string">&quot;args = &quot;</span> + args);</span><br><span class="line">        <span class="keyword">return</span> args;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;adviceObj&quot;</span> <span class="attr">class</span>=<span class="string">&quot;blog.lin.aop.advice.AdviceClass&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;targetObj&quot;</span> <span class="attr">class</span>=<span class="string">&quot;blog.lin.aop.target.TargetClass&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">aop:config</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">aop:aspect</span> <span class="attr">ref</span>=<span class="string">&quot;adviceObj&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">aop:around</span> <span class="attr">method</span>=<span class="string">&quot;printTargetMsg&quot;</span> <span class="attr">pointcut</span>=<span class="string">&quot;execution(* blog.lin.aop.target.TargetClass.operation(..))&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">aop:around</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">aop:aspect</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">aop:config</span>&gt;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">testAop</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="type">ApplicationContext</span> <span class="variable">applicationContext</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ClassPathXmlApplicationContext</span>(<span class="string">&quot;aop.xml&quot;</span>);</span><br><span class="line">    <span class="type">TargetClass</span> <span class="variable">targetObj</span> <span class="operator">=</span> applicationContext.getBean(TargetClass.class);</span><br><span class="line">    System.out.println(<span class="string">&quot;执行结果：&quot;</span> + targetObj.operation(<span class="string">&quot;test&quot;</span>));</span><br><span class="line">    System.out.println();</span><br><span class="line">    targetObj.operation();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>执行结果：</strong></p>
+<figure class="highlight tex"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">[test]</span><br><span class="line">blog.lin.aop.target.TargetClass@7a8c8dcf</span><br><span class="line">execution(String blog.lin.aop.target.TargetClass.operation(String))</span><br><span class="line">detail business code ...</span><br><span class="line">args = test</span><br><span class="line">【返回值-循环通知内部】 result=test</span><br><span class="line">执行结果：test-循环通知处理后的结果</span><br><span class="line"></span><br><span class="line">[]</span><br><span class="line">blog.lin.aop.target.TargetClass@7a8c8dcf</span><br><span class="line">execution(void blog.lin.aop.target.TargetClass.operation())</span><br><span class="line">detail business code ...</span><br><span class="line">【返回值-循环通知内部】 result=null</span><br></pre></td></tr></table></figure>
+</blockquote>
+<blockquote>
+<p>异常通知示例：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">AdviceClass</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">handleException</span><span class="params">(JoinPoint joinPoint, Exception e)</span> &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;【发送异常】 异常方法：&quot;</span> + joinPoint.getStaticPart());</span><br><span class="line">        System.out.println(<span class="string">&quot;【发送异常】 异常类型：&quot;</span> + e.getClass().getName());</span><br><span class="line">        System.out.println(<span class="string">&quot;【发送异常】 异常信息：&quot;</span> + e.getMessage());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">TargetClass</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">operation</span><span class="params">(<span class="type">int</span> i)</span> &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;detail business code ...&quot;</span>);</span><br><span class="line">        <span class="type">double</span> <span class="variable">result</span> <span class="operator">=</span> <span class="number">1</span> / i;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;adviceObj&quot;</span> <span class="attr">class</span>=<span class="string">&quot;blog.lin.aop.advice.AdviceClass&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;targetObj&quot;</span> <span class="attr">class</span>=<span class="string">&quot;blog.lin.aop.target.TargetClass&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">aop:config</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">aop:aspect</span> <span class="attr">ref</span>=<span class="string">&quot;adviceObj&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">aop:after-throwing</span> <span class="attr">method</span>=<span class="string">&quot;handleException&quot;</span> <span class="attr">pointcut</span>=<span class="string">&quot;execution(* blog.lin.aop.target.TargetClass.operation(int))&quot;</span> <span class="attr">throwing</span>=<span class="string">&quot;e&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">aop:after-throwing</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">aop:aspect</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">aop:config</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>执行结果：</strong></p>
+<p><img src="/blog/2024/03/05/Spring/AOP%E9%83%A8%E5%88%86/image-20240311165459449.png"></p>
+</blockquote>
+<h3 id="基于-advisor-标签实现通知"><a href="#基于-advisor-标签实现通知" class="headerlink" title="基于 advisor 标签实现通知"></a>基于 advisor 标签实现通知</h3><p>一个通知类实现前置通知、后置通知等接口后，再在 advisor 标签中配置通知。</p>
+<blockquote>
+<p><strong>基于 advisor 标签实现通知示例：</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 实现实现前置通知和后置通知接口</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Advices</span> <span class="keyword">implements</span> <span class="title class_">MethodBeforeAdvice</span>, AfterReturningAdvice &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">before</span><span class="params">(Method method, Object[] objects, Object o)</span> <span class="keyword">throws</span> Throwable &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;This is before Advice ...&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">afterReturning</span><span class="params">(Object o, Method method, Object[] objects, Object o1)</span> <span class="keyword">throws</span></span><br><span class="line">            Throwable &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;This is afterReturn Advice ...&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;advices&quot;</span> <span class="attr">class</span>=<span class="string">&quot;blog.lin.aop.advice.Advices&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">aop:config</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 将通知和切点进行结合 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">aop:advisor</span> <span class="attr">advice-ref</span>=<span class="string">&quot;advices&quot;</span> <span class="attr">pointcut</span>=<span class="string">&quot;execution(* blog.lin.aop.target.TargetClass.operation(int))&quot;</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">aop:config</span>&gt;</span></span><br></pre></td></tr></table></figure>
+</blockquote>
+<h2 id="基于注解配置的-AOP"><a href="#基于注解配置的-AOP" class="headerlink" title="基于注解配置的 AOP"></a>基于注解配置的 AOP</h2><h3 id="开启-AOP-注解解析"><a href="#开启-AOP-注解解析" class="headerlink" title="开启 AOP 注解解析"></a>开启 AOP 注解解析</h3><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">aop:aspectj-autoproxy</span>/&gt;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@EnableAspectJAutoProxy</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="通知类型"><a href="#通知类型" class="headerlink" title="通知类型"></a>通知类型</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//前置通知</span></span><br><span class="line"><span class="meta">@Before(&quot;execution(* blog.lin.aop.target.*.*(..))&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">before</span><span class="params">(JoinPoint joinPoint)</span>&#123;&#125;</span><br><span class="line"><span class="comment">//后置通知</span></span><br><span class="line"><span class="meta">@AfterReturning(&quot;execution(* blog.lin.aop.target.*.*(..))&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">AfterReturning</span><span class="params">(JoinPoint joinPoint)</span>&#123;&#125;</span><br><span class="line"><span class="comment">//环绕通知</span></span><br><span class="line"><span class="meta">@Around(&quot;execution(* blog.lin.aop.target.*.*(..))&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">around</span><span class="params">(ProceedingJoinPoint joinPoint)</span> <span class="keyword">throws</span> Throwable &#123;&#125;</span><br><span class="line"><span class="comment">//异常通知</span></span><br><span class="line"><span class="meta">@AfterThrowing(value = &quot;execution(* blog.lin.aop.target.*.*(..))&quot;, throwing = &quot;e&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">AfterThrowing</span><span class="params">(JoinPoint joinPoint, Exception e)</span>&#123;&#125;</span><br><span class="line"><span class="comment">//最终通知</span></span><br><span class="line"><span class="meta">@After(&quot;execution(* blog.lin.aop.target.*.*(..))&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">After</span><span class="params">(JoinPoint joinPoint)</span>&#123;&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p><strong>环绕通知示例：</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="meta">@Aspect</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">AdviceAnnotationClass</span> &#123;</span><br><span class="line">    <span class="meta">@Around(value = &quot;execution(* blog.lin.aop.target.TargetAnnotationClass.operation(..))&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">log</span><span class="params">(ProceedingJoinPoint joinPoint)</span> <span class="keyword">throws</span> Throwable &#123;</span><br><span class="line">        <span class="type">DateTimeFormatter</span> <span class="variable">formatter</span> <span class="operator">=</span> DateTimeFormatter.ofPattern(<span class="string">&quot;yyyy-MM-dd HH:mm:ss&quot;</span>);</span><br><span class="line">        System.out.println(<span class="string">&quot;执行方法：&quot;</span>+joinPoint.getStaticPart());</span><br><span class="line">        System.out.println(LocalDateTime.now().format(formatter));</span><br><span class="line">        <span class="comment">// 目标方法</span></span><br><span class="line">        joinPoint.proceed();</span><br><span class="line">        System.out.println(LocalDateTime.now().format(formatter));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">TargetAnnotationClass</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">operation</span><span class="params">()</span> &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;detail business code ...&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">context:component-scan</span> <span class="attr">base-package</span>=<span class="string">&quot;blog.lin&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">context:component-scan</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">aop:aspectj-autoproxy</span>/&gt;</span></span><br></pre></td></tr></table></figure>
+</blockquote>
+<blockquote>
+<p><strong>异常通知示例：</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="meta">@Aspect</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">AdviceAnnotationClass</span> &#123;</span><br><span class="line">    <span class="comment">//异常通知</span></span><br><span class="line">    <span class="meta">@AfterThrowing(value = &quot;execution(* blog.lin.aop.target.*.*(..))&quot;, throwing = &quot;e&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">AfterThrowing</span><span class="params">(JoinPoint joinPoint, Exception e)</span> &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;【发送异常】 异常方法：&quot;</span> + joinPoint.getStaticPart());</span><br><span class="line">        System.out.println(<span class="string">&quot;【发送异常】 异常类型：&quot;</span> + e.getClass().getName());</span><br><span class="line">        System.out.println(<span class="string">&quot;【发送异常】 异常信息：&quot;</span> + e.getMessage());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">TargetAnnotationClass</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">operation</span><span class="params">(<span class="type">int</span> i)</span> &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;detail business code ...&quot;</span>);</span><br><span class="line">        <span class="type">double</span> <span class="variable">result</span> <span class="operator">=</span> <span class="number">1</span> / i;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">context:component-scan</span> <span class="attr">base-package</span>=<span class="string">&quot;blog.lin&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">context:component-scan</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">aop:aspectj-autoproxy</span>/&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>执行结果：</strong></p>
+<p><img src="/blog/2024/03/05/Spring/AOP%E9%83%A8%E5%88%86/image-20240311182101287.png"></p>
+</blockquote>
+<h3 id="抽取切点表达式"><a href="#抽取切点表达式" class="headerlink" title="抽取切点表达式"></a>抽取切点表达式</h3><p>使用一个空方法，将切点表达式标注在空方法上，通过**方法名()<strong>或</strong>类名.方法名()**的方式引用切点。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="meta">@Aspect</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">PointcutSet</span> &#123;</span><br><span class="line">    <span class="comment">// 切点表达式抽取</span></span><br><span class="line">    <span class="meta">@Pointcut(&quot;execution(* com.itheima.aop.*.*(..))&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">pointcut</span><span class="params">()</span>&#123;&#125;</span><br><span class="line">    <span class="comment">// 前置通知，引用方式：方法名()</span></span><br><span class="line">    <span class="meta">@Before(&quot;pointcut()&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">before</span><span class="params">(JoinPoint joinPoint)</span>&#123;&#125;</span><br><span class="line">    <span class="comment">// 后置通知，引用方式：类名.方法名()</span></span><br><span class="line">    <span class="meta">@AfterReturning(&quot;AnnoAdvice.pointcut()&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">AfterReturning</span><span class="params">(JoinPoint joinPoint)</span>&#123;&#125;</span><br><span class="line">    <span class="comment">// ... 省略其他代码 ...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="类调用自己方法的情况"><a href="#类调用自己方法的情况" class="headerlink" title="类调用自己方法的情况"></a>类调用自己方法的情况</h3><blockquote>
+<p><strong>类调用自己的方法：</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Service</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">CustomerServiceImpl</span> &#123;  </span><br><span class="line">  </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">doSomething1</span><span class="params">()</span> &#123;  </span><br><span class="line">        System.out.println(<span class="string">&quot;CustomerServiceImpl.doSomething1()&quot;</span>);</span><br><span class="line">        <span class="comment">// 调用自己类中的方法</span></span><br><span class="line">        doSomething2();  </span><br><span class="line">    &#125;  </span><br><span class="line">  </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">doSomething2</span><span class="params">()</span> &#123;  </span><br><span class="line">        System.out.println(<span class="string">&quot;CustomerServiceImpl.doSomething2()&quot;</span>);  </span><br><span class="line">    &#125;  </span><br><span class="line">  </span><br><span class="line">&#125; </span><br></pre></td></tr></table></figure>
+
+<p><strong>切点通知：</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Aspect</span></span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">CustomerServiceInterceptor</span> &#123;</span><br><span class="line">    <span class="meta">@Before(&quot;execution(* *..*.*(..))&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">doBefore</span><span class="params">()</span> &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;do some important things before...&quot;</span>); </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>测试 doSomething1 方法：</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">testAOP</span><span class="params">()</span> &#123;</span><br><span class="line">    customerService.doSomething1();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>执行结果：</strong></p>
+<blockquote>
+<p>do some important things before…</p>
+<p>CustomerServiceImpl.doSomething1()</p>
+<p>CustomerServiceImpl.doSomething2()</p>
+</blockquote>
+<p><strong>存在的问题：</strong></p>
+<p>通过 doSomething1 方法调用 doSomething2 方法时，doSomething2 没有前置通知。如果单独调用 doSomething2 方法，有前置通知。</p>
+<p><strong>解决方法：</strong></p>
+<ul>
+<li><p>修改类，不要出现“自调用”的情况（推荐）。</p>
+</li>
+<li><p>如果一定要“自调用”，把 this.doSomething2() 修改为 ((CustomerService) AopContext.currentProxy()).doSomething2()。并且开启 AOP 功能时，注解要添加以下配置：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@EnableAspectJAutoProxy(exposeProxy = true)</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+</blockquote>
+<h2 id="动态代理的实现方式"><a href="#动态代理的实现方式" class="headerlink" title="动态代理的实现方式"></a>动态代理的实现方式</h2><h3 id="JDK-动态代理技术"><a href="#JDK-动态代理技术" class="headerlink" title="JDK 动态代理技术"></a>JDK 动态代理技术</h3><p>目标类有接口，是基于接口动态生成实现类的代理对象。目标类有接口的情况下，默认方式。</p>
+<h3 id="Cglib-动态代理技术"><a href="#Cglib-动态代理技术" class="headerlink" title="Cglib 动态代理技术"></a>Cglib 动态代理技术</h3><p>目标类无接口且不能使用 final 修饰，是基于被代理对象动态生成子对象为代理对象。目标类无接口时，默认使用该方式；目标类有接口时，手动配置 <code>&lt;aop:config proxy-target-class=“true”&gt;</code> 强制使用 Cglib 方式。</p>
+</div>
+        </div>
+        
+        <footer class="kratos-entry-footer clearfix">
+            
+            <div class="footer-tag clearfix">
+                <div class="pull-left">
+                <i class="fa fa-tags"></i>
+                    <a class="tag-none-link" href="/blog/tags/Spring/" rel="tag">Spring</a>
+                </div>
+                <div class="pull-date">
+                    <time datetime="2026-01-04T05:51:48.269Z" itemprop="dateModified">最后编辑：2026-01-04</time>
+                </div>
+            </div>
+        </footer>
+    </div>
+    
+        <nav class="navigation post-navigation clearfix" role="navigation">
+            
+            <div class="nav-previous clearfix">
+                <a title=" 【Spring】IOC 部分" href="/blog/2024/03/03/Spring/IOC部分/">&lt; 上一篇</a>
+            </div>
+            
+            
+            <div class="nav-next clearfix">
+                <a title=" 【JavaWeb】核心功能" href="/blog/2024/03/06/JavaWeb/JavaWeb/">下一篇 &gt;</a>
+            </div>
+            
+        </nav>
+    
+    
+</article>
+
+        
+
+            </section>
+
+        
+
+                
+            
+
+<section id="kratos-widget-area" class="col-md-4 hidden-xs hidden-sm">
+    <!-- 文章和页面根据splitter来分割，没有的话就从头开始设置为sticky -->
+    
+    
+                <aside id="krw-about" class="widget widget-kratos-about clearfix">
+    <div class="photo-background"></div>
+    <div class="photo-wrapper clearfix">
+        <div class="photo-wrapper-tip text-center">
+            <img class="about-photo" src="/blog/images/avatar.webp" loading="lazy" decoding="auto" />
+        </div>
+    </div>
+    <div class="textwidget">
+        <p class="text-center">极简主义</p>
+    </div>
+    <div class="site-meta">
+        <a class="meta-item" href="/blog/archives/">
+            <span class="title">
+                文章
+            </span>
+            <span class="count">
+                77
+            </span>
+        </a>
+        <a class="meta-item" href="/blog/categories/">
+            <span class="title">
+                分类
+            </span>
+            <span class="count">
+                10
+            </span>
+        </a>
+        <a class="meta-item" href="/blog/tags/">
+            <span class="title">
+                标签
+            </span>
+            <span class="count">
+                29
+            </span>
+        </a>
+    </div>
+</aside>
+            
+                    <div class="sticky-area">
+                
+                    <aside id="krw-toc" class="widget widget-kratos-toc clearfix toc-div-class" >
+    <div class="photo-background"></div>
+    <h4 class="widget-title no-after">
+        <i class="fa fa-compass"></i>
+        文章目录
+        <span class="toc-progress-bar" role="progressbar" aria-label="阅读进度："></span>
+    </h4>
+    <div class="textwidget">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#AOP-%E7%9B%B8%E5%85%B3%E6%A6%82%E5%BF%B5"><span class="toc-text">AOP 相关概念</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%BA%E4%BA%8E-XML-%E9%85%8D%E7%BD%AE%E7%9A%84-AOP"><span class="toc-text">基于 XML 配置的 AOP</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BB%E8%A6%81%E9%85%8D%E7%BD%AE%E5%86%85%E5%AE%B9"><span class="toc-text">主要配置内容</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#XML-%E9%85%8D%E7%BD%AE%E8%AF%A6%E6%83%85"><span class="toc-text">XML 配置详情</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%87%E7%82%B9%E8%A1%A8%E8%BE%BE%E5%BC%8F%E7%9A%84%E9%85%8D%E7%BD%AE%E6%96%B9%E5%BC%8F"><span class="toc-text">切点表达式的配置方式</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%87%E7%82%B9%E8%A1%A8%E8%BE%BE%E5%BC%8F%E8%AF%AD%E6%B3%95"><span class="toc-text">切点表达式语法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%80%9A%E7%9F%A5%E7%9A%84%E4%BD%8D%E7%BD%AE"><span class="toc-text">通知的位置</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%80%9A%E7%9F%A5%E6%96%B9%E6%B3%95%E5%8F%82%E6%95%B0"><span class="toc-text">通知方法参数</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9F%BA%E4%BA%8E-advisor-%E6%A0%87%E7%AD%BE%E5%AE%9E%E7%8E%B0%E9%80%9A%E7%9F%A5"><span class="toc-text">基于 advisor 标签实现通知</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%BA%E4%BA%8E%E6%B3%A8%E8%A7%A3%E9%85%8D%E7%BD%AE%E7%9A%84-AOP"><span class="toc-text">基于注解配置的 AOP</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BC%80%E5%90%AF-AOP-%E6%B3%A8%E8%A7%A3%E8%A7%A3%E6%9E%90"><span class="toc-text">开启 AOP 注解解析</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%80%9A%E7%9F%A5%E7%B1%BB%E5%9E%8B"><span class="toc-text">通知类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8A%BD%E5%8F%96%E5%88%87%E7%82%B9%E8%A1%A8%E8%BE%BE%E5%BC%8F"><span class="toc-text">抽取切点表达式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%B1%BB%E8%B0%83%E7%94%A8%E8%87%AA%E5%B7%B1%E6%96%B9%E6%B3%95%E7%9A%84%E6%83%85%E5%86%B5"><span class="toc-text">类调用自己方法的情况</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8A%A8%E6%80%81%E4%BB%A3%E7%90%86%E7%9A%84%E5%AE%9E%E7%8E%B0%E6%96%B9%E5%BC%8F"><span class="toc-text">动态代理的实现方式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#JDK-%E5%8A%A8%E6%80%81%E4%BB%A3%E7%90%86%E6%8A%80%E6%9C%AF"><span class="toc-text">JDK 动态代理技术</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Cglib-%E5%8A%A8%E6%80%81%E4%BB%A3%E7%90%86%E6%8A%80%E6%9C%AF"><span class="toc-text">Cglib 动态代理技术</span></a></li></ol></li></ol>
+    </div>
+</aside>
+                
+                
+  <aside id="krw-categories" class="widget widget-kratos-categories clearfix">
+    <h4 class="widget-title"><i class="fa fa-folder"></i>分类目录</h4>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Docker/">Docker</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Idea/">Idea</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Java/">Java</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/K8s/">K8s</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Linux/">Linux</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/MySQL/">MySQL</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Python/">Python</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Selenium/">Selenium</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/SpringBoot/">SpringBoot</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/SpringCloud/">SpringCloud</a><span class="category-list-count">13</span></li></ul>
+  </aside>
+
+
+            
+                
+  <aside id="krw-tags" class="widget widget-kratos-tags clearfix">
+    <h4 class="widget-title"><i class="fa fa-tags"></i>标签聚合</h4>
+      <div class="tag-clouds">
+        <a href="/blog/tags/CORS/" style="font-size: 0.8em;">CORS</a> <a href="/blog/tags/Docker/" style="font-size: 0.8em;">Docker</a> <a href="/blog/tags/Dubbo/" style="font-size: 0.8em;">Dubbo</a> <a href="/blog/tags/ELK/" style="font-size: 0.8em;">ELK</a> <a href="/blog/tags/Elasticsearch/" style="font-size: 0.8em;">Elasticsearch</a> <a href="/blog/tags/Eureka/" style="font-size: 0.8em;">Eureka</a> <a href="/blog/tags/Feign/" style="font-size: 0.8em;">Feign</a> <a href="/blog/tags/Gateway/" style="font-size: 0.8em;">Gateway</a> <a href="/blog/tags/Idea/" style="font-size: 0.8em;">Idea</a> <a href="/blog/tags/Java/" style="font-size: 0.8em;">Java</a> <a href="/blog/tags/JavaWeb/" style="font-size: 0.8em;">JavaWeb</a> <a href="/blog/tags/K8s/" style="font-size: 0.8em;">K8s</a> <a href="/blog/tags/Linux/" style="font-size: 0.8em;">Linux</a> <a href="/blog/tags/Maven/" style="font-size: 0.8em;">Maven</a> <a href="/blog/tags/MySQL/" style="font-size: 0.8em;">MySQL</a> <a href="/blog/tags/Mybatis/" style="font-size: 0.8em;">Mybatis</a> <a href="/blog/tags/Nacos/" style="font-size: 0.8em;">Nacos</a> <a href="/blog/tags/Pytest/" style="font-size: 0.8em;">Pytest</a>
+      </div>
+  </aside>
+
+            
+                
+  <aside id="krw-posts" class="widget widget-kratos-posts">
+  <h4 class="widget-title"><i class="fa fa-file"></i>最新文章</h4>
+  <div class="tab-content">
+      <ul class="list-group">
+        
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/01/25/K8s/K8s%E7%BB%84%E4%BB%B6/"><i class="fa  fa-book"></i> 【K8s】组件</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/01/24/K8s/K8s%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/"><i class="fa  fa-book"></i> 【K8s】常用命令</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/01/11/Idea/IDEA%E6%8F%92%E4%BB%B6/"><i class="fa  fa-book"></i> 【Idea】插件</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/01/04/Linux/Centos7%E9%97%AE%E9%A2%98%E5%A4%84%E7%90%86/"><i class="fa  fa-book"></i> Centos7问题处理</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2025/12/09/Trae/Trae%E5%AE%89%E8%A3%85%E6%8F%92%E4%BB%B6%E5%AE%9E%E7%8E%B0Java%E4%BB%A3%E7%A0%81%E7%BC%96%E5%86%99/"><i class="fa  fa-book"></i> 【Trae】安装插件实现Java代码编写</a>
+            
+          
+        
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+      </ul>
+  </div>
+  </aside>
+
+            
+    </div>
+</section>
+        
+        </div>
+    </div>
+</div>
+<footer>
+    <div id="footer"  >
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3 footer-list text-center">
+                    <ul class="kratos-social-icons">
+                        <!-- Keep for compatibility -->
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <!-- New links -->
+                        
+                    </ul>
+                    <ul class="kratos-copyright">
+                        <div>
+                            <li>&copy; 2026 溪岚花的博客 版权所有.</li>
+                            <li>本站已运行<span id="span_dt">Loading...</span></li>
+                        </div>
+                        <div>
+                            <li>Theme <a href="https://github.com/Candinya/Kratos-Rebirth" target="_blank">Kratos:Rebirth</a></li>
+                            <li>Site built with&nbsp;<i class="fa fa-heart throb" style="color:#d43f57"></i>&nbsp;by 林家隆.</li>
+                        </div>
+                        <div>
+                            <li>Powered by <a href="https://hexo.io" target="_blank" rel="nofollow">Hexo</a></li>
+                            <li>Hosted on <a href="https://gitee.com/" target="_blank">Gitee Pages</a></li>
+                        </div>
+                        <div>
+                            
+                            
+                        </div>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="kr-tool text-center">
+            <div class="tool">
+                
+                    <div class="box search-box">
+                        <a href="/blog/search/">
+                            <span class="fa fa-search"></span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="box theme-box" id="darkmode-switch">
+                        <span class="fa fa-adjust"></span>
+                    </div>
+                
+                
+                
+            </div>
+            <div class="box gotop-box">
+                <span class="fa fa-chevron-up"></span>
+            </div>
+        </div>
+    </div>
+</footer>
+</div>
+</div>
+
+        <script defer src="/blog/vendors/bootstrap@3.3.4/dist/js/bootstrap.min.js"></script>
+<script defer src="/blog/vendors/nprogress@0.2.0/nprogress.js"></script>
+<script>
+    if (!window.kr) {
+        window.kr = {};
+    }
+    window.kr.notMobile = (!(navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i)));
+    window.kr.siteRoot = "/blog/";
+</script>
+
+
+
+
+
+    <script defer src="/blog/vendors/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+
+<script defer src="/blog/js/kratosr.min.js"></script>
+<script defer src="/blog/js/pjax.min.js"></script>
+
+
+
+<!-- Extra support for third-party plguins  -->
+
+
+    </body>
+</html>

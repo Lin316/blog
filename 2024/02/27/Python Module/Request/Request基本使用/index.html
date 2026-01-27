@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+  <!-- 元数据 -->
+  <meta charset="utf-8">
+  <link rel="icon" href="/blog/images/logo.png">
+  
+  <title>【Request】基本使用 | 溪岚花的博客</title>
+  
+  <meta name="author" content="林家隆" />
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="robots" content="index,follow" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <meta name="format-detection" content="telphone=no, email=no" />
+  
+    <meta name="keywords" content="Request" />
+  
+  <meta name="description" content="发送请求1234requests.get(&quot;https:&#x2F;&#x2F;httpbin.org&#x2F;get&quot;)requests.post(&quot;https:&#x2F;&#x2F;httpbin.org&#x2F;post&quot;)requests.put(&quot;https:&#x2F;&#x2F;httpbin.org&#x2F;put&quot;)requests.delete(&quot;https:&#x2F;&#x2F;httpbin.org&#x2F;d">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【Request】基本使用">
+<meta property="og:url" content="https://lin316.gitee.io/blog/2024/02/27/Python%20Module/Request/Request%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/index.html">
+<meta property="og:site_name" content="溪岚花的博客">
+<meta property="og:description" content="发送请求1234requests.get(&quot;https:&#x2F;&#x2F;httpbin.org&#x2F;get&quot;)requests.post(&quot;https:&#x2F;&#x2F;httpbin.org&#x2F;post&quot;)requests.put(&quot;https:&#x2F;&#x2F;httpbin.org&#x2F;put&quot;)requests.delete(&quot;https:&#x2F;&#x2F;httpbin.org&#x2F;d">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://lin316.gitee.io/blog/blog/images/logo.png">
+<meta property="article:published_time" content="2024-02-27T01:00:00.000Z">
+<meta property="article:modified_time" content="2026-01-04T05:51:48.257Z">
+<meta property="article:author" content="林家隆">
+<meta property="article:tag" content="Request">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://lin316.gitee.io/blog/blog/images/logo.png">
+  
+  <!-- 站点验证相关 -->
+  
+    
+    
+    
+  
+  <!-- 样式表文件 -->
+  <link rel="stylesheet" id="kratos-css" href="/blog/css/kratosr.min.css" media="all"></script>
+  
+    <link rel="stylesheet" id="darkmode-css" href="/blog/css/kr-color-dark.min.css" media="(prefers-color-scheme: dark)"></script>
+    <script src="/blog/js/kr-dark.min.js"></script>
+  
+  
+    <link rel="stylesheet" id="highlight-css" href="/blog/css/highlight/night-eighties.min.css" media="all"></script>
+  
+  <link rel="stylesheet" id="fontawe-css" href="/blog/vendors/font-awesome@4.7.0/css/font-awesome.min.css" media="all"></script>
+  <link rel="stylesheet" id="nprogress-css" href="/blog/vendors/nprogress@0.2.0/nprogress.css" media="all"></script>
+  
+  
+  
+    <link rel="stylesheet" href="/blog/vendors/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css"></script>
+  
+  <!-- 不得不预先加载的一些JS文件 -->
+  <script src="/blog/vendors/jquery@3.6.0/dist/jquery.min.js"></script>
+  
+  
+  <style>
+    
+    
+  </style>
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+    <body class="custom-background">
+        <div id="kratos-wrapper">
+    <div id="kratos-page">
+        <div id="kratos-header">
+            <header id="kratos-desktop-topnav" class="kratos-topnav">
+                <div class="container">
+                    <div class="nav-header">
+                        <nav id="kratos-menu-wrap">
+                            <ul id="kratos-primary-menu" class="sf-menu">
+                                
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/">
+                                            
+                                                
+                                                    <i class="fa fa-home"></i>
+                                                
+                                                首页
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/archives/">
+                                            
+                                                
+                                                    <i class="fa fa-file"></i>
+                                                
+                                                归档
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/tags/">
+                                            
+                                                
+                                                    <i class="fa fa-tag"></i>
+                                                
+                                                标签
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/categories/">
+                                            
+                                                
+                                                    <i class="fa fa-folder"></i>
+                                                
+                                                目录
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/search/">
+                                            
+                                                
+                                                    <i class="fa fa-search"></i>
+                                                
+                                                搜索
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </header>
+            <header id="kratos-mobile-topnav" class="kratos-topnav">
+                <div class="container">
+                    <div class="color-logo"><a href="/blog/">溪岚花的博客</a></div>
+                    <div class="nav-toggle">
+                        <a class="kratos-nav-toggle js-kratos-nav-toggle">
+                            <i></i>
+                        </a>
+                    </div>
+                </div>
+            </header>
+        </div>
+        <div class="kratos-start kratos-hero-2">
+            <!-- <div class="kratos-overlay"></div> -->
+            <div class="kratos-cover kratos-cover-2 text-center">
+                <div class="desc desc2 animate-box">
+                    <a href="/blog/">
+                        <h2 style="opacity: 0.2;">溪岚花的博客</h2> <br />
+                        <span></span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div id="kratos-blog-post">
+            <div class="container">
+                <div id="main" class="row">
+                    
+
+        
+
+            <section class="col-md-8">
+
+        
+
+            <article itemscope itemtype="https://schema.org/Article">
+    
+    <link itemprop="mainEntityOfPage" href="https://lin316.gitee.io/blog/2024/02/27/Python%20Module/Request/Request%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/">
+    <div class="kratos-hentry kratos-post-inner clearfix">
+        <header class="kratos-entry-header">
+            
+                <h1 class="kratos-entry-title text-center" itemprop="name headline">【Request】基本使用</h1>
+            
+            
+            <ul class="kratos-post-meta text-center">
+                <li><time datetime="2024-02-27T01:00:00.000Z" itemprop="datePublished"><i class="fa fa-calendar"></i> 2024-02-27</time></li>
+                <li itemprop="author" itemscope itemtype="https://schema.org/Person">
+                    <i class="fa fa-user"></i> 作者 <span itemprop="name">林家隆</span>
+                </li>
+                
+                    <li>
+                        <i class="fa fa-edit"></i> 
+                        
+                        
+                            7.54K
+                        
+                        字
+                    </li>
+                
+                
+            </ul>
+        </header>
+        <div class="kratos-post-content">
+            
+            <div id="expire-alert" class="alert alert-warning hidden" role="alert">
+                <div class="icon"><i class="fa fa-warning"></i></div>
+                <div class="text"><p>本文最后编辑于 <time datetime="1767505908257"></time> 前，其中的内容可能需要更新。</p></div>
+            </div>
+            
+            
+            
+                <div class="kratos-post-inner-toc toc-div-class" >
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%91%E9%80%81%E8%AF%B7%E6%B1%82"><span class="toc-number">1.</span> <span class="toc-text">发送请求</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BC%A0%E9%80%92%E5%8F%82%E6%95%B0"><span class="toc-number">2.</span> <span class="toc-text">传递参数</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9E%84%E5%BB%BA-URL-%E5%8F%82%E6%95%B0"><span class="toc-number">2.1.</span> <span class="toc-text">构建 URL 参数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9E%84%E5%BB%BA%E8%A1%A8%E5%8D%95%E5%8F%82%E6%95%B0"><span class="toc-number">2.2.</span> <span class="toc-text">构建表单参数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9E%84%E5%BB%BA%E8%AF%B7%E6%B1%82%E4%B8%BB%E4%BD%93%E5%8F%82%E6%95%B0"><span class="toc-number">2.3.</span> <span class="toc-text">构建请求主体参数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%8A%E4%BC%A0%E6%96%87%E4%BB%B6"><span class="toc-number">2.4.</span> <span class="toc-text">上传文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9E%84%E5%BB%BA%E8%AF%B7%E6%B1%82%E5%A4%B4%E5%8F%82%E6%95%B0"><span class="toc-number">2.5.</span> <span class="toc-text">构建请求头参数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9E%84%E5%BB%BA-Cookie-%E5%8F%82%E6%95%B0"><span class="toc-number">2.6.</span> <span class="toc-text">构建 Cookie 参数</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%93%8D%E5%BA%94%E5%86%85%E5%AE%B9"><span class="toc-number">3.</span> <span class="toc-text">响应内容</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#response-text"><span class="toc-number">3.1.</span> <span class="toc-text">response.text</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BD%9C%E7%94%A8"><span class="toc-number">3.1.1.</span> <span class="toc-text">作用</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%B9%B1%E7%A0%81%E9%97%AE%E9%A2%98"><span class="toc-number">3.1.2.</span> <span class="toc-text">乱码问题</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#response-content"><span class="toc-number">3.2.</span> <span class="toc-text">response.content</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BD%9C%E7%94%A8-1"><span class="toc-number">3.2.1.</span> <span class="toc-text">作用</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%A4%BA%E4%BE%8B"><span class="toc-number">3.2.2.</span> <span class="toc-text">示例</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#response-json"><span class="toc-number">3.3.</span> <span class="toc-text">response.json()</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BD%9C%E7%94%A8-2"><span class="toc-number">3.3.1.</span> <span class="toc-text">作用</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%A4%BA%E4%BE%8B-1"><span class="toc-number">3.3.2.</span> <span class="toc-text">示例</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#response-url"><span class="toc-number">3.4.</span> <span class="toc-text">response.url</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BD%9C%E7%94%A8-3"><span class="toc-number">3.4.1.</span> <span class="toc-text">作用</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#response-status-code"><span class="toc-number">3.5.</span> <span class="toc-text">response.status_code</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BD%9C%E7%94%A8-4"><span class="toc-number">3.5.1.</span> <span class="toc-text">作用</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%A4%BA%E4%BE%8B-2"><span class="toc-number">3.5.2.</span> <span class="toc-text">示例</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#response-raise-for-status"><span class="toc-number">3.6.</span> <span class="toc-text">response.raise_for_status()</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BD%9C%E7%94%A8-5"><span class="toc-number">3.6.1.</span> <span class="toc-text">作用</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%A4%BA%E4%BE%8B-3"><span class="toc-number">3.6.2.</span> <span class="toc-text">示例</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#response-request-headers"><span class="toc-number">3.7.</span> <span class="toc-text">response.request.headers</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BD%9C%E7%94%A8-6"><span class="toc-number">3.7.1.</span> <span class="toc-text">作用</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#response-headers"><span class="toc-number">3.8.</span> <span class="toc-text">response.headers</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BD%9C%E7%94%A8-7"><span class="toc-number">3.8.1.</span> <span class="toc-text">作用</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#response-request-cookies"><span class="toc-number">3.9.</span> <span class="toc-text">response.request._cookies</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BD%9C%E7%94%A8-8"><span class="toc-number">3.9.1.</span> <span class="toc-text">作用</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#response-cookies"><span class="toc-number">3.10.</span> <span class="toc-text">response.cookies</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BD%9C%E7%94%A8-9"><span class="toc-number">3.10.1.</span> <span class="toc-text">作用</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#response-history"><span class="toc-number">3.11.</span> <span class="toc-text">response.history</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BD%9C%E7%94%A8-10"><span class="toc-number">3.11.1.</span> <span class="toc-text">作用</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%A4%BA%E4%BE%8B-4"><span class="toc-number">3.11.2.</span> <span class="toc-text">示例</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#timeout-%E8%B6%85%E6%97%B6"><span class="toc-number">4.</span> <span class="toc-text">timeout 超时</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%9C%E7%94%A8-11"><span class="toc-number">4.1.</span> <span class="toc-text">作用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%A4%BA%E4%BE%8B-5"><span class="toc-number">4.2.</span> <span class="toc-text">示例</span></a></li></ol></li></ol>
+                </div>
+            
+            <hr />
+            <div itemprop="articleBody"><h2 id="发送请求"><a href="#发送请求" class="headerlink" title="发送请求"></a>发送请求</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">requests.get(<span class="string">&quot;https://httpbin.org/get&quot;</span>)</span><br><span class="line">requests.post(<span class="string">&quot;https://httpbin.org/post&quot;</span>)</span><br><span class="line">requests.put(<span class="string">&quot;https://httpbin.org/put&quot;</span>)</span><br><span class="line">requests.delete(<span class="string">&quot;https://httpbin.org/delete&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<h2 id="传递参数"><a href="#传递参数" class="headerlink" title="传递参数"></a>传递参数</h2><h3 id="构建-URL-参数"><a href="#构建-URL-参数" class="headerlink" title="构建 URL 参数"></a>构建 URL 参数</h3><p>构建 url 参数示例：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">params = &#123;<span class="string">&#x27;key1&#x27;</span>: <span class="string">&#x27;value1&#x27;</span>, <span class="string">&#x27;key2&#x27;</span>: <span class="string">&#x27;value2&#x27;</span>&#125;</span><br><span class="line">r = requests.get(<span class="string">&quot;http://httpbin.org/get&quot;</span>, params=params)</span><br><span class="line"><span class="built_in">print</span>(r.url)</span><br><span class="line"><span class="comment"># 输出 http://httpbin.org/get?key1=value1&amp;key2=value2</span></span><br></pre></td></tr></table></figure>
+
+<p>还可以将一个列表作为值传入：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">params = &#123;<span class="string">&#x27;key1&#x27;</span>: <span class="string">&#x27;value1&#x27;</span>, <span class="string">&#x27;key2&#x27;</span>: [<span class="string">&#x27;value2&#x27;</span>, <span class="string">&#x27;value3&#x27;</span>]&#125;</span><br><span class="line">r = requests.get(<span class="string">&quot;http://httpbin.org/get&quot;</span>, params=params)</span><br><span class="line"><span class="built_in">print</span>(r.url)</span><br><span class="line"><span class="comment"># 输出 http://httpbin.org/get?key1=value1&amp;key2=value2&amp;key2=value3</span></span><br></pre></td></tr></table></figure>
+
+<p>注：字典里值为 <code>None</code> 的键都不会被添加到 URL 的参数中。</p>
+<h3 id="构建表单参数"><a href="#构建表单参数" class="headerlink" title="构建表单参数"></a>构建表单参数</h3><p>构建表单参数示例：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">payload = &#123;<span class="string">&#x27;key1&#x27;</span>: <span class="string">&#x27;value1&#x27;</span>, <span class="string">&#x27;key2&#x27;</span>: <span class="string">&#x27;value2&#x27;</span>&#125;</span><br><span class="line">r = requests.post(<span class="string">&quot;http://httpbin.org/post&quot;</span>, data=payload)</span><br><span class="line"><span class="built_in">print</span>(r.text)</span><br></pre></td></tr></table></figure>
+
+<p>执行结果：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  ...</span><br><span class="line">  <span class="attr">&quot;form&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;key2&quot;</span><span class="punctuation">:</span> <span class="string">&quot;value2&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;key1&quot;</span><span class="punctuation">:</span> <span class="string">&quot;value1&quot;</span></span><br><span class="line">  <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">  ...</span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>在表单中同一 key 有多个元素的时候，可以使用元组列表。例如：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">payload = ((<span class="string">&#x27;key1&#x27;</span>, <span class="string">&#x27;value1&#x27;</span>), (<span class="string">&#x27;key1&#x27;</span>, <span class="string">&#x27;value2&#x27;</span>))</span><br><span class="line">r = requests.post(<span class="string">&#x27;http://httpbin.org/post&#x27;</span>, data=payload)</span><br><span class="line"><span class="built_in">print</span>(r.text)</span><br></pre></td></tr></table></figure>
+
+<p>执行结果：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  ...</span><br><span class="line">  <span class="attr">&quot;form&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;key1&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">      <span class="string">&quot;value1&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="string">&quot;value2&quot;</span></span><br><span class="line">    <span class="punctuation">]</span></span><br><span class="line">  <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">  ...</span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="构建请求主体参数"><a href="#构建请求主体参数" class="headerlink" title="构建请求主体参数"></a>构建请求主体参数</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">payload = &#123;<span class="string">&#x27;some&#x27;</span>: <span class="string">&#x27;data&#x27;</span>&#125;</span><br><span class="line">r = requests.post(<span class="string">&#x27;http://httpbin.org/post&#x27;</span>, json=payload)</span><br><span class="line"><span class="built_in">print</span>(r.text)</span><br></pre></td></tr></table></figure>
+
+<p><strong>执行结果：</strong></p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;args&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span><span class="punctuation">&#125;</span><span class="punctuation">,</span> </span><br><span class="line">  <span class="attr">&quot;data&quot;</span><span class="punctuation">:</span> <span class="string">&quot;&#123;\&quot;some\&quot;: \&quot;data\&quot;&#125;&quot;</span><span class="punctuation">,</span> </span><br><span class="line">  <span class="attr">&quot;files&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span><span class="punctuation">&#125;</span><span class="punctuation">,</span> </span><br><span class="line">  <span class="attr">&quot;form&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span><span class="punctuation">&#125;</span><span class="punctuation">,</span> </span><br><span class="line">  <span class="attr">&quot;headers&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;Accept&quot;</span><span class="punctuation">:</span> <span class="string">&quot;*/*&quot;</span><span class="punctuation">,</span> </span><br><span class="line">    <span class="attr">&quot;Accept-Encoding&quot;</span><span class="punctuation">:</span> <span class="string">&quot;gzip, deflate&quot;</span><span class="punctuation">,</span> </span><br><span class="line">    <span class="attr">&quot;Content-Length&quot;</span><span class="punctuation">:</span> <span class="string">&quot;16&quot;</span><span class="punctuation">,</span> </span><br><span class="line">    <span class="attr">&quot;Content-Type&quot;</span><span class="punctuation">:</span> <span class="string">&quot;application/json&quot;</span><span class="punctuation">,</span> </span><br><span class="line">    <span class="attr">&quot;Host&quot;</span><span class="punctuation">:</span> <span class="string">&quot;httpbin.org&quot;</span><span class="punctuation">,</span> </span><br><span class="line">    <span class="attr">&quot;User-Agent&quot;</span><span class="punctuation">:</span> <span class="string">&quot;python-requests/2.31.0&quot;</span><span class="punctuation">,</span> </span><br><span class="line">    <span class="attr">&quot;X-Amzn-Trace-Id&quot;</span><span class="punctuation">:</span> <span class="string">&quot;Root=1-65dd8ea9-3b26d6bf6bfca0d64bbca4dd&quot;</span></span><br><span class="line">  <span class="punctuation">&#125;</span><span class="punctuation">,</span> </span><br><span class="line">  <span class="attr">&quot;json&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;some&quot;</span><span class="punctuation">:</span> <span class="string">&quot;data&quot;</span></span><br><span class="line">  <span class="punctuation">&#125;</span><span class="punctuation">,</span> </span><br><span class="line">  <span class="attr">&quot;origin&quot;</span><span class="punctuation">:</span> <span class="string">&quot;128.199.217.27&quot;</span><span class="punctuation">,</span> </span><br><span class="line">  <span class="attr">&quot;url&quot;</span><span class="punctuation">:</span> <span class="string">&quot;http://httpbin.org/post&quot;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="上传文件"><a href="#上传文件" class="headerlink" title="上传文件"></a>上传文件</h3><p>上传文件示例：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">files = &#123;<span class="string">&#x27;file&#x27;</span>: <span class="built_in">open</span>(<span class="string">&#x27;report.xls&#x27;</span>, <span class="string">&#x27;rb&#x27;</span>)&#125;</span><br><span class="line">r = requests.post(<span class="string">&#x27;http://httpbin.org/post&#x27;</span>, files=files)</span><br><span class="line"><span class="built_in">print</span>(r.text)</span><br></pre></td></tr></table></figure>
+
+<p>上传文件时，可以显式地设置文件名，文件类型和请求头：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">files = &#123;<span class="string">&#x27;file&#x27;</span>: (<span class="string">&#x27;report.xls&#x27;</span>, <span class="built_in">open</span>(<span class="string">&#x27;report.xls&#x27;</span>, <span class="string">&#x27;rb&#x27;</span>), <span class="string">&#x27;application/vnd.ms-excel&#x27;</span>, &#123;<span class="string">&#x27;Expires&#x27;</span>: <span class="string">&#x27;0&#x27;</span>&#125;)&#125;</span><br><span class="line">r = requests.post(<span class="string">&#x27;http://httpbin.org/post&#x27;</span>, files=files)</span><br><span class="line"><span class="built_in">print</span>(r.text)</span><br></pre></td></tr></table></figure>
+
+<p><strong>注：</strong>使用二进制模式打开文件，以便 requests 提供正确的 Content-Length 数据。</p>
+<h3 id="构建请求头参数"><a href="#构建请求头参数" class="headerlink" title="构建请求头参数"></a>构建请求头参数</h3><p>构建请求头参数示例：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"></span><br><span class="line">headers = &#123;<span class="string">&#x27;User-Agent&#x27;</span>: <span class="string">&#x27;Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36&#x27;</span>&#125;</span><br><span class="line">r = requests.get(<span class="string">&#x27;https://httpbin.org/get&#x27;</span>, headers=headers)</span><br><span class="line"><span class="built_in">print</span>(r.request.headers.get(<span class="string">&#x27;User-Agent&#x27;</span>))</span><br><span class="line"><span class="comment"># 输出 Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36</span></span><br><span class="line"></span><br><span class="line">r = requests.get(<span class="string">&#x27;https://httpbin.org/get&#x27;</span>)</span><br><span class="line"><span class="built_in">print</span>(r.request.headers.get(<span class="string">&#x27;User-Agent&#x27;</span>))</span><br><span class="line"><span class="comment"># 输出 python-requests/2.31.0</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="构建-Cookie-参数"><a href="#构建-Cookie-参数" class="headerlink" title="构建 Cookie 参数"></a>构建 Cookie 参数</h3><p>request 请求构建 cookie 示例：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">jar = requests.cookies.RequestsCookieJar()</span><br><span class="line">jar.<span class="built_in">set</span>(<span class="string">&#x27;tasty_cookie&#x27;</span>, <span class="string">&#x27;yum&#x27;</span>, domain=<span class="string">&#x27;httpbin.org&#x27;</span>, path=<span class="string">&#x27;/cookies&#x27;</span>)</span><br><span class="line">jar.<span class="built_in">set</span>(<span class="string">&#x27;gross_cookie&#x27;</span>, <span class="string">&#x27;blech&#x27;</span>, domain=<span class="string">&#x27;httpbin.org&#x27;</span>, path=<span class="string">&#x27;/elsewhere&#x27;</span>)</span><br><span class="line">r = requests.get(<span class="string">&#x27;http://httpbin.org/cookies&#x27;</span>, cookies=jar)</span><br><span class="line"><span class="built_in">print</span>(r.text)</span><br><span class="line"><span class="built_in">print</span>(r.request._cookies)</span><br></pre></td></tr></table></figure>
+
+<p>session 会话构建 cookie示例：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">with</span> requests.Session() <span class="keyword">as</span> session:</span><br><span class="line">    jar = session.cookies</span><br><span class="line">    jar.<span class="built_in">set</span>(<span class="string">&#x27;tasty_cookie&#x27;</span>, <span class="string">&#x27;yum&#x27;</span>, domain=<span class="string">&#x27;httpbin.org&#x27;</span>, path=<span class="string">&#x27;/cookies&#x27;</span>)</span><br><span class="line">    jar.<span class="built_in">set</span>(<span class="string">&#x27;gross_cookie&#x27;</span>, <span class="string">&#x27;blech&#x27;</span>, domain=<span class="string">&#x27;httpbin.org&#x27;</span>, path=<span class="string">&#x27;/elsewhere&#x27;</span>)</span><br><span class="line">    r = session.get(<span class="string">&#x27;http://httpbin.org/cookies&#x27;</span>)</span><br><span class="line">    <span class="built_in">print</span>(r.text)</span><br><span class="line">    <span class="built_in">print</span>(r.request._cookies)</span><br></pre></td></tr></table></figure>
+
+<p>执行结果：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;cookies&quot;: &#123;</span><br><span class="line">    &quot;tasty_cookie&quot;: &quot;yum&quot;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&lt;RequestsCookieJar[&lt;Cookie tasty_cookie=yum for httpbin.org/cookies&gt;, &lt;Cookie gross_cookie=blech for httpbin.org/elsewhere&gt;]&gt;</span><br></pre></td></tr></table></figure>
+
+<h2 id="响应内容"><a href="#响应内容" class="headerlink" title="响应内容"></a>响应内容</h2><h3 id="response-text"><a href="#response-text" class="headerlink" title="response.text"></a>response.text</h3><blockquote>
+<h4 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h4><p>以 str 类型输出服务器的响应内容。</p>
+<h4 id="乱码问题"><a href="#乱码问题" class="headerlink" title="乱码问题"></a>乱码问题</h4><p>可以通过 response.encoding 查看当前解码方式。也可以通过 <code>response.encoding = utf8</code> 设置解码方式。</p>
+</blockquote>
+<h3 id="response-content"><a href="#response-content" class="headerlink" title="response.content"></a>response.content</h3><blockquote>
+<h4 id="作用-1"><a href="#作用-1" class="headerlink" title="作用"></a>作用</h4><p>以 byte 类型输出服务器的响应内容，主要针对图片、视频、音频等非文本响应内容。</p>
+<h4 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> io <span class="keyword">import</span> BytesIO</span><br><span class="line"><span class="keyword">from</span> PIL <span class="keyword">import</span> Image</span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"></span><br><span class="line">r = requests.get(<span class="string">&#x27;https://httpbin.org/image/png&#x27;</span>)</span><br><span class="line">i = Image.<span class="built_in">open</span>(BytesIO(r.content))</span><br><span class="line">i.show()</span><br></pre></td></tr></table></figure>
+
+<p><strong>执行结果：</strong></p>
+<p><img src="/blog/2024/02/27/Python%20Module/Request/Request%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/tmpe1mzs012.PNG"></p>
+</blockquote>
+<h3 id="response-json"><a href="#response-json" class="headerlink" title="response.json()"></a>response.json()</h3><blockquote>
+<h4 id="作用-2"><a href="#作用-2" class="headerlink" title="作用"></a>作用</h4><p>自动将 json 字符串类型的响应内容转换为 python 对象（dict 类型或 list 类型），如果响应结果不是 json 字符串，执行该方法将抛出 <code>ValueError: No JSON object could be decoded</code> 异常。</p>
+<h4 id="示例-1"><a href="#示例-1" class="headerlink" title="示例"></a>示例</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">r = requests.get(<span class="string">&#x27;https://httpbin.org/json&#x27;</span>)</span><br><span class="line"><span class="built_in">print</span>(r.json())</span><br></pre></td></tr></table></figure>
+
+<p><strong>执行结果：</strong></p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;slideshow&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;author&quot;</span><span class="punctuation">:</span> <span class="string">&quot;Yours Truly&quot;</span><span class="punctuation">,</span> </span><br><span class="line">    <span class="attr">&quot;date&quot;</span><span class="punctuation">:</span> <span class="string">&quot;date of publication&quot;</span><span class="punctuation">,</span> </span><br><span class="line">    <span class="attr">&quot;slides&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">      <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;title&quot;</span><span class="punctuation">:</span> <span class="string">&quot;Wake up to WonderWidgets!&quot;</span><span class="punctuation">,</span> </span><br><span class="line">        <span class="attr">&quot;type&quot;</span><span class="punctuation">:</span> <span class="string">&quot;all&quot;</span></span><br><span class="line">      <span class="punctuation">&#125;</span><span class="punctuation">,</span> </span><br><span class="line">      <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;items&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">          <span class="string">&quot;Why &lt;em&gt;WonderWidgets&lt;/em&gt; are great&quot;</span><span class="punctuation">,</span> </span><br><span class="line">          <span class="string">&quot;Who &lt;em&gt;buys&lt;/em&gt; WonderWidgets&quot;</span></span><br><span class="line">        <span class="punctuation">]</span><span class="punctuation">,</span> </span><br><span class="line">        <span class="attr">&quot;title&quot;</span><span class="punctuation">:</span> <span class="string">&quot;Overview&quot;</span><span class="punctuation">,</span> </span><br><span class="line">        <span class="attr">&quot;type&quot;</span><span class="punctuation">:</span> <span class="string">&quot;all&quot;</span></span><br><span class="line">      <span class="punctuation">&#125;</span></span><br><span class="line">    <span class="punctuation">]</span><span class="punctuation">,</span> </span><br><span class="line">    <span class="attr">&quot;title&quot;</span><span class="punctuation">:</span> <span class="string">&quot;Sample Slide Show&quot;</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+</blockquote>
+<h3 id="response-url"><a href="#response-url" class="headerlink" title="response.url"></a>response.url</h3><blockquote>
+<h4 id="作用-3"><a href="#作用-3" class="headerlink" title="作用"></a>作用</h4><p>查看响应的 url。如果发送了重定向，那么看到是重定向后的 url。</p>
+</blockquote>
+<h3 id="response-status-code"><a href="#response-status-code" class="headerlink" title="response.status_code"></a>response.status_code</h3><blockquote>
+<h4 id="作用-4"><a href="#作用-4" class="headerlink" title="作用"></a>作用</h4><p>查看响应的状态码。</p>
+<h4 id="示例-2"><a href="#示例-2" class="headerlink" title="示例"></a>示例</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">r = requests.get(<span class="string">&#x27;http://httpbin.org/get&#x27;</span>)</span><br><span class="line"><span class="built_in">print</span>(r.status_code)</span><br><span class="line"><span class="comment"># 输出 200</span></span><br></pre></td></tr></table></figure>
+</blockquote>
+<h3 id="response-raise-for-status"><a href="#response-raise-for-status" class="headerlink" title="response.raise_for_status()"></a>response.raise_for_status()</h3><blockquote>
+<h4 id="作用-5"><a href="#作用-5" class="headerlink" title="作用"></a>作用</h4><p>如果响应状态码为 4xx 或 5xx，调用 response.raise_for_status() 方法来抛出异常。如果是 2xx 或 3xx，调用该方法不会抛出异常。</p>
+<h4 id="示例-3"><a href="#示例-3" class="headerlink" title="示例"></a>示例</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">r = requests.get(<span class="string">&#x27;http://httpbin.org/status/200&#x27;</span>)</span><br><span class="line"><span class="built_in">print</span>(r.status_code) <span class="comment"># 输出 200</span></span><br><span class="line"><span class="built_in">print</span>(r.raise_for_status()) <span class="comment"># 输出 None</span></span><br><span class="line"></span><br><span class="line">r = requests.get(<span class="string">&#x27;http://httpbin.org/status/404&#x27;</span>)</span><br><span class="line"><span class="built_in">print</span>(r.status_code) <span class="comment"># 输出 404</span></span><br><span class="line"><span class="built_in">print</span>(r.raise_for_status()) <span class="comment"># 抛出 HTTPError 异常</span></span><br></pre></td></tr></table></figure>
+</blockquote>
+<h3 id="response-request-headers"><a href="#response-request-headers" class="headerlink" title="response.request.headers"></a>response.request.headers</h3><blockquote>
+<h4 id="作用-6"><a href="#作用-6" class="headerlink" title="作用"></a>作用</h4><p>查看请求头数据，requests模块下的 CaseInsensitiveDict 类型，获取参数值时 key 是不区分大小写的。</p>
+</blockquote>
+<h3 id="response-headers"><a href="#response-headers" class="headerlink" title="response.headers"></a>response.headers</h3><blockquote>
+<h4 id="作用-7"><a href="#作用-7" class="headerlink" title="作用"></a>作用</h4><p>查看响应头数据，requests模块下的 CaseInsensitiveDict 类型，获取参数值时 key 是不区分大小写的。</p>
+</blockquote>
+<h3 id="response-request-cookies"><a href="#response-request-cookies" class="headerlink" title="response.request._cookies"></a>response.request._cookies</h3><blockquote>
+<h4 id="作用-8"><a href="#作用-8" class="headerlink" title="作用"></a>作用</h4><p>查看请求携带的 cookie 数据，返回 RequestsCookieJar 对象。</p>
+</blockquote>
+<h3 id="response-cookies"><a href="#response-cookies" class="headerlink" title="response.cookies"></a>response.cookies</h3><blockquote>
+<h4 id="作用-9"><a href="#作用-9" class="headerlink" title="作用"></a>作用</h4><p>查看响应的 cookie 数据，返回 RequestsCookieJar 对象。</p>
+</blockquote>
+<h3 id="response-history"><a href="#response-history" class="headerlink" title="response.history"></a>response.history</h3><blockquote>
+<h4 id="作用-10"><a href="#作用-10" class="headerlink" title="作用"></a>作用</h4><p>查看重定向的请求历史记录。list 类型，list 中存储每次请求的 response 对象，对象列表按照从最老到最近的请求进行排序。</p>
+<p><strong>注：</strong>可以使用 allow_redirects&#x3D;False 禁止重定向。</p>
+<h4 id="示例-4"><a href="#示例-4" class="headerlink" title="示例"></a>示例</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">payload = &#123;<span class="string">&#x27;url&#x27;</span>:<span class="string">&#x27;http://httpbin.org/get&#x27;</span>&#125;</span><br><span class="line">r = requests.get(<span class="string">&#x27;http://httpbin.org/redirect-to&#x27;</span>, params=payload, allow_redirects=<span class="literal">True</span>)</span><br><span class="line"><span class="built_in">print</span>(r.status_code)</span><br><span class="line"><span class="built_in">print</span>(r.url)</span><br><span class="line"><span class="built_in">print</span>(r.history[<span class="number">0</span>].status_code)</span><br><span class="line"><span class="built_in">print</span>(r.history[<span class="number">0</span>].url)</span><br></pre></td></tr></table></figure>
+
+<p>执行结果：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">200</span><br><span class="line">http://httpbin.org/get</span><br><span class="line">302</span><br><span class="line">http://httpbin.org/redirect-to?url=http%3A%2F%2Fhttpbin.org%2Fget</span><br></pre></td></tr></table></figure>
+</blockquote>
+<h2 id="timeout-超时"><a href="#timeout-超时" class="headerlink" title="timeout 超时"></a>timeout 超时</h2><h3 id="作用-11"><a href="#作用-11" class="headerlink" title="作用"></a>作用</h3><p>通过 <code>timeout</code> 参数设定超时时间，如果服务器在规定时间内没有响应数据，则抛出 Timeout 异常。</p>
+<h3 id="示例-5"><a href="#示例-5" class="headerlink" title="示例"></a>示例</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">r = requests.get(<span class="string">&#x27;http://httpbin.org/delay/3&#x27;</span>, timeout=<span class="number">1</span>)</span><br><span class="line"><span class="built_in">print</span>(r.status_code)</span><br></pre></td></tr></table></figure>
+
+</div>
+        </div>
+        
+        <footer class="kratos-entry-footer clearfix">
+            
+            <div class="footer-tag clearfix">
+                <div class="pull-left">
+                <i class="fa fa-tags"></i>
+                    <a class="tag-none-link" href="/blog/tags/Request/" rel="tag">Request</a>
+                </div>
+                <div class="pull-date">
+                    <time datetime="2026-01-04T05:51:48.257Z" itemprop="dateModified">最后编辑：2026-01-04</time>
+                </div>
+            </div>
+        </footer>
+    </div>
+    
+        <nav class="navigation post-navigation clearfix" role="navigation">
+            
+            <div class="nav-previous clearfix">
+                <a title=" 【Pytest】基本使用" href="/blog/2024/02/26/Python Module/Pytest/Pytest核心功能/">&lt; 上一篇</a>
+            </div>
+            
+            
+            <div class="nav-next clearfix">
+                <a title=" 【Python】OS 文件/目录方法" href="/blog/2024/02/27/Python/99_积累/OS文件目录方法/">下一篇 &gt;</a>
+            </div>
+            
+        </nav>
+    
+    
+</article>
+
+        
+
+            </section>
+
+        
+
+                
+            
+
+<section id="kratos-widget-area" class="col-md-4 hidden-xs hidden-sm">
+    <!-- 文章和页面根据splitter来分割，没有的话就从头开始设置为sticky -->
+    
+    
+                <aside id="krw-about" class="widget widget-kratos-about clearfix">
+    <div class="photo-background"></div>
+    <div class="photo-wrapper clearfix">
+        <div class="photo-wrapper-tip text-center">
+            <img class="about-photo" src="/blog/images/avatar.webp" loading="lazy" decoding="auto" />
+        </div>
+    </div>
+    <div class="textwidget">
+        <p class="text-center">极简主义</p>
+    </div>
+    <div class="site-meta">
+        <a class="meta-item" href="/blog/archives/">
+            <span class="title">
+                文章
+            </span>
+            <span class="count">
+                77
+            </span>
+        </a>
+        <a class="meta-item" href="/blog/categories/">
+            <span class="title">
+                分类
+            </span>
+            <span class="count">
+                10
+            </span>
+        </a>
+        <a class="meta-item" href="/blog/tags/">
+            <span class="title">
+                标签
+            </span>
+            <span class="count">
+                29
+            </span>
+        </a>
+    </div>
+</aside>
+            
+                    <div class="sticky-area">
+                
+                    <aside id="krw-toc" class="widget widget-kratos-toc clearfix toc-div-class" >
+    <div class="photo-background"></div>
+    <h4 class="widget-title no-after">
+        <i class="fa fa-compass"></i>
+        文章目录
+        <span class="toc-progress-bar" role="progressbar" aria-label="阅读进度："></span>
+    </h4>
+    <div class="textwidget">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%91%E9%80%81%E8%AF%B7%E6%B1%82"><span class="toc-text">发送请求</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BC%A0%E9%80%92%E5%8F%82%E6%95%B0"><span class="toc-text">传递参数</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9E%84%E5%BB%BA-URL-%E5%8F%82%E6%95%B0"><span class="toc-text">构建 URL 参数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9E%84%E5%BB%BA%E8%A1%A8%E5%8D%95%E5%8F%82%E6%95%B0"><span class="toc-text">构建表单参数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9E%84%E5%BB%BA%E8%AF%B7%E6%B1%82%E4%B8%BB%E4%BD%93%E5%8F%82%E6%95%B0"><span class="toc-text">构建请求主体参数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%8A%E4%BC%A0%E6%96%87%E4%BB%B6"><span class="toc-text">上传文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9E%84%E5%BB%BA%E8%AF%B7%E6%B1%82%E5%A4%B4%E5%8F%82%E6%95%B0"><span class="toc-text">构建请求头参数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9E%84%E5%BB%BA-Cookie-%E5%8F%82%E6%95%B0"><span class="toc-text">构建 Cookie 参数</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%93%8D%E5%BA%94%E5%86%85%E5%AE%B9"><span class="toc-text">响应内容</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#response-text"><span class="toc-text">response.text</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BD%9C%E7%94%A8"><span class="toc-text">作用</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%B9%B1%E7%A0%81%E9%97%AE%E9%A2%98"><span class="toc-text">乱码问题</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#response-content"><span class="toc-text">response.content</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BD%9C%E7%94%A8-1"><span class="toc-text">作用</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%A4%BA%E4%BE%8B"><span class="toc-text">示例</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#response-json"><span class="toc-text">response.json()</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BD%9C%E7%94%A8-2"><span class="toc-text">作用</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%A4%BA%E4%BE%8B-1"><span class="toc-text">示例</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#response-url"><span class="toc-text">response.url</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BD%9C%E7%94%A8-3"><span class="toc-text">作用</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#response-status-code"><span class="toc-text">response.status_code</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BD%9C%E7%94%A8-4"><span class="toc-text">作用</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%A4%BA%E4%BE%8B-2"><span class="toc-text">示例</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#response-raise-for-status"><span class="toc-text">response.raise_for_status()</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BD%9C%E7%94%A8-5"><span class="toc-text">作用</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%A4%BA%E4%BE%8B-3"><span class="toc-text">示例</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#response-request-headers"><span class="toc-text">response.request.headers</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BD%9C%E7%94%A8-6"><span class="toc-text">作用</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#response-headers"><span class="toc-text">response.headers</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BD%9C%E7%94%A8-7"><span class="toc-text">作用</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#response-request-cookies"><span class="toc-text">response.request._cookies</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BD%9C%E7%94%A8-8"><span class="toc-text">作用</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#response-cookies"><span class="toc-text">response.cookies</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BD%9C%E7%94%A8-9"><span class="toc-text">作用</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#response-history"><span class="toc-text">response.history</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BD%9C%E7%94%A8-10"><span class="toc-text">作用</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%A4%BA%E4%BE%8B-4"><span class="toc-text">示例</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#timeout-%E8%B6%85%E6%97%B6"><span class="toc-text">timeout 超时</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%9C%E7%94%A8-11"><span class="toc-text">作用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%A4%BA%E4%BE%8B-5"><span class="toc-text">示例</span></a></li></ol></li></ol>
+    </div>
+</aside>
+                
+                
+  <aside id="krw-categories" class="widget widget-kratos-categories clearfix">
+    <h4 class="widget-title"><i class="fa fa-folder"></i>分类目录</h4>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Docker/">Docker</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Idea/">Idea</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Java/">Java</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/K8s/">K8s</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Linux/">Linux</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/MySQL/">MySQL</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Python/">Python</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Selenium/">Selenium</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/SpringBoot/">SpringBoot</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/SpringCloud/">SpringCloud</a><span class="category-list-count">13</span></li></ul>
+  </aside>
+
+
+            
+                
+  <aside id="krw-tags" class="widget widget-kratos-tags clearfix">
+    <h4 class="widget-title"><i class="fa fa-tags"></i>标签聚合</h4>
+      <div class="tag-clouds">
+        <a href="/blog/tags/CORS/" style="font-size: 0.8em;">CORS</a> <a href="/blog/tags/Docker/" style="font-size: 0.8em;">Docker</a> <a href="/blog/tags/Dubbo/" style="font-size: 0.8em;">Dubbo</a> <a href="/blog/tags/ELK/" style="font-size: 0.8em;">ELK</a> <a href="/blog/tags/Elasticsearch/" style="font-size: 0.8em;">Elasticsearch</a> <a href="/blog/tags/Eureka/" style="font-size: 0.8em;">Eureka</a> <a href="/blog/tags/Feign/" style="font-size: 0.8em;">Feign</a> <a href="/blog/tags/Gateway/" style="font-size: 0.8em;">Gateway</a> <a href="/blog/tags/Idea/" style="font-size: 0.8em;">Idea</a> <a href="/blog/tags/Java/" style="font-size: 0.8em;">Java</a> <a href="/blog/tags/JavaWeb/" style="font-size: 0.8em;">JavaWeb</a> <a href="/blog/tags/K8s/" style="font-size: 0.8em;">K8s</a> <a href="/blog/tags/Linux/" style="font-size: 0.8em;">Linux</a> <a href="/blog/tags/Maven/" style="font-size: 0.8em;">Maven</a> <a href="/blog/tags/MySQL/" style="font-size: 0.8em;">MySQL</a> <a href="/blog/tags/Mybatis/" style="font-size: 0.8em;">Mybatis</a> <a href="/blog/tags/Nacos/" style="font-size: 0.8em;">Nacos</a> <a href="/blog/tags/Pytest/" style="font-size: 0.8em;">Pytest</a>
+      </div>
+  </aside>
+
+            
+                
+  <aside id="krw-posts" class="widget widget-kratos-posts">
+  <h4 class="widget-title"><i class="fa fa-file"></i>最新文章</h4>
+  <div class="tab-content">
+      <ul class="list-group">
+        
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/01/25/K8s/K8s%E7%BB%84%E4%BB%B6/"><i class="fa  fa-book"></i> 【K8s】组件</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/01/24/K8s/K8s%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/"><i class="fa  fa-book"></i> 【K8s】常用命令</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/01/11/Idea/IDEA%E6%8F%92%E4%BB%B6/"><i class="fa  fa-book"></i> 【Idea】插件</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/01/04/Linux/Centos7%E9%97%AE%E9%A2%98%E5%A4%84%E7%90%86/"><i class="fa  fa-book"></i> Centos7问题处理</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2025/12/09/Trae/Trae%E5%AE%89%E8%A3%85%E6%8F%92%E4%BB%B6%E5%AE%9E%E7%8E%B0Java%E4%BB%A3%E7%A0%81%E7%BC%96%E5%86%99/"><i class="fa  fa-book"></i> 【Trae】安装插件实现Java代码编写</a>
+            
+          
+        
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+      </ul>
+  </div>
+  </aside>
+
+            
+    </div>
+</section>
+        
+        </div>
+    </div>
+</div>
+<footer>
+    <div id="footer"  >
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3 footer-list text-center">
+                    <ul class="kratos-social-icons">
+                        <!-- Keep for compatibility -->
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <!-- New links -->
+                        
+                    </ul>
+                    <ul class="kratos-copyright">
+                        <div>
+                            <li>&copy; 2026 溪岚花的博客 版权所有.</li>
+                            <li>本站已运行<span id="span_dt">Loading...</span></li>
+                        </div>
+                        <div>
+                            <li>Theme <a href="https://github.com/Candinya/Kratos-Rebirth" target="_blank">Kratos:Rebirth</a></li>
+                            <li>Site built with&nbsp;<i class="fa fa-heart throb" style="color:#d43f57"></i>&nbsp;by 林家隆.</li>
+                        </div>
+                        <div>
+                            <li>Powered by <a href="https://hexo.io" target="_blank" rel="nofollow">Hexo</a></li>
+                            <li>Hosted on <a href="https://gitee.com/" target="_blank">Gitee Pages</a></li>
+                        </div>
+                        <div>
+                            
+                            
+                        </div>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="kr-tool text-center">
+            <div class="tool">
+                
+                    <div class="box search-box">
+                        <a href="/blog/search/">
+                            <span class="fa fa-search"></span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="box theme-box" id="darkmode-switch">
+                        <span class="fa fa-adjust"></span>
+                    </div>
+                
+                
+                
+            </div>
+            <div class="box gotop-box">
+                <span class="fa fa-chevron-up"></span>
+            </div>
+        </div>
+    </div>
+</footer>
+</div>
+</div>
+
+        <script defer src="/blog/vendors/bootstrap@3.3.4/dist/js/bootstrap.min.js"></script>
+<script defer src="/blog/vendors/nprogress@0.2.0/nprogress.js"></script>
+<script>
+    if (!window.kr) {
+        window.kr = {};
+    }
+    window.kr.notMobile = (!(navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i)));
+    window.kr.siteRoot = "/blog/";
+</script>
+
+
+
+
+
+    <script defer src="/blog/vendors/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+
+<script defer src="/blog/js/kratosr.min.js"></script>
+<script defer src="/blog/js/pjax.min.js"></script>
+
+
+
+<!-- Extra support for third-party plguins  -->
+
+
+    </body>
+</html>

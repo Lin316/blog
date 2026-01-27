@@ -1,0 +1,1297 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+  <!-- 元数据 -->
+  <meta charset="utf-8">
+  <link rel="icon" href="/blog/images/logo.png">
+  
+  <title>MySQL 中常用的函数 | 溪岚花的博客</title>
+  
+  <meta name="author" content="林家隆" />
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="robots" content="index,follow" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <meta name="format-detection" content="telphone=no, email=no" />
+  
+    <meta name="keywords" content="MySQL" />
+  
+  <meta name="description" content="数值函数基本函数ABS(x)返回x的绝对值 1select abs(-1); # 输出 -1  SIGN(x)返回x的符号。正数返回1，负数返回-1，0返回0 1select sign(-10), sign(10), sign(0); # 输出 -1, 1, 0  PI()返回圆周率的值 1select pi(); # 输出 3.141593  CEIL(x)，CEILING(x)返回大于或等于某">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MySQL 中常用的函数">
+<meta property="og:url" content="https://lin316.gitee.io/blog/2023/05/15/mysql/%E5%B8%B8%E7%94%A8%E5%87%BD%E6%95%B0/index.html">
+<meta property="og:site_name" content="溪岚花的博客">
+<meta property="og:description" content="数值函数基本函数ABS(x)返回x的绝对值 1select abs(-1); # 输出 -1  SIGN(x)返回x的符号。正数返回1，负数返回-1，0返回0 1select sign(-10), sign(10), sign(0); # 输出 -1, 1, 0  PI()返回圆周率的值 1select pi(); # 输出 3.141593  CEIL(x)，CEILING(x)返回大于或等于某">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://lin316.gitee.io/blog/blog/images/logo.png">
+<meta property="article:published_time" content="2023-05-14T16:00:00.000Z">
+<meta property="article:modified_time" content="2026-01-04T05:51:48.300Z">
+<meta property="article:author" content="林家隆">
+<meta property="article:tag" content="MySQL">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://lin316.gitee.io/blog/blog/images/logo.png">
+  
+  <!-- 站点验证相关 -->
+  
+    
+    
+    
+  
+  <!-- 样式表文件 -->
+  <link rel="stylesheet" id="kratos-css" href="/blog/css/kratosr.min.css" media="all"></script>
+  
+    <link rel="stylesheet" id="darkmode-css" href="/blog/css/kr-color-dark.min.css" media="(prefers-color-scheme: dark)"></script>
+    <script src="/blog/js/kr-dark.min.js"></script>
+  
+  
+    <link rel="stylesheet" id="highlight-css" href="/blog/css/highlight/night-eighties.min.css" media="all"></script>
+  
+  <link rel="stylesheet" id="fontawe-css" href="/blog/vendors/font-awesome@4.7.0/css/font-awesome.min.css" media="all"></script>
+  <link rel="stylesheet" id="nprogress-css" href="/blog/vendors/nprogress@0.2.0/nprogress.css" media="all"></script>
+  
+  
+  
+    <link rel="stylesheet" href="/blog/vendors/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css"></script>
+  
+  <!-- 不得不预先加载的一些JS文件 -->
+  <script src="/blog/vendors/jquery@3.6.0/dist/jquery.min.js"></script>
+  
+  
+  <style>
+    
+    
+  </style>
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+    <body class="custom-background">
+        <div id="kratos-wrapper">
+    <div id="kratos-page">
+        <div id="kratos-header">
+            <header id="kratos-desktop-topnav" class="kratos-topnav">
+                <div class="container">
+                    <div class="nav-header">
+                        <nav id="kratos-menu-wrap">
+                            <ul id="kratos-primary-menu" class="sf-menu">
+                                
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/">
+                                            
+                                                
+                                                    <i class="fa fa-home"></i>
+                                                
+                                                首页
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/archives/">
+                                            
+                                                
+                                                    <i class="fa fa-file"></i>
+                                                
+                                                归档
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/tags/">
+                                            
+                                                
+                                                    <i class="fa fa-tag"></i>
+                                                
+                                                标签
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/categories/">
+                                            
+                                                
+                                                    <i class="fa fa-folder"></i>
+                                                
+                                                目录
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/search/">
+                                            
+                                                
+                                                    <i class="fa fa-search"></i>
+                                                
+                                                搜索
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </header>
+            <header id="kratos-mobile-topnav" class="kratos-topnav">
+                <div class="container">
+                    <div class="color-logo"><a href="/blog/">溪岚花的博客</a></div>
+                    <div class="nav-toggle">
+                        <a class="kratos-nav-toggle js-kratos-nav-toggle">
+                            <i></i>
+                        </a>
+                    </div>
+                </div>
+            </header>
+        </div>
+        <div class="kratos-start kratos-hero-2">
+            <!-- <div class="kratos-overlay"></div> -->
+            <div class="kratos-cover kratos-cover-2 text-center">
+                <div class="desc desc2 animate-box">
+                    <a href="/blog/">
+                        <h2 style="opacity: 0.2;">溪岚花的博客</h2> <br />
+                        <span></span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div id="kratos-blog-post">
+            <div class="container">
+                <div id="main" class="row">
+                    
+
+        
+
+            <section class="col-md-8">
+
+        
+
+            <article itemscope itemtype="https://schema.org/Article">
+    
+    <link itemprop="mainEntityOfPage" href="https://lin316.gitee.io/blog/2023/05/15/mysql/%E5%B8%B8%E7%94%A8%E5%87%BD%E6%95%B0/">
+    <div class="kratos-hentry kratos-post-inner clearfix">
+        <header class="kratos-entry-header">
+            
+                <h1 class="kratos-entry-title text-center" itemprop="name headline">MySQL 中常用的函数</h1>
+            
+            
+            <ul class="kratos-post-meta text-center">
+                <li><time datetime="2023-05-14T16:00:00.000Z" itemprop="datePublished"><i class="fa fa-calendar"></i> 2023-05-15</time></li>
+                <li itemprop="author" itemscope itemtype="https://schema.org/Person">
+                    <i class="fa fa-user"></i> 作者 <span itemprop="name">林家隆</span>
+                </li>
+                
+                    <li>
+                        <i class="fa fa-edit"></i> 
+                        
+                        
+                            17.75K
+                        
+                        字
+                    </li>
+                
+                
+            </ul>
+        </header>
+        <div class="kratos-post-content">
+            
+            <div id="expire-alert" class="alert alert-warning hidden" role="alert">
+                <div class="icon"><i class="fa fa-warning"></i></div>
+                <div class="text"><p>本文最后编辑于 <time datetime="1767505908300"></time> 前，其中的内容可能需要更新。</p></div>
+            </div>
+            
+            
+            
+                <div class="kratos-post-inner-toc toc-div-class" >
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E5%80%BC%E5%87%BD%E6%95%B0"><span class="toc-number">1.</span> <span class="toc-text">数值函数</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9F%BA%E6%9C%AC%E5%87%BD%E6%95%B0"><span class="toc-number">1.1.</span> <span class="toc-text">基本函数</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#ABS-x"><span class="toc-number">1.1.1.</span> <span class="toc-text">ABS(x)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#SIGN-x"><span class="toc-number">1.1.2.</span> <span class="toc-text">SIGN(x)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#PI"><span class="toc-number">1.1.3.</span> <span class="toc-text">PI()</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#CEIL-x-%EF%BC%8CCEILING-x"><span class="toc-number">1.1.4.</span> <span class="toc-text">CEIL(x)，CEILING(x)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#FLOOR-x"><span class="toc-number">1.1.5.</span> <span class="toc-text">FLOOR(x)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#LEAST-e1-e2-e3%E2%80%A6"><span class="toc-number">1.1.6.</span> <span class="toc-text">LEAST(e1,e2,e3…)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#GREATEST-e1-e2-e3%E2%80%A6"><span class="toc-number">1.1.7.</span> <span class="toc-text">GREATEST(e1,e2,e3…)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#MOD-x-y"><span class="toc-number">1.1.8.</span> <span class="toc-text">MOD(x,y)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#RAND"><span class="toc-number">1.1.9.</span> <span class="toc-text">RAND()</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#RAND-x"><span class="toc-number">1.1.10.</span> <span class="toc-text">RAND(x)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#ROUND-x"><span class="toc-number">1.1.11.</span> <span class="toc-text">ROUND(x)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#ROUND-x-y"><span class="toc-number">1.1.12.</span> <span class="toc-text">ROUND(x,y)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#TRUNCATE-x-y"><span class="toc-number">1.1.13.</span> <span class="toc-text">TRUNCATE(x,y)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#SQRT-x"><span class="toc-number">1.1.14.</span> <span class="toc-text">SQRT(x)</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A7%92%E5%BA%A6%E4%B8%8E%E5%BC%A7%E5%BA%A6%E4%BA%92%E8%BD%AC%E5%87%BD%E6%95%B0"><span class="toc-number">1.2.</span> <span class="toc-text">角度与弧度互转函数</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#RADIANS-x"><span class="toc-number">1.2.1.</span> <span class="toc-text">RADIANS(x)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#DEGREES-x"><span class="toc-number">1.2.2.</span> <span class="toc-text">DEGREES(x)</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%89%E8%A7%92%E5%87%BD%E6%95%B0"><span class="toc-number">1.3.</span> <span class="toc-text">三角函数</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#SIN-x"><span class="toc-number">1.3.1.</span> <span class="toc-text">SIN(x)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#ASIN-x"><span class="toc-number">1.3.2.</span> <span class="toc-text">ASIN(x)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#COS-x"><span class="toc-number">1.3.3.</span> <span class="toc-text">COS(x)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#ACOS-x"><span class="toc-number">1.3.4.</span> <span class="toc-text">ACOS(x)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#TAN-x"><span class="toc-number">1.3.5.</span> <span class="toc-text">TAN(x)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#ATAN-x"><span class="toc-number">1.3.6.</span> <span class="toc-text">ATAN(x)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#ATAN2-m-n"><span class="toc-number">1.3.7.</span> <span class="toc-text">ATAN2(m,n)</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8C%87%E6%95%B0%E4%B8%8E%E5%AF%B9%E6%95%B0"><span class="toc-number">1.4.</span> <span class="toc-text">指数与对数</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#POW-x-y-%EF%BC%8CPOWER-x-y"><span class="toc-number">1.4.1.</span> <span class="toc-text">POW(x,y)，POWER(x,y)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#EXP-x"><span class="toc-number">1.4.2.</span> <span class="toc-text">EXP(x)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#LN-x-%EF%BC%8CLOG-x"><span class="toc-number">1.4.3.</span> <span class="toc-text">LN(x)，LOG(x)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#LOG10-x"><span class="toc-number">1.4.4.</span> <span class="toc-text">LOG10(x)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#LOG2-x"><span class="toc-number">1.4.5.</span> <span class="toc-text">LOG2(x)</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%9B%E5%88%B6%E9%97%B4%E7%9A%84%E8%BD%AC%E6%8D%A2"><span class="toc-number">1.5.</span> <span class="toc-text">进制间的转换</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#BIN-x"><span class="toc-number">1.5.1.</span> <span class="toc-text">BIN(x)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#HEX-x"><span class="toc-number">1.5.2.</span> <span class="toc-text">HEX(x)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#OCT-x"><span class="toc-number">1.5.3.</span> <span class="toc-text">OCT(x)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#CONV-x-f1-f2"><span class="toc-number">1.5.4.</span> <span class="toc-text">CONV(x,f1,f2)</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%87%BD%E6%95%B0"><span class="toc-number">2.</span> <span class="toc-text">字符串函数</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#ASCII-S"><span class="toc-number">2.1.</span> <span class="toc-text">ASCII(S)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#CHAR-LENGTH-s"><span class="toc-number">2.2.</span> <span class="toc-text">CHAR_LENGTH(s)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#LENGTH-s"><span class="toc-number">2.3.</span> <span class="toc-text">LENGTH(s)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#CONCAT-s1-s2-%E2%80%A6%E2%80%A6-sn"><span class="toc-number">2.4.</span> <span class="toc-text">CONCAT(s1,s2,……,sn)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#CONCAT-WS-x-s1-s2-%E2%80%A6%E2%80%A6-sn"><span class="toc-number">2.5.</span> <span class="toc-text">CONCAT_WS(x, s1,s2,……,sn)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#INSERT-str-idx-len-replacestr"><span class="toc-number">2.6.</span> <span class="toc-text">INSERT(str, idx, len, replacestr)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#REPLACE-str-a-b"><span class="toc-number">2.7.</span> <span class="toc-text">REPLACE(str, a, b)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#UPPER-s-%E5%92%8C-UCASE-s"><span class="toc-number">2.8.</span> <span class="toc-text">UPPER(s) 和 UCASE(s)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#LOWER-s-%E5%92%8C-LCASE-s"><span class="toc-number">2.9.</span> <span class="toc-text">LOWER(s) 和 LCASE(s)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#LEFT-str-n"><span class="toc-number">2.10.</span> <span class="toc-text">LEFT(str,n)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#RIGHT-str-n"><span class="toc-number">2.11.</span> <span class="toc-text">RIGHT(str,n)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#LPAD-str-len-pad"><span class="toc-number">2.12.</span> <span class="toc-text">LPAD(str, len, pad)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#RPAD-str-len-pad"><span class="toc-number">2.13.</span> <span class="toc-text">RPAD(str ,len, pad)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#LTRIM-s"><span class="toc-number">2.14.</span> <span class="toc-text">LTRIM(s)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#RTRIM-s"><span class="toc-number">2.15.</span> <span class="toc-text">RTRIM(s)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#TRIM-s"><span class="toc-number">2.16.</span> <span class="toc-text">TRIM(s)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#TRIM-s1-FROM-s"><span class="toc-number">2.17.</span> <span class="toc-text">TRIM(s1 FROM s)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#TRIM-LEADING-s1-FROM-s"><span class="toc-number">2.18.</span> <span class="toc-text">TRIM(LEADING s1 FROM s)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#TRIM-TRAILING-s1-FROM-s"><span class="toc-number">2.19.</span> <span class="toc-text">TRIM(TRAILING s1 FROM s)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#REPEAT-str-n"><span class="toc-number">2.20.</span> <span class="toc-text">REPEAT(str, n)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#SPACE-n"><span class="toc-number">2.21.</span> <span class="toc-text">SPACE(n)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#STRCMP-s1-s2"><span class="toc-number">2.22.</span> <span class="toc-text">STRCMP(s1,s2)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#SUBSTR-s-index-len"><span class="toc-number">2.23.</span> <span class="toc-text">SUBSTR(s,index,len)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#LOCATE-substr-str"><span class="toc-number">2.24.</span> <span class="toc-text">LOCATE(substr,str)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ELT-m-s1-s2-%E2%80%A6-sn"><span class="toc-number">2.25.</span> <span class="toc-text">ELT(m,s1,s2,…,sn)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#FIELD-s-s1-s2-%E2%80%A6-sn"><span class="toc-number">2.26.</span> <span class="toc-text">FIELD(s,s1,s2,…,sn)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#FIND-IN-SET-s1-s2"><span class="toc-number">2.27.</span> <span class="toc-text">FIND_IN_SET(s1,s2)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#REVERSE-s"><span class="toc-number">2.28.</span> <span class="toc-text">REVERSE(s)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#NULLIF-value1-value2"><span class="toc-number">2.29.</span> <span class="toc-text">NULLIF(value1,value2)</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%97%A5%E6%9C%9F%E5%92%8C%E6%97%B6%E9%97%B4%E5%87%BD%E6%95%B0"><span class="toc-number">3.</span> <span class="toc-text">日期和时间函数</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%8E%B7%E5%8F%96%E6%97%A5%E6%9C%9F%E5%92%8C%E6%97%B6%E9%97%B4%E5%87%BD%E6%95%B0"><span class="toc-number">3.1.</span> <span class="toc-text">获取日期和时间函数</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#CURDATE"><span class="toc-number">3.1.1.</span> <span class="toc-text">CURDATE()</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#CURTIME"><span class="toc-number">3.1.2.</span> <span class="toc-text">CURTIME()</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#NOW"><span class="toc-number">3.1.3.</span> <span class="toc-text">NOW()</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#UTC-DATE"><span class="toc-number">3.1.4.</span> <span class="toc-text">UTC_DATE()</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#UTC-TIME"><span class="toc-number">3.1.5.</span> <span class="toc-text">UTC_TIME()</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%97%A5%E6%9C%9F%E4%B8%8E%E6%97%B6%E9%97%B4%E6%88%B3%E7%9A%84%E8%BD%AC%E6%8D%A2%E5%87%BD%E6%95%B0"><span class="toc-number">3.2.</span> <span class="toc-text">日期与时间戳的转换函数</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#UNIX-TIMESTAMP"><span class="toc-number">3.2.1.</span> <span class="toc-text">UNIX_TIMESTAMP()</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#UNIX-TIMESTAMP-date"><span class="toc-number">3.2.2.</span> <span class="toc-text">UNIX_TIMESTAMP(date)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#FROM-UNIXTIME-timestamp"><span class="toc-number">3.2.3.</span> <span class="toc-text">FROM_UNIXTIME(timestamp)</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%8E%B7%E5%8F%96%E6%9C%88%E4%BB%BD%E3%80%81%E6%98%9F%E6%9C%9F%E3%80%81%E5%A4%A9%E6%95%B0%E7%AD%89%E5%87%BD%E6%95%B0"><span class="toc-number">3.3.</span> <span class="toc-text">获取月份、星期、天数等函数</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#YEAR-date-MONTH-date-DAY-date"><span class="toc-number">3.3.1.</span> <span class="toc-text">YEAR(date) \ MONTH(date)\ DAY(date)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#HOUR-time-MINUTE-time-SECOND-time"><span class="toc-number">3.3.2.</span> <span class="toc-text">HOUR(time) \ MINUTE(time) \ SECOND(time)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#MONTHNAME-date"><span class="toc-number">3.3.3.</span> <span class="toc-text">MONTHNAME(date)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#DAYNAME-date"><span class="toc-number">3.3.4.</span> <span class="toc-text">DAYNAME(date)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#WEEKDAY-date"><span class="toc-number">3.3.5.</span> <span class="toc-text">WEEKDAY(date)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#QUARTER-date"><span class="toc-number">3.3.6.</span> <span class="toc-text">QUARTER(date)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#WEEKOFYEAR-date"><span class="toc-number">3.3.7.</span> <span class="toc-text">WEEKOFYEAR(date)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#DAYOFYEAR-date"><span class="toc-number">3.3.8.</span> <span class="toc-text">DAYOFYEAR(date)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#DAYOFMONTH-date"><span class="toc-number">3.3.9.</span> <span class="toc-text">DAYOFMONTH(date)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#DAYOFWEEK-date"><span class="toc-number">3.3.10.</span> <span class="toc-text">DAYOFWEEK(date)</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%97%A5%E6%9C%9F%E7%9A%84%E6%93%8D%E4%BD%9C%E5%87%BD%E6%95%B0"><span class="toc-number">3.4.</span> <span class="toc-text">日期的操作函数</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#EXTRACT-type-FROM-date"><span class="toc-number">3.4.1.</span> <span class="toc-text">EXTRACT(type FROM date)</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%97%B6%E9%97%B4%E5%92%8C%E7%A7%92%E9%92%9F%E8%BD%AC%E6%8D%A2%E7%9A%84%E5%87%BD%E6%95%B0"><span class="toc-number">3.5.</span> <span class="toc-text">时间和秒钟转换的函数</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#TIME-TO-SEC-time"><span class="toc-number">3.5.1.</span> <span class="toc-text">TIME_TO_SEC(time)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#SEC-TO-TIME-seconds"><span class="toc-number">3.5.2.</span> <span class="toc-text">SEC_TO_TIME(seconds)</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AE%A1%E7%AE%97%E6%97%A5%E6%9C%9F%E5%92%8C%E6%97%B6%E9%97%B4%E7%9A%84%E5%87%BD%E6%95%B0"><span class="toc-number">3.6.</span> <span class="toc-text">计算日期和时间的函数</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#DATE-ADD-datetime-INTERVAL-expr-type"><span class="toc-number">3.6.1.</span> <span class="toc-text">DATE_ADD(datetime, INTERVAL  expr type)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#DATE-SUB-datetime-INTERVAL-expr-type"><span class="toc-number">3.6.2.</span> <span class="toc-text">DATE_SUB(datetime, INTERVAL expr type)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#ADDTIME-time1-time2"><span class="toc-number">3.6.3.</span> <span class="toc-text">ADDTIME(time1,time2)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#SUBTIME-time1-time2"><span class="toc-number">3.6.4.</span> <span class="toc-text">SUBTIME(time1,time2)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#DATEDIFF-date1-date2"><span class="toc-number">3.6.5.</span> <span class="toc-text">DATEDIFF(date1,date2)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#TIMEDIFF-time1-time2"><span class="toc-number">3.6.6.</span> <span class="toc-text">TIMEDIFF(time1, time2)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#FROM-DAYS-N"><span class="toc-number">3.6.7.</span> <span class="toc-text">FROM_DAYS(N)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#TO-DAYS-date"><span class="toc-number">3.6.8.</span> <span class="toc-text">TO_DAYS(date)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#LAST-DAY-date"><span class="toc-number">3.6.9.</span> <span class="toc-text">LAST_DAY(date)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#MAKEDATE-year-n"><span class="toc-number">3.6.10.</span> <span class="toc-text">MAKEDATE(year,n)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#MAKETIME-hour-minute-second"><span class="toc-number">3.6.11.</span> <span class="toc-text">MAKETIME(hour,minute,second)</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%97%A5%E6%9C%9F%E7%9A%84%E6%A0%BC%E5%BC%8F%E5%8C%96%E4%B8%8E%E8%A7%A3%E6%9E%90"><span class="toc-number">3.7.</span> <span class="toc-text">日期的格式化与解析</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#DATE-FORMAT-date-fmt"><span class="toc-number">3.7.1.</span> <span class="toc-text">DATE_FORMAT(date,fmt)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#TIME-FORMAT-time-fmt"><span class="toc-number">3.7.2.</span> <span class="toc-text">TIME_FORMAT(time,fmt)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#STR-TO-DATE-str-fmt"><span class="toc-number">3.7.3.</span> <span class="toc-text">STR_TO_DATE(str, fmt)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#GET-FORMAT-date-type-format-type"><span class="toc-number">3.7.4.</span> <span class="toc-text">GET_FORMAT(date_type,format_type)</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B5%81%E7%A8%8B%E6%8E%A7%E5%88%B6%E5%87%BD%E6%95%B0"><span class="toc-number">4.</span> <span class="toc-text">流程控制函数</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#IF-value-value1-value2"><span class="toc-number">4.1.</span> <span class="toc-text">IF(value,value1,value2)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#IFNULL-value1-value2"><span class="toc-number">4.2.</span> <span class="toc-text">IFNULL(value1, value2)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#CASE-WHEN-%E6%9D%A1%E4%BB%B61-THEN-%E7%BB%93%E6%9E%9C1-WHEN-%E6%9D%A1%E4%BB%B62-THEN-%E7%BB%93%E6%9E%9C2-%E2%80%A6-ELSE-resultn-END"><span class="toc-number">4.3.</span> <span class="toc-text">CASE WHEN 条件1 THEN 结果1 WHEN 条件2 THEN 结果2 …. [ELSE resultn] END</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#CASE-expr-WHEN-%E5%B8%B8%E9%87%8F%E5%80%BC1-THEN-%E5%80%BC1-WHEN-%E5%B8%B8%E9%87%8F%E5%80%BC1-THEN-%E5%80%BC1-%E2%80%A6-ELSE-%E5%80%BCn-END"><span class="toc-number">4.4.</span> <span class="toc-text">CASE  expr WHEN 常量值1 THEN 值1 WHEN 常量值1 THEN 值1 …. [ELSE 值n] END</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8A%A0%E5%AF%86%E5%87%BD%E6%95%B0"><span class="toc-number">5.</span> <span class="toc-text">加密函数</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#MD5-str"><span class="toc-number">5.1.</span> <span class="toc-text">MD5(str)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#SHA-str"><span class="toc-number">5.2.</span> <span class="toc-text">SHA(str)</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#MySQL%E4%BF%A1%E6%81%AF%E5%87%BD%E6%95%B0-sql"><span class="toc-number">6.</span> <span class="toc-text">MySQL信息函数.sql</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#VERSION"><span class="toc-number">6.1.</span> <span class="toc-text">VERSION()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#CONNECTION-ID"><span class="toc-number">6.2.</span> <span class="toc-text">CONNECTION_ID()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#DATABASE"><span class="toc-number">6.3.</span> <span class="toc-text">DATABASE()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#USER"><span class="toc-number">6.4.</span> <span class="toc-text">USER()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#CHARSET-value"><span class="toc-number">6.5.</span> <span class="toc-text">CHARSET(value)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#COLLATION-value"><span class="toc-number">6.6.</span> <span class="toc-text">COLLATION(value)</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%81%9A%E5%90%88%E5%87%BD%E6%95%B0"><span class="toc-number">7.</span> <span class="toc-text">聚合函数</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#AVG"><span class="toc-number">7.1.</span> <span class="toc-text">AVG()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#SUM"><span class="toc-number">7.2.</span> <span class="toc-text">SUM()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#MAX"><span class="toc-number">7.3.</span> <span class="toc-text">MAX()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#MIN"><span class="toc-number">7.4.</span> <span class="toc-text">MIN()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#COUNT"><span class="toc-number">7.5.</span> <span class="toc-text">COUNT()</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B6%E4%BB%96%E5%87%BD%E6%95%B0"><span class="toc-number">8.</span> <span class="toc-text">其他函数</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#INET-ATON-ipvalue"><span class="toc-number">8.1.</span> <span class="toc-text">INET_ATON(ipvalue)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#INET-NTOA-value"><span class="toc-number">8.2.</span> <span class="toc-text">INET_NTOA(value)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#BENCHMARK-n-expr"><span class="toc-number">8.3.</span> <span class="toc-text">BENCHMARK(n,expr)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#CONVERT-value-USING-char-code"><span class="toc-number">8.4.</span> <span class="toc-text">CONVERT(value USING char_code)</span></a></li></ol></li></ol>
+                </div>
+            
+            <hr />
+            <div itemprop="articleBody"><h2 id="数值函数"><a href="#数值函数" class="headerlink" title="数值函数"></a>数值函数</h2><h3 id="基本函数"><a href="#基本函数" class="headerlink" title="基本函数"></a>基本函数</h3><h4 id="ABS-x"><a href="#ABS-x" class="headerlink" title="ABS(x)"></a>ABS(x)</h4><p>返回x的绝对值</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select abs(-1); # 输出 -1</span><br></pre></td></tr></table></figure>
+
+<h4 id="SIGN-x"><a href="#SIGN-x" class="headerlink" title="SIGN(x)"></a>SIGN(x)</h4><p>返回x的符号。正数返回1，负数返回-1，0返回0</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select sign(-10), sign(10), sign(0); # 输出 -1, 1, 0</span><br></pre></td></tr></table></figure>
+
+<h4 id="PI"><a href="#PI" class="headerlink" title="PI()"></a>PI()</h4><p>返回圆周率的值</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select pi(); # 输出 3.141593</span><br></pre></td></tr></table></figure>
+
+<h4 id="CEIL-x-，CEILING-x"><a href="#CEIL-x-，CEILING-x" class="headerlink" title="CEIL(x)，CEILING(x)"></a>CEIL(x)，CEILING(x)</h4><p>返回大于或等于某个值的最小整数</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select ceil(1.5), ceil(-1.5), ceiling(1.5), ceiling(-1.5); # 输出 2, -1, 2, -1</span><br></pre></td></tr></table></figure>
+
+<h4 id="FLOOR-x"><a href="#FLOOR-x" class="headerlink" title="FLOOR(x)"></a>FLOOR(x)</h4><p>返回小于或等于某个值的最大整数</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select floor(1.5), floor(-1.5); # 输出 1, -2</span><br></pre></td></tr></table></figure>
+
+<h4 id="LEAST-e1-e2-e3…"><a href="#LEAST-e1-e2-e3…" class="headerlink" title="LEAST(e1,e2,e3…)"></a>LEAST(e1,e2,e3…)</h4><p>返回列表中的最小值</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select least(1,2,3,4); # 输出 1</span><br></pre></td></tr></table></figure>
+
+<h4 id="GREATEST-e1-e2-e3…"><a href="#GREATEST-e1-e2-e3…" class="headerlink" title="GREATEST(e1,e2,e3…)"></a>GREATEST(e1,e2,e3…)</h4><p>返回列表中的最大值</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select greatest(1,2,3,4); # 输出 4</span><br></pre></td></tr></table></figure>
+
+<h4 id="MOD-x-y"><a href="#MOD-x-y" class="headerlink" title="MOD(x,y)"></a>MOD(x,y)</h4><p>返回x除以y后的余数</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select mod(5,2), mod(10,4); # 输出 1, 2</span><br></pre></td></tr></table></figure>
+
+<h4 id="RAND"><a href="#RAND" class="headerlink" title="RAND()"></a>RAND()</h4><p>返回0~1的随机值</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select rand(); # 输出 0.8563151376846387</span><br></pre></td></tr></table></figure>
+
+<h4 id="RAND-x"><a href="#RAND-x" class="headerlink" title="RAND(x)"></a>RAND(x)</h4><p>返回0~1的随机值，其中x的值用作种子值，相同的X值会产生相同的随机数</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select rand(1), rand(2), rand(1), rand(2); # 输出 0.40540353712197724, 0.6555866465490187, 0.40540353712197724, 0.6555866465490187</span><br></pre></td></tr></table></figure>
+
+<h4 id="ROUND-x"><a href="#ROUND-x" class="headerlink" title="ROUND(x)"></a>ROUND(x)</h4><p>四舍五入，保留整数部分</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select round(1.5), round(1.4); # 输出 2, 1</span><br></pre></td></tr></table></figure>
+
+<h4 id="ROUND-x-y"><a href="#ROUND-x-y" class="headerlink" title="ROUND(x,y)"></a>ROUND(x,y)</h4><p>四舍五入，并保留到小数点后面y位</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select round(1.15, 1), round(1.14, 1); # 输出 1.2, 1.1</span><br></pre></td></tr></table></figure>
+
+<h4 id="TRUNCATE-x-y"><a href="#TRUNCATE-x-y" class="headerlink" title="TRUNCATE(x,y)"></a>TRUNCATE(x,y)</h4><p>返回数字x截断为y位小数的结果</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select truncate(0.123456789, 2), truncate(0.123456789, 1), truncate(0.123456789, 0); # 输出 0.12, 0.1, 0</span><br></pre></td></tr></table></figure>
+
+<h4 id="SQRT-x"><a href="#SQRT-x" class="headerlink" title="SQRT(x)"></a>SQRT(x)</h4><p>返回x的平方根。当X的值为负数时，返回NULL</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select sqrt(0.04), sqrt(0.09); # 输出 0.2, 0.3</span><br></pre></td></tr></table></figure>
+
+<h3 id="角度与弧度互转函数"><a href="#角度与弧度互转函数" class="headerlink" title="角度与弧度互转函数"></a>角度与弧度互转函数</h3><h4 id="RADIANS-x"><a href="#RADIANS-x" class="headerlink" title="RADIANS(x)"></a>RADIANS(x)</h4><p>将角度转化为弧度，其中，参数x为角度值</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select radians(1), 2*pi()/360; # 输出 0.017453292519943295, 0.0174532925</span><br></pre></td></tr></table></figure>
+
+<h4 id="DEGREES-x"><a href="#DEGREES-x" class="headerlink" title="DEGREES(x)"></a>DEGREES(x)</h4><p>将弧度转化为角度，其中，参数x为弧度值</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select degrees(2*pi()); # 输出 360</span><br></pre></td></tr></table></figure>
+
+<h3 id="三角函数"><a href="#三角函数" class="headerlink" title="三角函数"></a>三角函数</h3><h4 id="SIN-x"><a href="#SIN-x" class="headerlink" title="SIN(x)"></a>SIN(x)</h4><p>返回x的正弦值，其中，参数x为弧度值</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select sin(radians(30)), sin(radians(60)), sqrt(3)/2; # 输出 0.49999999999999994, 0.8660254037844386, 0.8660254037844386</span><br></pre></td></tr></table></figure>
+
+<h4 id="ASIN-x"><a href="#ASIN-x" class="headerlink" title="ASIN(x)"></a>ASIN(x)</h4><p>返回x的反正弦值，即获取正弦为x的值。如果x的值不在-1到1之间，则返回NULL </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select asin(0.5), radians(30); # 输出 0.5235987755982989, 0.5235987755982988</span><br></pre></td></tr></table></figure>
+
+<h4 id="COS-x"><a href="#COS-x" class="headerlink" title="COS(x)"></a>COS(x)</h4><p>返回x的余弦值，其中，参数x为弧度值</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select cos(radians(30)), cos(radians(60)), sqrt(3)/2; # 输出 0.8660254037844387, 0.5000000000000001, 0.8660254037844386</span><br></pre></td></tr></table></figure>
+
+<h4 id="ACOS-x"><a href="#ACOS-x" class="headerlink" title="ACOS(x)"></a>ACOS(x)</h4><p>返回x的反余弦值，即获取余弦为x的值。如果x的值不在-1到1之间，则返回NULL </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select acos(0.5), radians(60); # 输出 1.0471975511965979, 1.0471975511965976</span><br></pre></td></tr></table></figure>
+
+<h4 id="TAN-x"><a href="#TAN-x" class="headerlink" title="TAN(x)"></a>TAN(x)</h4><p>返回x的正切值，其中，参数x为弧度值</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select tan(radians(45)); # 输出 0.9999999999999999</span><br></pre></td></tr></table></figure>
+
+<h4 id="ATAN-x"><a href="#ATAN-x" class="headerlink" title="ATAN(x)"></a>ATAN(x)</h4><p>返回x的反正切值，即返回正切值为x的值</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select atan(1), radians(45); # 输出 0.7853981633974483, 0.7853981633974483</span><br></pre></td></tr></table></figure>
+
+<h4 id="ATAN2-m-n"><a href="#ATAN2-m-n" class="headerlink" title="ATAN2(m,n)"></a>ATAN2(m,n)</h4><p>返回两个参数的反正切值</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select atan2(1, sqrt(3)), radians(30); # 输出 0.5235987755982989, 0.5235987755982988</span><br></pre></td></tr></table></figure>
+
+<h3 id="指数与对数"><a href="#指数与对数" class="headerlink" title="指数与对数"></a>指数与对数</h3><h4 id="POW-x-y-，POWER-x-y"><a href="#POW-x-y-，POWER-x-y" class="headerlink" title="POW(x,y)，POWER(x,y)"></a>POW(x,y)，POWER(x,y)</h4><p>返回x的y次方</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select pow(2,10), power(2, 10); # 输出 1024, 1024</span><br></pre></td></tr></table></figure>
+
+<h4 id="EXP-x"><a href="#EXP-x" class="headerlink" title="EXP(x)"></a>EXP(x)</h4><p>返回e的X次方，其中e是一个常数，2.718281828459045 </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select exp(1), exp(2); # 输出 2.718281828459045, 7.38905609893065</span><br></pre></td></tr></table></figure>
+
+<h4 id="LN-x-，LOG-x"><a href="#LN-x-，LOG-x" class="headerlink" title="LN(x)，LOG(x)"></a>LN(x)，LOG(x)</h4><p>返回以e为底的X的对数，当X &lt;&#x3D; 0 时，返回的结果为NULL</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select ln(7.38905609893065), log(7.38905609893065); # 输出 2, 2</span><br></pre></td></tr></table></figure>
+
+<h4 id="LOG10-x"><a href="#LOG10-x" class="headerlink" title="LOG10(x)"></a>LOG10(x)</h4><p>返回以10为底的X的对数，当X &lt;&#x3D; 0 时，返回的结果为NULL </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select log10(100), log10(1000); # 输出 2, 3</span><br></pre></td></tr></table></figure>
+
+<h4 id="LOG2-x"><a href="#LOG2-x" class="headerlink" title="LOG2(x)"></a>LOG2(x)</h4><p>返回以2为底的X的对数，当X &lt;&#x3D; 0 时，返回NULL</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select log2(16), log2(1024); # 输出 4, 10</span><br></pre></td></tr></table></figure>
+
+<h3 id="进制间的转换"><a href="#进制间的转换" class="headerlink" title="进制间的转换"></a>进制间的转换</h3><h4 id="BIN-x"><a href="#BIN-x" class="headerlink" title="BIN(x)"></a>BIN(x)</h4><p>返回x的二进制编码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select bin(10), bin(15); # 输出 1010, 1111</span><br></pre></td></tr></table></figure>
+
+<h4 id="HEX-x"><a href="#HEX-x" class="headerlink" title="HEX(x)"></a>HEX(x)</h4><p>返回x的十六进制编码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select hex(10), hex(15); # 输出 A, F</span><br></pre></td></tr></table></figure>
+
+<h4 id="OCT-x"><a href="#OCT-x" class="headerlink" title="OCT(x)"></a>OCT(x)</h4><p>返回x的八进制编码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select oct(10), oct(15); # 输出 12, 17</span><br></pre></td></tr></table></figure>
+
+<h4 id="CONV-x-f1-f2"><a href="#CONV-x-f1-f2" class="headerlink" title="CONV(x,f1,f2)"></a>CONV(x,f1,f2)</h4><p>返回f1进制数变成f2进制数</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select conv(10, 2, 10), conv(10, 10, 2); # 输出 2, 1010</span><br></pre></td></tr></table></figure>
+
+<h2 id="字符串函数"><a href="#字符串函数" class="headerlink" title="字符串函数"></a>字符串函数</h2><p>在 <code>MySQL</code> 中，字符串都是从1开始的。</p>
+<h3 id="ASCII-S"><a href="#ASCII-S" class="headerlink" title="ASCII(S)"></a>ASCII(S)</h3><p>返回字符串S中的第一个字符的ASCII码值</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select ascii(&#x27;abc&#x27;); # 输出 97</span><br></pre></td></tr></table></figure>
+
+<h3 id="CHAR-LENGTH-s"><a href="#CHAR-LENGTH-s" class="headerlink" title="CHAR_LENGTH(s)"></a>CHAR_LENGTH(s)</h3><p>返回字符串s的字符数。作用与CHARACTER_LENGTH(s)相同</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select char_length(&#x27;abc&#x27;), char_length(&#x27;你好&#x27;); # 输出 3, 2</span><br></pre></td></tr></table></figure>
+
+<h3 id="LENGTH-s"><a href="#LENGTH-s" class="headerlink" title="LENGTH(s)"></a>LENGTH(s)</h3><p>返回字符串s的字节数，和字符集有关</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select length(&#x27;abc&#x27;), length(&#x27;你好&#x27;); # 输出 3, 6</span><br></pre></td></tr></table></figure>
+
+<h3 id="CONCAT-s1-s2-……-sn"><a href="#CONCAT-s1-s2-……-sn" class="headerlink" title="CONCAT(s1,s2,……,sn)"></a>CONCAT(s1,s2,……,sn)</h3><p>连接s1,s2,……,sn为一个字符串</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select concat(&#x27;hello&#x27;, &#x27; &#x27;, &#x27;world&#x27;); # 输出 hello world</span><br></pre></td></tr></table></figure>
+
+<h3 id="CONCAT-WS-x-s1-s2-……-sn"><a href="#CONCAT-WS-x-s1-s2-……-sn" class="headerlink" title="CONCAT_WS(x, s1,s2,……,sn)"></a>CONCAT_WS(x, s1,s2,……,sn)</h3><p>同CONCAT(s1,s2,…)函数，但是每个字符串之间要加上x </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select concat_ws(&#x27;-&#x27;, &#x27;123&#x27;, &#x27;456&#x27;, &#x27;789&#x27;); # 输出 123-456-789</span><br></pre></td></tr></table></figure>
+
+<h3 id="INSERT-str-idx-len-replacestr"><a href="#INSERT-str-idx-len-replacestr" class="headerlink" title="INSERT(str, idx, len, replacestr)"></a>INSERT(str, idx, len, replacestr)</h3><p>将字符串str从第idx位置开始，len个字符长的子串替换为字符串replacestr </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select insert(&#x27;123456789&#x27;, 3, 4, &#x27;abc&#x27;); # 输出 12abc789</span><br></pre></td></tr></table></figure>
+
+<h3 id="REPLACE-str-a-b"><a href="#REPLACE-str-a-b" class="headerlink" title="REPLACE(str, a, b)"></a>REPLACE(str, a, b)</h3><p>用字符串b替换字符串str中所有出现的字符串a</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select replace(&#x27;abcabcabc&#x27;, &#x27;abc&#x27;, &#x27;123&#x27;); # 输出 123123123</span><br></pre></td></tr></table></figure>
+
+<h3 id="UPPER-s-和-UCASE-s"><a href="#UPPER-s-和-UCASE-s" class="headerlink" title="UPPER(s) 和 UCASE(s)"></a>UPPER(s) 和 UCASE(s)</h3><p>将字符串s的所有字母转成大写字母</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select upper(&#x27;abc&#x27;), ucase(&#x27;abc&#x27;); # 输出 ABC, ABC</span><br></pre></td></tr></table></figure>
+
+<h3 id="LOWER-s-和-LCASE-s"><a href="#LOWER-s-和-LCASE-s" class="headerlink" title="LOWER(s) 和 LCASE(s)"></a>LOWER(s) 和 LCASE(s)</h3><p>将字符串s的所有字母转成小写字母</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select lower(&#x27;ABC&#x27;), lcase(&#x27;ABC&#x27;); # 输出 abc, abc</span><br></pre></td></tr></table></figure>
+
+<h3 id="LEFT-str-n"><a href="#LEFT-str-n" class="headerlink" title="LEFT(str,n)"></a>LEFT(str,n)</h3><p>返回字符串str最左边的n个字符</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select left(&#x27;123456789&#x27;, 5); # 输出 12345</span><br></pre></td></tr></table></figure>
+
+<h3 id="RIGHT-str-n"><a href="#RIGHT-str-n" class="headerlink" title="RIGHT(str,n)"></a>RIGHT(str,n)</h3><p>返回字符串str最右边的n个字符</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select right(&#x27;123456789&#x27;, 5); # 输出 56789</span><br></pre></td></tr></table></figure>
+
+<h3 id="LPAD-str-len-pad"><a href="#LPAD-str-len-pad" class="headerlink" title="LPAD(str, len, pad)"></a>LPAD(str, len, pad)</h3><p>用字符串pad对str最左边进行填充，直到str的长度为len个字符</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select lpad(&#x27;123&#x27;, 5, &#x27;-&#x27;); # 输出 --123</span><br></pre></td></tr></table></figure>
+
+<h3 id="RPAD-str-len-pad"><a href="#RPAD-str-len-pad" class="headerlink" title="RPAD(str ,len, pad)"></a>RPAD(str ,len, pad)</h3><p>用字符串pad对str最右边进行填充，直到str的长度为len个字符</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select rpad(&#x27;123&#x27;, 5, &#x27;-&#x27;); # 输出 123--</span><br></pre></td></tr></table></figure>
+
+<h3 id="LTRIM-s"><a href="#LTRIM-s" class="headerlink" title="LTRIM(s)"></a>LTRIM(s)</h3><p>去掉字符串s左侧的空格</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select ltrim(&#x27;   1234&#x27;); # 输出 1234</span><br></pre></td></tr></table></figure>
+
+<h3 id="RTRIM-s"><a href="#RTRIM-s" class="headerlink" title="RTRIM(s)"></a>RTRIM(s)</h3><p>去掉字符串s右侧的空格</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select rtrim(&#x27;1234    &#x27;); # 输出 1234</span><br></pre></td></tr></table></figure>
+
+<h3 id="TRIM-s"><a href="#TRIM-s" class="headerlink" title="TRIM(s)"></a>TRIM(s)</h3><p>去掉字符串s开始与结尾的空格 </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select trim(&#x27;  1234   &#x27;); # 输出 1234</span><br></pre></td></tr></table></figure>
+
+<h3 id="TRIM-s1-FROM-s"><a href="#TRIM-s1-FROM-s" class="headerlink" title="TRIM(s1 FROM s)"></a>TRIM(s1 FROM s)</h3><p>去掉字符串s开始与结尾的s1 </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select trim(&#x27;abc&#x27; from &#x27;abc12345abc&#x27;); # 输出 12345</span><br></pre></td></tr></table></figure>
+
+<h3 id="TRIM-LEADING-s1-FROM-s"><a href="#TRIM-LEADING-s1-FROM-s" class="headerlink" title="TRIM(LEADING s1 FROM s)"></a>TRIM(LEADING s1 FROM s)</h3><p>去掉字符串s开始处的s1</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select trim(leading &#x27;abc&#x27; from &#x27;abc12345abc&#x27;); # 输出 12345abc</span><br></pre></td></tr></table></figure>
+
+<h3 id="TRIM-TRAILING-s1-FROM-s"><a href="#TRIM-TRAILING-s1-FROM-s" class="headerlink" title="TRIM(TRAILING s1 FROM s)"></a>TRIM(TRAILING s1 FROM s)</h3><p>去掉字符串s结尾处的s1</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select trim(trailing &#x27;abc&#x27; from &#x27;abc12345abc&#x27;); # 输出 abc12345</span><br></pre></td></tr></table></figure>
+
+<h3 id="REPEAT-str-n"><a href="#REPEAT-str-n" class="headerlink" title="REPEAT(str, n)"></a>REPEAT(str, n)</h3><p>返回str重复n次的结果 </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select repeat(&#x27;abc &#x27;, 5); # 输出 abc abc abc abc abc</span><br></pre></td></tr></table></figure>
+
+<h3 id="SPACE-n"><a href="#SPACE-n" class="headerlink" title="SPACE(n)"></a>SPACE(n)</h3><p>返回n个空格</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select concat(&#x27;1&#x27;, space(5), &#x27;1&#x27;); # 输出 1     1</span><br></pre></td></tr></table></figure>
+
+<h3 id="STRCMP-s1-s2"><a href="#STRCMP-s1-s2" class="headerlink" title="STRCMP(s1,s2)"></a>STRCMP(s1,s2)</h3><p>比较字符串s1,s2的ASCII码值的大小</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select strcmp(&#x27;abc&#x27;, &#x27;abe&#x27;); # 输出 -1</span><br></pre></td></tr></table></figure>
+
+<h3 id="SUBSTR-s-index-len"><a href="#SUBSTR-s-index-len" class="headerlink" title="SUBSTR(s,index,len)"></a>SUBSTR(s,index,len)</h3><p>返回从字符串s的index位置其len个字符，作用与SUBSTRING(s,n,len)、MID(s,n,len)相同 </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select substr(&#x27;123456789&#x27;, 3, 4); # 输出 3456</span><br></pre></td></tr></table></figure>
+
+<h3 id="LOCATE-substr-str"><a href="#LOCATE-substr-str" class="headerlink" title="LOCATE(substr,str)"></a>LOCATE(substr,str)</h3><p>返回字符串substr在字符串str中首次出现的位置，作用于POSITION(substr IN str)、INSTR(str,substr)相同。未找到，返回0 </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select locate(&#x27;abc&#x27;, &#x27;123abc123&#x27;); # 输出 4</span><br></pre></td></tr></table></figure>
+
+<h3 id="ELT-m-s1-s2-…-sn"><a href="#ELT-m-s1-s2-…-sn" class="headerlink" title="ELT(m,s1,s2,…,sn)"></a>ELT(m,s1,s2,…,sn)</h3><p>返回指定位置的字符串，如果m&#x3D;1，则返回s1，如果m&#x3D;2，则返回s2，如果m&#x3D;n，则返回sn </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select elt(3, &#x27;abc&#x27;, &#x27;123&#x27;, &#x27;def&#x27;, &#x27;456&#x27;); # 输出 def</span><br></pre></td></tr></table></figure>
+
+<h3 id="FIELD-s-s1-s2-…-sn"><a href="#FIELD-s-s1-s2-…-sn" class="headerlink" title="FIELD(s,s1,s2,…,sn)"></a>FIELD(s,s1,s2,…,sn)</h3><p>返回字符串s在字符串列表中第一次出现的位置</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select field(&#x27;abc&#x27;, &#x27;123&#x27;, &#x27;abc&#x27;, &#x27;456&#x27;, &#x27;def&#x27;); # 输出 2</span><br></pre></td></tr></table></figure>
+
+<h3 id="FIND-IN-SET-s1-s2"><a href="#FIND-IN-SET-s1-s2" class="headerlink" title="FIND_IN_SET(s1,s2)"></a>FIND_IN_SET(s1,s2)</h3><p>返回字符串s1在字符串s2中出现的位置。其中，字符串s2是一个以逗号分隔的字符串 </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select find_in_set(&#x27;abc&#x27;, &#x27;123,abc,456,def&#x27;); # 输出 2</span><br></pre></td></tr></table></figure>
+
+<h3 id="REVERSE-s"><a href="#REVERSE-s" class="headerlink" title="REVERSE(s)"></a>REVERSE(s)</h3><p>返回s反转后的字符串</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select reverse(&#x27;abc&#x27;); # 输出 cba</span><br></pre></td></tr></table></figure>
+
+<h3 id="NULLIF-value1-value2"><a href="#NULLIF-value1-value2" class="headerlink" title="NULLIF(value1,value2)"></a>NULLIF(value1,value2)</h3><p>比较两个字符串，如果value1与value2相等，则返回NULL，否则返回value1 </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select nullif(&#x27;abc&#x27;, &#x27;123&#x27;), nullif(&#x27;abc&#x27;, &#x27;abc&#x27;), nullif(null, &#x27;abc&#x27;); # 输出 abc, null, null</span><br></pre></td></tr></table></figure>
+
+<h2 id="日期和时间函数"><a href="#日期和时间函数" class="headerlink" title="日期和时间函数"></a>日期和时间函数</h2><h3 id="获取日期和时间函数"><a href="#获取日期和时间函数" class="headerlink" title="获取日期和时间函数"></a>获取日期和时间函数</h3><h4 id="CURDATE"><a href="#CURDATE" class="headerlink" title="CURDATE()"></a>CURDATE()</h4><p>返回当前日期，只包含年、月、日</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select curdate(); # 输出 2023-05-16</span><br></pre></td></tr></table></figure>
+
+<h4 id="CURTIME"><a href="#CURTIME" class="headerlink" title="CURTIME()"></a>CURTIME()</h4><p>返回当前时间，只包含时、分、秒</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select curtime(); # 输出 10:55:50</span><br></pre></td></tr></table></figure>
+
+<h4 id="NOW"><a href="#NOW" class="headerlink" title="NOW()"></a>NOW()</h4><p>返回当前系统日期和时间</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select now(); # 输出 2023-05-16 10:55:57</span><br></pre></td></tr></table></figure>
+
+<h4 id="UTC-DATE"><a href="#UTC-DATE" class="headerlink" title="UTC_DATE()"></a>UTC_DATE()</h4><p>返回 <code>UTC（世界标准时间）</code>日期</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select utc_date(); # 输出 2023-05-16</span><br></pre></td></tr></table></figure>
+
+<h4 id="UTC-TIME"><a href="#UTC-TIME" class="headerlink" title="UTC_TIME()"></a>UTC_TIME()</h4><p>返回 <code>UTC（世界标准时间）</code>时间</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select utc_time(); # 输出 02:56:11</span><br></pre></td></tr></table></figure>
+
+<h3 id="日期与时间戳的转换函数"><a href="#日期与时间戳的转换函数" class="headerlink" title="日期与时间戳的转换函数"></a>日期与时间戳的转换函数</h3><h4 id="UNIX-TIMESTAMP"><a href="#UNIX-TIMESTAMP" class="headerlink" title="UNIX_TIMESTAMP()"></a>UNIX_TIMESTAMP()</h4><p>以 <code>UNIX</code> 时间戳的形式返回当前时间，不管 <code>MySQL</code> 的时区是什么，返回结果都一样，都是此刻 <code>UTC</code> 时区的时间距离 <code>1970-01-01 00:00:00</code> 的秒数。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">select unix_timestamp(); # 输出 1684375313</span><br><span class="line">set time_zone = &#x27;+1:00&#x27;;</span><br><span class="line">select unix_timestamp(); # 输出 1684375313</span><br><span class="line">set time_zone = &#x27;+8:00&#x27;;</span><br><span class="line">select unix_timestamp(); # 输出 1684375313</span><br><span class="line">set time_zone = &#x27;SYSTEM&#x27;;</span><br></pre></td></tr></table></figure>
+
+<h4 id="UNIX-TIMESTAMP-date"><a href="#UNIX-TIMESTAMP-date" class="headerlink" title="UNIX_TIMESTAMP(date)"></a>UNIX_TIMESTAMP(date)</h4><p>将 <code>date</code> 以 <code>UNIX</code> 时间戳的形式返回，<code>date</code> 跟时区挂钩，<code>MySQL</code> 被设置成哪个时区，<code>date</code> 就被认为是哪个时区的时间。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"># MySQL 现在的时区跟随系统，系统现在是北京时间，比 UTC 快 8 小时。</span><br><span class="line">select unix_timestamp(&#x27;1970-01-01 08:00:00&#x27;); # 输出 0</span><br><span class="line">set time_zone = &#x27;+7:00&#x27;; # 比 UTC 快 7 小时。</span><br><span class="line">select unix_timestamp(&#x27;1970-01-01 08:00:00&#x27;); # 输出 3600</span><br><span class="line">set time_zone = &#x27;+6:00&#x27;; # 比 UTC 快 6 小时。</span><br><span class="line">select unix_timestamp(&#x27;1970-01-01 08:00:00&#x27;); # 输出 7200</span><br><span class="line">set time_zone = &#x27;SYSTEM&#x27;; # 跟系统时区保持一致。</span><br><span class="line">select unix_timestamp(&#x27;1970-01-01 08:00:00&#x27;); # 输出 0</span><br></pre></td></tr></table></figure>
+
+<h4 id="FROM-UNIXTIME-timestamp"><a href="#FROM-UNIXTIME-timestamp" class="headerlink" title="FROM_UNIXTIME(timestamp)"></a>FROM_UNIXTIME(timestamp)</h4><p>将 <code>UNIX</code> 时间戳转换为普通格式的时间，传入的参数是距离 <code>UTC 1970-01-01 00:00:00</code> 的秒数，返回的是跟时区相关的时间。例如，我传入的是 <code>0</code> ，对应 <code>UTC 1970-01-01 00:00:00</code> 时间，如果 <code>MySQL</code> 的时区为北京时间，比 <code>UTC</code> 快 <code>8</code> 小时，那么 <code>from_unixtime(0)</code> 会将 <code>UTC 1970-01-01 00:00:00</code> 转换成北京时间 <code>1970-01-01 08:00:00</code>。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">set time_zone = &#x27;+8:00&#x27;; # 比 UTC 快 8 小时。</span><br><span class="line">select from_unixtime(0); # 输出 1970-01-01 08:00:00</span><br><span class="line">set time_zone = &#x27;+4:00&#x27;; # 比 UTC 快 4 小时。</span><br><span class="line">select from_unixtime(0); # 输出 1970-01-01 04:00:00</span><br><span class="line">set time_zone = &#x27;+0:00&#x27;; # 比 UTC 快 0 小时。</span><br><span class="line">select from_unixtime(0); # 输出 1970-01-01 00:00:00</span><br><span class="line">set time_zone = &#x27;SYSTEM&#x27;; # 跟系统时区保持一致。</span><br></pre></td></tr></table></figure>
+
+<h3 id="获取月份、星期、天数等函数"><a href="#获取月份、星期、天数等函数" class="headerlink" title="获取月份、星期、天数等函数"></a>获取月份、星期、天数等函数</h3><h4 id="YEAR-date-MONTH-date-DAY-date"><a href="#YEAR-date-MONTH-date-DAY-date" class="headerlink" title="YEAR(date) \ MONTH(date)\ DAY(date)"></a>YEAR(date) \ MONTH(date)\ DAY(date)</h4><p>返回具体的日期值</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">select year(&#x27;2023-02-01 08:30:45&#x27;); # 输出 2023</span><br><span class="line">select month(&#x27;2023-02-01 08:30:45&#x27;); # 输出 2</span><br><span class="line">select day(&#x27;2023-02-01 08:30:45&#x27;); # 输出 1</span><br></pre></td></tr></table></figure>
+
+<h4 id="HOUR-time-MINUTE-time-SECOND-time"><a href="#HOUR-time-MINUTE-time-SECOND-time" class="headerlink" title="HOUR(time) \ MINUTE(time) \ SECOND(time)"></a>HOUR(time) \ MINUTE(time) \ SECOND(time)</h4><p>返回具体的时间值</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">select hour(&#x27;2023-02-01 08:30:45&#x27;); # 输出 8</span><br><span class="line">select minute(&#x27;2023-02-01 08:30:45&#x27;); # 输出 30</span><br><span class="line">select second(&#x27;2023-02-01 08:30:45&#x27;); # 输出 45</span><br></pre></td></tr></table></figure>
+
+<h4 id="MONTHNAME-date"><a href="#MONTHNAME-date" class="headerlink" title="MONTHNAME(date)"></a>MONTHNAME(date)</h4><p>返回月份：January，…</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select monthname(&#x27;2023-02-01 08:30:45&#x27;); # 输出 February</span><br></pre></td></tr></table></figure>
+
+<h4 id="DAYNAME-date"><a href="#DAYNAME-date" class="headerlink" title="DAYNAME(date)"></a>DAYNAME(date)</h4><p>返回星期几：MONDAY，TUESDAY…..SUNDAY</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select dayname(&#x27;2023-02-01 08:30:45&#x27;); # 输出  Wednesday</span><br></pre></td></tr></table></figure>
+
+<h4 id="WEEKDAY-date"><a href="#WEEKDAY-date" class="headerlink" title="WEEKDAY(date)"></a>WEEKDAY(date)</h4><p>返回周几，注意，周1是0，周2是1，。。。周日是6</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select weekday(&#x27;2023-02-01 08:30:45&#x27;); # 输出 2</span><br></pre></td></tr></table></figure>
+
+<h4 id="QUARTER-date"><a href="#QUARTER-date" class="headerlink" title="QUARTER(date)"></a>QUARTER(date)</h4><p>返回日期对应的季度，范围为1～4</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select quarter(&#x27;2023-02-01 08:30:45&#x27;); # 输出 1</span><br></pre></td></tr></table></figure>
+
+<h4 id="WEEKOFYEAR-date"><a href="#WEEKOFYEAR-date" class="headerlink" title="WEEKOFYEAR(date)"></a>WEEKOFYEAR(date)</h4><p>返回一年中的第几周</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select weekofyear(&#x27;2023-02-01 08:30:45&#x27;); # 输出 5</span><br></pre></td></tr></table></figure>
+
+<h4 id="DAYOFYEAR-date"><a href="#DAYOFYEAR-date" class="headerlink" title="DAYOFYEAR(date)"></a>DAYOFYEAR(date)</h4><p>返回日期是一年中的第几天</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select dayofyear(&#x27;2023-02-01 08:30:45&#x27;); # 输出 32</span><br></pre></td></tr></table></figure>
+
+<h4 id="DAYOFMONTH-date"><a href="#DAYOFMONTH-date" class="headerlink" title="DAYOFMONTH(date)"></a>DAYOFMONTH(date)</h4><p>返回日期位于所在月份的第几天</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select dayofmonth(&#x27;2023-02-01 08:30:45&#x27;); # 输出 1</span><br></pre></td></tr></table></figure>
+
+<h4 id="DAYOFWEEK-date"><a href="#DAYOFWEEK-date" class="headerlink" title="DAYOFWEEK(date)"></a>DAYOFWEEK(date)</h4><p>返回周几，注意：周日是1，周一是2，。。。周六是7</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select dayofweek(&#x27;2023-02-01 08:30:45&#x27;); # 输出 4</span><br></pre></td></tr></table></figure>
+
+<h3 id="日期的操作函数"><a href="#日期的操作函数" class="headerlink" title="日期的操作函数"></a>日期的操作函数</h3><h4 id="EXTRACT-type-FROM-date"><a href="#EXTRACT-type-FROM-date" class="headerlink" title="EXTRACT(type FROM date)"></a>EXTRACT(type FROM date)</h4><p>返回指定日期中特定的部分，type 指定返回的值。</p>
+<p>EXTRACT(type FROM date)函数中type的取值与含义：</p>
+<table>
+<thead>
+<tr>
+<th align="center">type 取值</th>
+<th align="center">含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">MICROSECOND</td>
+<td align="center">返回毫秒数</td>
+</tr>
+<tr>
+<td align="center">SECOND</td>
+<td align="center">返回秒数</td>
+</tr>
+<tr>
+<td align="center">MINUTE</td>
+<td align="center">返回分钟数</td>
+</tr>
+<tr>
+<td align="center">HOUR</td>
+<td align="center">返回小时数</td>
+</tr>
+<tr>
+<td align="center">DAY</td>
+<td align="center">返回天数</td>
+</tr>
+<tr>
+<td align="center">WEEK</td>
+<td align="center">返回日期在一年中的第几个星期</td>
+</tr>
+<tr>
+<td align="center">MONTH</td>
+<td align="center">返回日期在一年中的第几个月</td>
+</tr>
+<tr>
+<td align="center">QUARTER</td>
+<td align="center">返回日期在一年中的第几个季度</td>
+</tr>
+<tr>
+<td align="center">YEAR</td>
+<td align="center">返回日期的年份</td>
+</tr>
+<tr>
+<td align="center">SECOND_MICROSECOND</td>
+<td align="center">返回秒和毫秒值</td>
+</tr>
+<tr>
+<td align="center">MINUTE_MICROSECOND</td>
+<td align="center">返回分钟和毫秒值</td>
+</tr>
+<tr>
+<td align="center">MINUTE_SECOND</td>
+<td align="center">返回分钟和秒值</td>
+</tr>
+<tr>
+<td align="center">HOUR_MICROSECOND</td>
+<td align="center">返回小时和毫秒值</td>
+</tr>
+<tr>
+<td align="center">HOUR_SECOND</td>
+<td align="center">返回小时和秒值</td>
+</tr>
+<tr>
+<td align="center">HOUR_MINUTE</td>
+<td align="center">返回小时和分钟值</td>
+</tr>
+<tr>
+<td align="center">DAY_MICROSECOND</td>
+<td align="center">返回天和毫秒值</td>
+</tr>
+<tr>
+<td align="center">DAY_SECOND</td>
+<td align="center">返回天和秒值</td>
+</tr>
+<tr>
+<td align="center">DAY_MINUTE</td>
+<td align="center">返回天和分钟值</td>
+</tr>
+<tr>
+<td align="center">DAY_HOUR</td>
+<td align="center">返回天和小时</td>
+</tr>
+<tr>
+<td align="center">YEAR_MONTH</td>
+<td align="center">返回年和月</td>
+</tr>
+</tbody></table>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">select extract(year from &#x27;2023-02-01 08:30:45&#x27;); # 输出 2023</span><br><span class="line">select extract(month from &#x27;2023-02-01 08:30:45&#x27;); # 输出 2</span><br><span class="line">select extract(day from &#x27;2023-02-01 08:30:45&#x27;); # 输出 1</span><br><span class="line">select extract(hour from &#x27;2023-02-01 08:30:45&#x27;); # 输出 8</span><br><span class="line">select extract(minute from &#x27;2023-02-01 08:30:45&#x27;); # 输出 30</span><br><span class="line">select extract(second from &#x27;2023-02-01 08:30:45&#x27;); # 输出 45</span><br><span class="line">select extract(microsecond from &#x27;2023-02-01 08:30:45.000001&#x27;); # 输出 1</span><br><span class="line"></span><br><span class="line">select extract(week from &#x27;2023-02-01 08:30:45.000001&#x27;); # 输出 5</span><br><span class="line">select extract(quarter from &#x27;2023-02-01 08:30:45.000001&#x27;); # 输出 1</span><br><span class="line"></span><br><span class="line">select extract(second_microsecond from &#x27;2023-02-01 08:30:45.000001&#x27;); # 输出 45000001</span><br><span class="line">select extract(minute_microsecond from &#x27;2023-02-01 08:30:45.000001&#x27;); # 输出 3045000001</span><br><span class="line">select extract(minute_second from &#x27;2023-02-01 08:30:45.000001&#x27;); # 输出 3045</span><br><span class="line">select extract(hour_microsecond from &#x27;2023-02-01 08:30:45.000001&#x27;); # 输出 83045000001</span><br><span class="line">select extract(hour_second from &#x27;2023-02-01 08:30:45.000001&#x27;); # 输出 83045</span><br><span class="line">select extract(hour_minute from &#x27;2023-02-01 08:30:45.000001&#x27;); # 输出 830</span><br><span class="line">select extract(day_microsecond from &#x27;2023-02-01 08:30:45.000001&#x27;); # 输出 1083045000001</span><br><span class="line">select extract(day_second from &#x27;2023-02-01 08:30:45.000001&#x27;); # 输出 1083045</span><br><span class="line">select extract(day_minute from &#x27;2023-02-01 08:30:45.000001&#x27;); # 输出 10830</span><br><span class="line">select extract(day_hour from &#x27;2023-02-01 08:30:45.000001&#x27;); # 输出 108</span><br><span class="line">select extract(year_month from &#x27;2023-02-01 08:30:45.000001&#x27;); # 输出 202302</span><br></pre></td></tr></table></figure>
+
+<h3 id="时间和秒钟转换的函数"><a href="#时间和秒钟转换的函数" class="headerlink" title="时间和秒钟转换的函数"></a>时间和秒钟转换的函数</h3><h4 id="TIME-TO-SEC-time"><a href="#TIME-TO-SEC-time" class="headerlink" title="TIME_TO_SEC(time)"></a>TIME_TO_SEC(time)</h4><p>将 time 转化为秒并返回结果值。转化的公式为：小时<em>3600+分钟</em>60+秒</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select time_to_sec(&#x27;00:00:00&#x27;), time_to_sec(&#x27;01:00:00&#x27;); # 输出 0, 3600</span><br></pre></td></tr></table></figure>
+
+<h4 id="SEC-TO-TIME-seconds"><a href="#SEC-TO-TIME-seconds" class="headerlink" title="SEC_TO_TIME(seconds)"></a>SEC_TO_TIME(seconds)</h4><p>将 seconds 描述转化为包含小时、分钟和秒的时间</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select sec_to_time(0), sec_to_time(3600); # 输出 00:00:00, 01:00:00</span><br></pre></td></tr></table></figure>
+
+<h3 id="计算日期和时间的函数"><a href="#计算日期和时间的函数" class="headerlink" title="计算日期和时间的函数"></a>计算日期和时间的函数</h3><h4 id="DATE-ADD-datetime-INTERVAL-expr-type"><a href="#DATE-ADD-datetime-INTERVAL-expr-type" class="headerlink" title="DATE_ADD(datetime, INTERVAL  expr type)"></a>DATE_ADD(datetime, INTERVAL  expr type)</h4><h4 id="DATE-SUB-datetime-INTERVAL-expr-type"><a href="#DATE-SUB-datetime-INTERVAL-expr-type" class="headerlink" title="DATE_SUB(datetime, INTERVAL expr type)"></a>DATE_SUB(datetime, INTERVAL expr type)</h4><p>返回与datetime相差INTERVAL时间间隔的日期时间。</p>
+<p>上述函数中type的取值：</p>
+<table>
+<thead>
+<tr>
+<th align="center">type 取值</th>
+<th align="center">含 义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">HOUR</td>
+<td align="center">小时</td>
+</tr>
+<tr>
+<td align="center">MINUTE</td>
+<td align="center">分钟</td>
+</tr>
+<tr>
+<td align="center">SECOND</td>
+<td align="center">秒</td>
+</tr>
+<tr>
+<td align="center">YEAR</td>
+<td align="center">年</td>
+</tr>
+<tr>
+<td align="center">MONTH</td>
+<td align="center">月</td>
+</tr>
+<tr>
+<td align="center">DAY</td>
+<td align="center">日</td>
+</tr>
+<tr>
+<td align="center">YEAR_MONTH</td>
+<td align="center">年和月</td>
+</tr>
+<tr>
+<td align="center">DAY_HOUR</td>
+<td align="center">日和小时</td>
+</tr>
+<tr>
+<td align="center">DAY_MINUTE</td>
+<td align="center">日和分钟</td>
+</tr>
+<tr>
+<td align="center">DAY_SECOND</td>
+<td align="center">日和秒</td>
+</tr>
+<tr>
+<td align="center">HOUR_MINUTE</td>
+<td align="center">小时和分钟</td>
+</tr>
+<tr>
+<td align="center">HOUR_SECOND</td>
+<td align="center">小时和秒</td>
+</tr>
+<tr>
+<td align="center">MINUTE_SECOND</td>
+<td align="center">分钟和秒</td>
+</tr>
+</tbody></table>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">select date_add(&#x27;2023-01-01 00:00:00&#x27;, interval 1 hour); # 输出 2023-01-01 01:00:00</span><br><span class="line">select date_add(&#x27;2023-01-01 00:00:00&#x27;, interval -1 hour); # 输出 2022-12-31 23:00:00</span><br><span class="line">select date_add(&#x27;2023-01-01 00:00:00&#x27;, interval &#x27;1-2&#x27; hour_minute ); # 输出 2023-01-01 01:02:00</span><br><span class="line"></span><br><span class="line">select date_sub(&#x27;2023-03-01 00:00:00&#x27;, interval 1 year); # 输出 2022-03-01 00:00:00</span><br><span class="line">select date_sub(&#x27;2023-03-01 00:00:00&#x27;, interval -1 year); # 输出 2024-03-01 00:00:00</span><br><span class="line">select date_sub(&#x27;2023-03-01 00:00:00&#x27;, interval &#x27;1-2&#x27; year_month ); # 输出 2022-01-01 00:00:00</span><br></pre></td></tr></table></figure>
+
+<h4 id="ADDTIME-time1-time2"><a href="#ADDTIME-time1-time2" class="headerlink" title="ADDTIME(time1,time2)"></a>ADDTIME(time1,time2)</h4><p>返回time1加上time2的时间</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select addtime(&#x27;01:00:00&#x27;, &#x27;08:30:45.100&#x27;); # 输出 09:30:45.100000</span><br></pre></td></tr></table></figure>
+
+<h4 id="SUBTIME-time1-time2"><a href="#SUBTIME-time1-time2" class="headerlink" title="SUBTIME(time1,time2)"></a>SUBTIME(time1,time2)</h4><p>返回time1减去time2后的时间</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select subtime(&#x27;01:00:00&#x27;, &#x27;00:30:45&#x27;); # 输出 00:29:15</span><br></pre></td></tr></table></figure>
+
+<h4 id="DATEDIFF-date1-date2"><a href="#DATEDIFF-date1-date2" class="headerlink" title="DATEDIFF(date1,date2)"></a>DATEDIFF(date1,date2)</h4><p>返回date1 - date2的日期间隔天数</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select datediff(&#x27;2023-01-15&#x27;, &#x27;2023-01-01&#x27;); # 输出 14</span><br></pre></td></tr></table></figure>
+
+<h4 id="TIMEDIFF-time1-time2"><a href="#TIMEDIFF-time1-time2" class="headerlink" title="TIMEDIFF(time1, time2)"></a>TIMEDIFF(time1, time2)</h4><p>返回time1 - time2的时间间隔</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select timediff(&#x27;01:00:00&#x27;, &#x27;00:40:00&#x27;); # 输出 00:20:</span><br></pre></td></tr></table></figure>
+
+<h4 id="FROM-DAYS-N"><a href="#FROM-DAYS-N" class="headerlink" title="FROM_DAYS(N)"></a>FROM_DAYS(N)</h4><p>返回从0000年1月1日起，N天以后的日期</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select from_days(0), from_days(366); # 输出 0000-00-00, 0001-01-01</span><br></pre></td></tr></table></figure>
+
+<h4 id="TO-DAYS-date"><a href="#TO-DAYS-date" class="headerlink" title="TO_DAYS(date)"></a>TO_DAYS(date)</h4><p>返回日期date距离0000年1月1日的天数</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select to_days(&#x27;0000-01-01&#x27;), to_days(&#x27;0001-01-01&#x27;); # 输出 1, 366</span><br></pre></td></tr></table></figure>
+
+<h4 id="LAST-DAY-date"><a href="#LAST-DAY-date" class="headerlink" title="LAST_DAY(date)"></a>LAST_DAY(date)</h4><p>返回date所在月份的最后一天的日期</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select last_day(&#x27;2023-01-01&#x27;); # 输出 2023-01-31</span><br></pre></td></tr></table></figure>
+
+<h4 id="MAKEDATE-year-n"><a href="#MAKEDATE-year-n" class="headerlink" title="MAKEDATE(year,n)"></a>MAKEDATE(year,n)</h4><p>针对给定年份与所在年份中的天数返回一个日期</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select makedate(2023, 1), makedate(2023, 32); # 输出 2023-01-01, 2023-02-01</span><br></pre></td></tr></table></figure>
+
+<h4 id="MAKETIME-hour-minute-second"><a href="#MAKETIME-hour-minute-second" class="headerlink" title="MAKETIME(hour,minute,second)"></a>MAKETIME(hour,minute,second)</h4><p>将给定的小时、分钟和秒组合成时间并返回</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select maketime(12, 30, 45); # 输出 12:30:45</span><br></pre></td></tr></table></figure>
+
+<h3 id="日期的格式化与解析"><a href="#日期的格式化与解析" class="headerlink" title="日期的格式化与解析"></a>日期的格式化与解析</h3><h4 id="DATE-FORMAT-date-fmt"><a href="#DATE-FORMAT-date-fmt" class="headerlink" title="DATE_FORMAT(date,fmt)"></a>DATE_FORMAT(date,fmt)</h4><p>按照字符串fmt格式化日期date值</p>
+<h4 id="TIME-FORMAT-time-fmt"><a href="#TIME-FORMAT-time-fmt" class="headerlink" title="TIME_FORMAT(time,fmt)"></a>TIME_FORMAT(time,fmt)</h4><p>按照字符串fmt格式化时间time值</p>
+<h4 id="STR-TO-DATE-str-fmt"><a href="#STR-TO-DATE-str-fmt" class="headerlink" title="STR_TO_DATE(str, fmt)"></a>STR_TO_DATE(str, fmt)</h4><p>按照字符串fmt对str进行解析，解析为一个日期。</p>
+<p>上述函数中fmt参数常用的格式符：</p>
+<table>
+<thead>
+<tr>
+<th>格式符</th>
+<th>说明</th>
+<th>格式符</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>%Y</td>
+<td>4位数字表示年份</td>
+<td>%y</td>
+<td>表示两位数字表示年份</td>
+</tr>
+<tr>
+<td>%M</td>
+<td>月名表示月份（January,….）</td>
+<td>%m</td>
+<td>两位数字表示月份（01,02,03。。。）</td>
+</tr>
+<tr>
+<td>%b</td>
+<td>缩写的月名（Jan.，Feb.，….）</td>
+<td>%c</td>
+<td>数字表示月份（1,2,3,…）</td>
+</tr>
+<tr>
+<td>%D</td>
+<td>英文后缀表示月中的天数（1st,2nd,3rd,…）</td>
+<td>%d</td>
+<td>两位数字表示月中的天数(01,02…)</td>
+</tr>
+<tr>
+<td>%e</td>
+<td>数字形式表示月中的天数（1,2,3,4,5…..）</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>%H</td>
+<td>两位数字表示小数，24小时制（01,02..）</td>
+<td>%h和%I</td>
+<td>两位数字表示小时，12小时制（01,02..）</td>
+</tr>
+<tr>
+<td>%k</td>
+<td>数字形式的小时，24小时制(1,2,3)</td>
+<td>%l</td>
+<td>数字形式表示小时，12小时制（1,2,3,4….）</td>
+</tr>
+<tr>
+<td>%i</td>
+<td>两位数字表示分钟（00,01,02）</td>
+<td>%S和%s</td>
+<td>两位数字表示秒(00,01,02…)</td>
+</tr>
+<tr>
+<td>%W</td>
+<td>一周中的星期名称（Sunday…）</td>
+<td>%a</td>
+<td>一周中的星期缩写（Sun.，Mon.,Tues.，..）</td>
+</tr>
+<tr>
+<td>%w</td>
+<td>以数字表示周中的天数(0&#x3D;Sunday,1&#x3D;Monday….)</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>%j</td>
+<td>以3位数字表示年中的天数(001,002…)</td>
+<td>%U</td>
+<td>以数字表示年中的第几周，（1,2,3。。）其中Sunday为周中第一天</td>
+</tr>
+<tr>
+<td>%u</td>
+<td>以数字表示年中的第几周，（1,2,3。。）其中Monday为周中第一天</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>%T</td>
+<td>24小时制</td>
+<td>%r</td>
+<td>12小时制</td>
+</tr>
+<tr>
+<td>%p</td>
+<td>AM或PM</td>
+<td>%%</td>
+<td>表示%</td>
+</tr>
+</tbody></table>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">select date_format(&#x27;2023-01-01 12:30:45&#x27;, &#x27;%Y年%m月%d日 %H时%i分%s秒&#x27;); # 输出 2023年01月01日 12时30分45秒</span><br><span class="line"></span><br><span class="line">select time_format(&#x27;12:30:45&#x27;, &#x27;%H时%i分%s秒&#x27;); # 输出 12时30分45秒</span><br><span class="line"></span><br><span class="line">select STR_TO_DATE(&#x27;2023年01月01日 12时30分45秒&#x27;, &#x27;%Y年%m月%d日 %H时%i分%s秒&#x27;); # 输出 2023-01-01 12:30:45</span><br></pre></td></tr></table></figure>
+
+<h4 id="GET-FORMAT-date-type-format-type"><a href="#GET-FORMAT-date-type-format-type" class="headerlink" title="GET_FORMAT(date_type,format_type)"></a>GET_FORMAT(date_type,format_type)</h4><p>返回日期字符串的显示格式。<code>GET_FORMAT</code> 函数中 <code>date_type</code> 和 <code>format_type</code> 参数取值如下：</p>
+<table>
+<thead>
+<tr>
+<th align="center">日期类型</th>
+<th align="center">格式化类型</th>
+<th align="center">返回的格式化字符串</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">DATE</td>
+<td align="center">USA</td>
+<td align="center">%m.%d.%Y</td>
+</tr>
+<tr>
+<td align="center">DATE</td>
+<td align="center">JIS</td>
+<td align="center">%Y-%m-%d</td>
+</tr>
+<tr>
+<td align="center">DATE</td>
+<td align="center">ISO</td>
+<td align="center">%Y-%m-%d</td>
+</tr>
+<tr>
+<td align="center">DATE</td>
+<td align="center">EUR</td>
+<td align="center">%d.%m.%Y</td>
+</tr>
+<tr>
+<td align="center">DATE</td>
+<td align="center">INTERNAL</td>
+<td align="center">%Y%m%d</td>
+</tr>
+<tr>
+<td align="center">TIME</td>
+<td align="center">USA</td>
+<td align="center">%h:%i:%s %p</td>
+</tr>
+<tr>
+<td align="center">TIME</td>
+<td align="center">JIS</td>
+<td align="center">%H:%i:%s</td>
+</tr>
+<tr>
+<td align="center">TIME</td>
+<td align="center">ISO</td>
+<td align="center">%H:%i:%s</td>
+</tr>
+<tr>
+<td align="center">TIME</td>
+<td align="center">EUR</td>
+<td align="center">%H.%i.%s</td>
+</tr>
+<tr>
+<td align="center">TIME</td>
+<td align="center">INTERNAL</td>
+<td align="center">%H%i%s</td>
+</tr>
+<tr>
+<td align="center">DATETIME</td>
+<td align="center">USA</td>
+<td align="center">%Y-%m-%d %H.%i.%s</td>
+</tr>
+<tr>
+<td align="center">DATETIME</td>
+<td align="center">JIS</td>
+<td align="center">%Y-%m-%d %H:%i:%s</td>
+</tr>
+<tr>
+<td align="center">DATETIME</td>
+<td align="center">ISO</td>
+<td align="center">%Y-%m-%d %H:%i:%s</td>
+</tr>
+<tr>
+<td align="center">DATETIME</td>
+<td align="center">EUR</td>
+<td align="center">%Y-%m-%d %H.%i.%s</td>
+</tr>
+<tr>
+<td align="center">DATETIME</td>
+<td align="center">INTERNAL</td>
+<td align="center">%Y%m%d%H%i%s</td>
+</tr>
+</tbody></table>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select get_format(DATE, &#x27;ISO&#x27;); # 输出 %Y-%m-%d</span><br></pre></td></tr></table></figure>
+
+<h2 id="流程控制函数"><a href="#流程控制函数" class="headerlink" title="流程控制函数"></a>流程控制函数</h2><h3 id="IF-value-value1-value2"><a href="#IF-value-value1-value2" class="headerlink" title="IF(value,value1,value2)"></a>IF(value,value1,value2)</h3><p>如果value的值为TRUE，返回value1，否则返回value2</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select if(1 &gt; 0, &#x27;正确&#x27;, &#x27;错误&#x27;), if(-1 &gt; 0, &#x27;正确&#x27;, &#x27;错误&#x27;); # 输出 正确, 错误</span><br></pre></td></tr></table></figure>
+
+<h3 id="IFNULL-value1-value2"><a href="#IFNULL-value1-value2" class="headerlink" title="IFNULL(value1, value2)"></a>IFNULL(value1, value2)</h3><p>如果value1不为NULL，返回value1，否则返回value2</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select ifnull(&#x27;abc&#x27;, &#x27;123&#x27;), ifnull(null, &#x27;123&#x27;); # 输出 abc, 123</span><br></pre></td></tr></table></figure>
+
+<h3 id="CASE-WHEN-条件1-THEN-结果1-WHEN-条件2-THEN-结果2-…-ELSE-resultn-END"><a href="#CASE-WHEN-条件1-THEN-结果1-WHEN-条件2-THEN-结果2-…-ELSE-resultn-END" class="headerlink" title="CASE WHEN 条件1 THEN 结果1 WHEN 条件2 THEN 结果2 …. [ELSE resultn] END"></a>CASE WHEN 条件1 THEN 结果1 WHEN 条件2 THEN 结果2 …. [ELSE resultn] END</h3><p>相当于Java的if…else if…else…</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">select case</span><br><span class="line">           when -1 &gt; 0</span><br><span class="line">               then &#x27;-1 &gt; 0&#x27;</span><br><span class="line">           when 1 &gt; 0</span><br><span class="line">               then &#x27; 2 &gt; 0&#x27;</span><br><span class="line">           else &#x27;无&#x27;</span><br><span class="line">           end; # 输出 2 &gt; 0</span><br></pre></td></tr></table></figure>
+
+<h3 id="CASE-expr-WHEN-常量值1-THEN-值1-WHEN-常量值1-THEN-值1-…-ELSE-值n-END"><a href="#CASE-expr-WHEN-常量值1-THEN-值1-WHEN-常量值1-THEN-值1-…-ELSE-值n-END" class="headerlink" title="CASE  expr WHEN 常量值1 THEN 值1 WHEN 常量值1 THEN 值1 …. [ELSE 值n] END"></a>CASE  expr WHEN 常量值1 THEN 值1 WHEN 常量值1 THEN 值1 …. [ELSE 值n] END</h3><p>相当于Java的switch…case…</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">select case 2</span><br><span class="line">           when 1</span><br><span class="line">               then &#x27;1&#x27;</span><br><span class="line">           when 2</span><br><span class="line">               then &#x27;2&#x27;</span><br><span class="line">           else &#x27;无&#x27;</span><br><span class="line">           end; # 输出 2</span><br></pre></td></tr></table></figure>
+
+<h2 id="加密函数"><a href="#加密函数" class="headerlink" title="加密函数"></a>加密函数</h2><h3 id="MD5-str"><a href="#MD5-str" class="headerlink" title="MD5(str)"></a>MD5(str)</h3><p>返回字符串 str 的 md5 加密后的值，也是一种加密方式。若参数为 NULL，则会返回 NULL</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select md5(&#x27;123456&#x27;), md5(null); # 输出 e10adc3949ba59abbe56e057f20f883e, null</span><br></pre></td></tr></table></figure>
+
+<h3 id="SHA-str"><a href="#SHA-str" class="headerlink" title="SHA(str)"></a>SHA(str)</h3><p>从原明文密码 str 计算并返回加密后的密码字符串，当参数为 NULL 时，返回 NULL。<code>SHA加密算法比MD5更加安全</code>。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select sha(&#x27;123456&#x27;), sha(null); # 输出 7c4a8d09ca3762af61e59520943dc26494f8941b, null</span><br></pre></td></tr></table></figure>
+
+<h2 id="MySQL信息函数-sql"><a href="#MySQL信息函数-sql" class="headerlink" title="MySQL信息函数.sql"></a>MySQL信息函数.sql</h2><h3 id="VERSION"><a href="#VERSION" class="headerlink" title="VERSION()"></a>VERSION()</h3><p>返回当前MySQL的版本号</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select version(); # 输出 8.0.25</span><br></pre></td></tr></table></figure>
+
+<h3 id="CONNECTION-ID"><a href="#CONNECTION-ID" class="headerlink" title="CONNECTION_ID()"></a>CONNECTION_ID()</h3><p>返回当前MySQL服务器的连接数</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select connection_id(); # 输出 20</span><br></pre></td></tr></table></figure>
+
+<h3 id="DATABASE"><a href="#DATABASE" class="headerlink" title="DATABASE()"></a>DATABASE()</h3><p>返回MySQL命令行当前所在的数据库</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select database(); # 输出 test</span><br></pre></td></tr></table></figure>
+
+<h3 id="USER"><a href="#USER" class="headerlink" title="USER()"></a>USER()</h3><p>返回当前连接MySQL的用户名，返回结果格式为“主机名@用户名”</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select user(); # 输出 root@192.168.134.1</span><br></pre></td></tr></table></figure>
+
+<h3 id="CHARSET-value"><a href="#CHARSET-value" class="headerlink" title="CHARSET(value)"></a>CHARSET(value)</h3><p>返回字符串value自变量的字符集</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select charset(&#x27;1&#x27;); # 输出 utf8mb4</span><br></pre></td></tr></table></figure>
+
+<h3 id="COLLATION-value"><a href="#COLLATION-value" class="headerlink" title="COLLATION(value)"></a>COLLATION(value)</h3><p>返回字符串value的比较规则</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select collation(&#x27;1&#x27;); # 输出 utf8mb4_0900_ai_ci</span><br></pre></td></tr></table></figure>
+
+<h2 id="聚合函数"><a href="#聚合函数" class="headerlink" title="聚合函数"></a>聚合函数</h2><h3 id="AVG"><a href="#AVG" class="headerlink" title="AVG()"></a>AVG()</h3><p>求平均值</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select avg(salary) from employees; # 输出 6461.682243</span><br></pre></td></tr></table></figure>
+
+<h3 id="SUM"><a href="#SUM" class="headerlink" title="SUM()"></a>SUM()</h3><p>求累加和</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select sum(salary) from employees; # 输出 691400</span><br></pre></td></tr></table></figure>
+
+<h3 id="MAX"><a href="#MAX" class="headerlink" title="MAX()"></a>MAX()</h3><p>求最大值</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select max(salary) from employees; # 输出 24000</span><br></pre></td></tr></table></figure>
+
+<h3 id="MIN"><a href="#MIN" class="headerlink" title="MIN()"></a>MIN()</h3><p> 求最小值</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select min(salary) from employees; # 输出 2100</span><br></pre></td></tr></table></figure>
+
+<h3 id="COUNT"><a href="#COUNT" class="headerlink" title="COUNT()"></a>COUNT()</h3><p>统计行的数量</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select count(*) from employees; # 输出 107</span><br></pre></td></tr></table></figure>
+
+<h2 id="其他函数"><a href="#其他函数" class="headerlink" title="其他函数"></a>其他函数</h2><h3 id="INET-ATON-ipvalue"><a href="#INET-ATON-ipvalue" class="headerlink" title="INET_ATON(ipvalue)"></a>INET_ATON(ipvalue)</h3><p>将以点分隔的IP地址转化为一个数字。</p>
+<p>计算方法以“127.0.0.1”为例，计算方式为127乘以256的3次方，加上0乘以256的2次方，加上0乘以256，再加上1。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select inet_aton(&#x27;127.0.0.1&#x27;); # 输出 2130706433</span><br></pre></td></tr></table></figure>
+
+<h3 id="INET-NTOA-value"><a href="#INET-NTOA-value" class="headerlink" title="INET_NTOA(value)"></a>INET_NTOA(value)</h3><p>将数字形式的IP地址转化为以点分隔的IP地址</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select inet_ntoa(&#x27;2130706433&#x27;); # 输出 127.0.0.1</span><br></pre></td></tr></table></figure>
+
+<h3 id="BENCHMARK-n-expr"><a href="#BENCHMARK-n-expr" class="headerlink" title="BENCHMARK(n,expr)"></a>BENCHMARK(n,expr)</h3><p>将表达式expr重复执行n次。用于测试MySQL处理expr表达式所耗费的时间</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select benchmark(10000000, md5(&#x27;123456&#x27;)); # 输出 0</span><br></pre></td></tr></table></figure>
+
+<h3 id="CONVERT-value-USING-char-code"><a href="#CONVERT-value-USING-char-code" class="headerlink" title="CONVERT(value USING char_code)"></a>CONVERT(value USING char_code)</h3><p>将value所使用的字符编码修改为char_code</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select charset(&#x27;abc&#x27;), charset(convert(&#x27;abc&#x27; using &#x27;gbk&#x27;)); # 输出 utf8mb4, gbk</span><br></pre></td></tr></table></figure>
+
+</div>
+        </div>
+        
+        <footer class="kratos-entry-footer clearfix">
+            
+            <div class="footer-tag clearfix">
+                <div class="pull-left">
+                <i class="fa fa-tags"></i>
+                    <a class="tag-none-link" href="/blog/tags/MySQL/" rel="tag">MySQL</a>
+                </div>
+                <div class="pull-date">
+                    <time datetime="2026-01-04T05:51:48.300Z" itemprop="dateModified">最后编辑：2026-01-04</time>
+                </div>
+            </div>
+        </footer>
+    </div>
+    
+        <nav class="navigation post-navigation clearfix" role="navigation">
+            
+            <div class="nav-previous clearfix">
+                <a title=" 【Java 8 新特性】时间类：ZoneId 和 ZoneOffset" href="/blog/2023/05/11/Java8/time/ZoneId_ZoneOffset/">&lt; 上一篇</a>
+            </div>
+            
+            
+            <div class="nav-next clearfix">
+                <a title=" MySQL 中的数据类型" href="/blog/2023/05/17/mysql/数据类型/">下一篇 &gt;</a>
+            </div>
+            
+        </nav>
+    
+    
+</article>
+
+        
+
+            </section>
+
+        
+
+                
+            
+
+<section id="kratos-widget-area" class="col-md-4 hidden-xs hidden-sm">
+    <!-- 文章和页面根据splitter来分割，没有的话就从头开始设置为sticky -->
+    
+    
+                <aside id="krw-about" class="widget widget-kratos-about clearfix">
+    <div class="photo-background"></div>
+    <div class="photo-wrapper clearfix">
+        <div class="photo-wrapper-tip text-center">
+            <img class="about-photo" src="/blog/images/avatar.webp" loading="lazy" decoding="auto" />
+        </div>
+    </div>
+    <div class="textwidget">
+        <p class="text-center">极简主义</p>
+    </div>
+    <div class="site-meta">
+        <a class="meta-item" href="/blog/archives/">
+            <span class="title">
+                文章
+            </span>
+            <span class="count">
+                77
+            </span>
+        </a>
+        <a class="meta-item" href="/blog/categories/">
+            <span class="title">
+                分类
+            </span>
+            <span class="count">
+                10
+            </span>
+        </a>
+        <a class="meta-item" href="/blog/tags/">
+            <span class="title">
+                标签
+            </span>
+            <span class="count">
+                29
+            </span>
+        </a>
+    </div>
+</aside>
+            
+                    <div class="sticky-area">
+                
+                    <aside id="krw-toc" class="widget widget-kratos-toc clearfix toc-div-class" >
+    <div class="photo-background"></div>
+    <h4 class="widget-title no-after">
+        <i class="fa fa-compass"></i>
+        文章目录
+        <span class="toc-progress-bar" role="progressbar" aria-label="阅读进度："></span>
+    </h4>
+    <div class="textwidget">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E5%80%BC%E5%87%BD%E6%95%B0"><span class="toc-text">数值函数</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9F%BA%E6%9C%AC%E5%87%BD%E6%95%B0"><span class="toc-text">基本函数</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#ABS-x"><span class="toc-text">ABS(x)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#SIGN-x"><span class="toc-text">SIGN(x)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#PI"><span class="toc-text">PI()</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#CEIL-x-%EF%BC%8CCEILING-x"><span class="toc-text">CEIL(x)，CEILING(x)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#FLOOR-x"><span class="toc-text">FLOOR(x)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#LEAST-e1-e2-e3%E2%80%A6"><span class="toc-text">LEAST(e1,e2,e3…)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#GREATEST-e1-e2-e3%E2%80%A6"><span class="toc-text">GREATEST(e1,e2,e3…)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#MOD-x-y"><span class="toc-text">MOD(x,y)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#RAND"><span class="toc-text">RAND()</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#RAND-x"><span class="toc-text">RAND(x)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#ROUND-x"><span class="toc-text">ROUND(x)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#ROUND-x-y"><span class="toc-text">ROUND(x,y)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#TRUNCATE-x-y"><span class="toc-text">TRUNCATE(x,y)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#SQRT-x"><span class="toc-text">SQRT(x)</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A7%92%E5%BA%A6%E4%B8%8E%E5%BC%A7%E5%BA%A6%E4%BA%92%E8%BD%AC%E5%87%BD%E6%95%B0"><span class="toc-text">角度与弧度互转函数</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#RADIANS-x"><span class="toc-text">RADIANS(x)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#DEGREES-x"><span class="toc-text">DEGREES(x)</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%89%E8%A7%92%E5%87%BD%E6%95%B0"><span class="toc-text">三角函数</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#SIN-x"><span class="toc-text">SIN(x)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#ASIN-x"><span class="toc-text">ASIN(x)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#COS-x"><span class="toc-text">COS(x)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#ACOS-x"><span class="toc-text">ACOS(x)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#TAN-x"><span class="toc-text">TAN(x)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#ATAN-x"><span class="toc-text">ATAN(x)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#ATAN2-m-n"><span class="toc-text">ATAN2(m,n)</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8C%87%E6%95%B0%E4%B8%8E%E5%AF%B9%E6%95%B0"><span class="toc-text">指数与对数</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#POW-x-y-%EF%BC%8CPOWER-x-y"><span class="toc-text">POW(x,y)，POWER(x,y)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#EXP-x"><span class="toc-text">EXP(x)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#LN-x-%EF%BC%8CLOG-x"><span class="toc-text">LN(x)，LOG(x)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#LOG10-x"><span class="toc-text">LOG10(x)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#LOG2-x"><span class="toc-text">LOG2(x)</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%9B%E5%88%B6%E9%97%B4%E7%9A%84%E8%BD%AC%E6%8D%A2"><span class="toc-text">进制间的转换</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#BIN-x"><span class="toc-text">BIN(x)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#HEX-x"><span class="toc-text">HEX(x)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#OCT-x"><span class="toc-text">OCT(x)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#CONV-x-f1-f2"><span class="toc-text">CONV(x,f1,f2)</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%87%BD%E6%95%B0"><span class="toc-text">字符串函数</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#ASCII-S"><span class="toc-text">ASCII(S)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#CHAR-LENGTH-s"><span class="toc-text">CHAR_LENGTH(s)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#LENGTH-s"><span class="toc-text">LENGTH(s)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#CONCAT-s1-s2-%E2%80%A6%E2%80%A6-sn"><span class="toc-text">CONCAT(s1,s2,……,sn)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#CONCAT-WS-x-s1-s2-%E2%80%A6%E2%80%A6-sn"><span class="toc-text">CONCAT_WS(x, s1,s2,……,sn)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#INSERT-str-idx-len-replacestr"><span class="toc-text">INSERT(str, idx, len, replacestr)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#REPLACE-str-a-b"><span class="toc-text">REPLACE(str, a, b)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#UPPER-s-%E5%92%8C-UCASE-s"><span class="toc-text">UPPER(s) 和 UCASE(s)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#LOWER-s-%E5%92%8C-LCASE-s"><span class="toc-text">LOWER(s) 和 LCASE(s)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#LEFT-str-n"><span class="toc-text">LEFT(str,n)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#RIGHT-str-n"><span class="toc-text">RIGHT(str,n)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#LPAD-str-len-pad"><span class="toc-text">LPAD(str, len, pad)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#RPAD-str-len-pad"><span class="toc-text">RPAD(str ,len, pad)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#LTRIM-s"><span class="toc-text">LTRIM(s)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#RTRIM-s"><span class="toc-text">RTRIM(s)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#TRIM-s"><span class="toc-text">TRIM(s)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#TRIM-s1-FROM-s"><span class="toc-text">TRIM(s1 FROM s)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#TRIM-LEADING-s1-FROM-s"><span class="toc-text">TRIM(LEADING s1 FROM s)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#TRIM-TRAILING-s1-FROM-s"><span class="toc-text">TRIM(TRAILING s1 FROM s)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#REPEAT-str-n"><span class="toc-text">REPEAT(str, n)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#SPACE-n"><span class="toc-text">SPACE(n)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#STRCMP-s1-s2"><span class="toc-text">STRCMP(s1,s2)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#SUBSTR-s-index-len"><span class="toc-text">SUBSTR(s,index,len)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#LOCATE-substr-str"><span class="toc-text">LOCATE(substr,str)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ELT-m-s1-s2-%E2%80%A6-sn"><span class="toc-text">ELT(m,s1,s2,…,sn)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#FIELD-s-s1-s2-%E2%80%A6-sn"><span class="toc-text">FIELD(s,s1,s2,…,sn)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#FIND-IN-SET-s1-s2"><span class="toc-text">FIND_IN_SET(s1,s2)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#REVERSE-s"><span class="toc-text">REVERSE(s)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#NULLIF-value1-value2"><span class="toc-text">NULLIF(value1,value2)</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%97%A5%E6%9C%9F%E5%92%8C%E6%97%B6%E9%97%B4%E5%87%BD%E6%95%B0"><span class="toc-text">日期和时间函数</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%8E%B7%E5%8F%96%E6%97%A5%E6%9C%9F%E5%92%8C%E6%97%B6%E9%97%B4%E5%87%BD%E6%95%B0"><span class="toc-text">获取日期和时间函数</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#CURDATE"><span class="toc-text">CURDATE()</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#CURTIME"><span class="toc-text">CURTIME()</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#NOW"><span class="toc-text">NOW()</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#UTC-DATE"><span class="toc-text">UTC_DATE()</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#UTC-TIME"><span class="toc-text">UTC_TIME()</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%97%A5%E6%9C%9F%E4%B8%8E%E6%97%B6%E9%97%B4%E6%88%B3%E7%9A%84%E8%BD%AC%E6%8D%A2%E5%87%BD%E6%95%B0"><span class="toc-text">日期与时间戳的转换函数</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#UNIX-TIMESTAMP"><span class="toc-text">UNIX_TIMESTAMP()</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#UNIX-TIMESTAMP-date"><span class="toc-text">UNIX_TIMESTAMP(date)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#FROM-UNIXTIME-timestamp"><span class="toc-text">FROM_UNIXTIME(timestamp)</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%8E%B7%E5%8F%96%E6%9C%88%E4%BB%BD%E3%80%81%E6%98%9F%E6%9C%9F%E3%80%81%E5%A4%A9%E6%95%B0%E7%AD%89%E5%87%BD%E6%95%B0"><span class="toc-text">获取月份、星期、天数等函数</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#YEAR-date-MONTH-date-DAY-date"><span class="toc-text">YEAR(date) \ MONTH(date)\ DAY(date)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#HOUR-time-MINUTE-time-SECOND-time"><span class="toc-text">HOUR(time) \ MINUTE(time) \ SECOND(time)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#MONTHNAME-date"><span class="toc-text">MONTHNAME(date)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#DAYNAME-date"><span class="toc-text">DAYNAME(date)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#WEEKDAY-date"><span class="toc-text">WEEKDAY(date)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#QUARTER-date"><span class="toc-text">QUARTER(date)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#WEEKOFYEAR-date"><span class="toc-text">WEEKOFYEAR(date)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#DAYOFYEAR-date"><span class="toc-text">DAYOFYEAR(date)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#DAYOFMONTH-date"><span class="toc-text">DAYOFMONTH(date)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#DAYOFWEEK-date"><span class="toc-text">DAYOFWEEK(date)</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%97%A5%E6%9C%9F%E7%9A%84%E6%93%8D%E4%BD%9C%E5%87%BD%E6%95%B0"><span class="toc-text">日期的操作函数</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#EXTRACT-type-FROM-date"><span class="toc-text">EXTRACT(type FROM date)</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%97%B6%E9%97%B4%E5%92%8C%E7%A7%92%E9%92%9F%E8%BD%AC%E6%8D%A2%E7%9A%84%E5%87%BD%E6%95%B0"><span class="toc-text">时间和秒钟转换的函数</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#TIME-TO-SEC-time"><span class="toc-text">TIME_TO_SEC(time)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#SEC-TO-TIME-seconds"><span class="toc-text">SEC_TO_TIME(seconds)</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AE%A1%E7%AE%97%E6%97%A5%E6%9C%9F%E5%92%8C%E6%97%B6%E9%97%B4%E7%9A%84%E5%87%BD%E6%95%B0"><span class="toc-text">计算日期和时间的函数</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#DATE-ADD-datetime-INTERVAL-expr-type"><span class="toc-text">DATE_ADD(datetime, INTERVAL  expr type)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#DATE-SUB-datetime-INTERVAL-expr-type"><span class="toc-text">DATE_SUB(datetime, INTERVAL expr type)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#ADDTIME-time1-time2"><span class="toc-text">ADDTIME(time1,time2)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#SUBTIME-time1-time2"><span class="toc-text">SUBTIME(time1,time2)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#DATEDIFF-date1-date2"><span class="toc-text">DATEDIFF(date1,date2)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#TIMEDIFF-time1-time2"><span class="toc-text">TIMEDIFF(time1, time2)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#FROM-DAYS-N"><span class="toc-text">FROM_DAYS(N)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#TO-DAYS-date"><span class="toc-text">TO_DAYS(date)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#LAST-DAY-date"><span class="toc-text">LAST_DAY(date)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#MAKEDATE-year-n"><span class="toc-text">MAKEDATE(year,n)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#MAKETIME-hour-minute-second"><span class="toc-text">MAKETIME(hour,minute,second)</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%97%A5%E6%9C%9F%E7%9A%84%E6%A0%BC%E5%BC%8F%E5%8C%96%E4%B8%8E%E8%A7%A3%E6%9E%90"><span class="toc-text">日期的格式化与解析</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#DATE-FORMAT-date-fmt"><span class="toc-text">DATE_FORMAT(date,fmt)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#TIME-FORMAT-time-fmt"><span class="toc-text">TIME_FORMAT(time,fmt)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#STR-TO-DATE-str-fmt"><span class="toc-text">STR_TO_DATE(str, fmt)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#GET-FORMAT-date-type-format-type"><span class="toc-text">GET_FORMAT(date_type,format_type)</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B5%81%E7%A8%8B%E6%8E%A7%E5%88%B6%E5%87%BD%E6%95%B0"><span class="toc-text">流程控制函数</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#IF-value-value1-value2"><span class="toc-text">IF(value,value1,value2)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#IFNULL-value1-value2"><span class="toc-text">IFNULL(value1, value2)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#CASE-WHEN-%E6%9D%A1%E4%BB%B61-THEN-%E7%BB%93%E6%9E%9C1-WHEN-%E6%9D%A1%E4%BB%B62-THEN-%E7%BB%93%E6%9E%9C2-%E2%80%A6-ELSE-resultn-END"><span class="toc-text">CASE WHEN 条件1 THEN 结果1 WHEN 条件2 THEN 结果2 …. [ELSE resultn] END</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#CASE-expr-WHEN-%E5%B8%B8%E9%87%8F%E5%80%BC1-THEN-%E5%80%BC1-WHEN-%E5%B8%B8%E9%87%8F%E5%80%BC1-THEN-%E5%80%BC1-%E2%80%A6-ELSE-%E5%80%BCn-END"><span class="toc-text">CASE  expr WHEN 常量值1 THEN 值1 WHEN 常量值1 THEN 值1 …. [ELSE 值n] END</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8A%A0%E5%AF%86%E5%87%BD%E6%95%B0"><span class="toc-text">加密函数</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#MD5-str"><span class="toc-text">MD5(str)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#SHA-str"><span class="toc-text">SHA(str)</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#MySQL%E4%BF%A1%E6%81%AF%E5%87%BD%E6%95%B0-sql"><span class="toc-text">MySQL信息函数.sql</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#VERSION"><span class="toc-text">VERSION()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#CONNECTION-ID"><span class="toc-text">CONNECTION_ID()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#DATABASE"><span class="toc-text">DATABASE()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#USER"><span class="toc-text">USER()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#CHARSET-value"><span class="toc-text">CHARSET(value)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#COLLATION-value"><span class="toc-text">COLLATION(value)</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%81%9A%E5%90%88%E5%87%BD%E6%95%B0"><span class="toc-text">聚合函数</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#AVG"><span class="toc-text">AVG()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#SUM"><span class="toc-text">SUM()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#MAX"><span class="toc-text">MAX()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#MIN"><span class="toc-text">MIN()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#COUNT"><span class="toc-text">COUNT()</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B6%E4%BB%96%E5%87%BD%E6%95%B0"><span class="toc-text">其他函数</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#INET-ATON-ipvalue"><span class="toc-text">INET_ATON(ipvalue)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#INET-NTOA-value"><span class="toc-text">INET_NTOA(value)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#BENCHMARK-n-expr"><span class="toc-text">BENCHMARK(n,expr)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#CONVERT-value-USING-char-code"><span class="toc-text">CONVERT(value USING char_code)</span></a></li></ol></li></ol>
+    </div>
+</aside>
+                
+                
+  <aside id="krw-categories" class="widget widget-kratos-categories clearfix">
+    <h4 class="widget-title"><i class="fa fa-folder"></i>分类目录</h4>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Docker/">Docker</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Idea/">Idea</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Java/">Java</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/K8s/">K8s</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Linux/">Linux</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/MySQL/">MySQL</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Python/">Python</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Selenium/">Selenium</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/SpringBoot/">SpringBoot</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/SpringCloud/">SpringCloud</a><span class="category-list-count">13</span></li></ul>
+  </aside>
+
+
+            
+                
+  <aside id="krw-tags" class="widget widget-kratos-tags clearfix">
+    <h4 class="widget-title"><i class="fa fa-tags"></i>标签聚合</h4>
+      <div class="tag-clouds">
+        <a href="/blog/tags/CORS/" style="font-size: 0.8em;">CORS</a> <a href="/blog/tags/Docker/" style="font-size: 0.8em;">Docker</a> <a href="/blog/tags/Dubbo/" style="font-size: 0.8em;">Dubbo</a> <a href="/blog/tags/ELK/" style="font-size: 0.8em;">ELK</a> <a href="/blog/tags/Elasticsearch/" style="font-size: 0.8em;">Elasticsearch</a> <a href="/blog/tags/Eureka/" style="font-size: 0.8em;">Eureka</a> <a href="/blog/tags/Feign/" style="font-size: 0.8em;">Feign</a> <a href="/blog/tags/Gateway/" style="font-size: 0.8em;">Gateway</a> <a href="/blog/tags/Idea/" style="font-size: 0.8em;">Idea</a> <a href="/blog/tags/Java/" style="font-size: 0.8em;">Java</a> <a href="/blog/tags/JavaWeb/" style="font-size: 0.8em;">JavaWeb</a> <a href="/blog/tags/K8s/" style="font-size: 0.8em;">K8s</a> <a href="/blog/tags/Linux/" style="font-size: 0.8em;">Linux</a> <a href="/blog/tags/Maven/" style="font-size: 0.8em;">Maven</a> <a href="/blog/tags/MySQL/" style="font-size: 0.8em;">MySQL</a> <a href="/blog/tags/Mybatis/" style="font-size: 0.8em;">Mybatis</a> <a href="/blog/tags/Nacos/" style="font-size: 0.8em;">Nacos</a> <a href="/blog/tags/Pytest/" style="font-size: 0.8em;">Pytest</a>
+      </div>
+  </aside>
+
+            
+                
+  <aside id="krw-posts" class="widget widget-kratos-posts">
+  <h4 class="widget-title"><i class="fa fa-file"></i>最新文章</h4>
+  <div class="tab-content">
+      <ul class="list-group">
+        
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/01/25/K8s/K8s%E7%BB%84%E4%BB%B6/"><i class="fa  fa-book"></i> 【K8s】组件</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/01/24/K8s/K8s%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/"><i class="fa  fa-book"></i> 【K8s】常用命令</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/01/11/Idea/IDEA%E6%8F%92%E4%BB%B6/"><i class="fa  fa-book"></i> 【Idea】插件</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/01/04/Linux/Centos7%E9%97%AE%E9%A2%98%E5%A4%84%E7%90%86/"><i class="fa  fa-book"></i> Centos7问题处理</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2025/12/09/Trae/Trae%E5%AE%89%E8%A3%85%E6%8F%92%E4%BB%B6%E5%AE%9E%E7%8E%B0Java%E4%BB%A3%E7%A0%81%E7%BC%96%E5%86%99/"><i class="fa  fa-book"></i> 【Trae】安装插件实现Java代码编写</a>
+            
+          
+        
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+      </ul>
+  </div>
+  </aside>
+
+            
+    </div>
+</section>
+        
+        </div>
+    </div>
+</div>
+<footer>
+    <div id="footer"  >
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3 footer-list text-center">
+                    <ul class="kratos-social-icons">
+                        <!-- Keep for compatibility -->
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <!-- New links -->
+                        
+                    </ul>
+                    <ul class="kratos-copyright">
+                        <div>
+                            <li>&copy; 2026 溪岚花的博客 版权所有.</li>
+                            <li>本站已运行<span id="span_dt">Loading...</span></li>
+                        </div>
+                        <div>
+                            <li>Theme <a href="https://github.com/Candinya/Kratos-Rebirth" target="_blank">Kratos:Rebirth</a></li>
+                            <li>Site built with&nbsp;<i class="fa fa-heart throb" style="color:#d43f57"></i>&nbsp;by 林家隆.</li>
+                        </div>
+                        <div>
+                            <li>Powered by <a href="https://hexo.io" target="_blank" rel="nofollow">Hexo</a></li>
+                            <li>Hosted on <a href="https://gitee.com/" target="_blank">Gitee Pages</a></li>
+                        </div>
+                        <div>
+                            
+                            
+                        </div>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="kr-tool text-center">
+            <div class="tool">
+                
+                    <div class="box search-box">
+                        <a href="/blog/search/">
+                            <span class="fa fa-search"></span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="box theme-box" id="darkmode-switch">
+                        <span class="fa fa-adjust"></span>
+                    </div>
+                
+                
+                
+            </div>
+            <div class="box gotop-box">
+                <span class="fa fa-chevron-up"></span>
+            </div>
+        </div>
+    </div>
+</footer>
+</div>
+</div>
+
+        <script defer src="/blog/vendors/bootstrap@3.3.4/dist/js/bootstrap.min.js"></script>
+<script defer src="/blog/vendors/nprogress@0.2.0/nprogress.js"></script>
+<script>
+    if (!window.kr) {
+        window.kr = {};
+    }
+    window.kr.notMobile = (!(navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i)));
+    window.kr.siteRoot = "/blog/";
+</script>
+
+
+
+
+
+    <script defer src="/blog/vendors/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+
+<script defer src="/blog/js/kratosr.min.js"></script>
+<script defer src="/blog/js/pjax.min.js"></script>
+
+
+
+<!-- Extra support for third-party plguins  -->
+
+
+    </body>
+</html>

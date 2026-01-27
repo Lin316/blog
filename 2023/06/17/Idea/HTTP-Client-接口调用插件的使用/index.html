@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+  <!-- 元数据 -->
+  <meta charset="utf-8">
+  <link rel="icon" href="/blog/images/logo.png">
+  
+  <title>HTTP Client 接口调用插件的使用 | 溪岚花的博客</title>
+  
+  <meta name="author" content="林家隆" />
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="robots" content="index,follow" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <meta name="format-detection" content="telphone=no, email=no" />
+  
+    <meta name="keywords" content="Idea" />
+  
+  <meta name="description" content="HTTP Client 是 IntelliJ IDEA 自带的一款轻量级的接口调用插件。有了它，我们可以在 IDEA 中编写接口测试脚本，测试接口功能以及对返回结果进行断言等等。 基本用法HTTP Client 是 IDEA 自带的插件，首先确认是否安装了该插件。   熟悉 Demo 项目Demo 提供的接口   URL 请求方式 作用    &#x2F;login POST 登录功能，登录成功后">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HTTP Client 接口调用插件的使用">
+<meta property="og:url" content="https://lin316.gitee.io/blog/2023/06/17/Idea/HTTP-Client-%E6%8E%A5%E5%8F%A3%E8%B0%83%E7%94%A8%E6%8F%92%E4%BB%B6%E7%9A%84%E4%BD%BF%E7%94%A8/index.html">
+<meta property="og:site_name" content="溪岚花的博客">
+<meta property="og:description" content="HTTP Client 是 IntelliJ IDEA 自带的一款轻量级的接口调用插件。有了它，我们可以在 IDEA 中编写接口测试脚本，测试接口功能以及对返回结果进行断言等等。 基本用法HTTP Client 是 IDEA 自带的插件，首先确认是否安装了该插件。   熟悉 Demo 项目Demo 提供的接口   URL 请求方式 作用    &#x2F;login POST 登录功能，登录成功后">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://lin316.gitee.io/blog/blog/images/logo.png">
+<meta property="article:published_time" content="2023-06-17T02:56:37.000Z">
+<meta property="article:modified_time" content="2026-01-04T05:51:48.227Z">
+<meta property="article:author" content="林家隆">
+<meta property="article:tag" content="Idea">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://lin316.gitee.io/blog/blog/images/logo.png">
+  
+  <!-- 站点验证相关 -->
+  
+    
+    
+    
+  
+  <!-- 样式表文件 -->
+  <link rel="stylesheet" id="kratos-css" href="/blog/css/kratosr.min.css" media="all"></script>
+  
+    <link rel="stylesheet" id="darkmode-css" href="/blog/css/kr-color-dark.min.css" media="(prefers-color-scheme: dark)"></script>
+    <script src="/blog/js/kr-dark.min.js"></script>
+  
+  
+    <link rel="stylesheet" id="highlight-css" href="/blog/css/highlight/night-eighties.min.css" media="all"></script>
+  
+  <link rel="stylesheet" id="fontawe-css" href="/blog/vendors/font-awesome@4.7.0/css/font-awesome.min.css" media="all"></script>
+  <link rel="stylesheet" id="nprogress-css" href="/blog/vendors/nprogress@0.2.0/nprogress.css" media="all"></script>
+  
+  
+  
+    <link rel="stylesheet" href="/blog/vendors/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css"></script>
+  
+  <!-- 不得不预先加载的一些JS文件 -->
+  <script src="/blog/vendors/jquery@3.6.0/dist/jquery.min.js"></script>
+  
+  
+  <style>
+    
+    
+  </style>
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+    <body class="custom-background">
+        <div id="kratos-wrapper">
+    <div id="kratos-page">
+        <div id="kratos-header">
+            <header id="kratos-desktop-topnav" class="kratos-topnav">
+                <div class="container">
+                    <div class="nav-header">
+                        <nav id="kratos-menu-wrap">
+                            <ul id="kratos-primary-menu" class="sf-menu">
+                                
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/">
+                                            
+                                                
+                                                    <i class="fa fa-home"></i>
+                                                
+                                                首页
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/archives/">
+                                            
+                                                
+                                                    <i class="fa fa-file"></i>
+                                                
+                                                归档
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/tags/">
+                                            
+                                                
+                                                    <i class="fa fa-tag"></i>
+                                                
+                                                标签
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/categories/">
+                                            
+                                                
+                                                    <i class="fa fa-folder"></i>
+                                                
+                                                目录
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/search/">
+                                            
+                                                
+                                                    <i class="fa fa-search"></i>
+                                                
+                                                搜索
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </header>
+            <header id="kratos-mobile-topnav" class="kratos-topnav">
+                <div class="container">
+                    <div class="color-logo"><a href="/blog/">溪岚花的博客</a></div>
+                    <div class="nav-toggle">
+                        <a class="kratos-nav-toggle js-kratos-nav-toggle">
+                            <i></i>
+                        </a>
+                    </div>
+                </div>
+            </header>
+        </div>
+        <div class="kratos-start kratos-hero-2">
+            <!-- <div class="kratos-overlay"></div> -->
+            <div class="kratos-cover kratos-cover-2 text-center">
+                <div class="desc desc2 animate-box">
+                    <a href="/blog/">
+                        <h2 style="opacity: 0.2;">溪岚花的博客</h2> <br />
+                        <span></span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div id="kratos-blog-post">
+            <div class="container">
+                <div id="main" class="row">
+                    
+
+        
+
+            <section class="col-md-8">
+
+        
+
+            <article itemscope itemtype="https://schema.org/Article">
+    
+    <link itemprop="mainEntityOfPage" href="https://lin316.gitee.io/blog/2023/06/17/Idea/HTTP-Client-%E6%8E%A5%E5%8F%A3%E8%B0%83%E7%94%A8%E6%8F%92%E4%BB%B6%E7%9A%84%E4%BD%BF%E7%94%A8/">
+    <div class="kratos-hentry kratos-post-inner clearfix">
+        <header class="kratos-entry-header">
+            
+                <h1 class="kratos-entry-title text-center" itemprop="name headline">HTTP Client 接口调用插件的使用</h1>
+            
+            
+            <ul class="kratos-post-meta text-center">
+                <li><time datetime="2023-06-17T02:56:37.000Z" itemprop="datePublished"><i class="fa fa-calendar"></i> 2023-06-17</time></li>
+                <li itemprop="author" itemscope itemtype="https://schema.org/Person">
+                    <i class="fa fa-user"></i> 作者 <span itemprop="name">林家隆</span>
+                </li>
+                
+                    <li>
+                        <i class="fa fa-edit"></i> 
+                        
+                        
+                            1.58K
+                        
+                        字
+                    </li>
+                
+                
+            </ul>
+        </header>
+        <div class="kratos-post-content">
+            
+            <div id="expire-alert" class="alert alert-warning hidden" role="alert">
+                <div class="icon"><i class="fa fa-warning"></i></div>
+                <div class="text"><p>本文最后编辑于 <time datetime="1767505908227"></time> 前，其中的内容可能需要更新。</p></div>
+            </div>
+            
+            
+            
+                <div class="kratos-post-inner-toc toc-div-class" >
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%BA%E6%9C%AC%E7%94%A8%E6%B3%95"><span class="toc-number">1.</span> <span class="toc-text">基本用法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%86%9F%E6%82%89-Demo-%E9%A1%B9%E7%9B%AE"><span class="toc-number">1.1.</span> <span class="toc-text">熟悉 Demo 项目</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Demo-%E6%8F%90%E4%BE%9B%E7%9A%84%E6%8E%A5%E5%8F%A3"><span class="toc-number">1.1.1.</span> <span class="toc-text">Demo 提供的接口</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Demo-%E7%9A%84%E5%93%8D%E5%BA%94%E6%95%B0%E6%8D%AE%E6%A0%BC%E5%BC%8F"><span class="toc-number">1.1.2.</span> <span class="toc-text">Demo 的响应数据格式</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BC%96%E5%86%99-HTTP-%E8%AF%B7%E6%B1%82"><span class="toc-number">1.2.</span> <span class="toc-text">编写 HTTP 请求</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA-HTTP-Request-%E6%96%87%E4%BB%B6"><span class="toc-number">1.2.1.</span> <span class="toc-text">创建 HTTP Request 文件</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BC%96%E5%86%99-HTTP-Request-%E6%96%87%E4%BB%B6"><span class="toc-number">1.2.2.</span> <span class="toc-text">编写 HTTP Request 文件</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%BF%90%E8%A1%8C%E7%BB%93%E6%9E%9C"><span class="toc-number">1.2.3.</span> <span class="toc-text">运行结果</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%9B%E9%98%B6%E7%94%A8%E6%B3%95"><span class="toc-number">2.</span> <span class="toc-text">进阶用法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%89%93%E5%8D%B0%E6%97%A5%E5%BF%97"><span class="toc-number">2.1.</span> <span class="toc-text">打印日志</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AD%98%E5%82%A8%E5%8F%98%E9%87%8F"><span class="toc-number">2.2.</span> <span class="toc-text">存储变量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%AD%E8%A8%80"><span class="toc-number">2.3.</span> <span class="toc-text">断言</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F"><span class="toc-number">2.4.</span> <span class="toc-text">配置环境变量</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BF%AB%E6%8D%B7%E6%93%8D%E4%BD%9C"><span class="toc-number">3.</span> <span class="toc-text">快捷操作</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="toc-number">4.</span> <span class="toc-text">注意事项</span></a></li></ol>
+                </div>
+            
+            <hr />
+            <div itemprop="articleBody"><p>HTTP Client 是 IntelliJ IDEA 自带的一款轻量级的接口调用插件。有了它，我们可以在 IDEA 中编写接口测试脚本，测试接口功能以及对返回结果进行断言等等。</p>
+<h2 id="基本用法"><a href="#基本用法" class="headerlink" title="基本用法"></a>基本用法</h2><p>HTTP Client 是 IDEA 自带的插件，首先确认是否安装了该插件。</p>
+<img src="/blog/2023/06/17/Idea/HTTP-Client-%E6%8E%A5%E5%8F%A3%E8%B0%83%E7%94%A8%E6%8F%92%E4%BB%B6%E7%9A%84%E4%BD%BF%E7%94%A8/image-20230617180043759.png" style="zoom:67%;">
+
+<h3 id="熟悉-Demo-项目"><a href="#熟悉-Demo-项目" class="headerlink" title="熟悉 Demo 项目"></a>熟悉 Demo 项目</h3><h4 id="Demo-提供的接口"><a href="#Demo-提供的接口" class="headerlink" title="Demo 提供的接口"></a>Demo 提供的接口</h4><table>
+<thead>
+<tr>
+<th align="left">URL</th>
+<th>请求方式</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">&#x2F;login</td>
+<td>POST</td>
+<td>登录功能，登录成功后返回 token。账号：root，密码：123456。</td>
+</tr>
+<tr>
+<td align="left">&#x2F;user&#x2F;{id}</td>
+<td>GET</td>
+<td>根据 id 获取用户信息，请求头需要携带 token 才能访问该接口。</td>
+</tr>
+<tr>
+<td align="left">&#x2F;user</td>
+<td>POST</td>
+<td>根据 id 更新用户信息，请求头需要携带 token 才能访问该接口。</td>
+</tr>
+</tbody></table>
+<h4 id="Demo-的响应数据格式"><a href="#Demo-的响应数据格式" class="headerlink" title="Demo 的响应数据格式"></a>Demo 的响应数据格式</h4><p>以获取用户信息为例，其中 code 为 2000 表示请求成功，5000 表示请求失败。</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;code&quot;</span><span class="punctuation">:</span> <span class="number">2000</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;msg&quot;</span><span class="punctuation">:</span> <span class="string">&quot;success&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;data&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;id&quot;</span><span class="punctuation">:</span> <span class="number">1001</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;name&quot;</span><span class="punctuation">:</span> <span class="string">&quot;lin&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;age&quot;</span><span class="punctuation">:</span> <span class="number">18</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;language&quot;</span><span class="punctuation">:</span> <span class="string">&quot;Java&quot;</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="编写-HTTP-请求"><a href="#编写-HTTP-请求" class="headerlink" title="编写 HTTP 请求"></a>编写 HTTP 请求</h3><h4 id="创建-HTTP-Request-文件"><a href="#创建-HTTP-Request-文件" class="headerlink" title="创建 HTTP Request 文件"></a>创建 HTTP Request 文件</h4><p><img src="/blog/2023/06/17/Idea/HTTP-Client-%E6%8E%A5%E5%8F%A3%E8%B0%83%E7%94%A8%E6%8F%92%E4%BB%B6%E7%9A%84%E4%BD%BF%E7%94%A8/image-20230617182143143.png"></p>
+<h4 id="编写-HTTP-Request-文件"><a href="#编写-HTTP-Request-文件" class="headerlink" title="编写 HTTP Request 文件"></a>编写 HTTP Request 文件</h4><p><img src="/blog/2023/06/17/Idea/HTTP-Client-%E6%8E%A5%E5%8F%A3%E8%B0%83%E7%94%A8%E6%8F%92%E4%BB%B6%E7%9A%84%E4%BD%BF%E7%94%A8/image-20230617182747704.png"></p>
+<p>请求的语法基本上和 http 协议内容是一致的，结构如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">GET/POST 请求地址（可拼接查询参数）</span><br><span class="line">请求头键值对</span><br><span class="line"></span><br><span class="line">请求体</span><br><span class="line"></span><br><span class="line">### 使用三个 # 来分隔多个请求接口</span><br></pre></td></tr></table></figure>
+
+<h4 id="运行结果"><a href="#运行结果" class="headerlink" title="运行结果"></a>运行结果</h4><p><code>Ctrl + Shift + F10</code> 对光标所在的 URL 发起请求，请求结束会将响应数据以 json 格式保存在 .idea 目录中，请求结果如下：</p>
+<p><img src="/blog/2023/06/17/Idea/HTTP-Client-%E6%8E%A5%E5%8F%A3%E8%B0%83%E7%94%A8%E6%8F%92%E4%BB%B6%E7%9A%84%E4%BD%BF%E7%94%A8/image-20230617183934465.png"></p>
+<h2 id="进阶用法"><a href="#进阶用法" class="headerlink" title="进阶用法"></a>进阶用法</h2><p>在请求中插入 JavaScript 脚本，可以实现打印日志、存储变量、断言等功能。结构如下：</p>
+<p><img src="/blog/2023/06/17/Idea/HTTP-Client-%E6%8E%A5%E5%8F%A3%E8%B0%83%E7%94%A8%E6%8F%92%E4%BB%B6%E7%9A%84%E4%BD%BF%E7%94%A8/image-20230617195431757.png"></p>
+<h3 id="打印日志"><a href="#打印日志" class="headerlink" title="打印日志"></a>打印日志</h3><p>在脚本中打印日志，代码如下：</p>
+<p><img src="/blog/2023/06/17/Idea/HTTP-Client-%E6%8E%A5%E5%8F%A3%E8%B0%83%E7%94%A8%E6%8F%92%E4%BB%B6%E7%9A%84%E4%BD%BF%E7%94%A8/image-20230617195838574.png"></p>
+<p><img src="/blog/2023/06/17/Idea/HTTP-Client-%E6%8E%A5%E5%8F%A3%E8%B0%83%E7%94%A8%E6%8F%92%E4%BB%B6%E7%9A%84%E4%BD%BF%E7%94%A8/image-20230617195935772.png" alt="运行结果"></p>
+<h3 id="存储变量"><a href="#存储变量" class="headerlink" title="存储变量"></a>存储变量</h3><p>在 demo 项目中，调用 <code>/user/&#123;id&#125;</code> 接口前需要先调用 <code>/login</code> 接口获取 <code>token</code>。我们可以将获取到的 <code>token</code> 通过 <code>JavaScript</code> 脚本存储在环境变量中，然后在调用 <code>/user/&#123;id&#125;</code> 接口时通过 <code>&#123;&#123; 变量名 &#125;&#125;</code> 从环境变量获取变量值。</p>
+<p><img src="/blog/2023/06/17/Idea/HTTP-Client-%E6%8E%A5%E5%8F%A3%E8%B0%83%E7%94%A8%E6%8F%92%E4%BB%B6%E7%9A%84%E4%BD%BF%E7%94%A8/image-20230617200929993.png"></p>
+<p><img src="/blog/2023/06/17/Idea/HTTP-Client-%E6%8E%A5%E5%8F%A3%E8%B0%83%E7%94%A8%E6%8F%92%E4%BB%B6%E7%9A%84%E4%BD%BF%E7%94%A8/image-20230617201250723.png" alt="运行结果"></p>
+<h3 id="断言"><a href="#断言" class="headerlink" title="断言"></a>断言</h3><p>断言可以让让程序代替人判断测试用例执行的结果是否符合预期，HTTP Client 的断言代码如下：</p>
+<p><img src="/blog/2023/06/17/Idea/HTTP-Client-%E6%8E%A5%E5%8F%A3%E8%B0%83%E7%94%A8%E6%8F%92%E4%BB%B6%E7%9A%84%E4%BD%BF%E7%94%A8/image-20230617202051220.png"></p>
+<p><img src="/blog/2023/06/17/Idea/HTTP-Client-%E6%8E%A5%E5%8F%A3%E8%B0%83%E7%94%A8%E6%8F%92%E4%BB%B6%E7%9A%84%E4%BD%BF%E7%94%A8/image-20230617202142875.png" alt="运行结果"></p>
+<h3 id="配置环境变量"><a href="#配置环境变量" class="headerlink" title="配置环境变量"></a>配置环境变量</h3><p>在开发中通常有多个环境，如开发环境、测试环境、生产环境等等，每个环境的域名不同、接口所需的参数（如：账号密码等）也可能不同，那么我们不能在编写接口的时候将域名或参数写死。我们可以在 <code>http-client.env.json</code> 文件中配置接口相关信息， 编写接口时通过 <code>&#123;&#123;变量名&#125;&#125;</code>  的方式获取配置信息，在获取配置信息前需要先指定接口请求的环境。我的接口配置信息如下：</p>
+<p><img src="/blog/2023/06/17/Idea/HTTP-Client-%E6%8E%A5%E5%8F%A3%E8%B0%83%E7%94%A8%E6%8F%92%E4%BB%B6%E7%9A%84%E4%BD%BF%E7%94%A8/image-20230617203504970.png"></p>
+<p><img src="/blog/2023/06/17/Idea/HTTP-Client-%E6%8E%A5%E5%8F%A3%E8%B0%83%E7%94%A8%E6%8F%92%E4%BB%B6%E7%9A%84%E4%BD%BF%E7%94%A8/image-20230617203711919.png" alt="指定接口请求的环境"></p>
+<p><img src="/blog/2023/06/17/Idea/HTTP-Client-%E6%8E%A5%E5%8F%A3%E8%B0%83%E7%94%A8%E6%8F%92%E4%BB%B6%E7%9A%84%E4%BD%BF%E7%94%A8/image-20230617204007993.png" alt="dev 环境-运行结果"></p>
+<p><img src="/blog/2023/06/17/Idea/HTTP-Client-%E6%8E%A5%E5%8F%A3%E8%B0%83%E7%94%A8%E6%8F%92%E4%BB%B6%E7%9A%84%E4%BD%BF%E7%94%A8/image-20230617204116649.png" alt="test 环境-运行结果"></p>
+<h2 id="快捷操作"><a href="#快捷操作" class="headerlink" title="快捷操作"></a>快捷操作</h2><p><strong>Ctrl + J：</strong>插入代码模板。</p>
+<p><img src="/blog/2023/06/17/Idea/HTTP-Client-%E6%8E%A5%E5%8F%A3%E8%B0%83%E7%94%A8%E6%8F%92%E4%BB%B6%E7%9A%84%E4%BD%BF%E7%94%A8/%E5%8A%A8%E7%94%BB.gif"></p>
+<p><strong>Ctrl + Shift + F10：</strong>对光标所在的 URL 发起请求。</p>
+<p><img src="/blog/2023/06/17/Idea/HTTP-Client-%E6%8E%A5%E5%8F%A3%E8%B0%83%E7%94%A8%E6%8F%92%E4%BB%B6%E7%9A%84%E4%BD%BF%E7%94%A8/%E5%BF%AB%E6%8D%B7%E9%94%AE02.gif"></p>
+<h2 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h2><p>在请求体中使用 <code>&#123;&#123;变量名&#125;&#125;</code> 获取环境变量时，需要使用双引号 <code>“ ”</code> 括起来，否则在解析 json 参数时会报 <code>HttpMessageNotReadableException</code> 异常。</p>
+<p><img src="/blog/2023/06/17/Idea/HTTP-Client-%E6%8E%A5%E5%8F%A3%E8%B0%83%E7%94%A8%E6%8F%92%E4%BB%B6%E7%9A%84%E4%BD%BF%E7%94%A8/image-20230618094326049.png"></p>
+</div>
+        </div>
+        
+        <footer class="kratos-entry-footer clearfix">
+            
+            <div class="footer-tag clearfix">
+                <div class="pull-left">
+                <i class="fa fa-tags"></i>
+                    <a class="tag-none-link" href="/blog/tags/Idea/" rel="tag">Idea</a>
+                </div>
+                <div class="pull-date">
+                    <time datetime="2026-01-04T05:51:48.227Z" itemprop="dateModified">最后编辑：2026-01-04</time>
+                </div>
+            </div>
+        </footer>
+    </div>
+    
+        <nav class="navigation post-navigation clearfix" role="navigation">
+            
+            <div class="nav-previous clearfix">
+                <a title=" CentOS7 配置静态 IP" href="/blog/2023/06/10/Linux/Centos7-配置静态IP/">&lt; 上一篇</a>
+            </div>
+            
+            
+            <div class="nav-next clearfix">
+                <a title=" 【Windows】 常用软件" href="/blog/2023/06/20/Windows/Windows软件/">下一篇 &gt;</a>
+            </div>
+            
+        </nav>
+    
+    
+</article>
+
+        
+
+            </section>
+
+        
+
+                
+            
+
+<section id="kratos-widget-area" class="col-md-4 hidden-xs hidden-sm">
+    <!-- 文章和页面根据splitter来分割，没有的话就从头开始设置为sticky -->
+    
+    
+                <aside id="krw-about" class="widget widget-kratos-about clearfix">
+    <div class="photo-background"></div>
+    <div class="photo-wrapper clearfix">
+        <div class="photo-wrapper-tip text-center">
+            <img class="about-photo" src="/blog/images/avatar.webp" loading="lazy" decoding="auto" />
+        </div>
+    </div>
+    <div class="textwidget">
+        <p class="text-center">极简主义</p>
+    </div>
+    <div class="site-meta">
+        <a class="meta-item" href="/blog/archives/">
+            <span class="title">
+                文章
+            </span>
+            <span class="count">
+                77
+            </span>
+        </a>
+        <a class="meta-item" href="/blog/categories/">
+            <span class="title">
+                分类
+            </span>
+            <span class="count">
+                10
+            </span>
+        </a>
+        <a class="meta-item" href="/blog/tags/">
+            <span class="title">
+                标签
+            </span>
+            <span class="count">
+                29
+            </span>
+        </a>
+    </div>
+</aside>
+            
+                    <div class="sticky-area">
+                
+                    <aside id="krw-toc" class="widget widget-kratos-toc clearfix toc-div-class" >
+    <div class="photo-background"></div>
+    <h4 class="widget-title no-after">
+        <i class="fa fa-compass"></i>
+        文章目录
+        <span class="toc-progress-bar" role="progressbar" aria-label="阅读进度："></span>
+    </h4>
+    <div class="textwidget">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%BA%E6%9C%AC%E7%94%A8%E6%B3%95"><span class="toc-text">基本用法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%86%9F%E6%82%89-Demo-%E9%A1%B9%E7%9B%AE"><span class="toc-text">熟悉 Demo 项目</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Demo-%E6%8F%90%E4%BE%9B%E7%9A%84%E6%8E%A5%E5%8F%A3"><span class="toc-text">Demo 提供的接口</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Demo-%E7%9A%84%E5%93%8D%E5%BA%94%E6%95%B0%E6%8D%AE%E6%A0%BC%E5%BC%8F"><span class="toc-text">Demo 的响应数据格式</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BC%96%E5%86%99-HTTP-%E8%AF%B7%E6%B1%82"><span class="toc-text">编写 HTTP 请求</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA-HTTP-Request-%E6%96%87%E4%BB%B6"><span class="toc-text">创建 HTTP Request 文件</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BC%96%E5%86%99-HTTP-Request-%E6%96%87%E4%BB%B6"><span class="toc-text">编写 HTTP Request 文件</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%BF%90%E8%A1%8C%E7%BB%93%E6%9E%9C"><span class="toc-text">运行结果</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%9B%E9%98%B6%E7%94%A8%E6%B3%95"><span class="toc-text">进阶用法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%89%93%E5%8D%B0%E6%97%A5%E5%BF%97"><span class="toc-text">打印日志</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AD%98%E5%82%A8%E5%8F%98%E9%87%8F"><span class="toc-text">存储变量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%AD%E8%A8%80"><span class="toc-text">断言</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F"><span class="toc-text">配置环境变量</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BF%AB%E6%8D%B7%E6%93%8D%E4%BD%9C"><span class="toc-text">快捷操作</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="toc-text">注意事项</span></a></li></ol>
+    </div>
+</aside>
+                
+                
+  <aside id="krw-categories" class="widget widget-kratos-categories clearfix">
+    <h4 class="widget-title"><i class="fa fa-folder"></i>分类目录</h4>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Docker/">Docker</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Idea/">Idea</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Java/">Java</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/K8s/">K8s</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Linux/">Linux</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/MySQL/">MySQL</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Python/">Python</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Selenium/">Selenium</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/SpringBoot/">SpringBoot</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/SpringCloud/">SpringCloud</a><span class="category-list-count">13</span></li></ul>
+  </aside>
+
+
+            
+                
+  <aside id="krw-tags" class="widget widget-kratos-tags clearfix">
+    <h4 class="widget-title"><i class="fa fa-tags"></i>标签聚合</h4>
+      <div class="tag-clouds">
+        <a href="/blog/tags/CORS/" style="font-size: 0.8em;">CORS</a> <a href="/blog/tags/Docker/" style="font-size: 0.8em;">Docker</a> <a href="/blog/tags/Dubbo/" style="font-size: 0.8em;">Dubbo</a> <a href="/blog/tags/ELK/" style="font-size: 0.8em;">ELK</a> <a href="/blog/tags/Elasticsearch/" style="font-size: 0.8em;">Elasticsearch</a> <a href="/blog/tags/Eureka/" style="font-size: 0.8em;">Eureka</a> <a href="/blog/tags/Feign/" style="font-size: 0.8em;">Feign</a> <a href="/blog/tags/Gateway/" style="font-size: 0.8em;">Gateway</a> <a href="/blog/tags/Idea/" style="font-size: 0.8em;">Idea</a> <a href="/blog/tags/Java/" style="font-size: 0.8em;">Java</a> <a href="/blog/tags/JavaWeb/" style="font-size: 0.8em;">JavaWeb</a> <a href="/blog/tags/K8s/" style="font-size: 0.8em;">K8s</a> <a href="/blog/tags/Linux/" style="font-size: 0.8em;">Linux</a> <a href="/blog/tags/Maven/" style="font-size: 0.8em;">Maven</a> <a href="/blog/tags/MySQL/" style="font-size: 0.8em;">MySQL</a> <a href="/blog/tags/Mybatis/" style="font-size: 0.8em;">Mybatis</a> <a href="/blog/tags/Nacos/" style="font-size: 0.8em;">Nacos</a> <a href="/blog/tags/Pytest/" style="font-size: 0.8em;">Pytest</a>
+      </div>
+  </aside>
+
+            
+                
+  <aside id="krw-posts" class="widget widget-kratos-posts">
+  <h4 class="widget-title"><i class="fa fa-file"></i>最新文章</h4>
+  <div class="tab-content">
+      <ul class="list-group">
+        
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/01/25/K8s/K8s%E7%BB%84%E4%BB%B6/"><i class="fa  fa-book"></i> 【K8s】组件</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/01/24/K8s/K8s%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/"><i class="fa  fa-book"></i> 【K8s】常用命令</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/01/11/Idea/IDEA%E6%8F%92%E4%BB%B6/"><i class="fa  fa-book"></i> 【Idea】插件</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/01/04/Linux/Centos7%E9%97%AE%E9%A2%98%E5%A4%84%E7%90%86/"><i class="fa  fa-book"></i> Centos7问题处理</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2025/12/09/Trae/Trae%E5%AE%89%E8%A3%85%E6%8F%92%E4%BB%B6%E5%AE%9E%E7%8E%B0Java%E4%BB%A3%E7%A0%81%E7%BC%96%E5%86%99/"><i class="fa  fa-book"></i> 【Trae】安装插件实现Java代码编写</a>
+            
+          
+        
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+      </ul>
+  </div>
+  </aside>
+
+            
+    </div>
+</section>
+        
+        </div>
+    </div>
+</div>
+<footer>
+    <div id="footer"  >
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3 footer-list text-center">
+                    <ul class="kratos-social-icons">
+                        <!-- Keep for compatibility -->
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <!-- New links -->
+                        
+                    </ul>
+                    <ul class="kratos-copyright">
+                        <div>
+                            <li>&copy; 2026 溪岚花的博客 版权所有.</li>
+                            <li>本站已运行<span id="span_dt">Loading...</span></li>
+                        </div>
+                        <div>
+                            <li>Theme <a href="https://github.com/Candinya/Kratos-Rebirth" target="_blank">Kratos:Rebirth</a></li>
+                            <li>Site built with&nbsp;<i class="fa fa-heart throb" style="color:#d43f57"></i>&nbsp;by 林家隆.</li>
+                        </div>
+                        <div>
+                            <li>Powered by <a href="https://hexo.io" target="_blank" rel="nofollow">Hexo</a></li>
+                            <li>Hosted on <a href="https://gitee.com/" target="_blank">Gitee Pages</a></li>
+                        </div>
+                        <div>
+                            
+                            
+                        </div>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="kr-tool text-center">
+            <div class="tool">
+                
+                    <div class="box search-box">
+                        <a href="/blog/search/">
+                            <span class="fa fa-search"></span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="box theme-box" id="darkmode-switch">
+                        <span class="fa fa-adjust"></span>
+                    </div>
+                
+                
+                
+            </div>
+            <div class="box gotop-box">
+                <span class="fa fa-chevron-up"></span>
+            </div>
+        </div>
+    </div>
+</footer>
+</div>
+</div>
+
+        <script defer src="/blog/vendors/bootstrap@3.3.4/dist/js/bootstrap.min.js"></script>
+<script defer src="/blog/vendors/nprogress@0.2.0/nprogress.js"></script>
+<script>
+    if (!window.kr) {
+        window.kr = {};
+    }
+    window.kr.notMobile = (!(navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i)));
+    window.kr.siteRoot = "/blog/";
+</script>
+
+
+
+
+
+    <script defer src="/blog/vendors/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+
+<script defer src="/blog/js/kratosr.min.js"></script>
+<script defer src="/blog/js/pjax.min.js"></script>
+
+
+
+<!-- Extra support for third-party plguins  -->
+
+
+    </body>
+</html>

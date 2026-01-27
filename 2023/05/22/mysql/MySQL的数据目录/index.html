@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+  <!-- 元数据 -->
+  <meta charset="utf-8">
+  <link rel="icon" href="/blog/images/logo.png">
+  
+  <title>MySQL 的数据目录 | 溪岚花的博客</title>
+  
+  <meta name="author" content="林家隆" />
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="robots" content="index,follow" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <meta name="format-detection" content="telphone=no, email=no" />
+  
+    <meta name="keywords" content="MySQL" />
+  
+  <meta name="description" content="本章主要介绍 MySQL 系统的目录结构以及数据库和表在文件系统的表示方法。 MySQL8 的主要目录结构数据库文件的存放路径show variables like &#39;datadir&#39; SQL 语句能够查询 MySQL 数据库文件的存放路径，从结果可以看出在我的计算机上 MySQL 的数据目录是 &#x2F;var&#x2F;lib&#x2F;mysql&#x2F;。 1234567mysql&gt; show var">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MySQL 的数据目录">
+<meta property="og:url" content="https://lin316.gitee.io/blog/2023/05/22/mysql/MySQL%E7%9A%84%E6%95%B0%E6%8D%AE%E7%9B%AE%E5%BD%95/index.html">
+<meta property="og:site_name" content="溪岚花的博客">
+<meta property="og:description" content="本章主要介绍 MySQL 系统的目录结构以及数据库和表在文件系统的表示方法。 MySQL8 的主要目录结构数据库文件的存放路径show variables like &#39;datadir&#39; SQL 语句能够查询 MySQL 数据库文件的存放路径，从结果可以看出在我的计算机上 MySQL 的数据目录是 &#x2F;var&#x2F;lib&#x2F;mysql&#x2F;。 1234567mysql&gt; show var">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://lin316.gitee.io/blog/blog/images/logo.png">
+<meta property="article:published_time" content="2023-05-21T16:00:00.000Z">
+<meta property="article:modified_time" content="2026-01-04T05:51:48.300Z">
+<meta property="article:author" content="林家隆">
+<meta property="article:tag" content="MySQL">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://lin316.gitee.io/blog/blog/images/logo.png">
+  
+  <!-- 站点验证相关 -->
+  
+    
+    
+    
+  
+  <!-- 样式表文件 -->
+  <link rel="stylesheet" id="kratos-css" href="/blog/css/kratosr.min.css" media="all"></script>
+  
+    <link rel="stylesheet" id="darkmode-css" href="/blog/css/kr-color-dark.min.css" media="(prefers-color-scheme: dark)"></script>
+    <script src="/blog/js/kr-dark.min.js"></script>
+  
+  
+    <link rel="stylesheet" id="highlight-css" href="/blog/css/highlight/night-eighties.min.css" media="all"></script>
+  
+  <link rel="stylesheet" id="fontawe-css" href="/blog/vendors/font-awesome@4.7.0/css/font-awesome.min.css" media="all"></script>
+  <link rel="stylesheet" id="nprogress-css" href="/blog/vendors/nprogress@0.2.0/nprogress.css" media="all"></script>
+  
+  
+  
+    <link rel="stylesheet" href="/blog/vendors/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css"></script>
+  
+  <!-- 不得不预先加载的一些JS文件 -->
+  <script src="/blog/vendors/jquery@3.6.0/dist/jquery.min.js"></script>
+  
+  
+  <style>
+    
+    
+  </style>
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+    <body class="custom-background">
+        <div id="kratos-wrapper">
+    <div id="kratos-page">
+        <div id="kratos-header">
+            <header id="kratos-desktop-topnav" class="kratos-topnav">
+                <div class="container">
+                    <div class="nav-header">
+                        <nav id="kratos-menu-wrap">
+                            <ul id="kratos-primary-menu" class="sf-menu">
+                                
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/">
+                                            
+                                                
+                                                    <i class="fa fa-home"></i>
+                                                
+                                                首页
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/archives/">
+                                            
+                                                
+                                                    <i class="fa fa-file"></i>
+                                                
+                                                归档
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/tags/">
+                                            
+                                                
+                                                    <i class="fa fa-tag"></i>
+                                                
+                                                标签
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/categories/">
+                                            
+                                                
+                                                    <i class="fa fa-folder"></i>
+                                                
+                                                目录
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/search/">
+                                            
+                                                
+                                                    <i class="fa fa-search"></i>
+                                                
+                                                搜索
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </header>
+            <header id="kratos-mobile-topnav" class="kratos-topnav">
+                <div class="container">
+                    <div class="color-logo"><a href="/blog/">溪岚花的博客</a></div>
+                    <div class="nav-toggle">
+                        <a class="kratos-nav-toggle js-kratos-nav-toggle">
+                            <i></i>
+                        </a>
+                    </div>
+                </div>
+            </header>
+        </div>
+        <div class="kratos-start kratos-hero-2">
+            <!-- <div class="kratos-overlay"></div> -->
+            <div class="kratos-cover kratos-cover-2 text-center">
+                <div class="desc desc2 animate-box">
+                    <a href="/blog/">
+                        <h2 style="opacity: 0.2;">溪岚花的博客</h2> <br />
+                        <span></span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div id="kratos-blog-post">
+            <div class="container">
+                <div id="main" class="row">
+                    
+
+        
+
+            <section class="col-md-8">
+
+        
+
+            <article itemscope itemtype="https://schema.org/Article">
+    
+    <link itemprop="mainEntityOfPage" href="https://lin316.gitee.io/blog/2023/05/22/mysql/MySQL%E7%9A%84%E6%95%B0%E6%8D%AE%E7%9B%AE%E5%BD%95/">
+    <div class="kratos-hentry kratos-post-inner clearfix">
+        <header class="kratos-entry-header">
+            
+                <h1 class="kratos-entry-title text-center" itemprop="name headline">MySQL 的数据目录</h1>
+            
+            
+            <ul class="kratos-post-meta text-center">
+                <li><time datetime="2023-05-21T16:00:00.000Z" itemprop="datePublished"><i class="fa fa-calendar"></i> 2023-05-22</time></li>
+                <li itemprop="author" itemscope itemtype="https://schema.org/Person">
+                    <i class="fa fa-user"></i> 作者 <span itemprop="name">林家隆</span>
+                </li>
+                
+                    <li>
+                        <i class="fa fa-edit"></i> 
+                        
+                        
+                            7.89K
+                        
+                        字
+                    </li>
+                
+                
+            </ul>
+        </header>
+        <div class="kratos-post-content">
+            
+            <div id="expire-alert" class="alert alert-warning hidden" role="alert">
+                <div class="icon"><i class="fa fa-warning"></i></div>
+                <div class="text"><p>本文最后编辑于 <time datetime="1767505908300"></time> 前，其中的内容可能需要更新。</p></div>
+            </div>
+            
+            
+            
+                <div class="kratos-post-inner-toc toc-div-class" >
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#MySQL8-%E7%9A%84%E4%B8%BB%E8%A6%81%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84"><span class="toc-number">1.</span> <span class="toc-text">MySQL8 的主要目录结构</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93%E6%96%87%E4%BB%B6%E7%9A%84%E5%AD%98%E6%94%BE%E8%B7%AF%E5%BE%84"><span class="toc-number">1.1.</span> <span class="toc-text">数据库文件的存放路径</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#MySQL-%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E7%9A%84%E5%AD%98%E6%94%BE%E8%B7%AF%E5%BE%84"><span class="toc-number">1.2.</span> <span class="toc-text">MySQL 配置文件的存放路径</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93%E5%92%8C%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E7%9A%84%E5%85%B3%E7%B3%BB"><span class="toc-number">2.</span> <span class="toc-text">数据库和文件系统的关系</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#MySQL-%E7%B3%BB%E7%BB%9F%E8%87%AA%E5%B8%A6%E7%9A%84%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="toc-number">2.1.</span> <span class="toc-text">MySQL 系统自带的数据库</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#mysql"><span class="toc-number">2.1.1.</span> <span class="toc-text">mysql</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#information-schema"><span class="toc-number">2.1.2.</span> <span class="toc-text">information_schema</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#performance-schema"><span class="toc-number">2.1.3.</span> <span class="toc-text">performance_schema</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#sys"><span class="toc-number">2.1.4.</span> <span class="toc-text">sys</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93%E5%9C%A8%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E4%B8%AD%E7%9A%84%E8%A1%A8%E7%A4%BA"><span class="toc-number">2.2.</span> <span class="toc-text">数据库在文件系统中的表示</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A1%A8%E5%9C%A8%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E4%B8%AD%E7%9A%84%E8%A1%A8%E7%A4%BA"><span class="toc-number">2.3.</span> <span class="toc-text">表在文件系统中的表示</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#InnoDB-%E5%AD%98%E5%82%A8%E5%BC%95%E6%93%8E%E6%A8%A1%E5%BC%8F"><span class="toc-number">2.3.1.</span> <span class="toc-text">InnoDB 存储引擎模式</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E8%A1%A8%E7%BB%93%E6%9E%84"><span class="toc-number">2.3.1.1.</span> <span class="toc-text">表结构</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E8%A1%A8%E4%B8%AD%E6%95%B0%E6%8D%AE%E5%92%8C%E7%B4%A2%E5%BC%95"><span class="toc-number">2.3.1.2.</span> <span class="toc-text">表中数据和索引</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#MyISAM-%E5%AD%98%E5%82%A8%E5%BC%95%E6%93%8E%E6%A8%A1%E5%BC%8F"><span class="toc-number">2.3.2.</span> <span class="toc-text">MyISAM 存储引擎模式</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E8%A1%A8%E7%BB%93%E6%9E%84-1"><span class="toc-number">2.3.2.1.</span> <span class="toc-text">表结构</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E8%A1%A8%E4%B8%AD%E6%95%B0%E6%8D%AE%E5%92%8C%E7%B4%A2%E5%BC%95-1"><span class="toc-number">2.3.2.2.</span> <span class="toc-text">表中数据和索引</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B0%8F%E7%BB%93"><span class="toc-number">3.</span> <span class="toc-text">小结</span></a></li></ol>
+                </div>
+            
+            <hr />
+            <div itemprop="articleBody"><p> 本章主要介绍 MySQL 系统的目录结构以及数据库和表在文件系统的表示方法。</p>
+<h2 id="MySQL8-的主要目录结构"><a href="#MySQL8-的主要目录结构" class="headerlink" title="MySQL8 的主要目录结构"></a><strong>MySQL8 的主要目录结构</strong></h2><h3 id="数据库文件的存放路径"><a href="#数据库文件的存放路径" class="headerlink" title="数据库文件的存放路径"></a><strong>数据库文件的存放路径</strong></h3><p><code>show variables like &#39;datadir&#39;</code> SQL 语句能够查询 MySQL 数据库文件的存放路径，从结果可以看出在我的计算机上 MySQL 的数据目录是 <code>/var/lib/mysql/</code>。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; show variables like &#x27;datadir&#x27;;</span><br><span class="line">+---------------+-----------------+</span><br><span class="line">| Variable_name | Value           |</span><br><span class="line">+---------------+-----------------+</span><br><span class="line">| datadir       | /var/lib/mysql/ |</span><br><span class="line">+---------------+-----------------+</span><br><span class="line">1 row in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="MySQL-配置文件的存放路径"><a href="#MySQL-配置文件的存放路径" class="headerlink" title="MySQL 配置文件的存放路径"></a><strong>MySQL 配置文件的存放路径</strong></h3><p>MySQL 配置文件的存放路径：<code>/etc/</code>、<code>/usr/share/mysql-8.0</code> 等文件目录，文件名为 <code>my.cnf</code>。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@mysql101 ~]# ll /etc/ | grep my.cnf</span><br><span class="line">-rw-r--r--.  1 root root     1243 Apr 23  2021 my.cnf</span><br><span class="line">drwxr-xr-x.  2 root root        6 Apr 23  2021 my.cnf.d</span><br></pre></td></tr></table></figure>
+
+<h2 id="数据库和文件系统的关系"><a href="#数据库和文件系统的关系" class="headerlink" title="数据库和文件系统的关系"></a><strong>数据库和文件系统的关系</strong></h2><h3 id="MySQL-系统自带的数据库"><a href="#MySQL-系统自带的数据库" class="headerlink" title="MySQL 系统自带的数据库"></a><strong>MySQL 系统自带的数据库</strong></h3><p>以下除了 testdb 数据库是自己创建的，其他四个是 MySQL 系统自带的。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">mysql&gt; </span><span class="language-bash">show databases;</span></span><br><span class="line">+--------------------+</span><br><span class="line">| Database           |</span><br><span class="line">+--------------------+</span><br><span class="line">| information_schema |</span><br><span class="line">| mysql              |</span><br><span class="line">| performance_schema |</span><br><span class="line">| sys                |</span><br><span class="line">| testdb             |</span><br><span class="line">+--------------------+</span><br><span class="line">5 rows in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+
+<h4 id="mysql"><a href="#mysql" class="headerlink" title="mysql"></a><strong>mysql</strong></h4><p>MySQL 系统自带的核心数据库，它存储了 MySQL 的用户信息、权限信息、存储过程、事件的定义信息、运行过程中产生的日志信息，一些帮助信息以及时区信息等。</p>
+<h4 id="information-schema"><a href="#information-schema" class="headerlink" title="information_schema"></a><strong>information_schema</strong></h4><p>这个数据库保存着 MySQL 服务器维护的所有其他数据库的信息 ，比如有哪些表、哪些视图、哪些触发器、哪些列、哪些索引。这些信息并不是真实的用户数据，而是一些描述性信息，有时候也称之为元数据 。</p>
+<h4 id="performance-schema"><a href="#performance-schema" class="headerlink" title="performance_schema"></a><strong>performance_schema</strong></h4><p>这个数据库里主要保存 MySQL 服务器运行过程中的一些状态信息，可以用来监控 MySQL 服务的各类性能指标 。包括统计最近执行了哪些语句，在执行过程的每个阶段都花费了多长时间，内存的使用情况等信息。</p>
+<h4 id="sys"><a href="#sys" class="headerlink" title="sys"></a><strong>sys</strong></h4><p>这个数据库主要是通过视图的形式把 information_schema 和 performance_schema 结合起来，帮助系统管理员和开发人员监控 MySQL 的技术性能。</p>
+<h3 id="数据库在文件系统中的表示"><a href="#数据库在文件系统中的表示" class="headerlink" title="数据库在文件系统中的表示"></a><strong>数据库在文件系统中的表示</strong></h3><p>以下是我的计算机上的数据目录的内容。这个数据目录中，除了 <code>information_schema</code> 这个系统数据库外，其他的数据库在<code>数据目录</code>下都有对应的子目录。 </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">[root@mysql101 ~]# ll /var/lib/mysql</span><br><span class="line">total 188948</span><br><span class="line">-rw-r-----. 1 mysql mysql       56 May 15 05:07 auto.cnf</span><br><span class="line">-rw-r-----. 1 mysql mysql      498 May 15 05:24 binlog.000001</span><br><span class="line">-rw-r-----. 1 mysql mysql    25958 May 15 15:52 binlog.000002</span><br><span class="line">-rw-r-----. 1 mysql mysql    25184 May 17 02:22 binlog.000003</span><br><span class="line">-rw-r-----. 1 mysql mysql      179 May 17 02:23 binlog.000004</span><br><span class="line">-rw-r-----. 1 mysql mysql    12246 May 21 08:10 binlog.000005</span><br><span class="line">-rw-r-----. 1 mysql mysql      179 May 21 16:07 binlog.000006</span><br><span class="line">-rw-r-----. 1 mysql mysql      395 May 22 01:47 binlog.000007</span><br><span class="line">-rw-r-----. 1 mysql mysql      112 May 22 01:09 binlog.index</span><br><span class="line">-rw-------. 1 mysql mysql     1680 May 15 05:07 ca-key.pem</span><br><span class="line">-rw-r--r--. 1 mysql mysql     1112 May 15 05:07 ca.pem</span><br><span class="line">-rw-r--r--. 1 mysql mysql     1112 May 15 05:07 client-cert.pem</span><br><span class="line">-rw-------. 1 mysql mysql     1680 May 15 05:07 client-key.pem</span><br><span class="line">-rw-r-----. 1 mysql mysql   196608 May 22 01:49 #ib_16384_0.dblwr</span><br><span class="line">-rw-r-----. 1 mysql mysql  8585216 May 15 05:07 #ib_16384_1.dblwr</span><br><span class="line">-rw-r-----. 1 mysql mysql     3949 May 21 16:07 ib_buffer_pool</span><br><span class="line">-rw-r-----. 1 mysql mysql 12582912 May 22 01:47 ibdata1</span><br><span class="line">-rw-r-----. 1 mysql mysql 50331648 May 22 01:49 ib_logfile0</span><br><span class="line">-rw-r-----. 1 mysql mysql 50331648 May 15 05:07 ib_logfile1</span><br><span class="line">-rw-r-----. 1 mysql mysql 12582912 May 22 01:09 ibtmp1</span><br><span class="line">drwxr-x---. 2 mysql mysql      187 May 22 01:09 #innodb_temp</span><br><span class="line">drwxr-x---. 2 mysql mysql      143 May 15 05:07 mysql</span><br><span class="line">-rw-r-----. 1 mysql mysql 25165824 May 22 01:47 mysql.ibd</span><br><span class="line">srwxrwxrwx. 1 mysql mysql        0 May 22 01:09 mysql.sock</span><br><span class="line">-rw-------. 1 mysql mysql        5 May 22 01:09 mysql.sock.lock</span><br><span class="line">drwxr-x---. 2 mysql mysql     8192 May 15 05:07 performance_schema</span><br><span class="line">-rw-------. 1 mysql mysql     1680 May 15 05:07 private_key.pem</span><br><span class="line">-rw-r--r--. 1 mysql mysql      452 May 15 05:07 public_key.pem</span><br><span class="line">-rw-r--r--. 1 mysql mysql     1112 May 15 05:07 server-cert.pem</span><br><span class="line">-rw-------. 1 mysql mysql     1676 May 15 05:07 server-key.pem</span><br><span class="line">drwxr-x---. 2 mysql mysql       28 May 15 05:07 sys</span><br><span class="line">drwxr-x---. 2 mysql mysql     4096 May 20 08:16 testdb</span><br><span class="line">-rw-r-----. 1 mysql mysql 16777216 May 22 01:49 undo_001</span><br><span class="line">-rw-r-----. 1 mysql mysql 16777216 May 22 01:49 undo_002</span><br></pre></td></tr></table></figure>
+
+<h3 id="表在文件系统中的表示"><a href="#表在文件系统中的表示" class="headerlink" title="表在文件系统中的表示"></a><strong>表在文件系统中的表示</strong></h3><p>新建一个名为 demo01 的数据库，有如下表：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; show tables;</span><br><span class="line">+------------------+</span><br><span class="line">| Tables_in_demo01 |</span><br><span class="line">+------------------+</span><br><span class="line">| countries        |</span><br><span class="line">| departments      |</span><br><span class="line">| emp_details_view |</span><br><span class="line">| employees        |</span><br><span class="line">| job_grades       |</span><br><span class="line">| job_history      |</span><br><span class="line">| jobs             |</span><br><span class="line">| locations        |</span><br><span class="line">| order            |</span><br><span class="line">| regions          |</span><br><span class="line">+------------------+</span><br><span class="line">10 rows in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+
+<h4 id="InnoDB-存储引擎模式"><a href="#InnoDB-存储引擎模式" class="headerlink" title="InnoDB 存储引擎模式"></a><strong>InnoDB 存储引擎模式</strong></h4><h5 id="表结构"><a href="#表结构" class="headerlink" title="表结构"></a><strong>表结构</strong></h5><p>为了保存表结构， InnoDB 在<code>数据目录</code>下对应的数据库子目录下创建了一个专门用于描述表结构的文件 ，文件名格式为<code>表名.frm</code>。<code>MySQL8.0</code> 中不再单独提供<code>表名.frm</code>，而是合并在<code>表名.ibd</code>文件中。</p>
+<p>以 demo01 数据库为例，在 MySQL5.7 下打开<code>数据目录</code>中对应的数据库子目录：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">[root@mysql102 ~]# ll /var/lib/mysql/demo01/</span><br><span class="line">total 1236</span><br><span class="line">-rw-r-----. 1 mysql mysql   8658 May 22 10:13 countries.frm</span><br><span class="line">-rw-r-----. 1 mysql mysql 114688 May 22 10:13 countries.ibd</span><br><span class="line">-rw-r-----. 1 mysql mysql     61 May 22 10:13 db.opt</span><br><span class="line">-rw-r-----. 1 mysql mysql   8716 May 22 10:13 departments.frm</span><br><span class="line">-rw-r-----. 1 mysql mysql 147456 May 22 10:13 departments.ibd</span><br><span class="line">-rw-r-----. 1 mysql mysql   3041 May 22 10:13 emp_details_view.frm</span><br><span class="line">-rw-r-----. 1 mysql mysql   8982 May 22 10:13 employees.frm</span><br><span class="line">-rw-r-----. 1 mysql mysql 180224 May 22 10:13 employees.ibd</span><br><span class="line">-rw-r-----. 1 mysql mysql   8660 May 22 10:13 job_grades.frm</span><br><span class="line">-rw-r-----. 1 mysql mysql  98304 May 22 10:13 job_grades.ibd</span><br><span class="line">-rw-r-----. 1 mysql mysql   8736 May 22 10:13 job_history.frm</span><br><span class="line">-rw-r-----. 1 mysql mysql 147456 May 22 10:13 job_history.ibd</span><br><span class="line">-rw-r-----. 1 mysql mysql   8688 May 22 10:13 jobs.frm</span><br><span class="line">-rw-r-----. 1 mysql mysql 114688 May 22 10:13 jobs.ibd</span><br><span class="line">-rw-r-----. 1 mysql mysql   8790 May 22 10:13 locations.frm</span><br><span class="line">-rw-r-----. 1 mysql mysql 131072 May 22 10:13 locations.ibd</span><br><span class="line">-rw-r-----. 1 mysql mysql   8610 May 22 10:13 order.frm</span><br><span class="line">-rw-r-----. 1 mysql mysql  98304 May 22 10:13 order.ibd</span><br><span class="line">-rw-r-----. 1 mysql mysql   8614 May 22 10:13 regions.frm</span><br><span class="line">-rw-r-----. 1 mysql mysql 114688 May 22 10:13 regions.ibd</span><br></pre></td></tr></table></figure>
+
+<p>在 MySQL8.0 中打开：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">[root@mysql101 ~]# ll /var/lib/mysql/demo01/</span><br><span class="line">total 1152</span><br><span class="line">-rw-r-----. 1 mysql mysql 131072 May 22 02:13 countries.ibd</span><br><span class="line">-rw-r-----. 1 mysql mysql 163840 May 22 02:13 departments.ibd</span><br><span class="line">-rw-r-----. 1 mysql mysql 196608 May 22 02:12 employees.ibd</span><br><span class="line">-rw-r-----. 1 mysql mysql 114688 May 22 02:12 job_grades.ibd</span><br><span class="line">-rw-r-----. 1 mysql mysql 163840 May 22 02:12 job_history.ibd</span><br><span class="line">-rw-r-----. 1 mysql mysql 131072 May 22 02:12 jobs.ibd</span><br><span class="line">-rw-r-----. 1 mysql mysql 147456 May 22 02:13 locations.ibd</span><br><span class="line">-rw-r-----. 1 mysql mysql 114688 May 22 02:13 order.ibd</span><br><span class="line">-rw-r-----. 1 mysql mysql 131072 May 22 02:13 regions.ibd</span><br></pre></td></tr></table></figure>
+
+<h5 id="表中数据和索引"><a href="#表中数据和索引" class="headerlink" title="表中数据和索引"></a><strong>表中数据和索引</strong></h5><p>默认情况下，InnoDB 会在<code>数据目录</code>下创建一个名为 ibdata1 、大小为 12M 的文件，这个文件就是对应的系统表空间在文件系统上的表示。当不够用的时候它会自己增加文件大小。可以在  <code>my.cnf</code>  配置文件中这样修改文件名和文件大小：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">在 my.cnf 配置文件修改 ibdata1 文件的信息</span></span><br><span class="line">innodb_data_file_path=data1:512M:autoextend</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"># 查看 MySQL 中 ibdata1 文件的信息</span><br><span class="line">mysql&gt; show variables like &#x27;innodb_data_file_path&#x27;;</span><br><span class="line">+-----------------------+------------------------+</span><br><span class="line">| Variable_name         | Value                  |</span><br><span class="line">+-----------------------+------------------------+</span><br><span class="line">| innodb_data_file_path | ibdata1:12M:autoextend |</span><br><span class="line">+-----------------------+------------------------+</span><br><span class="line">1 row in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+
+<p>在 MySQL5.6.6 以及之后的版本中，InnoDB 并不会默认的把各个表的数据存储到系统表空间中，也就是 ibdata1 文件中，而是为<code>每 一个表建立一个独立表空间</code>，也就是说我们创建了多少个表，就有多少个独立表空间。使用<code>独立表空间</code>来存储表数据的话，会在该表所属数据库对应的子目录下创建一个表示该独立表空间的文件，文件名的格式为<code>表名.ibd</code>。</p>
+<p>我们可以自己指定使用<code>系统表空间</code>还是<code>独立表空间</code>来存储数据，这个功能由启动参数 <code>innodb_file_per_table</code> 控制，比如说我们想将表数据都存储到<code>系统表空间</code>时，可以这样修改 <code>my.cnf</code> 配置文件：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">innodb_file_per_table=0 # 0：代表使用系统表空间； 1：代表使用独立表空间</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"># 查看 MySQL 系统默认存储情况，ON 指使用独立表空间</span><br><span class="line">mysql&gt; show variables like &#x27;innodb_file_per_table&#x27;;</span><br><span class="line">+-----------------------+-------+</span><br><span class="line">| Variable_name         | Value |</span><br><span class="line">+-----------------------+-------+</span><br><span class="line">| innodb_file_per_table | ON    |</span><br><span class="line">+-----------------------+-------+</span><br><span class="line">1 row in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+
+<h4 id="MyISAM-存储引擎模式"><a href="#MyISAM-存储引擎模式" class="headerlink" title="MyISAM 存储引擎模式"></a><strong>MyISAM 存储引擎模式</strong></h4><h5 id="表结构-1"><a href="#表结构-1" class="headerlink" title="表结构"></a><strong>表结构</strong></h5><p>在存储表结构方面， MyISAM 和 InnoDB 一样，也是在<code>数据目录</code>下对应的数据库子目录下创建了一个<code>表名.frm</code>文件用于描述表结构.</p>
+<h5 id="表中数据和索引-1"><a href="#表中数据和索引-1" class="headerlink" title="表中数据和索引"></a><strong>表中数据和索引</strong></h5><p>在 MyISAM 中的索引全部都是<code>二级索引</code>，该存储引擎的<code>数据和索引是分开存放</code>的。所以在文件系统中也是使用不同的文件来存储数据文件和索引文件。假如 test 表使用 MyISAM 存储引擎的话，那么在它所在数据库目录下会为 test 表创建这三个文件：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">test.frm 存储表结构 </span><br><span class="line">test.MYD 存储数据 (MYData) </span><br><span class="line">test.MYI 存储索引 (MYIndex)</span><br></pre></td></tr></table></figure>
+
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a><strong>小结</strong></h2><ol>
+<li>如果表采用了 InnoDB 存储引擎<ul>
+<li>在 MySQL5.7 中，用<code>表名.frm文件</code>存储表结构信息，表名.ibd文件&#96;存储表数据和索引。</li>
+<li>在 MySQL8.0 中，用<code>表名.ibd文件</code>存储表结构、数据和索引。</li>
+</ul>
+</li>
+<li>如果表采用了 MyISAM 存储引擎<ul>
+<li>在 MySQL5.7 中，用<code>表名.frm文件</code>存储表结构信息，<code>表名.MYD文件</code> 存储表数据，<code>表名.MYI文件</code>存放索引信息</li>
+<li>在 MySQL8.0 中，用<code>表名.xxx.sdi文件</code>存储表结构信息，<code>表名.MYD文件</code> 存储表数据，<code>表名.MYI文件</code>存放索引信息</li>
+</ul>
+</li>
+</ol>
+<p>另外，在 MySQL5.7 中会在<code>数据目录</code>对应的数据库文件下会生成 db.opt 文件，用于存储数据库的相关配置。比如：字符集、比较规则。而MySQL8.0不再提供 db.opt 文件。</p>
+</div>
+        </div>
+        
+        <footer class="kratos-entry-footer clearfix">
+            
+            <div class="footer-tag clearfix">
+                <div class="pull-left">
+                <i class="fa fa-tags"></i>
+                    <a class="tag-none-link" href="/blog/tags/MySQL/" rel="tag">MySQL</a>
+                </div>
+                <div class="pull-date">
+                    <time datetime="2026-01-04T05:51:48.300Z" itemprop="dateModified">最后编辑：2026-01-04</time>
+                </div>
+            </div>
+        </footer>
+    </div>
+    
+        <nav class="navigation post-navigation clearfix" role="navigation">
+            
+            <div class="nav-previous clearfix">
+                <a title=" 【Java 8 新特性】时间类：OffsetTime 和 OffsetDateTime" href="/blog/2023/05/21/Java8/time/OffsetTime_OffsetDateTime/">&lt; 上一篇</a>
+            </div>
+            
+            
+            <div class="nav-next clearfix">
+                <a title=" CentOS7 安装 Docker" href="/blog/2023/06/10/Docker/CentOS-Docker-安装/">下一篇 &gt;</a>
+            </div>
+            
+        </nav>
+    
+    
+</article>
+
+        
+
+            </section>
+
+        
+
+                
+            
+
+<section id="kratos-widget-area" class="col-md-4 hidden-xs hidden-sm">
+    <!-- 文章和页面根据splitter来分割，没有的话就从头开始设置为sticky -->
+    
+    
+                <aside id="krw-about" class="widget widget-kratos-about clearfix">
+    <div class="photo-background"></div>
+    <div class="photo-wrapper clearfix">
+        <div class="photo-wrapper-tip text-center">
+            <img class="about-photo" src="/blog/images/avatar.webp" loading="lazy" decoding="auto" />
+        </div>
+    </div>
+    <div class="textwidget">
+        <p class="text-center">极简主义</p>
+    </div>
+    <div class="site-meta">
+        <a class="meta-item" href="/blog/archives/">
+            <span class="title">
+                文章
+            </span>
+            <span class="count">
+                77
+            </span>
+        </a>
+        <a class="meta-item" href="/blog/categories/">
+            <span class="title">
+                分类
+            </span>
+            <span class="count">
+                10
+            </span>
+        </a>
+        <a class="meta-item" href="/blog/tags/">
+            <span class="title">
+                标签
+            </span>
+            <span class="count">
+                29
+            </span>
+        </a>
+    </div>
+</aside>
+            
+                    <div class="sticky-area">
+                
+                    <aside id="krw-toc" class="widget widget-kratos-toc clearfix toc-div-class" >
+    <div class="photo-background"></div>
+    <h4 class="widget-title no-after">
+        <i class="fa fa-compass"></i>
+        文章目录
+        <span class="toc-progress-bar" role="progressbar" aria-label="阅读进度："></span>
+    </h4>
+    <div class="textwidget">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#MySQL8-%E7%9A%84%E4%B8%BB%E8%A6%81%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84"><span class="toc-text">MySQL8 的主要目录结构</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93%E6%96%87%E4%BB%B6%E7%9A%84%E5%AD%98%E6%94%BE%E8%B7%AF%E5%BE%84"><span class="toc-text">数据库文件的存放路径</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#MySQL-%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E7%9A%84%E5%AD%98%E6%94%BE%E8%B7%AF%E5%BE%84"><span class="toc-text">MySQL 配置文件的存放路径</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93%E5%92%8C%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E7%9A%84%E5%85%B3%E7%B3%BB"><span class="toc-text">数据库和文件系统的关系</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#MySQL-%E7%B3%BB%E7%BB%9F%E8%87%AA%E5%B8%A6%E7%9A%84%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="toc-text">MySQL 系统自带的数据库</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#mysql"><span class="toc-text">mysql</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#information-schema"><span class="toc-text">information_schema</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#performance-schema"><span class="toc-text">performance_schema</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#sys"><span class="toc-text">sys</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93%E5%9C%A8%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E4%B8%AD%E7%9A%84%E8%A1%A8%E7%A4%BA"><span class="toc-text">数据库在文件系统中的表示</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A1%A8%E5%9C%A8%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E4%B8%AD%E7%9A%84%E8%A1%A8%E7%A4%BA"><span class="toc-text">表在文件系统中的表示</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#InnoDB-%E5%AD%98%E5%82%A8%E5%BC%95%E6%93%8E%E6%A8%A1%E5%BC%8F"><span class="toc-text">InnoDB 存储引擎模式</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E8%A1%A8%E7%BB%93%E6%9E%84"><span class="toc-text">表结构</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E8%A1%A8%E4%B8%AD%E6%95%B0%E6%8D%AE%E5%92%8C%E7%B4%A2%E5%BC%95"><span class="toc-text">表中数据和索引</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#MyISAM-%E5%AD%98%E5%82%A8%E5%BC%95%E6%93%8E%E6%A8%A1%E5%BC%8F"><span class="toc-text">MyISAM 存储引擎模式</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E8%A1%A8%E7%BB%93%E6%9E%84-1"><span class="toc-text">表结构</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E8%A1%A8%E4%B8%AD%E6%95%B0%E6%8D%AE%E5%92%8C%E7%B4%A2%E5%BC%95-1"><span class="toc-text">表中数据和索引</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B0%8F%E7%BB%93"><span class="toc-text">小结</span></a></li></ol>
+    </div>
+</aside>
+                
+                
+  <aside id="krw-categories" class="widget widget-kratos-categories clearfix">
+    <h4 class="widget-title"><i class="fa fa-folder"></i>分类目录</h4>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Docker/">Docker</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Idea/">Idea</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Java/">Java</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/K8s/">K8s</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Linux/">Linux</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/MySQL/">MySQL</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Python/">Python</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Selenium/">Selenium</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/SpringBoot/">SpringBoot</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/SpringCloud/">SpringCloud</a><span class="category-list-count">13</span></li></ul>
+  </aside>
+
+
+            
+                
+  <aside id="krw-tags" class="widget widget-kratos-tags clearfix">
+    <h4 class="widget-title"><i class="fa fa-tags"></i>标签聚合</h4>
+      <div class="tag-clouds">
+        <a href="/blog/tags/CORS/" style="font-size: 0.8em;">CORS</a> <a href="/blog/tags/Docker/" style="font-size: 0.8em;">Docker</a> <a href="/blog/tags/Dubbo/" style="font-size: 0.8em;">Dubbo</a> <a href="/blog/tags/ELK/" style="font-size: 0.8em;">ELK</a> <a href="/blog/tags/Elasticsearch/" style="font-size: 0.8em;">Elasticsearch</a> <a href="/blog/tags/Eureka/" style="font-size: 0.8em;">Eureka</a> <a href="/blog/tags/Feign/" style="font-size: 0.8em;">Feign</a> <a href="/blog/tags/Gateway/" style="font-size: 0.8em;">Gateway</a> <a href="/blog/tags/Idea/" style="font-size: 0.8em;">Idea</a> <a href="/blog/tags/Java/" style="font-size: 0.8em;">Java</a> <a href="/blog/tags/JavaWeb/" style="font-size: 0.8em;">JavaWeb</a> <a href="/blog/tags/K8s/" style="font-size: 0.8em;">K8s</a> <a href="/blog/tags/Linux/" style="font-size: 0.8em;">Linux</a> <a href="/blog/tags/Maven/" style="font-size: 0.8em;">Maven</a> <a href="/blog/tags/MySQL/" style="font-size: 0.8em;">MySQL</a> <a href="/blog/tags/Mybatis/" style="font-size: 0.8em;">Mybatis</a> <a href="/blog/tags/Nacos/" style="font-size: 0.8em;">Nacos</a> <a href="/blog/tags/Pytest/" style="font-size: 0.8em;">Pytest</a>
+      </div>
+  </aside>
+
+            
+                
+  <aside id="krw-posts" class="widget widget-kratos-posts">
+  <h4 class="widget-title"><i class="fa fa-file"></i>最新文章</h4>
+  <div class="tab-content">
+      <ul class="list-group">
+        
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/01/25/K8s/K8s%E7%BB%84%E4%BB%B6/"><i class="fa  fa-book"></i> 【K8s】组件</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/01/24/K8s/K8s%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/"><i class="fa  fa-book"></i> 【K8s】常用命令</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/01/11/Idea/IDEA%E6%8F%92%E4%BB%B6/"><i class="fa  fa-book"></i> 【Idea】插件</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/01/04/Linux/Centos7%E9%97%AE%E9%A2%98%E5%A4%84%E7%90%86/"><i class="fa  fa-book"></i> Centos7问题处理</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2025/12/09/Trae/Trae%E5%AE%89%E8%A3%85%E6%8F%92%E4%BB%B6%E5%AE%9E%E7%8E%B0Java%E4%BB%A3%E7%A0%81%E7%BC%96%E5%86%99/"><i class="fa  fa-book"></i> 【Trae】安装插件实现Java代码编写</a>
+            
+          
+        
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+      </ul>
+  </div>
+  </aside>
+
+            
+    </div>
+</section>
+        
+        </div>
+    </div>
+</div>
+<footer>
+    <div id="footer"  >
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3 footer-list text-center">
+                    <ul class="kratos-social-icons">
+                        <!-- Keep for compatibility -->
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <!-- New links -->
+                        
+                    </ul>
+                    <ul class="kratos-copyright">
+                        <div>
+                            <li>&copy; 2026 溪岚花的博客 版权所有.</li>
+                            <li>本站已运行<span id="span_dt">Loading...</span></li>
+                        </div>
+                        <div>
+                            <li>Theme <a href="https://github.com/Candinya/Kratos-Rebirth" target="_blank">Kratos:Rebirth</a></li>
+                            <li>Site built with&nbsp;<i class="fa fa-heart throb" style="color:#d43f57"></i>&nbsp;by 林家隆.</li>
+                        </div>
+                        <div>
+                            <li>Powered by <a href="https://hexo.io" target="_blank" rel="nofollow">Hexo</a></li>
+                            <li>Hosted on <a href="https://gitee.com/" target="_blank">Gitee Pages</a></li>
+                        </div>
+                        <div>
+                            
+                            
+                        </div>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="kr-tool text-center">
+            <div class="tool">
+                
+                    <div class="box search-box">
+                        <a href="/blog/search/">
+                            <span class="fa fa-search"></span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="box theme-box" id="darkmode-switch">
+                        <span class="fa fa-adjust"></span>
+                    </div>
+                
+                
+                
+            </div>
+            <div class="box gotop-box">
+                <span class="fa fa-chevron-up"></span>
+            </div>
+        </div>
+    </div>
+</footer>
+</div>
+</div>
+
+        <script defer src="/blog/vendors/bootstrap@3.3.4/dist/js/bootstrap.min.js"></script>
+<script defer src="/blog/vendors/nprogress@0.2.0/nprogress.js"></script>
+<script>
+    if (!window.kr) {
+        window.kr = {};
+    }
+    window.kr.notMobile = (!(navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i)));
+    window.kr.siteRoot = "/blog/";
+</script>
+
+
+
+
+
+    <script defer src="/blog/vendors/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+
+<script defer src="/blog/js/kratosr.min.js"></script>
+<script defer src="/blog/js/pjax.min.js"></script>
+
+
+
+<!-- Extra support for third-party plguins  -->
+
+
+    </body>
+</html>

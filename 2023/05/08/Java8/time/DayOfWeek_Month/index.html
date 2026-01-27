@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+  <!-- 元数据 -->
+  <meta charset="utf-8">
+  <link rel="icon" href="/blog/images/logo.png">
+  
+  <title>【Java 8 新特性】时间类：DayOfWeek 和 Month | 溪岚花的博客</title>
+  
+  <meta name="author" content="林家隆" />
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="robots" content="index,follow" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <meta name="format-detection" content="telphone=no, email=no" />
+  
+    <meta name="keywords" content="Java" />
+  
+  <meta name="description" content="本章介绍 java.time 包下的两个枚举类： DayOfWeek 枚举和 Month 枚举。其中 DayOfWeek 类枚举了七个星期，对应整数1~7；Month 类枚举了12个月份，对应整数1~12。 DayOfWeek枚举类DayOfWeek 枚举类用于表示一周中的某一天，包括周一到周日七个枚举常量。 枚举值12345678910111213&#x2F;*** DayOfWeek枚举类的所有枚举值。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【Java 8 新特性】时间类：DayOfWeek 和 Month">
+<meta property="og:url" content="https://lin316.gitee.io/blog/2023/05/08/Java8/time/DayOfWeek_Month/index.html">
+<meta property="og:site_name" content="溪岚花的博客">
+<meta property="og:description" content="本章介绍 java.time 包下的两个枚举类： DayOfWeek 枚举和 Month 枚举。其中 DayOfWeek 类枚举了七个星期，对应整数1~7；Month 类枚举了12个月份，对应整数1~12。 DayOfWeek枚举类DayOfWeek 枚举类用于表示一周中的某一天，包括周一到周日七个枚举常量。 枚举值12345678910111213&#x2F;*** DayOfWeek枚举类的所有枚举值。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://lin316.gitee.io/blog/blog/images/logo.png">
+<meta property="article:published_time" content="2023-05-07T16:00:00.000Z">
+<meta property="article:modified_time" content="2026-01-04T05:51:48.241Z">
+<meta property="article:author" content="林家隆">
+<meta property="article:tag" content="Java">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://lin316.gitee.io/blog/blog/images/logo.png">
+  
+  <!-- 站点验证相关 -->
+  
+    
+    
+    
+  
+  <!-- 样式表文件 -->
+  <link rel="stylesheet" id="kratos-css" href="/blog/css/kratosr.min.css" media="all"></script>
+  
+    <link rel="stylesheet" id="darkmode-css" href="/blog/css/kr-color-dark.min.css" media="(prefers-color-scheme: dark)"></script>
+    <script src="/blog/js/kr-dark.min.js"></script>
+  
+  
+    <link rel="stylesheet" id="highlight-css" href="/blog/css/highlight/night-eighties.min.css" media="all"></script>
+  
+  <link rel="stylesheet" id="fontawe-css" href="/blog/vendors/font-awesome@4.7.0/css/font-awesome.min.css" media="all"></script>
+  <link rel="stylesheet" id="nprogress-css" href="/blog/vendors/nprogress@0.2.0/nprogress.css" media="all"></script>
+  
+  
+  
+    <link rel="stylesheet" href="/blog/vendors/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css"></script>
+  
+  <!-- 不得不预先加载的一些JS文件 -->
+  <script src="/blog/vendors/jquery@3.6.0/dist/jquery.min.js"></script>
+  
+  
+  <style>
+    
+    
+  </style>
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+    <body class="custom-background">
+        <div id="kratos-wrapper">
+    <div id="kratos-page">
+        <div id="kratos-header">
+            <header id="kratos-desktop-topnav" class="kratos-topnav">
+                <div class="container">
+                    <div class="nav-header">
+                        <nav id="kratos-menu-wrap">
+                            <ul id="kratos-primary-menu" class="sf-menu">
+                                
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/">
+                                            
+                                                
+                                                    <i class="fa fa-home"></i>
+                                                
+                                                首页
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/archives/">
+                                            
+                                                
+                                                    <i class="fa fa-file"></i>
+                                                
+                                                归档
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/tags/">
+                                            
+                                                
+                                                    <i class="fa fa-tag"></i>
+                                                
+                                                标签
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/categories/">
+                                            
+                                                
+                                                    <i class="fa fa-folder"></i>
+                                                
+                                                目录
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/search/">
+                                            
+                                                
+                                                    <i class="fa fa-search"></i>
+                                                
+                                                搜索
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </header>
+            <header id="kratos-mobile-topnav" class="kratos-topnav">
+                <div class="container">
+                    <div class="color-logo"><a href="/blog/">溪岚花的博客</a></div>
+                    <div class="nav-toggle">
+                        <a class="kratos-nav-toggle js-kratos-nav-toggle">
+                            <i></i>
+                        </a>
+                    </div>
+                </div>
+            </header>
+        </div>
+        <div class="kratos-start kratos-hero-2">
+            <!-- <div class="kratos-overlay"></div> -->
+            <div class="kratos-cover kratos-cover-2 text-center">
+                <div class="desc desc2 animate-box">
+                    <a href="/blog/">
+                        <h2 style="opacity: 0.2;">溪岚花的博客</h2> <br />
+                        <span></span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div id="kratos-blog-post">
+            <div class="container">
+                <div id="main" class="row">
+                    
+
+        
+
+            <section class="col-md-8">
+
+        
+
+            <article itemscope itemtype="https://schema.org/Article">
+    
+    <link itemprop="mainEntityOfPage" href="https://lin316.gitee.io/blog/2023/05/08/Java8/time/DayOfWeek_Month/">
+    <div class="kratos-hentry kratos-post-inner clearfix">
+        <header class="kratos-entry-header">
+            
+                <h1 class="kratos-entry-title text-center" itemprop="name headline">【Java 8 新特性】时间类：DayOfWeek 和 Month</h1>
+            
+            
+            <ul class="kratos-post-meta text-center">
+                <li><time datetime="2023-05-07T16:00:00.000Z" itemprop="datePublished"><i class="fa fa-calendar"></i> 2023-05-08</time></li>
+                <li itemprop="author" itemscope itemtype="https://schema.org/Person">
+                    <i class="fa fa-user"></i> 作者 <span itemprop="name">林家隆</span>
+                </li>
+                
+                    <li>
+                        <i class="fa fa-edit"></i> 
+                        
+                        
+                            9.30K
+                        
+                        字
+                    </li>
+                
+                
+            </ul>
+        </header>
+        <div class="kratos-post-content">
+            
+            <div id="expire-alert" class="alert alert-warning hidden" role="alert">
+                <div class="icon"><i class="fa fa-warning"></i></div>
+                <div class="text"><p>本文最后编辑于 <time datetime="1767505908241"></time> 前，其中的内容可能需要更新。</p></div>
+            </div>
+            
+            
+            
+                <div class="kratos-post-inner-toc toc-div-class" >
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#DayOfWeek%E6%9E%9A%E4%B8%BE%E7%B1%BB"><span class="toc-number">1.</span> <span class="toc-text">DayOfWeek枚举类</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9E%9A%E4%B8%BE%E5%80%BC"><span class="toc-number">1.1.</span> <span class="toc-text">枚举值</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%9D%99%E6%80%81%E6%96%B9%E6%B3%95"><span class="toc-number">1.2.</span> <span class="toc-text">静态方法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#from-TemporalAccessor-temporal"><span class="toc-number">1.2.1.</span> <span class="toc-text">from(TemporalAccessor temporal)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#of-int-dayOfWeek"><span class="toc-number">1.2.2.</span> <span class="toc-text">of(int dayOfWeek)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#valueOf-String-name"><span class="toc-number">1.2.3.</span> <span class="toc-text">valueOf(String name)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#values"><span class="toc-number">1.2.4.</span> <span class="toc-text">values()</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%88%90%E5%91%98%E6%96%B9%E6%B3%95"><span class="toc-number">1.3.</span> <span class="toc-text">成员方法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#adjustInto-Temporal-temporal"><span class="toc-number">1.3.1.</span> <span class="toc-text">adjustInto(Temporal temporal)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#getDisplayName-TextStyle-style-Locale-locale"><span class="toc-number">1.3.2.</span> <span class="toc-text">getDisplayName(TextStyle style, Locale locale)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#getValue"><span class="toc-number">1.3.3.</span> <span class="toc-text">getValue()</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#plus-long-months"><span class="toc-number">1.3.4.</span> <span class="toc-text">plus(long months)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#minus-long-months"><span class="toc-number">1.3.5.</span> <span class="toc-text">minus(long months)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9C%AA%E6%BC%94%E7%A4%BA%E6%96%B9%E6%B3%95"><span class="toc-number">1.3.6.</span> <span class="toc-text">未演示方法</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Month%E6%9E%9A%E4%B8%BE%E7%B1%BB"><span class="toc-number">2.</span> <span class="toc-text">Month枚举类</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9E%9A%E4%B8%BE%E5%80%BC-1"><span class="toc-number">2.1.</span> <span class="toc-text">枚举值</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%9D%99%E6%80%81%E6%96%B9%E6%B3%95-1"><span class="toc-number">2.2.</span> <span class="toc-text">静态方法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#from-TemporalAccessor-temporal-1"><span class="toc-number">2.2.1.</span> <span class="toc-text">from(TemporalAccessor temporal)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#of-int-month"><span class="toc-number">2.2.2.</span> <span class="toc-text">of(int month)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#valueOf-String-name-1"><span class="toc-number">2.2.3.</span> <span class="toc-text">valueOf(String name)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#values-1"><span class="toc-number">2.2.4.</span> <span class="toc-text">values()</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%88%90%E5%91%98%E6%96%B9%E6%B3%95-1"><span class="toc-number">2.3.</span> <span class="toc-text">成员方法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#adjustInto-Temporal-temporal-1"><span class="toc-number">2.3.1.</span> <span class="toc-text">adjustInto(Temporal temporal)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#firstDayOfYear-boolean-leapYear"><span class="toc-number">2.3.2.</span> <span class="toc-text">firstDayOfYear(boolean leapYear)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#firstMonthOfQuarter"><span class="toc-number">2.3.3.</span> <span class="toc-text">firstMonthOfQuarter()</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#getDisplayName-TextStyle-style-Locale-locale-1"><span class="toc-number">2.3.4.</span> <span class="toc-text">getDisplayName(TextStyle style, Locale locale)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#getValue-1"><span class="toc-number">2.3.5.</span> <span class="toc-text">getValue()</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#length-boolean-leapYear"><span class="toc-number">2.3.6.</span> <span class="toc-text">length(boolean leapYear)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#maxLength"><span class="toc-number">2.3.7.</span> <span class="toc-text">maxLength()</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#minLength"><span class="toc-number">2.3.8.</span> <span class="toc-text">minLength()</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#plus-long-months-1"><span class="toc-number">2.3.9.</span> <span class="toc-text">plus(long months)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#minus-long-months-1"><span class="toc-number">2.3.10.</span> <span class="toc-text">minus(long months)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9C%AA%E6%BC%94%E7%A4%BA%E6%96%B9%E6%B3%95-1"><span class="toc-number">2.3.11.</span> <span class="toc-text">未演示方法</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E6%96%87%E7%8C%AE"><span class="toc-number">3.</span> <span class="toc-text">参考文献</span></a></li></ol>
+                </div>
+            
+            <hr />
+            <div itemprop="articleBody"><p>本章介绍 <code>java.time</code> 包下的两个枚举类： <code>DayOfWeek</code> 枚举和 <code>Month</code> 枚举。其中 <code>DayOfWeek</code> 类枚举了七个星期，对应整数1~7；<code>Month</code> 类枚举了12个月份，对应整数1~12。</p>
+<h2 id="DayOfWeek枚举类"><a href="#DayOfWeek枚举类" class="headerlink" title="DayOfWeek枚举类"></a>DayOfWeek枚举类</h2><p><code>DayOfWeek</code> 枚举类用于表示一周中的某一天，包括周一到周日七个枚举常量。</p>
+<h3 id="枚举值"><a href="#枚举值" class="headerlink" title="枚举值"></a>枚举值</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">* DayOfWeek枚举类的所有枚举值。</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">test01</span><span class="params">()</span>&#123;</span><br><span class="line">    System.out.println(DayOfWeek.MONDAY); <span class="comment">// 输出 MONDAY</span></span><br><span class="line">    System.out.println(DayOfWeek.TUESDAY); <span class="comment">// 输出 TUESDAY</span></span><br><span class="line">    System.out.println(DayOfWeek.WEDNESDAY); <span class="comment">// 输出 WEDNESDAY</span></span><br><span class="line">    System.out.println(DayOfWeek.THURSDAY); <span class="comment">// 输出 THURSDAY</span></span><br><span class="line">    System.out.println(DayOfWeek.FRIDAY); <span class="comment">// 输出 FRIDAY</span></span><br><span class="line">    System.out.println(DayOfWeek.SATURDAY); <span class="comment">// 输出 SATURDAY</span></span><br><span class="line">    System.out.println(DayOfWeek.SUNDAY); <span class="comment">// 输出 SUNDAY</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="静态方法"><a href="#静态方法" class="headerlink" title="静态方法"></a>静态方法</h3><h4 id="from-TemporalAccessor-temporal"><a href="#from-TemporalAccessor-temporal" class="headerlink" title="from(TemporalAccessor temporal)"></a>from(TemporalAccessor temporal)</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">* from(TemporalAccessor temporal)</span></span><br><span class="line"><span class="comment">* 作用：从其他含有星期数据的时间对象获取dayOfWeek对象。</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">test01</span><span class="params">()</span>&#123;</span><br><span class="line">    <span class="type">LocalDate</span> <span class="variable">date01</span> <span class="operator">=</span> LocalDate.parse(<span class="string">&quot;2023-04-02&quot;</span>); <span class="comment">// 2023-04-02 星期天</span></span><br><span class="line">    <span class="type">DayOfWeek</span> <span class="variable">dayOfWeek</span> <span class="operator">=</span> DayOfWeek.from(date01);</span><br><span class="line">    System.out.println(dayOfWeek); <span class="comment">// 输出 SUNDAY</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="of-int-dayOfWeek"><a href="#of-int-dayOfWeek" class="headerlink" title="of(int dayOfWeek)"></a>of(int dayOfWeek)</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">* of(int dayOfWeek)</span></span><br><span class="line"><span class="comment">* 作用：根据给定的数字（1~7）获取枚举值。</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">test02</span><span class="params">()</span>&#123;</span><br><span class="line">    System.out.println(DayOfWeek.of(<span class="number">1</span>)); <span class="comment">// 输出 MONDAY</span></span><br><span class="line">    System.out.println(DayOfWeek.of(<span class="number">2</span>)); <span class="comment">// 输出 TUESDAY</span></span><br><span class="line">    System.out.println(DayOfWeek.of(<span class="number">3</span>)); <span class="comment">// 输出 WEDNESDAY</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="valueOf-String-name"><a href="#valueOf-String-name" class="headerlink" title="valueOf(String name)"></a>valueOf(String name)</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">* valueOf(String name)</span></span><br><span class="line"><span class="comment">* 作用：根据给定的字符串获取枚举值。</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">test03</span><span class="params">()</span>&#123;</span><br><span class="line">    <span class="type">DayOfWeek</span> <span class="variable">monday</span> <span class="operator">=</span> DayOfWeek.valueOf(<span class="string">&quot;MONDAY&quot;</span>);</span><br><span class="line">    System.out.println(monday); <span class="comment">// 输出 MONDAY</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="values"><a href="#values" class="headerlink" title="values()"></a>values()</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">* values()</span></span><br><span class="line"><span class="comment">* 作用：获取所有枚举值（有序）</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">test04</span><span class="params">()</span>&#123;</span><br><span class="line">    DayOfWeek[] weeks = DayOfWeek.values();</span><br><span class="line">    System.out.println(Arrays.toString(weeks)); <span class="comment">// 输出 [MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY, SUNDAY]</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="成员方法"><a href="#成员方法" class="headerlink" title="成员方法"></a>成员方法</h3><h4 id="adjustInto-Temporal-temporal"><a href="#adjustInto-Temporal-temporal" class="headerlink" title="adjustInto(Temporal temporal)"></a>adjustInto(Temporal temporal)</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">* adjustInto(Temporal temporal)</span></span><br><span class="line"><span class="comment">* 作用：temporal是其它时间类对象，该方法的作用是将其他时间类对象的星期数据修改成dayOfWeek。</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">test01</span><span class="params">()</span>&#123;</span><br><span class="line">    <span class="type">LocalDate</span> <span class="variable">date01</span> <span class="operator">=</span> LocalDate.parse(<span class="string">&quot;2023-05-10&quot;</span>); <span class="comment">// 2023-05-10（星期三）</span></span><br><span class="line">    <span class="type">DayOfWeek</span> <span class="variable">tuesday</span> <span class="operator">=</span> DayOfWeek.TUESDAY;</span><br><span class="line">    <span class="type">DayOfWeek</span> <span class="variable">thursday</span> <span class="operator">=</span> DayOfWeek.THURSDAY;</span><br><span class="line">    <span class="type">LocalDate</span> <span class="variable">date02</span> <span class="operator">=</span> (LocalDate) tuesday.adjustInto(date01);</span><br><span class="line">    <span class="type">LocalDate</span> <span class="variable">date03</span> <span class="operator">=</span> (LocalDate) thursday.adjustInto(date01);</span><br><span class="line">    System.out.println(date01); <span class="comment">// 输出 2023-05-10（星期三）</span></span><br><span class="line">    System.out.println(date02); <span class="comment">// 输出 2023-05-09（星期二）</span></span><br><span class="line">    System.out.println(date03); <span class="comment">// 输出 2023-05-11（星期四）</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="getDisplayName-TextStyle-style-Locale-locale"><a href="#getDisplayName-TextStyle-style-Locale-locale" class="headerlink" title="getDisplayName(TextStyle style, Locale locale)"></a>getDisplayName(TextStyle style, Locale locale)</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">* getDisplayName(TextStyle style, Locale locale)</span></span><br><span class="line"><span class="comment">* 作用：获取dayOfWeek对象文本表示形式。</span></span><br><span class="line"><span class="comment">* 参数：</span></span><br><span class="line"><span class="comment">*  style：文本表示方式。如：FULL显示完整的名称，SHORT显示简写的名称，NARROW显示短的名称。</span></span><br><span class="line"><span class="comment">*  locale：本地化名称。如：Locale.CHINA显示中文名称，Locale.US显示英文名称。</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">test02</span><span class="params">()</span>&#123;</span><br><span class="line">    <span class="type">DayOfWeek</span> <span class="variable">tuesday</span> <span class="operator">=</span> DayOfWeek.TUESDAY;</span><br><span class="line">    System.out.println(tuesday.getDisplayName(TextStyle.FULL, Locale.US)); <span class="comment">// 输出 Tuesday</span></span><br><span class="line">    System.out.println(tuesday.getDisplayName(TextStyle.SHORT, Locale.US)); <span class="comment">// 输出 Tue</span></span><br><span class="line">    System.out.println(tuesday.getDisplayName(TextStyle.NARROW, Locale.US)); <span class="comment">// 输出 T</span></span><br><span class="line">    System.out.println(tuesday.getDisplayName(TextStyle.FULL, Locale.CHINA)); <span class="comment">// 输出 星期二</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="getValue"><a href="#getValue" class="headerlink" title="getValue()"></a>getValue()</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">* getValue()</span></span><br><span class="line"><span class="comment">* 作用：获取星期对应的整数值（1~7）。</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">test03</span><span class="params">()</span>&#123;</span><br><span class="line">    <span class="type">DayOfWeek</span> <span class="variable">tuesday</span> <span class="operator">=</span> DayOfWeek.TUESDAY;</span><br><span class="line">    System.out.println(tuesday.getValue()); <span class="comment">// 输出 2</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="plus-long-months"><a href="#plus-long-months" class="headerlink" title="plus(long months)"></a>plus(long months)</h4><h4 id="minus-long-months"><a href="#minus-long-months" class="headerlink" title="minus(long months)"></a>minus(long months)</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">* plus(long months)</span></span><br><span class="line"><span class="comment">* minus(long months)</span></span><br><span class="line"><span class="comment">* 作用：加上或减去固定值获取另一个的dayOfWeek对象。</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">test04</span><span class="params">()</span>&#123;</span><br><span class="line">    <span class="type">DayOfWeek</span> <span class="variable">tuesday</span> <span class="operator">=</span> DayOfWeek.TUESDAY;</span><br><span class="line">    System.out.println(tuesday.plus(<span class="number">1</span>)); <span class="comment">// 输出 WEDNESDAY</span></span><br><span class="line">    System.out.println(tuesday.minus(<span class="number">1</span>)); <span class="comment">// 输出 MONDAY</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="未演示方法"><a href="#未演示方法" class="headerlink" title="未演示方法"></a>未演示方法</h4><p>以下方法在 <code>LocalDate</code> 和 <code>LocalTime</code> 篇章演示过且作用相同，该篇章就不在赘述了。</p>
+<ol>
+<li>get(TemporalField field)</li>
+<li>getLong(TemporalField field)</li>
+<li>isSupported(TemporalField field)</li>
+<li>query(TemporalQuery<R> query)</R></li>
+<li>range(TemporalField field)</li>
+</ol>
+<br>
+
+<h2 id="Month枚举类"><a href="#Month枚举类" class="headerlink" title="Month枚举类"></a>Month枚举类</h2><p><code>Month</code> 枚举类用于表示一年中的某个月份，包括一月到十二月共12个枚举常量。</p>
+<h3 id="枚举值-1"><a href="#枚举值-1" class="headerlink" title="枚举值"></a>枚举值</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">* Month枚举类的所有枚举值。</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">test01</span><span class="params">()</span>&#123;</span><br><span class="line">    System.out.println(Month.JANUARY); <span class="comment">// 输出 JANUARY</span></span><br><span class="line">    System.out.println(Month.FEBRUARY); <span class="comment">// 输出 FEBRUARY</span></span><br><span class="line">    System.out.println(Month.MARCH); <span class="comment">// 输出 MARCH</span></span><br><span class="line">    System.out.println(Month.APRIL); <span class="comment">// 输出 APRIL</span></span><br><span class="line">    System.out.println(Month.MAY); <span class="comment">// 输出 MAY</span></span><br><span class="line">    System.out.println(Month.JUNE); <span class="comment">// 输出 JUNE</span></span><br><span class="line">    System.out.println(Month.JULY); <span class="comment">// 输出 JULY</span></span><br><span class="line">    System.out.println(Month.AUGUST); <span class="comment">// 输出 AUGUST</span></span><br><span class="line">    System.out.println(Month.SEPTEMBER); <span class="comment">// 输出 SEPTEMBER</span></span><br><span class="line">    System.out.println(Month.OCTOBER); <span class="comment">// 输出 OCTOBER</span></span><br><span class="line">    System.out.println(Month.NOVEMBER); <span class="comment">// 输出 NOVEMBER</span></span><br><span class="line">    System.out.println(Month.DECEMBER); <span class="comment">// 输出 DECEMBER</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="静态方法-1"><a href="#静态方法-1" class="headerlink" title="静态方法"></a>静态方法</h3><h4 id="from-TemporalAccessor-temporal-1"><a href="#from-TemporalAccessor-temporal-1" class="headerlink" title="from(TemporalAccessor temporal)"></a>from(TemporalAccessor temporal)</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">* from(TemporalAccessor temporal)</span></span><br><span class="line"><span class="comment">* 作用：从其他含有月份数据的时间对象获取month对象。</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">test01</span><span class="params">()</span>&#123;</span><br><span class="line">    <span class="type">LocalDate</span> <span class="variable">date01</span> <span class="operator">=</span> LocalDate.parse(<span class="string">&quot;2023-01-01&quot;</span>);</span><br><span class="line">    System.out.println(Month.from(date01)); <span class="comment">// 输出 JANUARY</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="of-int-month"><a href="#of-int-month" class="headerlink" title="of(int month)"></a>of(int month)</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">* of(int month)</span></span><br><span class="line"><span class="comment">* 作用：根据给定的数字（1~12）获取枚举值。</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">test02</span><span class="params">()</span>&#123;</span><br><span class="line">    System.out.println(Month.of(<span class="number">1</span>)); <span class="comment">// 输出 JANUARY</span></span><br><span class="line">    System.out.println(Month.of(<span class="number">6</span>)); <span class="comment">// 输出 JUNE</span></span><br><span class="line">    System.out.println(Month.of(<span class="number">12</span>)); <span class="comment">// 输出 DECEMBER</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="valueOf-String-name-1"><a href="#valueOf-String-name-1" class="headerlink" title="valueOf(String name)"></a>valueOf(String name)</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">* valueOf(String name)</span></span><br><span class="line"><span class="comment">* 作用：根据给定的字符串获取枚举值。</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">test03</span><span class="params">()</span>&#123;</span><br><span class="line">    System.out.println(Month.valueOf(<span class="string">&quot;JANUARY&quot;</span>)); <span class="comment">// 输出 JANUARY</span></span><br><span class="line">    System.out.println(Month.valueOf(<span class="string">&quot;JUNE&quot;</span>)); <span class="comment">// 输出 JUNE</span></span><br><span class="line">    System.out.println(Month.valueOf(<span class="string">&quot;DECEMBER&quot;</span>)); <span class="comment">// 输出 DECEMBER</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="values-1"><a href="#values-1" class="headerlink" title="values()"></a>values()</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">* values()</span></span><br><span class="line"><span class="comment">* 作用：获取所有枚举值（有序）</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">test04</span><span class="params">()</span>&#123;</span><br><span class="line">    Month[] months = Month.values();</span><br><span class="line">    System.out.println(Arrays.toString(months)); <span class="comment">// 输出 [JANUARY, FEBRUARY, MARCH, APRIL, MAY, JUNE, JULY, AUGUST, SEPTEMBER, OCTOBER, NOVEMBER, DECEMBER]</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="成员方法-1"><a href="#成员方法-1" class="headerlink" title="成员方法"></a>成员方法</h3><h4 id="adjustInto-Temporal-temporal-1"><a href="#adjustInto-Temporal-temporal-1" class="headerlink" title="adjustInto(Temporal temporal)"></a>adjustInto(Temporal temporal)</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">* adjustInto(Temporal temporal)</span></span><br><span class="line"><span class="comment">* 作用：temporal是其它时间类对象，该方法的作用是将其他时间类对象的月份数据修改成month。</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">test01</span><span class="params">()</span>&#123;</span><br><span class="line">    <span class="type">LocalDate</span> <span class="variable">date01</span> <span class="operator">=</span> LocalDate.parse(<span class="string">&quot;2023-01-10&quot;</span>);</span><br><span class="line">    <span class="type">Month</span> <span class="variable">february</span> <span class="operator">=</span> Month.FEBRUARY;</span><br><span class="line">    <span class="type">LocalDate</span> <span class="variable">date02</span> <span class="operator">=</span> (LocalDate) february.adjustInto(date01);</span><br><span class="line">    System.out.println(date01); <span class="comment">// 输出 2023-01-10</span></span><br><span class="line">    System.out.println(date02); <span class="comment">// 输出 2023-02-10</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="firstDayOfYear-boolean-leapYear"><a href="#firstDayOfYear-boolean-leapYear" class="headerlink" title="firstDayOfYear(boolean leapYear)"></a>firstDayOfYear(boolean leapYear)</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">* firstDayOfYear(boolean leapYear)</span></span><br><span class="line"><span class="comment">* 作用：获取某月的第一天在该年的第几天，leapYear参数用来说明该月份是否在闰年中。</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">test02</span><span class="params">()</span>&#123;</span><br><span class="line">    System.out.println(Month.JANUARY.firstDayOfYear(<span class="literal">false</span>)); <span class="comment">// 输出 1</span></span><br><span class="line">    System.out.println(Month.FEBRUARY.firstDayOfYear(<span class="literal">false</span>)); <span class="comment">// 输出 32</span></span><br><span class="line">    System.out.println(Month.SEPTEMBER.firstDayOfYear(<span class="literal">false</span>)); <span class="comment">// 输出 244</span></span><br><span class="line">    System.out.println(Month.SEPTEMBER.firstDayOfYear(<span class="literal">true</span>)); <span class="comment">// 输出 245</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="firstMonthOfQuarter"><a href="#firstMonthOfQuarter" class="headerlink" title="firstMonthOfQuarter()"></a>firstMonthOfQuarter()</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">* firstMonthOfQuarter()</span></span><br><span class="line"><span class="comment">* 作用：获取月份所在的季度的第一个月份。</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">test03</span><span class="params">()</span>&#123;</span><br><span class="line">    System.out.println(Month.MARCH.firstMonthOfQuarter()); <span class="comment">// 输出 JANUARY</span></span><br><span class="line">    System.out.println(Month.JUNE.firstMonthOfQuarter()); <span class="comment">// 输出 APRIL</span></span><br><span class="line">    System.out.println(Month.SEPTEMBER.firstMonthOfQuarter()); <span class="comment">// 输出 JULY</span></span><br><span class="line">    System.out.println(Month.DECEMBER.firstMonthOfQuarter()); <span class="comment">// 输出 OCTOBER</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="getDisplayName-TextStyle-style-Locale-locale-1"><a href="#getDisplayName-TextStyle-style-Locale-locale-1" class="headerlink" title="getDisplayName(TextStyle style, Locale locale)"></a>getDisplayName(TextStyle style, Locale locale)</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">* getDisplayName(TextStyle style, Locale locale)</span></span><br><span class="line"><span class="comment">* 作用：获取month对象文本表示形式。</span></span><br><span class="line"><span class="comment">* 参数：</span></span><br><span class="line"><span class="comment">*  style：文本表示方式。如：FULL显示完整的名称，SHORT显示简写的名称，NARROW显示短的名称。</span></span><br><span class="line"><span class="comment">*  locale：本地化名称。如：Locale.CHINA显示中文名称，Locale.US显示英文名称。</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">test04</span><span class="params">()</span>&#123;</span><br><span class="line">    System.out.println(Month.JANUARY.getDisplayName(TextStyle.FULL, Locale.US)); <span class="comment">// 输出 January</span></span><br><span class="line">    System.out.println(Month.JANUARY.getDisplayName(TextStyle.SHORT, Locale.US)); <span class="comment">// 输出 Jan</span></span><br><span class="line">    System.out.println(Month.JANUARY.getDisplayName(TextStyle.NARROW, Locale.US)); <span class="comment">// 输出 J</span></span><br><span class="line"></span><br><span class="line">    System.out.println(Month.JANUARY.getDisplayName(TextStyle.FULL, Locale.CHINA)); <span class="comment">// 输出 一月</span></span><br><span class="line">    System.out.println(Month.JANUARY.getDisplayName(TextStyle.SHORT, Locale.CHINA)); <span class="comment">// 输出 一月</span></span><br><span class="line">    System.out.println(Month.JANUARY.getDisplayName(TextStyle.NARROW, Locale.CHINA)); <span class="comment">// 输出 1</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="getValue-1"><a href="#getValue-1" class="headerlink" title="getValue()"></a>getValue()</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">* getValue()</span></span><br><span class="line"><span class="comment">* 作用：获取月份对应的整数值（1~12）。</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">test05</span><span class="params">()</span>&#123;</span><br><span class="line">    System.out.println(Month.JANUARY.getValue()); <span class="comment">// 输出 1</span></span><br><span class="line">    System.out.println(Month.FEBRUARY.getValue()); <span class="comment">// 输出 2</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="length-boolean-leapYear"><a href="#length-boolean-leapYear" class="headerlink" title="length(boolean leapYear)"></a>length(boolean leapYear)</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">* length(boolean leapYear)</span></span><br><span class="line"><span class="comment">* 作用：获取本月的天数。</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">test06</span><span class="params">()</span>&#123;</span><br><span class="line">    System.out.println(Month.JANUARY.length(<span class="literal">false</span>)); <span class="comment">// 输出 31</span></span><br><span class="line">    System.out.println(Month.FEBRUARY.length(<span class="literal">false</span>)); <span class="comment">// 输出 28</span></span><br><span class="line">    System.out.println(Month.FEBRUARY.length(<span class="literal">true</span>)); <span class="comment">// 输出 29</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="maxLength"><a href="#maxLength" class="headerlink" title="maxLength()"></a>maxLength()</h4><h4 id="minLength"><a href="#minLength" class="headerlink" title="minLength()"></a>minLength()</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">* maxLength()</span></span><br><span class="line"><span class="comment">* minLength()</span></span><br><span class="line"><span class="comment">* 作用：获取月份的最大或最小天数。</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">test07</span><span class="params">()</span>&#123;</span><br><span class="line">    System.out.println(Month.JANUARY.maxLength()); <span class="comment">// 输出 31</span></span><br><span class="line">    System.out.println(Month.FEBRUARY.maxLength()); <span class="comment">// 输出 29</span></span><br><span class="line"></span><br><span class="line">    System.out.println(Month.JANUARY.minLength()); <span class="comment">// 输出 31</span></span><br><span class="line">    System.out.println(Month.FEBRUARY.minLength()); <span class="comment">// 输出 28</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="plus-long-months-1"><a href="#plus-long-months-1" class="headerlink" title="plus(long months)"></a>plus(long months)</h4><h4 id="minus-long-months-1"><a href="#minus-long-months-1" class="headerlink" title="minus(long months)"></a>minus(long months)</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">* plus(long months)</span></span><br><span class="line"><span class="comment">* minus(long months)</span></span><br><span class="line"><span class="comment">* 作用：加上或减去固定值获取另一个的month对象。</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">test08</span><span class="params">()</span>&#123;</span><br><span class="line">    System.out.println(Month.JANUARY.plus(<span class="number">1</span>).getValue()); <span class="comment">// 输出 2</span></span><br><span class="line">    System.out.println(Month.JANUARY.plus(<span class="number">12</span>).getValue()); <span class="comment">// 输出 1</span></span><br><span class="line"></span><br><span class="line">    System.out.println(Month.OCTOBER.minus(<span class="number">1</span>).getValue()); <span class="comment">// 输出 9</span></span><br><span class="line">    System.out.println(Month.OCTOBER.minus(<span class="number">12</span>).getValue()); <span class="comment">// 输出 10</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="未演示方法-1"><a href="#未演示方法-1" class="headerlink" title="未演示方法"></a>未演示方法</h4><p>以下方法在 <code>LocalDate</code> 和 <code>LocalTime</code> 篇章演示过且作用相同，该篇章就不在赘述了。</p>
+<ol>
+<li>get(TemporalField field)</li>
+<li>getLong(TemporalField field)</li>
+<li>isSupported(TemporalField field)</li>
+<li>query(TemporalQuery<R> query)</R></li>
+<li>range(TemporalField field)</li>
+</ol>
+<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><p><a target="_blank" rel="noopener" href="https://www.matools.com/api/java8">https://www.matools.com/api/java8</a></p>
+</div>
+        </div>
+        
+        <footer class="kratos-entry-footer clearfix">
+            
+            <div class="footer-tag clearfix">
+                <div class="pull-left">
+                <i class="fa fa-tags"></i>
+                    <a class="tag-none-link" href="/blog/tags/Java/" rel="tag">Java</a>
+                </div>
+                <div class="pull-date">
+                    <time datetime="2026-01-04T05:51:48.241Z" itemprop="dateModified">最后编辑：2026-01-04</time>
+                </div>
+            </div>
+        </footer>
+    </div>
+    
+        <nav class="navigation post-navigation clearfix" role="navigation">
+            
+            <div class="nav-previous clearfix">
+                <a title=" 【Java 8 新特性】时间类：LocalDateTime" href="/blog/2023/05/08/Java8/time/LocalDateTime/">&lt; 上一篇</a>
+            </div>
+            
+            
+            <div class="nav-next clearfix">
+                <a title=" 【Java 8 新特性】时间类：MonthDay 、 YearMonth 和 Year" href="/blog/2023/05/09/Java8/time/MonthDay_YearMonth_Year/">下一篇 &gt;</a>
+            </div>
+            
+        </nav>
+    
+    
+</article>
+
+        
+
+            </section>
+
+        
+
+                
+            
+
+<section id="kratos-widget-area" class="col-md-4 hidden-xs hidden-sm">
+    <!-- 文章和页面根据splitter来分割，没有的话就从头开始设置为sticky -->
+    
+    
+                <aside id="krw-about" class="widget widget-kratos-about clearfix">
+    <div class="photo-background"></div>
+    <div class="photo-wrapper clearfix">
+        <div class="photo-wrapper-tip text-center">
+            <img class="about-photo" src="/blog/images/avatar.webp" loading="lazy" decoding="auto" />
+        </div>
+    </div>
+    <div class="textwidget">
+        <p class="text-center">极简主义</p>
+    </div>
+    <div class="site-meta">
+        <a class="meta-item" href="/blog/archives/">
+            <span class="title">
+                文章
+            </span>
+            <span class="count">
+                77
+            </span>
+        </a>
+        <a class="meta-item" href="/blog/categories/">
+            <span class="title">
+                分类
+            </span>
+            <span class="count">
+                10
+            </span>
+        </a>
+        <a class="meta-item" href="/blog/tags/">
+            <span class="title">
+                标签
+            </span>
+            <span class="count">
+                29
+            </span>
+        </a>
+    </div>
+</aside>
+            
+                    <div class="sticky-area">
+                
+                    <aside id="krw-toc" class="widget widget-kratos-toc clearfix toc-div-class" >
+    <div class="photo-background"></div>
+    <h4 class="widget-title no-after">
+        <i class="fa fa-compass"></i>
+        文章目录
+        <span class="toc-progress-bar" role="progressbar" aria-label="阅读进度："></span>
+    </h4>
+    <div class="textwidget">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#DayOfWeek%E6%9E%9A%E4%B8%BE%E7%B1%BB"><span class="toc-text">DayOfWeek枚举类</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9E%9A%E4%B8%BE%E5%80%BC"><span class="toc-text">枚举值</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%9D%99%E6%80%81%E6%96%B9%E6%B3%95"><span class="toc-text">静态方法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#from-TemporalAccessor-temporal"><span class="toc-text">from(TemporalAccessor temporal)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#of-int-dayOfWeek"><span class="toc-text">of(int dayOfWeek)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#valueOf-String-name"><span class="toc-text">valueOf(String name)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#values"><span class="toc-text">values()</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%88%90%E5%91%98%E6%96%B9%E6%B3%95"><span class="toc-text">成员方法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#adjustInto-Temporal-temporal"><span class="toc-text">adjustInto(Temporal temporal)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#getDisplayName-TextStyle-style-Locale-locale"><span class="toc-text">getDisplayName(TextStyle style, Locale locale)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#getValue"><span class="toc-text">getValue()</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#plus-long-months"><span class="toc-text">plus(long months)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#minus-long-months"><span class="toc-text">minus(long months)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9C%AA%E6%BC%94%E7%A4%BA%E6%96%B9%E6%B3%95"><span class="toc-text">未演示方法</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Month%E6%9E%9A%E4%B8%BE%E7%B1%BB"><span class="toc-text">Month枚举类</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9E%9A%E4%B8%BE%E5%80%BC-1"><span class="toc-text">枚举值</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%9D%99%E6%80%81%E6%96%B9%E6%B3%95-1"><span class="toc-text">静态方法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#from-TemporalAccessor-temporal-1"><span class="toc-text">from(TemporalAccessor temporal)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#of-int-month"><span class="toc-text">of(int month)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#valueOf-String-name-1"><span class="toc-text">valueOf(String name)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#values-1"><span class="toc-text">values()</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%88%90%E5%91%98%E6%96%B9%E6%B3%95-1"><span class="toc-text">成员方法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#adjustInto-Temporal-temporal-1"><span class="toc-text">adjustInto(Temporal temporal)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#firstDayOfYear-boolean-leapYear"><span class="toc-text">firstDayOfYear(boolean leapYear)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#firstMonthOfQuarter"><span class="toc-text">firstMonthOfQuarter()</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#getDisplayName-TextStyle-style-Locale-locale-1"><span class="toc-text">getDisplayName(TextStyle style, Locale locale)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#getValue-1"><span class="toc-text">getValue()</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#length-boolean-leapYear"><span class="toc-text">length(boolean leapYear)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#maxLength"><span class="toc-text">maxLength()</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#minLength"><span class="toc-text">minLength()</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#plus-long-months-1"><span class="toc-text">plus(long months)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#minus-long-months-1"><span class="toc-text">minus(long months)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9C%AA%E6%BC%94%E7%A4%BA%E6%96%B9%E6%B3%95-1"><span class="toc-text">未演示方法</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E6%96%87%E7%8C%AE"><span class="toc-text">参考文献</span></a></li></ol>
+    </div>
+</aside>
+                
+                
+  <aside id="krw-categories" class="widget widget-kratos-categories clearfix">
+    <h4 class="widget-title"><i class="fa fa-folder"></i>分类目录</h4>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Docker/">Docker</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Idea/">Idea</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Java/">Java</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/K8s/">K8s</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Linux/">Linux</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/MySQL/">MySQL</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Python/">Python</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Selenium/">Selenium</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/SpringBoot/">SpringBoot</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/SpringCloud/">SpringCloud</a><span class="category-list-count">13</span></li></ul>
+  </aside>
+
+
+            
+                
+  <aside id="krw-tags" class="widget widget-kratos-tags clearfix">
+    <h4 class="widget-title"><i class="fa fa-tags"></i>标签聚合</h4>
+      <div class="tag-clouds">
+        <a href="/blog/tags/CORS/" style="font-size: 0.8em;">CORS</a> <a href="/blog/tags/Docker/" style="font-size: 0.8em;">Docker</a> <a href="/blog/tags/Dubbo/" style="font-size: 0.8em;">Dubbo</a> <a href="/blog/tags/ELK/" style="font-size: 0.8em;">ELK</a> <a href="/blog/tags/Elasticsearch/" style="font-size: 0.8em;">Elasticsearch</a> <a href="/blog/tags/Eureka/" style="font-size: 0.8em;">Eureka</a> <a href="/blog/tags/Feign/" style="font-size: 0.8em;">Feign</a> <a href="/blog/tags/Gateway/" style="font-size: 0.8em;">Gateway</a> <a href="/blog/tags/Idea/" style="font-size: 0.8em;">Idea</a> <a href="/blog/tags/Java/" style="font-size: 0.8em;">Java</a> <a href="/blog/tags/JavaWeb/" style="font-size: 0.8em;">JavaWeb</a> <a href="/blog/tags/K8s/" style="font-size: 0.8em;">K8s</a> <a href="/blog/tags/Linux/" style="font-size: 0.8em;">Linux</a> <a href="/blog/tags/Maven/" style="font-size: 0.8em;">Maven</a> <a href="/blog/tags/MySQL/" style="font-size: 0.8em;">MySQL</a> <a href="/blog/tags/Mybatis/" style="font-size: 0.8em;">Mybatis</a> <a href="/blog/tags/Nacos/" style="font-size: 0.8em;">Nacos</a> <a href="/blog/tags/Pytest/" style="font-size: 0.8em;">Pytest</a>
+      </div>
+  </aside>
+
+            
+                
+  <aside id="krw-posts" class="widget widget-kratos-posts">
+  <h4 class="widget-title"><i class="fa fa-file"></i>最新文章</h4>
+  <div class="tab-content">
+      <ul class="list-group">
+        
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/01/25/K8s/K8s%E7%BB%84%E4%BB%B6/"><i class="fa  fa-book"></i> 【K8s】组件</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/01/24/K8s/K8s%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/"><i class="fa  fa-book"></i> 【K8s】常用命令</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/01/11/Idea/IDEA%E6%8F%92%E4%BB%B6/"><i class="fa  fa-book"></i> 【Idea】插件</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/01/04/Linux/Centos7%E9%97%AE%E9%A2%98%E5%A4%84%E7%90%86/"><i class="fa  fa-book"></i> Centos7问题处理</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2025/12/09/Trae/Trae%E5%AE%89%E8%A3%85%E6%8F%92%E4%BB%B6%E5%AE%9E%E7%8E%B0Java%E4%BB%A3%E7%A0%81%E7%BC%96%E5%86%99/"><i class="fa  fa-book"></i> 【Trae】安装插件实现Java代码编写</a>
+            
+          
+        
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+      </ul>
+  </div>
+  </aside>
+
+            
+    </div>
+</section>
+        
+        </div>
+    </div>
+</div>
+<footer>
+    <div id="footer"  >
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3 footer-list text-center">
+                    <ul class="kratos-social-icons">
+                        <!-- Keep for compatibility -->
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <!-- New links -->
+                        
+                    </ul>
+                    <ul class="kratos-copyright">
+                        <div>
+                            <li>&copy; 2026 溪岚花的博客 版权所有.</li>
+                            <li>本站已运行<span id="span_dt">Loading...</span></li>
+                        </div>
+                        <div>
+                            <li>Theme <a href="https://github.com/Candinya/Kratos-Rebirth" target="_blank">Kratos:Rebirth</a></li>
+                            <li>Site built with&nbsp;<i class="fa fa-heart throb" style="color:#d43f57"></i>&nbsp;by 林家隆.</li>
+                        </div>
+                        <div>
+                            <li>Powered by <a href="https://hexo.io" target="_blank" rel="nofollow">Hexo</a></li>
+                            <li>Hosted on <a href="https://gitee.com/" target="_blank">Gitee Pages</a></li>
+                        </div>
+                        <div>
+                            
+                            
+                        </div>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="kr-tool text-center">
+            <div class="tool">
+                
+                    <div class="box search-box">
+                        <a href="/blog/search/">
+                            <span class="fa fa-search"></span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="box theme-box" id="darkmode-switch">
+                        <span class="fa fa-adjust"></span>
+                    </div>
+                
+                
+                
+            </div>
+            <div class="box gotop-box">
+                <span class="fa fa-chevron-up"></span>
+            </div>
+        </div>
+    </div>
+</footer>
+</div>
+</div>
+
+        <script defer src="/blog/vendors/bootstrap@3.3.4/dist/js/bootstrap.min.js"></script>
+<script defer src="/blog/vendors/nprogress@0.2.0/nprogress.js"></script>
+<script>
+    if (!window.kr) {
+        window.kr = {};
+    }
+    window.kr.notMobile = (!(navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i)));
+    window.kr.siteRoot = "/blog/";
+</script>
+
+
+
+
+
+    <script defer src="/blog/vendors/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+
+<script defer src="/blog/js/kratosr.min.js"></script>
+<script defer src="/blog/js/pjax.min.js"></script>
+
+
+
+<!-- Extra support for third-party plguins  -->
+
+
+    </body>
+</html>

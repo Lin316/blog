@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+  <!-- 元数据 -->
+  <meta charset="utf-8">
+  <link rel="icon" href="/blog/images/logo.png">
+  
+  <title>【Zookeeper】基本使用 | 溪岚花的博客</title>
+  
+  <meta name="author" content="林家隆" />
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="robots" content="index,follow" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <meta name="format-detection" content="telphone=no, email=no" />
+  
+    <meta name="keywords" content="Zookeeper" />
+  
+  <meta name="description" content="Zookeeper 介绍Zookeeper 简介zookeeper 是一个分布式应用程序的协调服务，主要功能有：配置管理、分布式锁、集群管理。 Zookeeper 的数据模型zookeeper 是一个树形目录服务，以 &#x2F; 作为根目录。 zookeeper 的每个节点称为 ZNode，每个节点都会保存节点信息和自己的数据。 节点可以拥有子节点，同时也允许少量数据（1MB）存储在该节点之下。 节点分为">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【Zookeeper】基本使用">
+<meta property="og:url" content="https://lin316.gitee.io/blog/2024/03/22/Zookeeper/Zookeeper/index.html">
+<meta property="og:site_name" content="溪岚花的博客">
+<meta property="og:description" content="Zookeeper 介绍Zookeeper 简介zookeeper 是一个分布式应用程序的协调服务，主要功能有：配置管理、分布式锁、集群管理。 Zookeeper 的数据模型zookeeper 是一个树形目录服务，以 &#x2F; 作为根目录。 zookeeper 的每个节点称为 ZNode，每个节点都会保存节点信息和自己的数据。 节点可以拥有子节点，同时也允许少量数据（1MB）存储在该节点之下。 节点分为">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://lin316.gitee.io/blog/blog/images/logo.png">
+<meta property="article:published_time" content="2024-03-22T01:00:00.000Z">
+<meta property="article:modified_time" content="2026-01-04T05:51:48.300Z">
+<meta property="article:author" content="林家隆">
+<meta property="article:tag" content="Zookeeper">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://lin316.gitee.io/blog/blog/images/logo.png">
+  
+  <!-- 站点验证相关 -->
+  
+    
+    
+    
+  
+  <!-- 样式表文件 -->
+  <link rel="stylesheet" id="kratos-css" href="/blog/css/kratosr.min.css" media="all"></script>
+  
+    <link rel="stylesheet" id="darkmode-css" href="/blog/css/kr-color-dark.min.css" media="(prefers-color-scheme: dark)"></script>
+    <script src="/blog/js/kr-dark.min.js"></script>
+  
+  
+    <link rel="stylesheet" id="highlight-css" href="/blog/css/highlight/night-eighties.min.css" media="all"></script>
+  
+  <link rel="stylesheet" id="fontawe-css" href="/blog/vendors/font-awesome@4.7.0/css/font-awesome.min.css" media="all"></script>
+  <link rel="stylesheet" id="nprogress-css" href="/blog/vendors/nprogress@0.2.0/nprogress.css" media="all"></script>
+  
+  
+  
+    <link rel="stylesheet" href="/blog/vendors/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css"></script>
+  
+  <!-- 不得不预先加载的一些JS文件 -->
+  <script src="/blog/vendors/jquery@3.6.0/dist/jquery.min.js"></script>
+  
+  
+  <style>
+    
+    
+  </style>
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+    <body class="custom-background">
+        <div id="kratos-wrapper">
+    <div id="kratos-page">
+        <div id="kratos-header">
+            <header id="kratos-desktop-topnav" class="kratos-topnav">
+                <div class="container">
+                    <div class="nav-header">
+                        <nav id="kratos-menu-wrap">
+                            <ul id="kratos-primary-menu" class="sf-menu">
+                                
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/">
+                                            
+                                                
+                                                    <i class="fa fa-home"></i>
+                                                
+                                                首页
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/archives/">
+                                            
+                                                
+                                                    <i class="fa fa-file"></i>
+                                                
+                                                归档
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/tags/">
+                                            
+                                                
+                                                    <i class="fa fa-tag"></i>
+                                                
+                                                标签
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/categories/">
+                                            
+                                                
+                                                    <i class="fa fa-folder"></i>
+                                                
+                                                目录
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/search/">
+                                            
+                                                
+                                                    <i class="fa fa-search"></i>
+                                                
+                                                搜索
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </header>
+            <header id="kratos-mobile-topnav" class="kratos-topnav">
+                <div class="container">
+                    <div class="color-logo"><a href="/blog/">溪岚花的博客</a></div>
+                    <div class="nav-toggle">
+                        <a class="kratos-nav-toggle js-kratos-nav-toggle">
+                            <i></i>
+                        </a>
+                    </div>
+                </div>
+            </header>
+        </div>
+        <div class="kratos-start kratos-hero-2">
+            <!-- <div class="kratos-overlay"></div> -->
+            <div class="kratos-cover kratos-cover-2 text-center">
+                <div class="desc desc2 animate-box">
+                    <a href="/blog/">
+                        <h2 style="opacity: 0.2;">溪岚花的博客</h2> <br />
+                        <span></span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div id="kratos-blog-post">
+            <div class="container">
+                <div id="main" class="row">
+                    
+
+        
+
+            <section class="col-md-8">
+
+        
+
+            <article itemscope itemtype="https://schema.org/Article">
+    
+    <link itemprop="mainEntityOfPage" href="https://lin316.gitee.io/blog/2024/03/22/Zookeeper/Zookeeper/">
+    <div class="kratos-hentry kratos-post-inner clearfix">
+        <header class="kratos-entry-header">
+            
+                <h1 class="kratos-entry-title text-center" itemprop="name headline">【Zookeeper】基本使用</h1>
+            
+            
+            <ul class="kratos-post-meta text-center">
+                <li><time datetime="2024-03-22T01:00:00.000Z" itemprop="datePublished"><i class="fa fa-calendar"></i> 2024-03-22</time></li>
+                <li itemprop="author" itemscope itemtype="https://schema.org/Person">
+                    <i class="fa fa-user"></i> 作者 <span itemprop="name">林家隆</span>
+                </li>
+                
+                    <li>
+                        <i class="fa fa-edit"></i> 
+                        
+                        
+                            6.57K
+                        
+                        字
+                    </li>
+                
+                
+            </ul>
+        </header>
+        <div class="kratos-post-content">
+            
+            <div id="expire-alert" class="alert alert-warning hidden" role="alert">
+                <div class="icon"><i class="fa fa-warning"></i></div>
+                <div class="text"><p>本文最后编辑于 <time datetime="1767505908300"></time> 前，其中的内容可能需要更新。</p></div>
+            </div>
+            
+            
+            
+                <div class="kratos-post-inner-toc toc-div-class" >
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Zookeeper-%E4%BB%8B%E7%BB%8D"><span class="toc-number">1.</span> <span class="toc-text">Zookeeper 介绍</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Zookeeper-%E7%AE%80%E4%BB%8B"><span class="toc-number">1.1.</span> <span class="toc-text">Zookeeper 简介</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Zookeeper-%E7%9A%84%E6%95%B0%E6%8D%AE%E6%A8%A1%E5%9E%8B"><span class="toc-number">1.2.</span> <span class="toc-text">Zookeeper 的数据模型</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Zookeeper-%E5%91%BD%E4%BB%A4%E6%93%8D%E4%BD%9C"><span class="toc-number">2.</span> <span class="toc-text">Zookeeper 命令操作</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9C%8D%E5%8A%A1%E7%AB%AF%E5%91%BD%E4%BB%A4"><span class="toc-number">2.1.</span> <span class="toc-text">服务端命令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%A2%E6%88%B7%E7%AB%AF%E5%91%BD%E4%BB%A4"><span class="toc-number">2.2.</span> <span class="toc-text">客户端命令</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%BF%9E%E6%8E%A5-zookeeper-%E6%9C%8D%E5%8A%A1%E7%AB%AF"><span class="toc-number">2.2.1.</span> <span class="toc-text">连接 zookeeper 服务端</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%96%AD%E5%BC%80%E8%B7%9F%E6%9C%8D%E5%8A%A1%E7%AB%AF%E7%9A%84%E8%BF%9E%E6%8E%A5"><span class="toc-number">2.2.2.</span> <span class="toc-text">断开跟服务端的连接</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9F%A5%E8%AF%A2%E6%8C%87%E5%AE%9A%E8%8A%82%E7%82%B9%E4%B8%8B%E7%9A%84%E5%AD%90%E8%8A%82%E7%82%B9"><span class="toc-number">2.2.3.</span> <span class="toc-text">查询指定节点下的子节点</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E8%8A%82%E7%82%B9"><span class="toc-number">2.2.4.</span> <span class="toc-text">创建节点</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%A0%E9%99%A4%E8%8A%82%E7%82%B9"><span class="toc-number">2.2.5.</span> <span class="toc-text">删除节点</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9F%A5%E8%AF%A2%E6%8C%87%E5%AE%9A%E8%8A%82%E7%82%B9%E7%9A%84-value"><span class="toc-number">2.2.6.</span> <span class="toc-text">查询指定节点的 value</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BF%AE%E6%94%B9%E8%8A%82%E7%82%B9%E7%9A%84-value"><span class="toc-number">2.2.7.</span> <span class="toc-text">修改节点的 value</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Curator-API-%E6%93%8D%E4%BD%9C-Zookeeper"><span class="toc-number">3.</span> <span class="toc-text">Curator API 操作 Zookeeper</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Curator-%E4%BB%8B%E7%BB%8D"><span class="toc-number">3.1.</span> <span class="toc-text">Curator 介绍</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Curator-API-%E6%93%8D%E4%BD%9C"><span class="toc-number">3.2.</span> <span class="toc-text">Curator API 操作</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%BB%BA%E7%AB%8B%E8%BF%9E%E6%8E%A5"><span class="toc-number">3.2.1.</span> <span class="toc-text">建立连接</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9F%A5%E8%AF%A2%E6%8C%87%E5%AE%9A%E8%8A%82%E7%82%B9%E4%B8%8B%E7%9A%84%E5%AD%90%E8%8A%82%E7%82%B9-1"><span class="toc-number">3.2.2.</span> <span class="toc-text">查询指定节点下的子节点</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E8%8A%82%E7%82%B9-1"><span class="toc-number">3.2.3.</span> <span class="toc-text">创建节点</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%A0%E9%99%A4%E8%8A%82%E7%82%B9-1"><span class="toc-number">3.2.4.</span> <span class="toc-text">删除节点</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9F%A5%E8%AF%A2%E6%8C%87%E5%AE%9A%E8%8A%82%E7%82%B9%E7%9A%84-value-1"><span class="toc-number">3.2.5.</span> <span class="toc-text">查询指定节点的 value</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BF%AE%E6%94%B9%E8%8A%82%E7%82%B9%E7%9A%84-value-1"><span class="toc-number">3.2.6.</span> <span class="toc-text">修改节点的 value</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Watch-%E4%BA%8B%E4%BB%B6%E7%9B%91%E5%90%AC"><span class="toc-number">4.</span> <span class="toc-text">Watch 事件监听</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81"><span class="toc-number">5.</span> <span class="toc-text">分布式锁</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%9B%86%E7%BE%A4"><span class="toc-number">6.</span> <span class="toc-text">集群</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%9B%86%E7%BE%A4%E8%A7%92%E8%89%B2"><span class="toc-number">6.1.</span> <span class="toc-text">集群角色</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Leader-%E9%80%89%E4%B8%BE"><span class="toc-number">6.2.</span> <span class="toc-text">Leader 选举</span></a></li></ol></li></ol>
+                </div>
+            
+            <hr />
+            <div itemprop="articleBody"><h2 id="Zookeeper-介绍"><a href="#Zookeeper-介绍" class="headerlink" title="Zookeeper 介绍"></a>Zookeeper 介绍</h2><h3 id="Zookeeper-简介"><a href="#Zookeeper-简介" class="headerlink" title="Zookeeper 简介"></a>Zookeeper 简介</h3><p>zookeeper 是一个分布式应用程序的协调服务，主要功能有：配置管理、分布式锁、集群管理。</p>
+<h3 id="Zookeeper-的数据模型"><a href="#Zookeeper-的数据模型" class="headerlink" title="Zookeeper 的数据模型"></a>Zookeeper 的数据模型</h3><p>zookeeper 是一个树形目录服务，以 <code>/</code> 作为根目录。</p>
+<p>zookeeper 的每个节点称为 ZNode，每个节点都会保存节点信息和自己的数据。</p>
+<p>节点可以拥有子节点，同时也允许少量数据（1MB）存储在该节点之下。</p>
+<p>节点分为四大类：</p>
+<ul>
+<li>PERSISTENT：持久节点，客户端断开跟服务端的连接，重新连接后节点不会消失。</li>
+<li>EPHEMERAL：临时节点，客户端断开跟服务端的连接，重新连接后节点会消失。</li>
+<li>PERSISTENT_SEQUENTIAL：持久顺序节点 ，创建的时候会在节点名称后面加编号，编号递增，所有节点共用一个编号。</li>
+<li>EPHEMERAL_SEQUENTIAL：临时顺序节点，创建的时候会在节点名称后面加编号，编号递增，所有节点共用一个编号。</li>
+</ul>
+<h2 id="Zookeeper-命令操作"><a href="#Zookeeper-命令操作" class="headerlink" title="Zookeeper 命令操作"></a>Zookeeper 命令操作</h2><h3 id="服务端命令"><a href="#服务端命令" class="headerlink" title="服务端命令"></a>服务端命令</h3><ul>
+<li>启动 ZooKeeper 服务: .&#x2F;zkServer.sh start</li>
+<li>停止 ZooKeeper 服务: .&#x2F;zkServer.sh stop</li>
+<li>重启 ZooKeeper 服务: .&#x2F;zkServer.sh restart</li>
+<li>查看 ZooKeeper 服务状态: .&#x2F;zkServer.sh status</li>
+</ul>
+<h3 id="客户端命令"><a href="#客户端命令" class="headerlink" title="客户端命令"></a>客户端命令</h3><h4 id="连接-zookeeper-服务端"><a href="#连接-zookeeper-服务端" class="headerlink" title="连接 zookeeper 服务端"></a>连接 zookeeper 服务端</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">./zkCli.sh –server ip:port</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">./zkCli.sh -server &#123;zookeeper ip&#125;:&#123;zookeeper port&#125;</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="断开跟服务端的连接"><a href="#断开跟服务端的连接" class="headerlink" title="断开跟服务端的连接"></a>断开跟服务端的连接</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">quit</span><br></pre></td></tr></table></figure>
+
+<h4 id="查询指定节点下的子节点"><a href="#查询指定节点下的子节点" class="headerlink" title="查询指定节点下的子节点"></a>查询指定节点下的子节点</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ls 节点路径</span><br></pre></td></tr></table></figure>
+
+<p>选项：</p>
+<ul>
+<li>-s：显示指定节点的详细信息。</li>
+</ul>
+<p>详细信息内容包括：</p>
+<ul>
+<li>cZxid：节点被创建的事务ID。</li>
+<li>ctime：节点被创建的时间。</li>
+<li>mZxid：最后一次被更新的事务ID。</li>
+<li>mtime：最后一次被修改的时间。</li>
+<li>pZxid：子节点列表最后一次被更新的事务ID。</li>
+<li>cversion：子节点的版本号。</li>
+<li>dataVersion：数据版本号。</li>
+<li>aclVersion：权限版本号。</li>
+<li>ephemeralOwner：用于临时节点，代表临时节点的事务ID，如果为持久节点则为 0。</li>
+<li>dataLength：节点存储的数据的长度。</li>
+<li>numChildren：当前节点的子节点个数。</li>
+</ul>
+<h4 id="创建节点"><a href="#创建节点" class="headerlink" title="创建节点"></a>创建节点</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">create 节点路径 value</span><br></pre></td></tr></table></figure>
+
+<p>选项：</p>
+<ul>
+<li>-s：创建持久顺序节点。</li>
+<li>-e：创建临时节点。</li>
+<li>-es：创建临时顺序节点。</li>
+</ul>
+<h4 id="删除节点"><a href="#删除节点" class="headerlink" title="删除节点"></a>删除节点</h4><p>删除单个节点，要求被删除的节点下没有子节点：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">delete 节点路径</span><br></pre></td></tr></table></figure>
+
+<p>删除所有节点：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">deletall 节点路径</span><br></pre></td></tr></table></figure>
+
+<h4 id="查询指定节点的-value"><a href="#查询指定节点的-value" class="headerlink" title="查询指定节点的 value"></a>查询指定节点的 value</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">get 节点路径</span><br></pre></td></tr></table></figure>
+
+<h4 id="修改节点的-value"><a href="#修改节点的-value" class="headerlink" title="修改节点的 value"></a>修改节点的 value</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">set 节点路径 value</span><br></pre></td></tr></table></figure>
+
+<h2 id="Curator-API-操作-Zookeeper"><a href="#Curator-API-操作-Zookeeper" class="headerlink" title="Curator API 操作 Zookeeper"></a>Curator API 操作 Zookeeper</h2><h3 id="Curator-介绍"><a href="#Curator-介绍" class="headerlink" title="Curator 介绍"></a>Curator 介绍</h3><p>Curator 是一个提供了一组 Java API 来操作 Zookeeper 的框架。</p>
+<p><strong>注：</strong>低版本的 Curator 无法操作高版本的 Zookeeper，注意 Curator 版本跟 Zookeeper 版本的兼容问题。</p>
+<blockquote>
+<p>curator 依赖包：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.curator<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>curator-recipes<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>4.2.0<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+</blockquote>
+<h3 id="Curator-API-操作"><a href="#Curator-API-操作" class="headerlink" title="Curator API 操作"></a>Curator API 操作</h3><h4 id="建立连接"><a href="#建立连接" class="headerlink" title="建立连接"></a>建立连接</h4><blockquote>
+<p>第一种建立连接的方式：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">test</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="type">CuratorFramework</span> <span class="variable">zkClient</span> <span class="operator">=</span> CuratorFrameworkFactory.builder()</span><br><span class="line">        <span class="comment">// zookeeper 的 ip:port</span></span><br><span class="line">        .connectString(<span class="string">&quot;&#123;zookeeper ip&#125;:&#123;zookeeper port&#125;&quot;</span>)</span><br><span class="line">        <span class="comment">// 后续的所有操作都会把 /lin 作为根目录</span></span><br><span class="line">        .namespace(<span class="string">&quot;lin&quot;</span>)</span><br><span class="line">        <span class="comment">// 会话超时时间，单位 ms</span></span><br><span class="line">        .sessionTimeoutMs(<span class="number">60</span> * <span class="number">1000</span>)</span><br><span class="line">        <span class="comment">// 连接超时时间，单位 ms</span></span><br><span class="line">        .connectionTimeoutMs(<span class="number">15</span> * <span class="number">1000</span>)</span><br><span class="line">        <span class="comment">// 连接失败时的重试策略</span></span><br><span class="line">        .retryPolicy(<span class="keyword">new</span> <span class="title class_">ExponentialBackoffRetry</span>(<span class="number">1000</span>, <span class="number">3</span>))</span><br><span class="line">        .build();</span><br><span class="line">    <span class="comment">// 开启连接</span></span><br><span class="line">    zkClient.start();</span><br><span class="line">    <span class="comment">// 关闭连接</span></span><br><span class="line">    zkClient.close();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>第二种建立连接的方式：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">test</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="comment">// zookeeper 的 ip:port</span></span><br><span class="line">    <span class="type">String</span> <span class="variable">connection</span> <span class="operator">=</span> <span class="string">&quot;&#123;zookeeper ip&#125;:&#123;zookeeper port&#125;&quot;</span>;</span><br><span class="line">    <span class="comment">// 连接失败时的重试策略</span></span><br><span class="line">    <span class="type">ExponentialBackoffRetry</span> <span class="variable">backoffRetry</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ExponentialBackoffRetry</span>(<span class="number">1000</span>, <span class="number">3</span>);</span><br><span class="line">    <span class="type">CuratorFramework</span> <span class="variable">zkClient</span> <span class="operator">=</span> CuratorFrameworkFactory.newClient(connection, backoffRetry);</span><br><span class="line">    <span class="comment">// 开启连接</span></span><br><span class="line">    zkClient.start();</span><br><span class="line">    <span class="comment">// 关闭连接</span></span><br><span class="line">    zkClient.close();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<h4 id="查询指定节点下的子节点-1"><a href="#查询指定节点下的子节点-1" class="headerlink" title="查询指定节点下的子节点"></a>查询指定节点下的子节点</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">List&lt;String&gt; children = zkClient.getChildren().forPath(<span class="string">&quot;/&quot;</span>);</span><br><span class="line">System.out.println(children);</span><br></pre></td></tr></table></figure>
+
+<h4 id="创建节点-1"><a href="#创建节点-1" class="headerlink" title="创建节点"></a>创建节点</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">zkClient.create().forPath(<span class="string">&quot;/test&quot;</span>, <span class="string">&quot;val&quot;</span>.getBytes());</span><br><span class="line"><span class="comment">// 如果创建节点没有指定数据，则把客户端的 ip 作为数据存储</span></span><br><span class="line">zkClient.create().forPath(<span class="string">&quot;/test&quot;</span>);</span><br><span class="line"><span class="comment">// 使用 withMode() 方法 + CreateMode 指定创建节点的类型</span></span><br><span class="line">zkClient.create().withMode(CreateMode.EPHEMERAL).forPath(<span class="string">&quot;/test&quot;</span>);</span><br><span class="line"><span class="comment">// 创建多级节点</span></span><br><span class="line">zkClient.create().creatingParentsIfNeeded().forPath(<span class="string">&quot;/test&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<h4 id="删除节点-1"><a href="#删除节点-1" class="headerlink" title="删除节点"></a>删除节点</h4><p>删除单个节点：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">zkClient.delete().forPath(&quot;/test&quot;);</span><br></pre></td></tr></table></figure>
+
+<p>删除所有节点：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">zkClient.delete().deletingChildrenIfNeeded().forPath(<span class="string">&quot;/&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<p>确保删除操作成功。遇到网络波动等原因，指令没有发送到服务器，会重复发送：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">zkClient.delete().guaranteed().forPath(&quot;/&quot;);</span><br></pre></td></tr></table></figure>
+
+<p>删除执行完成后回调方法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">zkClient.delete().inBackground((client, event) -&gt; &#123;</span><br><span class="line">    System.out.println(<span class="string">&quot;回调方法&quot;</span>);</span><br><span class="line">&#125;).forPath(<span class="string">&quot;/&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<h4 id="查询指定节点的-value-1"><a href="#查询指定节点的-value-1" class="headerlink" title="查询指定节点的 value"></a>查询指定节点的 value</h4><p>查询指定节点的 value</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">byte</span>[] bytes = zkClient.getData().forPath(<span class="string">&quot;/test&quot;</span>);</span><br><span class="line">System.out.println(<span class="keyword">new</span> <span class="title class_">String</span>(bytes));</span><br></pre></td></tr></table></figure>
+
+<p>获取节点的详细信息：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">Stat</span> <span class="variable">status</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Stat</span>();</span><br><span class="line">zkClient.getData().storingStatIn(status).forPath(<span class="string">&quot;/&quot;</span>);</span><br><span class="line">System.out.println(status);</span><br></pre></td></tr></table></figure>
+
+<h4 id="修改节点的-value-1"><a href="#修改节点的-value-1" class="headerlink" title="修改节点的 value"></a>修改节点的 value</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">zkClient.setData().forPath(<span class="string">&quot;/&quot;</span>, <span class="string">&quot;val&quot;</span>.getBytes());</span><br><span class="line"># 根据版本修改</span><br><span class="line">zkClient.setData().withVersion(<span class="number">5</span>).forPath(<span class="string">&quot;/&quot;</span>, <span class="string">&quot;val&quot;</span>.getBytes());</span><br></pre></td></tr></table></figure>
+
+<h2 id="Watch-事件监听"><a href="#Watch-事件监听" class="headerlink" title="Watch 事件监听"></a>Watch 事件监听</h2><p>zookeeper 允许客户端监听节点，当被监听的节点的状态发生改变时，例如创建、删除、修改 value 值等，客户端的监听器会执行相关的方法。</p>
+<p>Curator 提供了三种监听类型：</p>
+<ul>
+<li>NodeCache : 只是监听某一个特定的节点。</li>
+<li>PathChildrenCache : 监听指定节点的子节点. </li>
+<li>TreeCache : 可以监听指定树上的所有节点。</li>
+</ul>
+<blockquote>
+<p><strong>NodeCache 监听器示例：</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 创建监听器</span></span><br><span class="line"><span class="type">NodeCache</span> <span class="variable">nodeListener</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">NodeCache</span>(zkClient, <span class="string">&quot;/test&quot;</span>);</span><br><span class="line"><span class="comment">// 注册监听方法</span></span><br><span class="line">nodeListener.getListenable().addListener(() -&gt; &#123;</span><br><span class="line">    <span class="comment">// 获取被监听的节点</span></span><br><span class="line">    <span class="type">ChildData</span> <span class="variable">zNode</span> <span class="operator">=</span> nodeListener.getCurrentData();</span><br><span class="line">    <span class="comment">// 节点的路径</span></span><br><span class="line">    System.out.println(zNode.getPath());</span><br><span class="line">    <span class="comment">// 节点的 value</span></span><br><span class="line">    System.out.println(<span class="keyword">new</span> <span class="title class_">String</span>(zNode.getData()));</span><br><span class="line">    <span class="comment">// 节点的状态信息</span></span><br><span class="line">    System.out.println(zNode.getStat());</span><br><span class="line">&#125;);</span><br><span class="line"><span class="comment">// 开启监听器</span></span><br><span class="line">nodeListener.start();</span><br></pre></td></tr></table></figure>
+</blockquote>
+<blockquote>
+<p><strong>PathChildrenCache 监听器示例：</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 创建监听器</span></span><br><span class="line"><span class="type">PathChildrenCache</span> <span class="variable">nodeListener</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">PathChildrenCache</span>(zkClient, <span class="string">&quot;/test&quot;</span>, <span class="literal">true</span>);</span><br><span class="line"><span class="comment">// 注册监听方法</span></span><br><span class="line">nodeListener.getListenable().addListener((client, event)-&gt;&#123;</span><br><span class="line">    <span class="comment">// 监听事件类型</span></span><br><span class="line">    System.out.println(event.getType());</span><br><span class="line">    <span class="comment">// 获取被监听的节点</span></span><br><span class="line">    <span class="type">ChildData</span> <span class="variable">zNode</span> <span class="operator">=</span> event.getData();</span><br><span class="line">    <span class="comment">// 节点的路径</span></span><br><span class="line">    System.out.println(zNode.getPath());</span><br><span class="line">    <span class="comment">// 节点的 value</span></span><br><span class="line">    System.out.println(<span class="keyword">new</span> <span class="title class_">String</span>(zNode.getData()));</span><br><span class="line">    <span class="comment">// 节点的状态信息</span></span><br><span class="line">    System.out.println(zNode.getStat());</span><br><span class="line">&#125;);</span><br><span class="line"><span class="comment">// 开启监听器</span></span><br><span class="line">nodeListener.start();</span><br></pre></td></tr></table></figure>
+</blockquote>
+<blockquote>
+<p><strong>TreeCache  监听器示例：</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 创建监听器</span></span><br><span class="line"><span class="type">TreeCache</span> <span class="variable">nodeListener</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">TreeCache</span>(zkClient, <span class="string">&quot;/test&quot;</span>);</span><br><span class="line"><span class="comment">// 注册监听方法</span></span><br><span class="line">nodeListener.getListenable().addListener((client, event)-&gt;&#123;</span><br><span class="line">    <span class="comment">// 监听事件类型</span></span><br><span class="line">    System.out.println(event.getType());</span><br><span class="line">    <span class="comment">// 获取被监听的节点</span></span><br><span class="line">    <span class="type">ChildData</span> <span class="variable">zNode</span> <span class="operator">=</span> event.getData();</span><br><span class="line">    <span class="comment">// 节点的路径</span></span><br><span class="line">    System.out.println(zNode.getPath());</span><br><span class="line">    <span class="comment">// 节点的 value</span></span><br><span class="line">    System.out.println(<span class="keyword">new</span> <span class="title class_">String</span>(zNode.getData()));</span><br><span class="line">    <span class="comment">// 节点的状态信息</span></span><br><span class="line">    System.out.println(zNode.getStat());</span><br><span class="line">&#125;);</span><br><span class="line"><span class="comment">// 开启监听器</span></span><br><span class="line">nodeListener.start();</span><br></pre></td></tr></table></figure>
+</blockquote>
+<h2 id="分布式锁"><a href="#分布式锁" class="headerlink" title="分布式锁"></a>分布式锁</h2><p>分布式锁：用来协调分布式应用程序获取共享资源的锁。</p>
+<p><strong>zookeeper 实现分布式锁的原理</strong></p>
+<p>核心思想：当应用程序想要获取锁的时候，先创建节点，使用完锁就删除节点。</p>
+<ol>
+<li>应用程序想要获取锁，先在 lock 节点下创建<strong>临时顺序</strong>节点。</li>
+<li>然后获取 lock 节点下的子节点，如果自己创建的节点的编号最小则表示获取锁。</li>
+<li>如果自己创建的节点的编号不是最小，则监听比自己编号小的节点。</li>
+<li>如果监听到比自己编号小的节点被删除了，则表示自己获取到了锁。</li>
+</ol>
+<p>在 Curator 中已实现的五种分布式锁的方案：</p>
+<ul>
+<li>InterProcessSemaphoreMutex：分布式排它锁，不可重入。</li>
+<li>InterProcessMutex：分布式可重入排它锁。</li>
+<li>InterProcessReadWriteLock：分布式读写锁。</li>
+<li>InterProcessMultiLock：将多个锁作为单个实体管理的容器。</li>
+<li>InterProcessSemaphoreV2：共享信号量。</li>
+</ul>
+<blockquote>
+<p>InterProcessMutex 锁示例：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 创建锁</span></span><br><span class="line"><span class="type">InterProcessMutex</span> <span class="variable">lock</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">InterProcessMutex</span>(zkClient, <span class="string">&quot;/lock/resource&quot;</span>);</span><br><span class="line"><span class="comment">// 获取锁，参数表示最多可以等待的时间</span></span><br><span class="line">lock.acquire(<span class="number">10</span>, TimeUnit.MICROSECONDS);</span><br><span class="line"><span class="comment">// 释放锁</span></span><br><span class="line">lock.release();</span><br></pre></td></tr></table></figure>
+</blockquote>
+<h2 id="集群"><a href="#集群" class="headerlink" title="集群"></a>集群</h2><h3 id="集群角色"><a href="#集群角色" class="headerlink" title="集群角色"></a>集群角色</h3><p>Leader 领导者：处理事务请求（增删改），同步事务处理结果给其它 zookeeper 服务器。</p>
+<p>Follower 跟随着：处理非事务请求（查询），转发事务请求给 Leader，可以参与投票。</p>
+<p>Observer 观察者：处理非事务请求（查询），转发事务请求给 Leader，不可以参与投票。</p>
+<h3 id="Leader-选举"><a href="#Leader-选举" class="headerlink" title="Leader 选举"></a>Leader 选举</h3><p>leader 选举：根据 zookeeper 集群的投票结果选出 leader，如果票数过半就可以成为 leader。</p>
+<p>选举指标：</p>
+<ul>
+<li><strong>ServerId：</strong>服务器 id，id 越大权重越大。</li>
+<li><strong>Zxid：</strong>数据 id，id 越大权重越大。</li>
+</ul>
+</div>
+        </div>
+        
+        <footer class="kratos-entry-footer clearfix">
+            
+            <div class="footer-tag clearfix">
+                <div class="pull-left">
+                <i class="fa fa-tags"></i>
+                    <a class="tag-none-link" href="/blog/tags/Zookeeper/" rel="tag">Zookeeper</a>
+                </div>
+                <div class="pull-date">
+                    <time datetime="2026-01-04T05:51:48.300Z" itemprop="dateModified">最后编辑：2026-01-04</time>
+                </div>
+            </div>
+        </footer>
+    </div>
+    
+        <nav class="navigation post-navigation clearfix" role="navigation">
+            
+            <div class="nav-previous clearfix">
+                <a title=" 【Spring】多数据源" href="/blog/2024/03/20/Spring/多数据源/">&lt; 上一篇</a>
+            </div>
+            
+            
+            <div class="nav-next clearfix">
+                <a title=" 【Dubbo】基本使用" href="/blog/2024/03/24/Dubbo/Dubbo/">下一篇 &gt;</a>
+            </div>
+            
+        </nav>
+    
+    
+</article>
+
+        
+
+            </section>
+
+        
+
+                
+            
+
+<section id="kratos-widget-area" class="col-md-4 hidden-xs hidden-sm">
+    <!-- 文章和页面根据splitter来分割，没有的话就从头开始设置为sticky -->
+    
+    
+                <aside id="krw-about" class="widget widget-kratos-about clearfix">
+    <div class="photo-background"></div>
+    <div class="photo-wrapper clearfix">
+        <div class="photo-wrapper-tip text-center">
+            <img class="about-photo" src="/blog/images/avatar.webp" loading="lazy" decoding="auto" />
+        </div>
+    </div>
+    <div class="textwidget">
+        <p class="text-center">极简主义</p>
+    </div>
+    <div class="site-meta">
+        <a class="meta-item" href="/blog/archives/">
+            <span class="title">
+                文章
+            </span>
+            <span class="count">
+                77
+            </span>
+        </a>
+        <a class="meta-item" href="/blog/categories/">
+            <span class="title">
+                分类
+            </span>
+            <span class="count">
+                10
+            </span>
+        </a>
+        <a class="meta-item" href="/blog/tags/">
+            <span class="title">
+                标签
+            </span>
+            <span class="count">
+                29
+            </span>
+        </a>
+    </div>
+</aside>
+            
+                    <div class="sticky-area">
+                
+                    <aside id="krw-toc" class="widget widget-kratos-toc clearfix toc-div-class" >
+    <div class="photo-background"></div>
+    <h4 class="widget-title no-after">
+        <i class="fa fa-compass"></i>
+        文章目录
+        <span class="toc-progress-bar" role="progressbar" aria-label="阅读进度："></span>
+    </h4>
+    <div class="textwidget">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Zookeeper-%E4%BB%8B%E7%BB%8D"><span class="toc-text">Zookeeper 介绍</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Zookeeper-%E7%AE%80%E4%BB%8B"><span class="toc-text">Zookeeper 简介</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Zookeeper-%E7%9A%84%E6%95%B0%E6%8D%AE%E6%A8%A1%E5%9E%8B"><span class="toc-text">Zookeeper 的数据模型</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Zookeeper-%E5%91%BD%E4%BB%A4%E6%93%8D%E4%BD%9C"><span class="toc-text">Zookeeper 命令操作</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9C%8D%E5%8A%A1%E7%AB%AF%E5%91%BD%E4%BB%A4"><span class="toc-text">服务端命令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%A2%E6%88%B7%E7%AB%AF%E5%91%BD%E4%BB%A4"><span class="toc-text">客户端命令</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%BF%9E%E6%8E%A5-zookeeper-%E6%9C%8D%E5%8A%A1%E7%AB%AF"><span class="toc-text">连接 zookeeper 服务端</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%96%AD%E5%BC%80%E8%B7%9F%E6%9C%8D%E5%8A%A1%E7%AB%AF%E7%9A%84%E8%BF%9E%E6%8E%A5"><span class="toc-text">断开跟服务端的连接</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9F%A5%E8%AF%A2%E6%8C%87%E5%AE%9A%E8%8A%82%E7%82%B9%E4%B8%8B%E7%9A%84%E5%AD%90%E8%8A%82%E7%82%B9"><span class="toc-text">查询指定节点下的子节点</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E8%8A%82%E7%82%B9"><span class="toc-text">创建节点</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%A0%E9%99%A4%E8%8A%82%E7%82%B9"><span class="toc-text">删除节点</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9F%A5%E8%AF%A2%E6%8C%87%E5%AE%9A%E8%8A%82%E7%82%B9%E7%9A%84-value"><span class="toc-text">查询指定节点的 value</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BF%AE%E6%94%B9%E8%8A%82%E7%82%B9%E7%9A%84-value"><span class="toc-text">修改节点的 value</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Curator-API-%E6%93%8D%E4%BD%9C-Zookeeper"><span class="toc-text">Curator API 操作 Zookeeper</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Curator-%E4%BB%8B%E7%BB%8D"><span class="toc-text">Curator 介绍</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Curator-API-%E6%93%8D%E4%BD%9C"><span class="toc-text">Curator API 操作</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%BB%BA%E7%AB%8B%E8%BF%9E%E6%8E%A5"><span class="toc-text">建立连接</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9F%A5%E8%AF%A2%E6%8C%87%E5%AE%9A%E8%8A%82%E7%82%B9%E4%B8%8B%E7%9A%84%E5%AD%90%E8%8A%82%E7%82%B9-1"><span class="toc-text">查询指定节点下的子节点</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E8%8A%82%E7%82%B9-1"><span class="toc-text">创建节点</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%A0%E9%99%A4%E8%8A%82%E7%82%B9-1"><span class="toc-text">删除节点</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9F%A5%E8%AF%A2%E6%8C%87%E5%AE%9A%E8%8A%82%E7%82%B9%E7%9A%84-value-1"><span class="toc-text">查询指定节点的 value</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BF%AE%E6%94%B9%E8%8A%82%E7%82%B9%E7%9A%84-value-1"><span class="toc-text">修改节点的 value</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Watch-%E4%BA%8B%E4%BB%B6%E7%9B%91%E5%90%AC"><span class="toc-text">Watch 事件监听</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81"><span class="toc-text">分布式锁</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%9B%86%E7%BE%A4"><span class="toc-text">集群</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%9B%86%E7%BE%A4%E8%A7%92%E8%89%B2"><span class="toc-text">集群角色</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Leader-%E9%80%89%E4%B8%BE"><span class="toc-text">Leader 选举</span></a></li></ol></li></ol>
+    </div>
+</aside>
+                
+                
+  <aside id="krw-categories" class="widget widget-kratos-categories clearfix">
+    <h4 class="widget-title"><i class="fa fa-folder"></i>分类目录</h4>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Docker/">Docker</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Idea/">Idea</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Java/">Java</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/K8s/">K8s</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Linux/">Linux</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/MySQL/">MySQL</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Python/">Python</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/Selenium/">Selenium</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/SpringBoot/">SpringBoot</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/blog/categories/SpringCloud/">SpringCloud</a><span class="category-list-count">13</span></li></ul>
+  </aside>
+
+
+            
+                
+  <aside id="krw-tags" class="widget widget-kratos-tags clearfix">
+    <h4 class="widget-title"><i class="fa fa-tags"></i>标签聚合</h4>
+      <div class="tag-clouds">
+        <a href="/blog/tags/CORS/" style="font-size: 0.8em;">CORS</a> <a href="/blog/tags/Docker/" style="font-size: 0.8em;">Docker</a> <a href="/blog/tags/Dubbo/" style="font-size: 0.8em;">Dubbo</a> <a href="/blog/tags/ELK/" style="font-size: 0.8em;">ELK</a> <a href="/blog/tags/Elasticsearch/" style="font-size: 0.8em;">Elasticsearch</a> <a href="/blog/tags/Eureka/" style="font-size: 0.8em;">Eureka</a> <a href="/blog/tags/Feign/" style="font-size: 0.8em;">Feign</a> <a href="/blog/tags/Gateway/" style="font-size: 0.8em;">Gateway</a> <a href="/blog/tags/Idea/" style="font-size: 0.8em;">Idea</a> <a href="/blog/tags/Java/" style="font-size: 0.8em;">Java</a> <a href="/blog/tags/JavaWeb/" style="font-size: 0.8em;">JavaWeb</a> <a href="/blog/tags/K8s/" style="font-size: 0.8em;">K8s</a> <a href="/blog/tags/Linux/" style="font-size: 0.8em;">Linux</a> <a href="/blog/tags/Maven/" style="font-size: 0.8em;">Maven</a> <a href="/blog/tags/MySQL/" style="font-size: 0.8em;">MySQL</a> <a href="/blog/tags/Mybatis/" style="font-size: 0.8em;">Mybatis</a> <a href="/blog/tags/Nacos/" style="font-size: 0.8em;">Nacos</a> <a href="/blog/tags/Pytest/" style="font-size: 0.8em;">Pytest</a>
+      </div>
+  </aside>
+
+            
+                
+  <aside id="krw-posts" class="widget widget-kratos-posts">
+  <h4 class="widget-title"><i class="fa fa-file"></i>最新文章</h4>
+  <div class="tab-content">
+      <ul class="list-group">
+        
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/01/25/K8s/K8s%E7%BB%84%E4%BB%B6/"><i class="fa  fa-book"></i> 【K8s】组件</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/01/24/K8s/K8s%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/"><i class="fa  fa-book"></i> 【K8s】常用命令</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/01/11/Idea/IDEA%E6%8F%92%E4%BB%B6/"><i class="fa  fa-book"></i> 【Idea】插件</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/01/04/Linux/Centos7%E9%97%AE%E9%A2%98%E5%A4%84%E7%90%86/"><i class="fa  fa-book"></i> Centos7问题处理</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2025/12/09/Trae/Trae%E5%AE%89%E8%A3%85%E6%8F%92%E4%BB%B6%E5%AE%9E%E7%8E%B0Java%E4%BB%A3%E7%A0%81%E7%BC%96%E5%86%99/"><i class="fa  fa-book"></i> 【Trae】安装插件实现Java代码编写</a>
+            
+          
+        
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+      </ul>
+  </div>
+  </aside>
+
+            
+    </div>
+</section>
+        
+        </div>
+    </div>
+</div>
+<footer>
+    <div id="footer"  >
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3 footer-list text-center">
+                    <ul class="kratos-social-icons">
+                        <!-- Keep for compatibility -->
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <!-- New links -->
+                        
+                    </ul>
+                    <ul class="kratos-copyright">
+                        <div>
+                            <li>&copy; 2026 溪岚花的博客 版权所有.</li>
+                            <li>本站已运行<span id="span_dt">Loading...</span></li>
+                        </div>
+                        <div>
+                            <li>Theme <a href="https://github.com/Candinya/Kratos-Rebirth" target="_blank">Kratos:Rebirth</a></li>
+                            <li>Site built with&nbsp;<i class="fa fa-heart throb" style="color:#d43f57"></i>&nbsp;by 林家隆.</li>
+                        </div>
+                        <div>
+                            <li>Powered by <a href="https://hexo.io" target="_blank" rel="nofollow">Hexo</a></li>
+                            <li>Hosted on <a href="https://gitee.com/" target="_blank">Gitee Pages</a></li>
+                        </div>
+                        <div>
+                            
+                            
+                        </div>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="kr-tool text-center">
+            <div class="tool">
+                
+                    <div class="box search-box">
+                        <a href="/blog/search/">
+                            <span class="fa fa-search"></span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="box theme-box" id="darkmode-switch">
+                        <span class="fa fa-adjust"></span>
+                    </div>
+                
+                
+                
+            </div>
+            <div class="box gotop-box">
+                <span class="fa fa-chevron-up"></span>
+            </div>
+        </div>
+    </div>
+</footer>
+</div>
+</div>
+
+        <script defer src="/blog/vendors/bootstrap@3.3.4/dist/js/bootstrap.min.js"></script>
+<script defer src="/blog/vendors/nprogress@0.2.0/nprogress.js"></script>
+<script>
+    if (!window.kr) {
+        window.kr = {};
+    }
+    window.kr.notMobile = (!(navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i)));
+    window.kr.siteRoot = "/blog/";
+</script>
+
+
+
+
+
+    <script defer src="/blog/vendors/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+
+<script defer src="/blog/js/kratosr.min.js"></script>
+<script defer src="/blog/js/pjax.min.js"></script>
+
+
+
+<!-- Extra support for third-party plguins  -->
+
+
+    </body>
+</html>
