@@ -1,0 +1,896 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+  <!-- 元数据 -->
+  <meta charset="utf-8">
+  <link rel="icon" href="/blog/images/logo.png">
+  
+  <title>【HTML】Emmet写法 | 溪岚花的博客</title>
+  
+  <meta name="author" content="林家隆" />
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="robots" content="index,follow" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <meta name="format-detection" content="telphone=no, email=no" />
+  
+    <meta name="keywords" content="CSS, HTML, JavaScript" />
+  
+  <meta name="description" content="Emmet 介绍Emmet 是一个前端开发效率工具，可以用简写语法快速生成 HTML 和 CSS 代码。 用类似 CSS 选择器的语法，按 Tab 键自动展开为完整代码。 HTML 基础结构语法   写法 含义 展开结果    div 标签 &lt;div&gt;&lt;&#x2F;div&gt;   div.box class &lt;div class&#x3D;&quot;box&quot;&gt;&lt;&#x2F;d">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【HTML】Emmet写法">
+<meta property="og:url" content="https://lin316.gitee.io/blog/2026/02/16/HTML%E5%89%8D%E7%AB%AF%E4%B8%89%E5%A4%A7%E4%BB%B6/20.%20Emmet%E5%86%99%E6%B3%95/index.html">
+<meta property="og:site_name" content="溪岚花的博客">
+<meta property="og:description" content="Emmet 介绍Emmet 是一个前端开发效率工具，可以用简写语法快速生成 HTML 和 CSS 代码。 用类似 CSS 选择器的语法，按 Tab 键自动展开为完整代码。 HTML 基础结构语法   写法 含义 展开结果    div 标签 &lt;div&gt;&lt;&#x2F;div&gt;   div.box class &lt;div class&#x3D;&quot;box&quot;&gt;&lt;&#x2F;d">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://lin316.gitee.io/blog/blog/images/logo.png">
+<meta property="article:published_time" content="2026-02-16T04:00:00.000Z">
+<meta property="article:modified_time" content="2026-02-16T07:20:46.125Z">
+<meta property="article:author" content="林家隆">
+<meta property="article:tag" content="HTML">
+<meta property="article:tag" content="CSS">
+<meta property="article:tag" content="JavaScript">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://lin316.gitee.io/blog/blog/images/logo.png">
+  
+  <!-- 站点验证相关 -->
+  
+    
+    
+    
+  
+  <!-- 样式表文件 -->
+  <link rel="stylesheet" id="kratos-css" href="/blog/css/kratosr.min.css" media="all"></script>
+  
+    <link rel="stylesheet" id="darkmode-css" href="/blog/css/kr-color-dark.min.css" media="(prefers-color-scheme: dark)"></script>
+    <script src="/blog/js/kr-dark.min.js"></script>
+  
+  
+    <link rel="stylesheet" id="highlight-css" href="/blog/css/highlight/night-eighties.min.css" media="all"></script>
+  
+  <link rel="stylesheet" id="fontawe-css" href="/blog/vendors/font-awesome@4.7.0/css/font-awesome.min.css" media="all"></script>
+  <link rel="stylesheet" id="nprogress-css" href="/blog/vendors/nprogress@0.2.0/nprogress.css" media="all"></script>
+  
+  
+  
+    <link rel="stylesheet" href="/blog/vendors/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css"></script>
+  
+  <!-- 不得不预先加载的一些JS文件 -->
+  <script src="/blog/vendors/jquery@3.6.0/dist/jquery.min.js"></script>
+  
+  
+  <style>
+    
+    
+  </style>
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+    <body class="custom-background">
+        <div id="kratos-wrapper">
+    <div id="kratos-page">
+        <div id="kratos-header">
+            <header id="kratos-desktop-topnav" class="kratos-topnav">
+                <div class="container">
+                    <div class="nav-header">
+                        <nav id="kratos-menu-wrap">
+                            <ul id="kratos-primary-menu" class="sf-menu">
+                                
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/">
+                                            
+                                                
+                                                    <i class="fa fa-home"></i>
+                                                
+                                                首页
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/archives/">
+                                            
+                                                
+                                                    <i class="fa fa-file"></i>
+                                                
+                                                归档
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/tags/">
+                                            
+                                                
+                                                    <i class="fa fa-tag"></i>
+                                                
+                                                标签
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/categories/">
+                                            
+                                                
+                                                    <i class="fa fa-folder"></i>
+                                                
+                                                目录
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/search/">
+                                            
+                                                
+                                                    <i class="fa fa-search"></i>
+                                                
+                                                搜索
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </header>
+            <header id="kratos-mobile-topnav" class="kratos-topnav">
+                <div class="container">
+                    <div class="color-logo"><a href="/blog/">溪岚花的博客</a></div>
+                    <div class="nav-toggle">
+                        <a class="kratos-nav-toggle js-kratos-nav-toggle">
+                            <i></i>
+                        </a>
+                    </div>
+                </div>
+            </header>
+        </div>
+        <div class="kratos-start kratos-hero-2">
+            <!-- <div class="kratos-overlay"></div> -->
+            <div class="kratos-cover kratos-cover-2 text-center">
+                <div class="desc desc2 animate-box">
+                    <a href="/blog/">
+                        <h2 style="opacity: 0.2;">溪岚花的博客</h2> <br />
+                        <span></span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div id="kratos-blog-post">
+            <div class="container">
+                <div id="main" class="row">
+                    
+
+        
+
+            <section class="col-md-8">
+
+        
+
+            <article itemscope itemtype="https://schema.org/Article">
+    
+    <link itemprop="mainEntityOfPage" href="https://lin316.gitee.io/blog/2026/02/16/HTML%E5%89%8D%E7%AB%AF%E4%B8%89%E5%A4%A7%E4%BB%B6/20.%20Emmet%E5%86%99%E6%B3%95/">
+    <div class="kratos-hentry kratos-post-inner clearfix">
+        <header class="kratos-entry-header">
+            
+                <h1 class="kratos-entry-title text-center" itemprop="name headline">【HTML】Emmet写法</h1>
+            
+            
+            <ul class="kratos-post-meta text-center">
+                <li><time datetime="2026-02-16T04:00:00.000Z" itemprop="datePublished"><i class="fa fa-calendar"></i> 2026-02-16</time></li>
+                <li itemprop="author" itemscope itemtype="https://schema.org/Person">
+                    <i class="fa fa-user"></i> 作者 <span itemprop="name">林家隆</span>
+                </li>
+                
+                    <li>
+                        <i class="fa fa-edit"></i> 
+                        
+                        
+                            2.04K
+                        
+                        字
+                    </li>
+                
+                
+            </ul>
+        </header>
+        <div class="kratos-post-content">
+            
+            <div id="expire-alert" class="alert alert-warning hidden" role="alert">
+                <div class="icon"><i class="fa fa-warning"></i></div>
+                <div class="text"><p>本文最后编辑于 <time datetime="1771226446125"></time> 前，其中的内容可能需要更新。</p></div>
+            </div>
+            
+            
+            
+                <div class="kratos-post-inner-toc toc-div-class" >
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Emmet-%E4%BB%8B%E7%BB%8D"><span class="toc-number">1.</span> <span class="toc-text">Emmet 介绍</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#HTML-%E5%9F%BA%E7%A1%80%E7%BB%93%E6%9E%84%E8%AF%AD%E6%B3%95"><span class="toc-number">2.</span> <span class="toc-text">HTML 基础结构语法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#HTML-%E7%BB%84%E5%90%88%E5%86%99%E6%B3%95"><span class="toc-number">3.</span> <span class="toc-text">HTML 组合写法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#CSS-%E5%B1%9E%E6%80%A7%E5%86%99%E6%B3%95"><span class="toc-number">4.</span> <span class="toc-text">CSS 属性写法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#CSS-Flex-%E5%B8%83%E5%B1%80%E5%86%99%E6%B3%95"><span class="toc-number">5.</span> <span class="toc-text">CSS Flex 布局写法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#CSS-%E8%83%8C%E6%99%AF%E5%9B%BE%E5%86%99%E6%B3%95"><span class="toc-number">6.</span> <span class="toc-text">CSS 背景图写法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#CSS-%E5%AE%9A%E4%BD%8D%E5%86%99%E6%B3%95"><span class="toc-number">7.</span> <span class="toc-text">CSS 定位写法</span></a></li></ol>
+                </div>
+            
+            <hr />
+            <div itemprop="articleBody"><h2 id="Emmet-介绍"><a href="#Emmet-介绍" class="headerlink" title="Emmet 介绍"></a>Emmet 介绍</h2><p><strong>Emmet</strong> 是一个前端开发效率工具，可以用<strong>简写语法</strong>快速生成 HTML 和 CSS 代码。</p>
+<p>用类似 CSS 选择器的语法，按 <code>Tab</code> 键自动展开为完整代码。</p>
+<h2 id="HTML-基础结构语法"><a href="#HTML-基础结构语法" class="headerlink" title="HTML 基础结构语法"></a>HTML 基础结构语法</h2><table>
+<thead>
+<tr>
+<th>写法</th>
+<th>含义</th>
+<th>展开结果</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>div</code></td>
+<td>标签</td>
+<td><code>&lt;div&gt;&lt;/div&gt;</code></td>
+</tr>
+<tr>
+<td><code>div.box</code></td>
+<td>class</td>
+<td><code>&lt;div class=&quot;box&quot;&gt;&lt;/div&gt;</code></td>
+</tr>
+<tr>
+<td><code>div#app</code></td>
+<td>id</td>
+<td><code>&lt;div id=&quot;app&quot;&gt;&lt;/div&gt;</code></td>
+</tr>
+<tr>
+<td><code>div.box#app</code></td>
+<td>class + id</td>
+<td><code>&lt;div class=&quot;box&quot; id=&quot;app&quot;&gt;&lt;/div&gt;</code></td>
+</tr>
+<tr>
+<td><code>ul&gt;li</code></td>
+<td>子元素</td>
+<td><code>&lt;ul&gt;&lt;li&gt;&lt;/li&gt;&lt;/ul&gt;</code></td>
+</tr>
+<tr>
+<td><code>h1+p</code></td>
+<td>兄弟元素</td>
+<td><code>&lt;h1&gt;&lt;/h1&gt;&lt;p&gt;&lt;/p&gt;</code></td>
+</tr>
+<tr>
+<td><code>div&gt;ul&gt;li^p</code></td>
+<td>返回上级</td>
+<td><code>&lt;div&gt;&lt;ul&gt;&lt;li&gt;&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;&lt;/p&gt;&lt;/div&gt;</code></td>
+</tr>
+<tr>
+<td><code>li*3</code></td>
+<td>生成多个</td>
+<td>生成 3 个 <code>&lt;li&gt;&lt;/li&gt;</code></td>
+</tr>
+<tr>
+<td><code>li.item$*3</code></td>
+<td>自动编号</td>
+<td><code>class=&quot;item1&quot;</code>、<code>item2</code>、<code>item3</code></td>
+</tr>
+<tr>
+<td><code>li.item$$$*3</code></td>
+<td>补零编号</td>
+<td><code>class=&quot;item001&quot;</code>、<code>item002</code>、<code>item003</code></td>
+</tr>
+<tr>
+<td><code>p&#123;Hello&#125;</code></td>
+<td>文本内容</td>
+<td><code>&lt;p&gt;Hello&lt;/p&gt;</code></td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>提示：<code>$</code> 表示自动编号，<code>$$$</code> 会自动补零到 3 位数。</p>
+</blockquote>
+<h2 id="HTML-组合写法"><a href="#HTML-组合写法" class="headerlink" title="HTML 组合写法"></a>HTML 组合写法</h2><table>
+<thead>
+<tr>
+<th>写法</th>
+<th>说明</th>
+<th>生成结构说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>ul&gt;li.item$*3</code></td>
+<td>列表 + 编号</td>
+<td>3 个带 class 的 li，item1&#x2F;2&#x2F;3</td>
+</tr>
+<tr>
+<td><code>div.container&gt;ul.list&gt;li*3</code></td>
+<td>嵌套结构</td>
+<td>常见页面骨架结构</td>
+</tr>
+<tr>
+<td><code>a[href=#]</code></td>
+<td>属性写法</td>
+<td><code>&lt;a href=&quot;#&quot;&gt;&lt;/a&gt;</code></td>
+</tr>
+<tr>
+<td><code>img[src=1.jpg]</code></td>
+<td>设置属性</td>
+<td><code>&lt;img src=&quot;1.jpg&quot;&gt;</code></td>
+</tr>
+<tr>
+<td><code>input:text</code></td>
+<td>文本输入框</td>
+<td><code>&lt;input type=&quot;text&quot;&gt;</code></td>
+</tr>
+<tr>
+<td><code>input:password</code></td>
+<td>密码输入框</td>
+<td><code>&lt;input type=&quot;password&quot;&gt;</code></td>
+</tr>
+<tr>
+<td><code>!</code></td>
+<td>HTML5 模板</td>
+<td>生成完整 HTML5 文档结构</td>
+</tr>
+<tr>
+<td><code>html:5</code></td>
+<td>HTML5 模板</td>
+<td>同上，生成标准 HTML5 页面骨架</td>
+</tr>
+</tbody></table>
+<h2 id="CSS-属性写法"><a href="#CSS-属性写法" class="headerlink" title="CSS 属性写法"></a>CSS 属性写法</h2><table>
+<thead>
+<tr>
+<th>简写</th>
+<th>展开</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>w100</code></td>
+<td><code>width: 100px;</code></td>
+</tr>
+<tr>
+<td><code>h200</code></td>
+<td><code>height: 200px;</code></td>
+</tr>
+<tr>
+<td><code>m10</code></td>
+<td><code>margin: 10px;</code></td>
+</tr>
+<tr>
+<td><code>p20</code></td>
+<td><code>padding: 20px;</code></td>
+</tr>
+<tr>
+<td><code>fs16</code></td>
+<td><code>font-size: 16px;</code></td>
+</tr>
+<tr>
+<td><code>fw700</code></td>
+<td><code>font-weight: 700;</code></td>
+</tr>
+<tr>
+<td><code>lh30</code></td>
+<td><code>line-height: 30px;</code></td>
+</tr>
+<tr>
+<td><code>bgc</code></td>
+<td><code>background-color: ;</code></td>
+</tr>
+<tr>
+<td><code>bg</code></td>
+<td><code>background: ;</code></td>
+</tr>
+<tr>
+<td><code>c#fff</code></td>
+<td><code>color: #fff;</code></td>
+</tr>
+<tr>
+<td><code>bd1</code></td>
+<td><code>border: 1px solid #000;</code></td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>提示：实际书写时，光标会停在分号前，方便继续编辑数值或颜色。</p>
+</blockquote>
+<h2 id="CSS-Flex-布局写法"><a href="#CSS-Flex-布局写法" class="headerlink" title="CSS Flex 布局写法"></a>CSS Flex 布局写法</h2><table>
+<thead>
+<tr>
+<th>简写</th>
+<th>展开</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>d:f</code></td>
+<td><code>display: flex;</code></td>
+</tr>
+<tr>
+<td><code>fxd:r</code></td>
+<td><code>flex-direction: row;</code></td>
+</tr>
+<tr>
+<td><code>fxd:c</code></td>
+<td><code>flex-direction: column;</code></td>
+</tr>
+<tr>
+<td><code>jc:c</code></td>
+<td><code>justify-content: center;</code></td>
+</tr>
+<tr>
+<td><code>jc:sb</code></td>
+<td><code>justify-content: space-between;</code></td>
+</tr>
+<tr>
+<td><code>ai:c</code></td>
+<td><code>align-items: center;</code></td>
+</tr>
+<tr>
+<td><code>fw:w</code></td>
+<td><code>flex-wrap: wrap;</code></td>
+</tr>
+</tbody></table>
+<h2 id="CSS-背景图写法"><a href="#CSS-背景图写法" class="headerlink" title="CSS 背景图写法"></a>CSS 背景图写法</h2><table>
+<thead>
+<tr>
+<th>简写</th>
+<th>展开</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>bgi</code></td>
+<td><code>background-image: url();</code></td>
+</tr>
+<tr>
+<td><code>bgr</code></td>
+<td><code>background-repeat: no-repeat;</code></td>
+</tr>
+</tbody></table>
+<h2 id="CSS-定位写法"><a href="#CSS-定位写法" class="headerlink" title="CSS 定位写法"></a>CSS 定位写法</h2><table>
+<thead>
+<tr>
+<th>简写</th>
+<th>展开</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>pos:r</code></td>
+<td><code>position: relative;</code></td>
+</tr>
+<tr>
+<td><code>pos:a</code></td>
+<td><code>position: absolute;</code></td>
+</tr>
+<tr>
+<td><code>pos:f</code></td>
+<td><code>position: fixed;</code></td>
+</tr>
+<tr>
+<td><code>t0</code></td>
+<td><code>top: 0;</code></td>
+</tr>
+<tr>
+<td><code>l0</code></td>
+<td><code>left: 0;</code></td>
+</tr>
+<tr>
+<td><code>r0</code></td>
+<td><code>right: 0;</code></td>
+</tr>
+<tr>
+<td><code>b0</code></td>
+<td><code>bottom: 0;</code></td>
+</tr>
+</tbody></table>
+</div>
+        </div>
+        
+        <footer class="kratos-entry-footer clearfix">
+            
+            <div class="footer-tag clearfix">
+                <div class="pull-left">
+                <i class="fa fa-tags"></i>
+                    <a class="tag-none-link" href="/blog/tags/CSS/" rel="tag">CSS</a>, <a class="tag-none-link" href="/blog/tags/HTML/" rel="tag">HTML</a>, <a class="tag-none-link" href="/blog/tags/JavaScript/" rel="tag">JavaScript</a>
+                </div>
+                <div class="pull-date">
+                    <time datetime="2026-02-16T07:20:46.125Z" itemprop="dateModified">最后编辑：2026-02-16</time>
+                </div>
+            </div>
+        </footer>
+    </div>
+    
+        <nav class="navigation post-navigation clearfix" role="navigation">
+            
+            <div class="nav-previous clearfix">
+                <a title=" 【CSS】CSS 高级" href="/blog/2026/02/15/HTML前端三大件/02.CSS高级/">&lt; 上一篇</a>
+            </div>
+            
+            
+            <div class="nav-next clearfix">
+                <a title=" 【CSS】CSS 布局" href="/blog/2026/02/17/HTML前端三大件/05.CSS布局/">下一篇 &gt;</a>
+            </div>
+            
+        </nav>
+    
+    
+</article>
+
+        
+
+            </section>
+
+        
+
+                
+            
+
+<section id="kratos-widget-area" class="col-md-4 hidden-xs hidden-sm">
+    <!-- 文章和页面根据splitter来分割，没有的话就从头开始设置为sticky -->
+    
+    
+                <aside id="krw-about" class="widget widget-kratos-about clearfix">
+    <div class="photo-background"></div>
+    <div class="photo-wrapper clearfix">
+        <div class="photo-wrapper-tip text-center">
+            <img class="about-photo" src="/blog/images/avatar.webp" loading="lazy" decoding="auto" />
+        </div>
+    </div>
+    <div class="textwidget">
+        <p class="text-center">极简主义</p>
+    </div>
+    <div class="site-meta">
+        <a class="meta-item" href="/blog/archives/">
+            <span class="title">
+                文章
+            </span>
+            <span class="count">
+                88
+            </span>
+        </a>
+        <a class="meta-item" href="/blog/categories/">
+            <span class="title">
+                分类
+            </span>
+            <span class="count">
+                11
+            </span>
+        </a>
+        <a class="meta-item" href="/blog/tags/">
+            <span class="title">
+                标签
+            </span>
+            <span class="count">
+                32
+            </span>
+        </a>
+    </div>
+</aside>
+            
+                    <div class="sticky-area">
+                
+                    <aside id="krw-toc" class="widget widget-kratos-toc clearfix toc-div-class" >
+    <div class="photo-background"></div>
+    <h4 class="widget-title no-after">
+        <i class="fa fa-compass"></i>
+        文章目录
+        <span class="toc-progress-bar" role="progressbar" aria-label="阅读进度："></span>
+    </h4>
+    <div class="textwidget">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Emmet-%E4%BB%8B%E7%BB%8D"><span class="toc-text">Emmet 介绍</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#HTML-%E5%9F%BA%E7%A1%80%E7%BB%93%E6%9E%84%E8%AF%AD%E6%B3%95"><span class="toc-text">HTML 基础结构语法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#HTML-%E7%BB%84%E5%90%88%E5%86%99%E6%B3%95"><span class="toc-text">HTML 组合写法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#CSS-%E5%B1%9E%E6%80%A7%E5%86%99%E6%B3%95"><span class="toc-text">CSS 属性写法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#CSS-Flex-%E5%B8%83%E5%B1%80%E5%86%99%E6%B3%95"><span class="toc-text">CSS Flex 布局写法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#CSS-%E8%83%8C%E6%99%AF%E5%9B%BE%E5%86%99%E6%B3%95"><span class="toc-text">CSS 背景图写法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#CSS-%E5%AE%9A%E4%BD%8D%E5%86%99%E6%B3%95"><span class="toc-text">CSS 定位写法</span></a></li></ol>
+    </div>
+</aside>
+                
+                
+  <aside id="krw-tags" class="widget widget-kratos-tags clearfix">
+    <h4 class="widget-title"><i class="fa fa-tags"></i>标签聚合</h4>
+      <div class="tag-clouds">
+        <a href="/blog/tags/CORS/" style="font-size: 0.8em;">CORS</a> <a href="/blog/tags/CSS/" style="font-size: 0.8em;">CSS</a> <a href="/blog/tags/Docker/" style="font-size: 0.8em;">Docker</a> <a href="/blog/tags/Dubbo/" style="font-size: 0.8em;">Dubbo</a> <a href="/blog/tags/ELK/" style="font-size: 0.8em;">ELK</a> <a href="/blog/tags/Elasticsearch/" style="font-size: 0.8em;">Elasticsearch</a> <a href="/blog/tags/Eureka/" style="font-size: 0.8em;">Eureka</a> <a href="/blog/tags/Feign/" style="font-size: 0.8em;">Feign</a> <a href="/blog/tags/Gateway/" style="font-size: 0.8em;">Gateway</a> <a href="/blog/tags/HTML/" style="font-size: 0.8em;">HTML</a> <a href="/blog/tags/Idea/" style="font-size: 0.8em;">Idea</a> <a href="/blog/tags/Java/" style="font-size: 0.8em;">Java</a> <a href="/blog/tags/JavaScript/" style="font-size: 0.8em;">JavaScript</a> <a href="/blog/tags/JavaWeb/" style="font-size: 0.8em;">JavaWeb</a> <a href="/blog/tags/K8s/" style="font-size: 0.8em;">K8s</a> <a href="/blog/tags/Linux/" style="font-size: 0.8em;">Linux</a> <a href="/blog/tags/Maven/" style="font-size: 0.8em;">Maven</a> <a href="/blog/tags/MySQL/" style="font-size: 0.8em;">MySQL</a>
+      </div>
+  </aside>
+
+            
+                
+  <aside id="krw-posts" class="widget widget-kratos-posts">
+  <h4 class="widget-title"><i class="fa fa-file"></i>最新文章</h4>
+  <div class="tab-content">
+      <ul class="list-group">
+        
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/03/01/HTML%E5%89%8D%E7%AB%AF%E4%B8%89%E5%A4%A7%E4%BB%B6/07.%E9%A2%84%E5%A4%84%E7%90%86%E5%99%A8Less/"><i class="fa  fa-book"></i> 【CSS】预处理器Less</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/02/22/HTML%E5%89%8D%E7%AB%AF%E4%B8%89%E5%A4%A7%E4%BB%B6/31.JavaScript%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2/"><i class="fa  fa-book"></i> 【JavaScript】JS 类型转换</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/02/22/HTML%E5%89%8D%E7%AB%AF%E4%B8%89%E5%A4%A7%E4%BB%B6/30.JavaScript%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95/"><i class="fa  fa-book"></i> 【JavaScript】JS 基础语法</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/02/21/HTML%E5%89%8D%E7%AB%AF%E4%B8%89%E5%A4%A7%E4%BB%B6/06.CSS%E7%A7%BB%E5%8A%A8%E6%A0%B7%E5%BC%8F/"><i class="fa  fa-book"></i> 【CSS】CSS 移动样式</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/02/17/HTML%E5%89%8D%E7%AB%AF%E4%B8%89%E5%A4%A7%E4%BB%B6/05.CSS%E5%B8%83%E5%B1%80/"><i class="fa  fa-book"></i> 【CSS】CSS 布局</a>
+            
+          
+        
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+      </ul>
+  </div>
+  </aside>
+
+            
+    </div>
+</section>
+        
+        </div>
+    </div>
+</div>
+<footer>
+    <div id="footer"  >
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3 footer-list text-center">
+                    <ul class="kratos-social-icons">
+                        <!-- Keep for compatibility -->
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <!-- New links -->
+                        
+                    </ul>
+                    <ul class="kratos-copyright">
+                        <div>
+                            <li>&copy; 2026 溪岚花的博客 版权所有.</li>
+                            <li>本站已运行<span id="span_dt">Loading...</span></li>
+                        </div>
+                        <div>
+                            <li>Theme <a href="https://github.com/Candinya/Kratos-Rebirth" target="_blank">Kratos:Rebirth</a></li>
+                            <li>Site built with&nbsp;<i class="fa fa-heart throb" style="color:#d43f57"></i>&nbsp;by 林家隆.</li>
+                        </div>
+                        <div>
+                            <li>Powered by <a href="https://hexo.io" target="_blank" rel="nofollow">Hexo</a></li>
+                            <li>Hosted on <a href="https://gitee.com/" target="_blank">Gitee Pages</a></li>
+                        </div>
+                        <div>
+                            
+                            
+                        </div>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="kr-tool text-center">
+            <div class="tool">
+                
+                    <div class="box search-box">
+                        <a href="/blog/search/">
+                            <span class="fa fa-search"></span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="box theme-box" id="darkmode-switch">
+                        <span class="fa fa-adjust"></span>
+                    </div>
+                
+                
+                
+            </div>
+            <div class="box gotop-box">
+                <span class="fa fa-chevron-up"></span>
+            </div>
+        </div>
+    </div>
+</footer>
+</div>
+</div>
+
+        <script defer src="/blog/vendors/bootstrap@3.3.4/dist/js/bootstrap.min.js"></script>
+<script defer src="/blog/vendors/nprogress@0.2.0/nprogress.js"></script>
+<script>
+    if (!window.kr) {
+        window.kr = {};
+    }
+    window.kr.notMobile = (!(navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i)));
+    window.kr.siteRoot = "/blog/";
+</script>
+
+
+
+
+
+    <script defer src="/blog/vendors/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+
+<script defer src="/blog/js/kratosr.min.js"></script>
+<script defer src="/blog/js/pjax.min.js"></script>
+
+
+
+<!-- Extra support for third-party plguins  -->
+
+
+    </body>
+</html>
