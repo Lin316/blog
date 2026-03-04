@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+  <!-- 元数据 -->
+  <meta charset="utf-8">
+  <link rel="icon" href="/blog/images/logo.png">
+  
+  <title>【JavaScript】JS 自带的对象和函数 | 溪岚花的博客</title>
+  
+  <meta name="author" content="林家隆" />
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="robots" content="index,follow" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <meta name="format-detection" content="telphone=no, email=no" />
+  
+    <meta name="keywords" content="CSS, HTML, JavaScript" />
+  
+  <meta name="description" content="日期对象 Date Date 本质上是一个时间戳（timestamp） 表示从 UTC 1970年1月1日 00:00:00 到当前时间的毫秒数。  创建 Date 对象 获取当前时间： 12const now &#x3D; new Date();console.log(now); &#x2F;&#x2F; Wed Mar 04 2026 21:05:14 GMT+0800 (中国标准时间)  传入时间戳： 1const d">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【JavaScript】JS 自带的对象和函数">
+<meta property="og:url" content="https://lin316.gitee.io/blog/2026/03/04/HTML%E5%89%8D%E7%AB%AF%E4%B8%89%E5%A4%A7%E4%BB%B6/34.%20JS%E8%87%AA%E5%B8%A6%E7%9A%84%E5%AF%B9%E8%B1%A1%E5%92%8C%E5%87%BD%E6%95%B0/index.html">
+<meta property="og:site_name" content="溪岚花的博客">
+<meta property="og:description" content="日期对象 Date Date 本质上是一个时间戳（timestamp） 表示从 UTC 1970年1月1日 00:00:00 到当前时间的毫秒数。  创建 Date 对象 获取当前时间： 12const now &#x3D; new Date();console.log(now); &#x2F;&#x2F; Wed Mar 04 2026 21:05:14 GMT+0800 (中国标准时间)  传入时间戳： 1const d">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://lin316.gitee.io/blog/blog/images/logo.png">
+<meta property="article:published_time" content="2026-03-04T12:00:00.000Z">
+<meta property="article:modified_time" content="2026-03-04T15:05:10.850Z">
+<meta property="article:author" content="林家隆">
+<meta property="article:tag" content="HTML">
+<meta property="article:tag" content="CSS">
+<meta property="article:tag" content="JavaScript">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://lin316.gitee.io/blog/blog/images/logo.png">
+  
+  <!-- 站点验证相关 -->
+  
+    
+    
+    
+  
+  <!-- 样式表文件 -->
+  <link rel="stylesheet" id="kratos-css" href="/blog/css/kratosr.min.css" media="all"></script>
+  
+    <link rel="stylesheet" id="darkmode-css" href="/blog/css/kr-color-dark.min.css" media="(prefers-color-scheme: dark)"></script>
+    <script src="/blog/js/kr-dark.min.js"></script>
+  
+  
+    <link rel="stylesheet" id="highlight-css" href="/blog/css/highlight/night-eighties.min.css" media="all"></script>
+  
+  <link rel="stylesheet" id="fontawe-css" href="/blog/vendors/font-awesome@4.7.0/css/font-awesome.min.css" media="all"></script>
+  <link rel="stylesheet" id="nprogress-css" href="/blog/vendors/nprogress@0.2.0/nprogress.css" media="all"></script>
+  
+  
+  
+    <link rel="stylesheet" href="/blog/vendors/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css"></script>
+  
+  <!-- 不得不预先加载的一些JS文件 -->
+  <script src="/blog/vendors/jquery@3.6.0/dist/jquery.min.js"></script>
+  
+  
+  <style>
+    
+    
+  </style>
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+    <body class="custom-background">
+        <div id="kratos-wrapper">
+    <div id="kratos-page">
+        <div id="kratos-header">
+            <header id="kratos-desktop-topnav" class="kratos-topnav">
+                <div class="container">
+                    <div class="nav-header">
+                        <nav id="kratos-menu-wrap">
+                            <ul id="kratos-primary-menu" class="sf-menu">
+                                
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/">
+                                            
+                                                
+                                                    <i class="fa fa-home"></i>
+                                                
+                                                首页
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/archives/">
+                                            
+                                                
+                                                    <i class="fa fa-file"></i>
+                                                
+                                                归档
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/tags/">
+                                            
+                                                
+                                                    <i class="fa fa-tag"></i>
+                                                
+                                                标签
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/categories/">
+                                            
+                                                
+                                                    <i class="fa fa-folder"></i>
+                                                
+                                                目录
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/search/">
+                                            
+                                                
+                                                    <i class="fa fa-search"></i>
+                                                
+                                                搜索
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </header>
+            <header id="kratos-mobile-topnav" class="kratos-topnav">
+                <div class="container">
+                    <div class="color-logo"><a href="/blog/">溪岚花的博客</a></div>
+                    <div class="nav-toggle">
+                        <a class="kratos-nav-toggle js-kratos-nav-toggle">
+                            <i></i>
+                        </a>
+                    </div>
+                </div>
+            </header>
+        </div>
+        <div class="kratos-start kratos-hero-2">
+            <!-- <div class="kratos-overlay"></div> -->
+            <div class="kratos-cover kratos-cover-2 text-center">
+                <div class="desc desc2 animate-box">
+                    <a href="/blog/">
+                        <h2 style="opacity: 0.2;">溪岚花的博客</h2> <br />
+                        <span></span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div id="kratos-blog-post">
+            <div class="container">
+                <div id="main" class="row">
+                    
+
+        
+
+            <section class="col-md-8">
+
+        
+
+            <article itemscope itemtype="https://schema.org/Article">
+    
+    <link itemprop="mainEntityOfPage" href="https://lin316.gitee.io/blog/2026/03/04/HTML%E5%89%8D%E7%AB%AF%E4%B8%89%E5%A4%A7%E4%BB%B6/34.%20JS%E8%87%AA%E5%B8%A6%E7%9A%84%E5%AF%B9%E8%B1%A1%E5%92%8C%E5%87%BD%E6%95%B0/">
+    <div class="kratos-hentry kratos-post-inner clearfix">
+        <header class="kratos-entry-header">
+            
+                <h1 class="kratos-entry-title text-center" itemprop="name headline">【JavaScript】JS 自带的对象和函数</h1>
+            
+            
+            <ul class="kratos-post-meta text-center">
+                <li><time datetime="2026-03-04T12:00:00.000Z" itemprop="datePublished"><i class="fa fa-calendar"></i> 2026-03-04</time></li>
+                <li itemprop="author" itemscope itemtype="https://schema.org/Person">
+                    <i class="fa fa-user"></i> 作者 <span itemprop="name">林家隆</span>
+                </li>
+                
+                    <li>
+                        <i class="fa fa-edit"></i> 
+                        
+                        
+                            1.95K
+                        
+                        字
+                    </li>
+                
+                
+            </ul>
+        </header>
+        <div class="kratos-post-content">
+            
+            <div id="expire-alert" class="alert alert-warning hidden" role="alert">
+                <div class="icon"><i class="fa fa-warning"></i></div>
+                <div class="text"><p>本文最后编辑于 <time datetime="1772636710850"></time> 前，其中的内容可能需要更新。</p></div>
+            </div>
+            
+            
+            
+                <div class="kratos-post-inner-toc toc-div-class" >
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%97%A5%E6%9C%9F%E5%AF%B9%E8%B1%A1-Date"><span class="toc-number">1.</span> <span class="toc-text">日期对象 Date</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA-Date-%E5%AF%B9%E8%B1%A1"><span class="toc-number">1.1.</span> <span class="toc-text">创建 Date 对象</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%8E%B7%E5%8F%96%E6%96%B9%E6%B3%95"><span class="toc-number">1.2.</span> <span class="toc-text">获取方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BF%AE%E6%94%B9%E6%96%B9%E6%B3%95"><span class="toc-number">1.3.</span> <span class="toc-text">修改方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%97%A5%E6%9C%9F%E8%87%AA%E5%8A%A8%E8%BF%9B%E4%BD%8D"><span class="toc-number">1.4.</span> <span class="toc-text">日期自动进位</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%97%B6%E9%97%B4%E6%88%B3"><span class="toc-number">1.5.</span> <span class="toc-text">时间戳</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A0%BC%E5%BC%8F%E5%8C%96%E6%96%B9%E6%B3%95"><span class="toc-number">1.6.</span> <span class="toc-text">格式化方法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1%E5%87%BD%E6%95%B0-setInterval"><span class="toc-number">2.</span> <span class="toc-text">定时任务函数  setInterval </span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BB%B6%E8%BF%9F%E6%89%A7%E8%A1%8C%E4%B8%80%E6%AC%A1%E4%BB%BB%E5%8A%A1%E5%87%BD%E6%95%B0-setTimeout"><span class="toc-number">3.</span> <span class="toc-text">延迟执行一次任务函数 setTimeout</span></a></li></ol>
+                </div>
+            
+            <hr />
+            <div itemprop="articleBody"><h2 id="日期对象-Date"><a href="#日期对象-Date" class="headerlink" title="日期对象 Date"></a>日期对象 <code>Date</code></h2><blockquote>
+<p><strong>Date 本质上是一个时间戳（timestamp）</strong></p>
+<p>表示从 <strong>UTC 1970年1月1日 00:00:00</strong> 到当前时间的毫秒数。</p>
+</blockquote>
+<h3 id="创建-Date-对象"><a href="#创建-Date-对象" class="headerlink" title="创建 Date 对象"></a>创建 <code>Date</code> 对象</h3><p> 获取当前时间：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> now = <span class="keyword">new</span> <span class="title class_">Date</span>();</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(now); <span class="comment">// Wed Mar 04 2026 21:05:14 GMT+0800 (中国标准时间)</span></span><br></pre></td></tr></table></figure>
+
+<p>传入时间戳：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> d = <span class="keyword">new</span> <span class="title class_">Date</span>(<span class="number">1700000000000</span>);</span><br></pre></td></tr></table></figure>
+
+<p>传入日期字符串：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> d = <span class="keyword">new</span> <span class="title class_">Date</span>(<span class="string">&quot;2026-03-04&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>标准日期格式：</p>
+<ul>
+<li><code>YYYY-MM-DD</code> 默认按 <strong>UTC</strong> 解析</li>
+<li><code>YYYY-MM-DDTHH:mm:s</code>s 按本地时间解析</li>
+<li><code>&quot;YYYY/MM/DD&quot;</code> （不是标准日期格式，但这种格式按本地时间解析）</li>
+</ul>
+</blockquote>
+<p>传入多个参数：</p>
+<p><strong>注意</strong>：月份从 <strong>0 开始</strong></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">new</span> <span class="title class_">Date</span>(year, month, day, hours, minutes, seconds, ms)</span><br><span class="line"><span class="keyword">new</span> <span class="title class_">Date</span>(<span class="number">2026</span>, <span class="number">2</span>, <span class="number">4</span>) <span class="comment">// 表示 2026年3月4日</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="获取方法"><a href="#获取方法" class="headerlink" title="获取方法"></a>获取方法</h3><table>
+<thead>
+<tr>
+<th>方法</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>getFullYear()</td>
+<td>年</td>
+</tr>
+<tr>
+<td>getMonth()</td>
+<td>月（0-11）</td>
+</tr>
+<tr>
+<td>getDate()</td>
+<td>日</td>
+</tr>
+<tr>
+<td>getDay()</td>
+<td>星期（0-6，0是周日）</td>
+</tr>
+<tr>
+<td>getHours()</td>
+<td>小时</td>
+</tr>
+<tr>
+<td>getMinutes()</td>
+<td>分</td>
+</tr>
+<tr>
+<td>getSeconds()</td>
+<td>秒</td>
+</tr>
+<tr>
+<td>getMilliseconds()</td>
+<td>毫秒</td>
+</tr>
+<tr>
+<td>getTime()</td>
+<td>时间戳</td>
+</tr>
+</tbody></table>
+<p>JS 提供查询 UTC 时间的方法：</p>
+<table>
+<thead>
+<tr>
+<th>本地时间</th>
+<th>UTC 时间</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>getFullYear()</td>
+<td>getUTCFullYear()</td>
+</tr>
+<tr>
+<td>getHours()</td>
+<td>getUTCHours()</td>
+</tr>
+<tr>
+<td><code>...</code></td>
+<td><code>...</code></td>
+</tr>
+</tbody></table>
+<h3 id="修改方法"><a href="#修改方法" class="headerlink" title="修改方法"></a>修改方法</h3><table>
+<thead>
+<tr>
+<th>方法</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>setFullYear()</td>
+<td>修改年份</td>
+</tr>
+<tr>
+<td>setMonth()</td>
+<td>修改月份</td>
+</tr>
+<tr>
+<td>setDate()</td>
+<td>修改日期</td>
+</tr>
+<tr>
+<td>setHours()</td>
+<td>修改小时</td>
+</tr>
+<tr>
+<td>setTime()</td>
+<td>修改时间戳</td>
+</tr>
+</tbody></table>
+<h3 id="日期自动进位"><a href="#日期自动进位" class="headerlink" title="日期自动进位"></a>日期自动进位</h3><p>JS Date 会自动进位，例如：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">new</span> <span class="title class_">Date</span>(<span class="number">2026</span>, <span class="number">1</span>, <span class="number">32</span>); <span class="comment">// 2026-03-04</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="时间戳"><a href="#时间戳" class="headerlink" title="时间戳"></a>时间戳</h3><p>获取时间戳：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="title class_">Date</span>.<span class="title function_">now</span>());        <span class="comment">// 推荐</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="keyword">new</span> <span class="title class_">Date</span>().<span class="title function_">getTime</span>());</span><br></pre></td></tr></table></figure>
+
+<p>计算毫秒时间差：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> start = <span class="title class_">Date</span>.<span class="title function_">now</span>();</span><br><span class="line"></span><br><span class="line"><span class="comment">// 一些操作</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> end = <span class="title class_">Date</span>.<span class="title function_">now</span>();</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(end - start); <span class="comment">// 毫秒差</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="格式化方法"><a href="#格式化方法" class="headerlink" title="格式化方法"></a>格式化方法</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;--------------------------------&quot;</span>)</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="keyword">new</span> <span class="title class_">Date</span>().<span class="title function_">toString</span>());       <span class="comment">// Wed Mar 04 2026 21:48:04 GMT+0800 (中国标准时间)</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;--------------------------------&quot;</span>)</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="keyword">new</span> <span class="title class_">Date</span>().<span class="title function_">toDateString</span>());   <span class="comment">// Wed Mar 04 2026</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;--------------------------------&quot;</span>)</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="keyword">new</span> <span class="title class_">Date</span>().<span class="title function_">toISOString</span>());    <span class="comment">// 2026-03-04T13:48:04.826Z</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;--------------------------------&quot;</span>)</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="keyword">new</span> <span class="title class_">Date</span>().<span class="title function_">toLocaleString</span>()); <span class="comment">// 2026/3/4 21:48:04</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;--------------------------------&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<h2 id="定时任务函数-setInterval"><a href="#定时任务函数-setInterval" class="headerlink" title="定时任务函数  setInterval "></a>定时任务函数  <code>setInterval </code></h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">setInterval</span>(函数, 循环执行时间-毫秒)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">setInterval</span>(<span class="function">()=&gt;</span> <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;hello&#x27;</span>), <span class="number">1000</span>)</span><br></pre></td></tr></table></figure>
+
+<h2 id="延迟执行一次任务函数-setTimeout"><a href="#延迟执行一次任务函数-setTimeout" class="headerlink" title="延迟执行一次任务函数 setTimeout"></a>延迟执行一次任务函数 <code>setTimeout</code></h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">setTimeout</span>(函数, 循环执行时间-毫秒)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">setInterval</span>(<span class="function">()=&gt;</span> <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;hello&#x27;</span>), <span class="number">1000</span>)</span><br></pre></td></tr></table></figure>
+
+</div>
+        </div>
+        
+        <footer class="kratos-entry-footer clearfix">
+            
+            <div class="footer-tag clearfix">
+                <div class="pull-left">
+                <i class="fa fa-tags"></i>
+                    <a class="tag-none-link" href="/blog/tags/CSS/" rel="tag">CSS</a>, <a class="tag-none-link" href="/blog/tags/HTML/" rel="tag">HTML</a>, <a class="tag-none-link" href="/blog/tags/JavaScript/" rel="tag">JavaScript</a>
+                </div>
+                <div class="pull-date">
+                    <time datetime="2026-03-04T15:05:10.850Z" itemprop="dateModified">最后编辑：2026-03-04</time>
+                </div>
+            </div>
+        </footer>
+    </div>
+    
+        <nav class="navigation post-navigation clearfix" role="navigation">
+            
+            <div class="nav-previous clearfix">
+                <a title=" 【JavaScript】事件监听" href="/blog/2026/03/01/HTML前端三大件/33.JS事件监听/">&lt; 上一篇</a>
+            </div>
+            
+            
+        </nav>
+    
+    
+</article>
+
+        
+
+            </section>
+
+        
+
+                
+            
+
+<section id="kratos-widget-area" class="col-md-4 hidden-xs hidden-sm">
+    <!-- 文章和页面根据splitter来分割，没有的话就从头开始设置为sticky -->
+    
+    
+                <aside id="krw-about" class="widget widget-kratos-about clearfix">
+    <div class="photo-background"></div>
+    <div class="photo-wrapper clearfix">
+        <div class="photo-wrapper-tip text-center">
+            <img class="about-photo" src="/blog/images/avatar.webp" loading="lazy" decoding="auto" />
+        </div>
+    </div>
+    <div class="textwidget">
+        <p class="text-center">极简主义</p>
+    </div>
+    <div class="site-meta">
+        <a class="meta-item" href="/blog/archives/">
+            <span class="title">
+                文章
+            </span>
+            <span class="count">
+                91
+            </span>
+        </a>
+        <a class="meta-item" href="/blog/categories/">
+            <span class="title">
+                分类
+            </span>
+            <span class="count">
+                11
+            </span>
+        </a>
+        <a class="meta-item" href="/blog/tags/">
+            <span class="title">
+                标签
+            </span>
+            <span class="count">
+                32
+            </span>
+        </a>
+    </div>
+</aside>
+            
+                    <div class="sticky-area">
+                
+                    <aside id="krw-toc" class="widget widget-kratos-toc clearfix toc-div-class" >
+    <div class="photo-background"></div>
+    <h4 class="widget-title no-after">
+        <i class="fa fa-compass"></i>
+        文章目录
+        <span class="toc-progress-bar" role="progressbar" aria-label="阅读进度："></span>
+    </h4>
+    <div class="textwidget">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%97%A5%E6%9C%9F%E5%AF%B9%E8%B1%A1-Date"><span class="toc-text">日期对象 Date</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA-Date-%E5%AF%B9%E8%B1%A1"><span class="toc-text">创建 Date 对象</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%8E%B7%E5%8F%96%E6%96%B9%E6%B3%95"><span class="toc-text">获取方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BF%AE%E6%94%B9%E6%96%B9%E6%B3%95"><span class="toc-text">修改方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%97%A5%E6%9C%9F%E8%87%AA%E5%8A%A8%E8%BF%9B%E4%BD%8D"><span class="toc-text">日期自动进位</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%97%B6%E9%97%B4%E6%88%B3"><span class="toc-text">时间戳</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A0%BC%E5%BC%8F%E5%8C%96%E6%96%B9%E6%B3%95"><span class="toc-text">格式化方法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1%E5%87%BD%E6%95%B0-setInterval"><span class="toc-text">定时任务函数  setInterval </span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BB%B6%E8%BF%9F%E6%89%A7%E8%A1%8C%E4%B8%80%E6%AC%A1%E4%BB%BB%E5%8A%A1%E5%87%BD%E6%95%B0-setTimeout"><span class="toc-text">延迟执行一次任务函数 setTimeout</span></a></li></ol>
+    </div>
+</aside>
+                
+                
+  <aside id="krw-tags" class="widget widget-kratos-tags clearfix">
+    <h4 class="widget-title"><i class="fa fa-tags"></i>标签聚合</h4>
+      <div class="tag-clouds">
+        <a href="/blog/tags/CORS/" style="font-size: 0.8em;">CORS</a> <a href="/blog/tags/CSS/" style="font-size: 0.8em;">CSS</a> <a href="/blog/tags/Docker/" style="font-size: 0.8em;">Docker</a> <a href="/blog/tags/Dubbo/" style="font-size: 0.8em;">Dubbo</a> <a href="/blog/tags/ELK/" style="font-size: 0.8em;">ELK</a> <a href="/blog/tags/Elasticsearch/" style="font-size: 0.8em;">Elasticsearch</a> <a href="/blog/tags/Eureka/" style="font-size: 0.8em;">Eureka</a> <a href="/blog/tags/Feign/" style="font-size: 0.8em;">Feign</a> <a href="/blog/tags/Gateway/" style="font-size: 0.8em;">Gateway</a> <a href="/blog/tags/HTML/" style="font-size: 0.8em;">HTML</a> <a href="/blog/tags/Idea/" style="font-size: 0.8em;">Idea</a> <a href="/blog/tags/Java/" style="font-size: 0.8em;">Java</a> <a href="/blog/tags/JavaScript/" style="font-size: 0.8em;">JavaScript</a> <a href="/blog/tags/JavaWeb/" style="font-size: 0.8em;">JavaWeb</a> <a href="/blog/tags/K8s/" style="font-size: 0.8em;">K8s</a> <a href="/blog/tags/Linux/" style="font-size: 0.8em;">Linux</a> <a href="/blog/tags/Maven/" style="font-size: 0.8em;">Maven</a> <a href="/blog/tags/MySQL/" style="font-size: 0.8em;">MySQL</a>
+      </div>
+  </aside>
+
+            
+                
+  <aside id="krw-posts" class="widget widget-kratos-posts">
+  <h4 class="widget-title"><i class="fa fa-file"></i>最新文章</h4>
+  <div class="tab-content">
+      <ul class="list-group">
+        
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/03/04/HTML%E5%89%8D%E7%AB%AF%E4%B8%89%E5%A4%A7%E4%BB%B6/34.%20JS%E8%87%AA%E5%B8%A6%E7%9A%84%E5%AF%B9%E8%B1%A1%E5%92%8C%E5%87%BD%E6%95%B0/"><i class="fa  fa-book"></i> 【JavaScript】JS 自带的对象和函数</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/03/01/HTML%E5%89%8D%E7%AB%AF%E4%B8%89%E5%A4%A7%E4%BB%B6/33.JS%E4%BA%8B%E4%BB%B6%E7%9B%91%E5%90%AC/"><i class="fa  fa-book"></i> 【JavaScript】事件监听</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/03/01/HTML%E5%89%8D%E7%AB%AF%E4%B8%89%E5%A4%A7%E4%BB%B6/32.DOM%E7%9A%84%E4%BD%BF%E7%94%A8/"><i class="fa  fa-book"></i> 【JavaScript】DOM 的使用</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/03/01/HTML%E5%89%8D%E7%AB%AF%E4%B8%89%E5%A4%A7%E4%BB%B6/07.%E9%A2%84%E5%A4%84%E7%90%86%E5%99%A8Less/"><i class="fa  fa-book"></i> 【CSS】预处理器Less</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/02/22/HTML%E5%89%8D%E7%AB%AF%E4%B8%89%E5%A4%A7%E4%BB%B6/31.JavaScript%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2/"><i class="fa  fa-book"></i> 【JavaScript】JS 类型转换</a>
+            
+          
+        
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+      </ul>
+  </div>
+  </aside>
+
+            
+    </div>
+</section>
+        
+        </div>
+    </div>
+</div>
+<footer>
+    <div id="footer"  >
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3 footer-list text-center">
+                    <ul class="kratos-social-icons">
+                        <!-- Keep for compatibility -->
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <!-- New links -->
+                        
+                    </ul>
+                    <ul class="kratos-copyright">
+                        <div>
+                            <li>&copy; 2026 溪岚花的博客 版权所有.</li>
+                            <li>本站已运行<span id="span_dt">Loading...</span></li>
+                        </div>
+                        <div>
+                            <li>Theme <a href="https://github.com/Candinya/Kratos-Rebirth" target="_blank">Kratos:Rebirth</a></li>
+                            <li>Site built with&nbsp;<i class="fa fa-heart throb" style="color:#d43f57"></i>&nbsp;by 林家隆.</li>
+                        </div>
+                        <div>
+                            <li>Powered by <a href="https://hexo.io" target="_blank" rel="nofollow">Hexo</a></li>
+                            <li>Hosted on <a href="https://gitee.com/" target="_blank">Gitee Pages</a></li>
+                        </div>
+                        <div>
+                            
+                            
+                        </div>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="kr-tool text-center">
+            <div class="tool">
+                
+                    <div class="box search-box">
+                        <a href="/blog/search/">
+                            <span class="fa fa-search"></span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="box theme-box" id="darkmode-switch">
+                        <span class="fa fa-adjust"></span>
+                    </div>
+                
+                
+                
+            </div>
+            <div class="box gotop-box">
+                <span class="fa fa-chevron-up"></span>
+            </div>
+        </div>
+    </div>
+</footer>
+</div>
+</div>
+
+        <script defer src="/blog/vendors/bootstrap@3.3.4/dist/js/bootstrap.min.js"></script>
+<script defer src="/blog/vendors/nprogress@0.2.0/nprogress.js"></script>
+<script>
+    if (!window.kr) {
+        window.kr = {};
+    }
+    window.kr.notMobile = (!(navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i)));
+    window.kr.siteRoot = "/blog/";
+</script>
+
+
+
+
+
+    <script defer src="/blog/vendors/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+
+<script defer src="/blog/js/kratosr.min.js"></script>
+<script defer src="/blog/js/pjax.min.js"></script>
+
+
+
+<!-- Extra support for third-party plguins  -->
+
+
+    </body>
+</html>
