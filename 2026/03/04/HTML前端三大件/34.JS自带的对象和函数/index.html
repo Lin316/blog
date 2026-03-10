@@ -1,0 +1,1234 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+  <!-- 元数据 -->
+  <meta charset="utf-8">
+  <link rel="icon" href="/blog/images/logo.png">
+  
+  <title>【JavaScript】JS 自带的对象和函数 | 溪岚花的博客</title>
+  
+  <meta name="author" content="林家隆" />
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="robots" content="index,follow" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <meta name="format-detection" content="telphone=no, email=no" />
+  
+    <meta name="keywords" content="CSS, HTML, JavaScript" />
+  
+  <meta name="description" content="Date 日期对象 Date 本质上是一个时间戳（timestamp） 表示从 UTC 1970年1月1日 00:00:00 到当前时间的毫秒数。  创建 Date 对象 获取当前时间： 12const now &#x3D; new Date();console.log(now); &#x2F;&#x2F; Wed Mar 04 2026 21:05:14 GMT+0800 (中国标准时间)  传入时间戳： 1const d">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【JavaScript】JS 自带的对象和函数">
+<meta property="og:url" content="https://lin316.gitee.io/blog/2026/03/04/HTML%E5%89%8D%E7%AB%AF%E4%B8%89%E5%A4%A7%E4%BB%B6/34.JS%E8%87%AA%E5%B8%A6%E7%9A%84%E5%AF%B9%E8%B1%A1%E5%92%8C%E5%87%BD%E6%95%B0/index.html">
+<meta property="og:site_name" content="溪岚花的博客">
+<meta property="og:description" content="Date 日期对象 Date 本质上是一个时间戳（timestamp） 表示从 UTC 1970年1月1日 00:00:00 到当前时间的毫秒数。  创建 Date 对象 获取当前时间： 12const now &#x3D; new Date();console.log(now); &#x2F;&#x2F; Wed Mar 04 2026 21:05:14 GMT+0800 (中国标准时间)  传入时间戳： 1const d">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://lin316.gitee.io/blog/blog/images/logo.png">
+<meta property="article:published_time" content="2026-03-04T12:00:00.000Z">
+<meta property="article:modified_time" content="2026-03-08T13:13:58.784Z">
+<meta property="article:author" content="林家隆">
+<meta property="article:tag" content="HTML">
+<meta property="article:tag" content="CSS">
+<meta property="article:tag" content="JavaScript">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://lin316.gitee.io/blog/blog/images/logo.png">
+  
+  <!-- 站点验证相关 -->
+  
+    
+    
+    
+  
+  <!-- 样式表文件 -->
+  <link rel="stylesheet" id="kratos-css" href="/blog/css/kratosr.min.css" media="all"></script>
+  
+    <link rel="stylesheet" id="darkmode-css" href="/blog/css/kr-color-dark.min.css" media="(prefers-color-scheme: dark)"></script>
+    <script src="/blog/js/kr-dark.min.js"></script>
+  
+  
+    <link rel="stylesheet" id="highlight-css" href="/blog/css/highlight/night-eighties.min.css" media="all"></script>
+  
+  <link rel="stylesheet" id="fontawe-css" href="/blog/vendors/font-awesome@4.7.0/css/font-awesome.min.css" media="all"></script>
+  <link rel="stylesheet" id="nprogress-css" href="/blog/vendors/nprogress@0.2.0/nprogress.css" media="all"></script>
+  
+  
+  
+    <link rel="stylesheet" href="/blog/vendors/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css"></script>
+  
+  <!-- 不得不预先加载的一些JS文件 -->
+  <script src="/blog/vendors/jquery@3.6.0/dist/jquery.min.js"></script>
+  
+  
+  <style>
+    
+    
+  </style>
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+    <body class="custom-background">
+        <div id="kratos-wrapper">
+    <div id="kratos-page">
+        <div id="kratos-header">
+            <header id="kratos-desktop-topnav" class="kratos-topnav">
+                <div class="container">
+                    <div class="nav-header">
+                        <nav id="kratos-menu-wrap">
+                            <ul id="kratos-primary-menu" class="sf-menu">
+                                
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/">
+                                            
+                                                
+                                                    <i class="fa fa-home"></i>
+                                                
+                                                首页
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/archives/">
+                                            
+                                                
+                                                    <i class="fa fa-file"></i>
+                                                
+                                                归档
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/tags/">
+                                            
+                                                
+                                                    <i class="fa fa-tag"></i>
+                                                
+                                                标签
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/categories/">
+                                            
+                                                
+                                                    <i class="fa fa-folder"></i>
+                                                
+                                                目录
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/search/">
+                                            
+                                                
+                                                    <i class="fa fa-search"></i>
+                                                
+                                                搜索
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </header>
+            <header id="kratos-mobile-topnav" class="kratos-topnav">
+                <div class="container">
+                    <div class="color-logo"><a href="/blog/">溪岚花的博客</a></div>
+                    <div class="nav-toggle">
+                        <a class="kratos-nav-toggle js-kratos-nav-toggle">
+                            <i></i>
+                        </a>
+                    </div>
+                </div>
+            </header>
+        </div>
+        <div class="kratos-start kratos-hero-2">
+            <!-- <div class="kratos-overlay"></div> -->
+            <div class="kratos-cover kratos-cover-2 text-center">
+                <div class="desc desc2 animate-box">
+                    <a href="/blog/">
+                        <h2 style="opacity: 0.2;">溪岚花的博客</h2> <br />
+                        <span></span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div id="kratos-blog-post">
+            <div class="container">
+                <div id="main" class="row">
+                    
+
+        
+
+            <section class="col-md-8">
+
+        
+
+            <article itemscope itemtype="https://schema.org/Article">
+    
+    <link itemprop="mainEntityOfPage" href="https://lin316.gitee.io/blog/2026/03/04/HTML%E5%89%8D%E7%AB%AF%E4%B8%89%E5%A4%A7%E4%BB%B6/34.JS%E8%87%AA%E5%B8%A6%E7%9A%84%E5%AF%B9%E8%B1%A1%E5%92%8C%E5%87%BD%E6%95%B0/">
+    <div class="kratos-hentry kratos-post-inner clearfix">
+        <header class="kratos-entry-header">
+            
+                <h1 class="kratos-entry-title text-center" itemprop="name headline">【JavaScript】JS 自带的对象和函数</h1>
+            
+            
+            <ul class="kratos-post-meta text-center">
+                <li><time datetime="2026-03-04T12:00:00.000Z" itemprop="datePublished"><i class="fa fa-calendar"></i> 2026-03-04</time></li>
+                <li itemprop="author" itemscope itemtype="https://schema.org/Person">
+                    <i class="fa fa-user"></i> 作者 <span itemprop="name">林家隆</span>
+                </li>
+                
+                    <li>
+                        <i class="fa fa-edit"></i> 
+                        
+                        
+                            8.05K
+                        
+                        字
+                    </li>
+                
+                
+            </ul>
+        </header>
+        <div class="kratos-post-content">
+            
+            <div id="expire-alert" class="alert alert-warning hidden" role="alert">
+                <div class="icon"><i class="fa fa-warning"></i></div>
+                <div class="text"><p>本文最后编辑于 <time datetime="1772975638784"></time> 前，其中的内容可能需要更新。</p></div>
+            </div>
+            
+            
+            
+                <div class="kratos-post-inner-toc toc-div-class" >
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Date-%E6%97%A5%E6%9C%9F%E5%AF%B9%E8%B1%A1"><span class="toc-number">1.</span> <span class="toc-text">Date 日期对象</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA-Date-%E5%AF%B9%E8%B1%A1"><span class="toc-number">1.1.</span> <span class="toc-text">创建 Date 对象</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%8E%B7%E5%8F%96%E6%96%B9%E6%B3%95"><span class="toc-number">1.2.</span> <span class="toc-text">获取方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BF%AE%E6%94%B9%E6%96%B9%E6%B3%95"><span class="toc-number">1.3.</span> <span class="toc-text">修改方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%97%A5%E6%9C%9F%E8%87%AA%E5%8A%A8%E8%BF%9B%E4%BD%8D"><span class="toc-number">1.4.</span> <span class="toc-text">日期自动进位</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%97%B6%E9%97%B4%E6%88%B3"><span class="toc-number">1.5.</span> <span class="toc-text">时间戳</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A0%BC%E5%BC%8F%E5%8C%96%E6%96%B9%E6%B3%95"><span class="toc-number">1.6.</span> <span class="toc-text">格式化方法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#location-%E5%AF%B9%E8%B1%A1"><span class="toc-number">2.</span> <span class="toc-text">location 对象</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AF%B9%E8%B1%A1%E5%B1%9E%E6%80%A7"><span class="toc-number">2.1.</span> <span class="toc-text">对象属性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%B8%E7%94%A8%E6%96%B9%E6%B3%95"><span class="toc-number">2.2.</span> <span class="toc-text">常用方法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#assign"><span class="toc-number">2.2.1.</span> <span class="toc-text">assign()</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#replace"><span class="toc-number">2.2.2.</span> <span class="toc-text">replace()</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#reload"><span class="toc-number">2.2.3.</span> <span class="toc-text">reload()</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%B8%E7%94%A8%E6%93%8D%E4%BD%9C"><span class="toc-number">2.3.</span> <span class="toc-text">常用操作</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%A1%B5%E9%9D%A2%E8%B7%B3%E8%BD%AC"><span class="toc-number">2.3.1.</span> <span class="toc-text">页面跳转</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%8E%B7%E5%8F%96URL%E5%8F%82%E6%95%B0"><span class="toc-number">2.3.2.</span> <span class="toc-text">获取URL参数</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BF%AE%E6%94%B9URL%E5%8F%82%E6%95%B0"><span class="toc-number">2.3.3.</span> <span class="toc-text">修改URL参数</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%A1%B5%E9%9D%A2%E5%88%B7%E6%96%B0"><span class="toc-number">2.3.4.</span> <span class="toc-text">页面刷新</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%A4%E6%96%AD%E5%BD%93%E5%89%8D%E9%A1%B5%E9%9D%A2"><span class="toc-number">2.3.5.</span> <span class="toc-text">判断当前页面</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#navigator-%E5%AF%B9%E8%B1%A1"><span class="toc-number">3.</span> <span class="toc-text">navigator 对象</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%B8%E7%94%A8%E5%B1%9E%E6%80%A7"><span class="toc-number">3.1.</span> <span class="toc-text">常用属性</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#userAgent"><span class="toc-number">3.1.1.</span> <span class="toc-text">userAgent</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#language"><span class="toc-number">3.1.2.</span> <span class="toc-text">language</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#languages"><span class="toc-number">3.1.3.</span> <span class="toc-text">languages</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#onLine"><span class="toc-number">3.1.4.</span> <span class="toc-text">onLine</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#cookieEnabled"><span class="toc-number">3.1.5.</span> <span class="toc-text">cookieEnabled</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#hardwareConcurrency"><span class="toc-number">3.1.6.</span> <span class="toc-text">hardwareConcurrency</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#deviceMemory"><span class="toc-number">3.1.7.</span> <span class="toc-text">deviceMemory</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#maxTouchPoints"><span class="toc-number">3.1.8.</span> <span class="toc-text">maxTouchPoints</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%B8%E7%94%A8%E6%96%B9%E6%B3%95-1"><span class="toc-number">3.2.</span> <span class="toc-text">常用方法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#vibrate"><span class="toc-number">3.2.1.</span> <span class="toc-text">vibrate()</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#sendBeacon"><span class="toc-number">3.2.2.</span> <span class="toc-text">sendBeacon()</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AD%90%E5%AF%B9%E8%B1%A1"><span class="toc-number">3.3.</span> <span class="toc-text">子对象</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#geolocation"><span class="toc-number">3.3.1.</span> <span class="toc-text">geolocation</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#clipboard"><span class="toc-number">3.3.2.</span> <span class="toc-text">clipboard</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#connection"><span class="toc-number">3.3.3.</span> <span class="toc-text">connection</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#history-%E5%AF%B9%E8%B1%A1"><span class="toc-number">4.</span> <span class="toc-text">history 对象</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%B8%E7%94%A8%E5%B1%9E%E6%80%A7-1"><span class="toc-number">4.1.</span> <span class="toc-text">常用属性</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#length"><span class="toc-number">4.1.1.</span> <span class="toc-text">length</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%B8%E7%94%A8%E6%96%B9%E6%B3%95-2"><span class="toc-number">4.2.</span> <span class="toc-text">常用方法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#back"><span class="toc-number">4.2.1.</span> <span class="toc-text">back()</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#forward"><span class="toc-number">4.2.2.</span> <span class="toc-text">forward()</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#go"><span class="toc-number">4.2.3.</span> <span class="toc-text">go()</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#pushState"><span class="toc-number">4.2.4.</span> <span class="toc-text">pushState()</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#replaceState"><span class="toc-number">4.2.5.</span> <span class="toc-text">replaceState()</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#localStorage-%E5%AF%B9%E8%B1%A1"><span class="toc-number">5.</span> <span class="toc-text">localStorage 对象</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AF%B9%E8%B1%A1%E4%BB%8B%E7%BB%8D"><span class="toc-number">5.1.</span> <span class="toc-text">对象介绍</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%B8%E7%94%A8%E5%B1%9E%E6%80%A7-2"><span class="toc-number">5.2.</span> <span class="toc-text">常用属性</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#length-1"><span class="toc-number">5.2.1.</span> <span class="toc-text">length</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%B8%E7%94%A8%E6%96%B9%E6%B3%95-3"><span class="toc-number">5.3.</span> <span class="toc-text">常用方法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#setItem"><span class="toc-number">5.3.1.</span> <span class="toc-text">setItem()</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#getItem"><span class="toc-number">5.3.2.</span> <span class="toc-text">getItem()</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#removeItem"><span class="toc-number">5.3.3.</span> <span class="toc-text">removeItem()</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#clear"><span class="toc-number">5.3.4.</span> <span class="toc-text">clear()</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#key"><span class="toc-number">5.3.5.</span> <span class="toc-text">key()</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#storage-%E4%BA%8B%E4%BB%B6"><span class="toc-number">5.4.</span> <span class="toc-text">storage 事件</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#sessionStorage-%E5%AF%B9%E8%B1%A1"><span class="toc-number">6.</span> <span class="toc-text">sessionStorage 对象</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1%E5%87%BD%E6%95%B0-setInterval"><span class="toc-number">7.</span> <span class="toc-text">定时任务函数  setInterval </span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BB%B6%E8%BF%9F%E6%89%A7%E8%A1%8C%E4%B8%80%E6%AC%A1%E4%BB%BB%E5%8A%A1%E5%87%BD%E6%95%B0-setTimeout"><span class="toc-number">8.</span> <span class="toc-text">延迟执行一次任务函数 setTimeout</span></a></li></ol>
+                </div>
+            
+            <hr />
+            <div itemprop="articleBody"><h2 id="Date-日期对象"><a href="#Date-日期对象" class="headerlink" title="Date 日期对象"></a><code>Date</code> 日期对象</h2><blockquote>
+<p><strong>Date 本质上是一个时间戳（timestamp）</strong></p>
+<p>表示从 <strong>UTC 1970年1月1日 00:00:00</strong> 到当前时间的毫秒数。</p>
+</blockquote>
+<h3 id="创建-Date-对象"><a href="#创建-Date-对象" class="headerlink" title="创建 Date 对象"></a>创建 <code>Date</code> 对象</h3><p> 获取当前时间：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> now = <span class="keyword">new</span> <span class="title class_">Date</span>();</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(now); <span class="comment">// Wed Mar 04 2026 21:05:14 GMT+0800 (中国标准时间)</span></span><br></pre></td></tr></table></figure>
+
+<p>传入时间戳：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> d = <span class="keyword">new</span> <span class="title class_">Date</span>(<span class="number">1700000000000</span>);</span><br></pre></td></tr></table></figure>
+
+<p>传入日期字符串：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> d = <span class="keyword">new</span> <span class="title class_">Date</span>(<span class="string">&quot;2026-03-04&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>标准日期格式：</p>
+<ul>
+<li><code>YYYY-MM-DD</code> 默认按 <strong>UTC</strong> 解析</li>
+<li><code>YYYY-MM-DDTHH:mm:s</code>s 按本地时间解析</li>
+<li><code>&quot;YYYY/MM/DD&quot;</code> （不是标准日期格式，但这种格式按本地时间解析）</li>
+</ul>
+</blockquote>
+<p>传入多个参数：</p>
+<p><strong>注意</strong>：月份从 <strong>0 开始</strong></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">new</span> <span class="title class_">Date</span>(year, month, day, hours, minutes, seconds, ms)</span><br><span class="line"><span class="keyword">new</span> <span class="title class_">Date</span>(<span class="number">2026</span>, <span class="number">2</span>, <span class="number">4</span>) <span class="comment">// 表示 2026年3月4日</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="获取方法"><a href="#获取方法" class="headerlink" title="获取方法"></a>获取方法</h3><table>
+<thead>
+<tr>
+<th>方法</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>getFullYear()</td>
+<td>年</td>
+</tr>
+<tr>
+<td>getMonth()</td>
+<td>月（0-11）</td>
+</tr>
+<tr>
+<td>getDate()</td>
+<td>日</td>
+</tr>
+<tr>
+<td>getDay()</td>
+<td>星期（0-6，0是周日）</td>
+</tr>
+<tr>
+<td>getHours()</td>
+<td>小时</td>
+</tr>
+<tr>
+<td>getMinutes()</td>
+<td>分</td>
+</tr>
+<tr>
+<td>getSeconds()</td>
+<td>秒</td>
+</tr>
+<tr>
+<td>getMilliseconds()</td>
+<td>毫秒</td>
+</tr>
+<tr>
+<td>getTime()</td>
+<td>时间戳</td>
+</tr>
+</tbody></table>
+<p>JS 提供查询 UTC 时间的方法：</p>
+<table>
+<thead>
+<tr>
+<th>本地时间</th>
+<th>UTC 时间</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>getFullYear()</td>
+<td>getUTCFullYear()</td>
+</tr>
+<tr>
+<td>getHours()</td>
+<td>getUTCHours()</td>
+</tr>
+<tr>
+<td><code>...</code></td>
+<td><code>...</code></td>
+</tr>
+</tbody></table>
+<h3 id="修改方法"><a href="#修改方法" class="headerlink" title="修改方法"></a>修改方法</h3><table>
+<thead>
+<tr>
+<th>方法</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>setFullYear()</td>
+<td>修改年份</td>
+</tr>
+<tr>
+<td>setMonth()</td>
+<td>修改月份</td>
+</tr>
+<tr>
+<td>setDate()</td>
+<td>修改日期</td>
+</tr>
+<tr>
+<td>setHours()</td>
+<td>修改小时</td>
+</tr>
+<tr>
+<td>setTime()</td>
+<td>修改时间戳</td>
+</tr>
+</tbody></table>
+<h3 id="日期自动进位"><a href="#日期自动进位" class="headerlink" title="日期自动进位"></a>日期自动进位</h3><p>JS Date 会自动进位，例如：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">new</span> <span class="title class_">Date</span>(<span class="number">2026</span>, <span class="number">1</span>, <span class="number">32</span>); <span class="comment">// 2026-03-04</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="时间戳"><a href="#时间戳" class="headerlink" title="时间戳"></a>时间戳</h3><p>获取时间戳：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="title class_">Date</span>.<span class="title function_">now</span>());        <span class="comment">// 推荐</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="keyword">new</span> <span class="title class_">Date</span>().<span class="title function_">getTime</span>());</span><br></pre></td></tr></table></figure>
+
+<p>计算毫秒时间差：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> start = <span class="title class_">Date</span>.<span class="title function_">now</span>();</span><br><span class="line"></span><br><span class="line"><span class="comment">// 一些操作</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> end = <span class="title class_">Date</span>.<span class="title function_">now</span>();</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(end - start); <span class="comment">// 毫秒差</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="格式化方法"><a href="#格式化方法" class="headerlink" title="格式化方法"></a>格式化方法</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;--------------------------------&quot;</span>)</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="keyword">new</span> <span class="title class_">Date</span>().<span class="title function_">toString</span>());       <span class="comment">// Wed Mar 04 2026 21:48:04 GMT+0800 (中国标准时间)</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;--------------------------------&quot;</span>)</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="keyword">new</span> <span class="title class_">Date</span>().<span class="title function_">toDateString</span>());   <span class="comment">// Wed Mar 04 2026</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;--------------------------------&quot;</span>)</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="keyword">new</span> <span class="title class_">Date</span>().<span class="title function_">toISOString</span>());    <span class="comment">// 2026-03-04T13:48:04.826Z</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;--------------------------------&quot;</span>)</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="keyword">new</span> <span class="title class_">Date</span>().<span class="title function_">toLocaleString</span>()); <span class="comment">// 2026/3/4 21:48:04</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;--------------------------------&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<h2 id="location-对象"><a href="#location-对象" class="headerlink" title="location 对象"></a><code>location</code> 对象</h2><blockquote>
+<p><code>location</code> 主要用于：</p>
+<ul>
+<li>获取当前页面 URL 各种信息</li>
+<li>页面跳转</li>
+<li>刷新页面</li>
+<li>修改 URL 参数</li>
+</ul>
+</blockquote>
+<h3 id="对象属性"><a href="#对象属性" class="headerlink" title="对象属性"></a>对象属性</h3><p>假设当前页面地址：</p>
+<figure class="highlight http"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://www.example.com:8080/path/page.html?id=10&amp;name=test#top</span><br></pre></td></tr></table></figure>
+
+<table>
+<thead>
+<tr>
+<th><code>location</code> 对象属性</th>
+<th>值</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>href</code></td>
+<td><a target="_blank" rel="noopener" href="https://www.example.com:8080/path/page.html?id=10&name=test#top">https://www.example.com:8080/path/page.html?id=10&amp;name=test#top</a></td>
+<td>完整URL</td>
+</tr>
+<tr>
+<td><code>protocol</code></td>
+<td>https:</td>
+<td>协议</td>
+</tr>
+<tr>
+<td><code>host</code></td>
+<td><a target="_blank" rel="noopener" href="http://www.example.com:8080/">www.example.com:8080</a></td>
+<td>主机+端口</td>
+</tr>
+<tr>
+<td><code>hostname</code></td>
+<td><a target="_blank" rel="noopener" href="http://www.example.com/">www.example.com</a></td>
+<td>主机名</td>
+</tr>
+<tr>
+<td><code>port</code></td>
+<td>8080</td>
+<td>端口</td>
+</tr>
+<tr>
+<td><code>pathname</code></td>
+<td>&#x2F;path&#x2F;page.html</td>
+<td>路径</td>
+</tr>
+<tr>
+<td><code>search</code></td>
+<td>?id&#x3D;10&amp;name&#x3D;test</td>
+<td>查询参数</td>
+</tr>
+<tr>
+<td><code>hash</code></td>
+<td>#top</td>
+<td>锚点</td>
+</tr>
+</tbody></table>
+<h3 id="常用方法"><a href="#常用方法" class="headerlink" title="常用方法"></a>常用方法</h3><h4 id="assign"><a href="#assign" class="headerlink" title="assign()"></a>assign()</h4><p>跳转到新页面（会产生历史记录）</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">location.<span class="title function_">assign</span>(<span class="string">&quot;https://www.baidu.com&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<h4 id="replace"><a href="#replace" class="headerlink" title="replace()"></a>replace()</h4><p>替换当前页面，用户 <strong>不能点击返回按钮回到原页面</strong>。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">location.<span class="title function_">replace</span>(<span class="string">&quot;/login&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<h4 id="reload"><a href="#reload" class="headerlink" title="reload()"></a>reload()</h4><p>刷新页面，等价于浏览器 <strong>F5</strong>。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">location.<span class="title function_">reload</span>();</span><br><span class="line"><span class="comment">// 入参为 true 表示强制刷新（忽略缓存）</span></span><br><span class="line">location.<span class="title function_">reload</span>(<span class="literal">true</span>);</span><br></pre></td></tr></table></figure>
+
+<h3 id="常用操作"><a href="#常用操作" class="headerlink" title="常用操作"></a>常用操作</h3><h4 id="页面跳转"><a href="#页面跳转" class="headerlink" title="页面跳转"></a>页面跳转</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">location.<span class="property">href</span> = <span class="string">&quot;/login&quot;</span>;</span><br><span class="line"><span class="comment">// 或</span></span><br><span class="line">location.<span class="title function_">assign</span>(<span class="string">&quot;/login&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<h4 id="获取URL参数"><a href="#获取URL参数" class="headerlink" title="获取URL参数"></a>获取URL参数</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> params = <span class="keyword">new</span> <span class="title class_">URLSearchParams</span>(location.<span class="property">search</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> id = params.<span class="title function_">get</span>(<span class="string">&quot;id&quot;</span>);</span><br><span class="line"></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(id);</span><br></pre></td></tr></table></figure>
+
+<h4 id="修改URL参数"><a href="#修改URL参数" class="headerlink" title="修改URL参数"></a>修改URL参数</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> params = <span class="keyword">new</span> <span class="title class_">URLSearchParams</span>(location.<span class="property">search</span>);</span><br><span class="line"></span><br><span class="line">params.<span class="title function_">set</span>(<span class="string">&quot;page&quot;</span>, <span class="number">2</span>);</span><br><span class="line"></span><br><span class="line">location.<span class="property">search</span> = params.<span class="title function_">toString</span>();</span><br></pre></td></tr></table></figure>
+
+<h4 id="页面刷新"><a href="#页面刷新" class="headerlink" title="页面刷新"></a>页面刷新</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">location.<span class="title function_">reload</span>();</span><br></pre></td></tr></table></figure>
+
+<h4 id="判断当前页面"><a href="#判断当前页面" class="headerlink" title="判断当前页面"></a>判断当前页面</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(location.<span class="property">pathname</span> === <span class="string">&quot;/login&quot;</span>)&#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;当前是登录页&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="navigator-对象"><a href="#navigator-对象" class="headerlink" title="navigator 对象"></a><code>navigator</code> 对象</h2><blockquote>
+<p><code>navigator</code> 对象用于 <strong>获取浏览器和设备的信息</strong>，例如：</p>
+<ul>
+<li>浏览器类型</li>
+<li>浏览器版本</li>
+<li>操作系统</li>
+<li>用户设备</li>
+<li>是否在线</li>
+<li>是否支持某些功能</li>
+<li>语言设置</li>
+</ul>
+</blockquote>
+<h3 id="常用属性"><a href="#常用属性" class="headerlink" title="常用属性"></a>常用属性</h3><h4 id="userAgent"><a href="#userAgent" class="headerlink" title="userAgent"></a>userAgent</h4><p>返回 <strong>浏览器标识字符串</strong>。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(navigator.<span class="property">userAgent</span>)</span><br></pre></td></tr></table></figure>
+
+<p>示例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36</span><br></pre></td></tr></table></figure>
+
+<p>用途：</p>
+<ul>
+<li>判断浏览器</li>
+<li>判断设备</li>
+<li>判断操作系统</li>
+</ul>
+<h4 id="language"><a href="#language" class="headerlink" title="language"></a>language</h4><p>返回 <strong>浏览器语言</strong>。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(navigator.<span class="property">language</span>) <span class="comment">// zh-CN</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="languages"><a href="#languages" class="headerlink" title="languages"></a>languages</h4><p>返回 <strong>用户支持的语言列表</strong>。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(navigator.<span class="property">languages</span>) <span class="comment">// [&quot;zh-CN&quot;,&quot;zh&quot;]</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="onLine"><a href="#onLine" class="headerlink" title="onLine"></a>onLine</h4><p>判断 <strong>浏览器是否在线</strong>。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(navigator.<span class="property">onLine</span>) <span class="comment">// true or false</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="cookieEnabled"><a href="#cookieEnabled" class="headerlink" title="cookieEnabled"></a>cookieEnabled</h4><p>判断 <strong>是否启用 cookie</strong>。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(navigator.<span class="property">cookieEnabled</span>) <span class="comment">// true or false</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="hardwareConcurrency"><a href="#hardwareConcurrency" class="headerlink" title="hardwareConcurrency"></a>hardwareConcurrency</h4><p>返回 <strong>CPU核心数（逻辑核心）</strong>。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(navigator.<span class="property">hardwareConcurrency</span>) <span class="comment">// 12（AMD 9600X）</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="deviceMemory"><a href="#deviceMemory" class="headerlink" title="deviceMemory"></a>deviceMemory</h4><p>返回 <strong>设备内存大小（GB）</strong>。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(navigator.<span class="property">deviceMemory</span>) <span class="comment">// 8</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="maxTouchPoints"><a href="#maxTouchPoints" class="headerlink" title="maxTouchPoints"></a>maxTouchPoints</h4><p>判断 <strong>是否支持触摸屏</strong>。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(navigator.<span class="property">maxTouchPoints</span>) <span class="comment">// 0 或 5 或 10</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="常用方法-1"><a href="#常用方法-1" class="headerlink" title="常用方法"></a>常用方法</h3><h4 id="vibrate"><a href="#vibrate" class="headerlink" title="vibrate()"></a>vibrate()</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">navigator.<span class="title function_">vibrate</span>(<span class="number">200</span>) <span class="comment">// 手机震动</span></span><br><span class="line">navigator.<span class="title function_">vibrate</span>([<span class="number">200</span>,<span class="number">100</span>,<span class="number">200</span>]) <span class="comment">// 震200ms 停100ms 震200ms</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="sendBeacon"><a href="#sendBeacon" class="headerlink" title="sendBeacon()"></a>sendBeacon()</h4><p>用于 <strong>页面关闭时调用接口传数据</strong>。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">navigator.<span class="title function_">sendBeacon</span>(<span class="string">&quot;/log&quot;</span>, <span class="title class_">JSON</span>.<span class="title function_">stringify</span>(&#123;</span><br><span class="line">    <span class="attr">event</span>: <span class="string">&quot;page_close&quot;</span></span><br><span class="line">&#125;))</span><br></pre></td></tr></table></figure>
+
+<h3 id="子对象"><a href="#子对象" class="headerlink" title="子对象"></a>子对象</h3><h4 id="geolocation"><a href="#geolocation" class="headerlink" title="geolocation"></a>geolocation</h4><p>用于 <strong>获取地理位置</strong>。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">navigator.<span class="property">geolocation</span>.<span class="title function_">getCurrentPosition</span>(</span><br><span class="line">    <span class="keyword">function</span>(<span class="params">position</span>) &#123;</span><br><span class="line">		<span class="comment">// 如果授权可以获取地理位置时执行该函数</span></span><br><span class="line">        <span class="keyword">const</span> lat = position.<span class="property">coords</span>.<span class="property">latitude</span>;</span><br><span class="line">        <span class="keyword">const</span> lng = position.<span class="property">coords</span>.<span class="property">longitude</span>;</span><br><span class="line"></span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;位置:&quot;</span>, lat, lng);</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="keyword">function</span>(<span class="params">error</span>) &#123;</span><br><span class="line">		<span class="comment">// 如果拒绝获取地理位置时执行该函数</span></span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;定位失败:&quot;</span>, error.<span class="property">message</span>);</span><br><span class="line">    &#125;</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+
+<h4 id="clipboard"><a href="#clipboard" class="headerlink" title="clipboard"></a>clipboard</h4><p>用于 <strong>操作剪贴板</strong>。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">navigator.<span class="property">clipboard</span>.<span class="title function_">writeText</span>(<span class="string">&quot;text&quot;</span>) <span class="comment">// 往剪贴板写入内容</span></span><br><span class="line">navigator.<span class="property">clipboard</span>.<span class="title function_">readText</span>()        <span class="comment">// 读取剪贴板内容</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="connection"><a href="#connection" class="headerlink" title="connection"></a>connection</h4><p>获取 <strong>网络信息</strong>。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(navigator.<span class="property">connection</span>) <span class="comment">// 获取网络信息</span></span><br></pre></td></tr></table></figure>
+
+<table>
+<thead>
+<tr>
+<th>connection 属性</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>effectiveType</td>
+<td>网络类型</td>
+</tr>
+<tr>
+<td>downlink</td>
+<td>下载速度</td>
+</tr>
+<tr>
+<td>rtt</td>
+<td>延迟</td>
+</tr>
+</tbody></table>
+<h2 id="history-对象"><a href="#history-对象" class="headerlink" title="history 对象"></a><code>history</code> 对象</h2><p><code>history</code> 用来 <strong>操作浏览器的历史记录</strong>。</p>
+<p>它允许 JavaScript：</p>
+<ul>
+<li>前进、后退页面</li>
+<li>跳转到历史记录中的某个位置</li>
+<li>修改 URL（不刷新页面）</li>
+<li>在 <strong>SPA 单页应用</strong> 中实现前端路由</li>
+</ul>
+<blockquote>
+<p>浏览器会维护一个 <strong>历史记录栈（History Stack）</strong>：</p>
+<p>例如用户访问顺序：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">A页面 → B页面 → C页面 → D页面</span><br></pre></td></tr></table></figure>
+
+<p>历史栈：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[A, B, C, D]</span><br><span class="line">          ↑</span><br><span class="line">        当前页</span><br></pre></td></tr></table></figure>
+
+<p><code>history</code> 就是操作这个栈。</p>
+</blockquote>
+<h3 id="常用属性-1"><a href="#常用属性-1" class="headerlink" title="常用属性"></a>常用属性</h3><h4 id="length"><a href="#length" class="headerlink" title="length"></a>length</h4><p>返回 <strong>历史记录数量</strong>。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(history.<span class="property">length</span>)</span><br></pre></td></tr></table></figure>
+
+<p>注意：</p>
+<ul>
+<li>包含当前页面</li>
+<li>无法访问具体 URL（安全限制）</li>
+</ul>
+<h3 id="常用方法-2"><a href="#常用方法-2" class="headerlink" title="常用方法"></a>常用方法</h3><h4 id="back"><a href="#back" class="headerlink" title="back()"></a>back()</h4><p>返回上一页。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">history.<span class="title function_">back</span>()</span><br></pre></td></tr></table></figure>
+
+<h4 id="forward"><a href="#forward" class="headerlink" title="forward()"></a>forward()</h4><p>前进到下一页。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">history.forward()</span><br></pre></td></tr></table></figure>
+
+<h4 id="go"><a href="#go" class="headerlink" title="go()"></a>go()</h4><p>跳转到历史记录中指定的位置。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">history.<span class="title function_">go</span>(n)</span><br></pre></td></tr></table></figure>
+
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>-1</td>
+<td>返回上一页</td>
+</tr>
+<tr>
+<td>1</td>
+<td>前进一页</td>
+</tr>
+<tr>
+<td>-2</td>
+<td>返回两页</td>
+</tr>
+<tr>
+<td>0</td>
+<td>刷新页面</td>
+</tr>
+</tbody></table>
+<h4 id="pushState"><a href="#pushState" class="headerlink" title="pushState()"></a>pushState()</h4><p>向浏览器历史记录栈中新增一条记录，同时修改 URL，但不会刷新页面</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">history.<span class="title function_">pushState</span>(state, title, url)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">history.<span class="title function_">pushState</span>(&#123;<span class="attr">page</span>: <span class="number">1</span>&#125;, <span class="string">&quot;&quot;</span>, <span class="string">&quot;/page1&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="variable language_">window</span>.<span class="title function_">addEventListener</span>(<span class="string">&quot;popstate&quot;</span>, <span class="keyword">function</span>(<span class="params">e</span>) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(e.<span class="property">state</span>)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>state</td>
+<td>状态对象</td>
+</tr>
+<tr>
+<td>title</td>
+<td>页面标题（基本不用）</td>
+</tr>
+<tr>
+<td>url</td>
+<td>新URL</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><code>history.pushState()</code> 和 <code>history.replaceState()</code> 的 <strong>第一个参数 <code>state</code></strong> 用来：</p>
+<p><strong>给当前历史记录保存一个“状态对象”</strong></p>
+<p>当用户 <strong>前进 &#x2F; 后退</strong> 时，这个状态对象会通过 <code>popstate</code> 事件返回，就能拿到之前保存的数据。</p>
+</blockquote>
+<blockquote>
+<p>pushState() 的行为是：</p>
+<p>1 修改URL<br>2 新增历史记录<br>3 不刷新页面</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">history.<span class="title function_">pushState</span>(&#123;&#125;, <span class="string">&quot;&quot;</span>, <span class="string">&quot;/D&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>历史记录：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">A → B → C → D</span><br><span class="line">           ↑</span><br></pre></td></tr></table></figure>
+
+<p>但是 <strong>页面内容仍然是 C</strong>。</p>
+<p>浏览器只是 <strong>改变了 URL</strong>。</p>
+</blockquote>
+<h4 id="replaceState"><a href="#replaceState" class="headerlink" title="replaceState()"></a>replaceState()</h4><p>替换当前历史记录，而不是新增记录，但不会刷新页面。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">history.<span class="title function_">replaceState</span>(state, title, url)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">history.<span class="title function_">replaceState</span>(&#123;<span class="attr">page</span>:<span class="string">&quot;login&quot;</span>&#125;, <span class="string">&quot;&quot;</span>, <span class="string">&quot;/login&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<h2 id="localStorage-对象"><a href="#localStorage-对象" class="headerlink" title="localStorage 对象"></a><code>localStorage</code> 对象</h2><h3 id="对象介绍"><a href="#对象介绍" class="headerlink" title="对象介绍"></a>对象介绍</h3><p><code>localStorage</code> 对象用来在浏览器中<strong>永久保存键值对数据</strong>，是前端开发中非常常用的一种 <strong>客户端存储方式</strong>。</p>
+<p>特点是：<strong>简单、容量比 cookie 大、不会随 HTTP 请求发送到服务器</strong>。</p>
+<p>作用：</p>
+<ul>
+<li>在浏览器本地存储数据</li>
+<li>数据以 <strong>key-value</strong> 形式保存</li>
+<li><strong>数据不会过期</strong>（除非手动删除）</li>
+</ul>
+<blockquote>
+<p><code>localStorage</code> 的特点：</p>
+<table>
+<thead>
+<tr>
+<th>特性</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>存储类型</td>
+<td>键值对</td>
+</tr>
+<tr>
+<td>存储位置</td>
+<td>浏览器本地</td>
+</tr>
+<tr>
+<td>生命周期</td>
+<td>永久（除非删除）</td>
+</tr>
+<tr>
+<td>容量</td>
+<td>约 5MB</td>
+</tr>
+<tr>
+<td>是否自动发送到服务器</td>
+<td>不会</td>
+</tr>
+<tr>
+<td>同源限制</td>
+<td>只能同协议 + 域名 + 端口访问</td>
+</tr>
+</tbody></table>
+<p>同源限制说明：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">https://example.com</span><br><span class="line">http://example.com</span><br></pre></td></tr></table></figure>
+
+<p>这两个 <strong>localStorage 不共享</strong>。</p>
+</blockquote>
+<h3 id="常用属性-2"><a href="#常用属性-2" class="headerlink" title="常用属性"></a>常用属性</h3><h4 id="length-1"><a href="#length-1" class="headerlink" title="length"></a>length</h4><p>获取存储数据数量。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable language_">localStorage</span>.<span class="property">length</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="常用方法-3"><a href="#常用方法-3" class="headerlink" title="常用方法"></a>常用方法</h3><table>
+<thead>
+<tr>
+<th>方法</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>setItem()</td>
+<td>保存数据</td>
+</tr>
+<tr>
+<td>getItem()</td>
+<td>读取数据</td>
+</tr>
+<tr>
+<td>removeItem()</td>
+<td>删除数据</td>
+</tr>
+<tr>
+<td>clear()</td>
+<td>清空所有数据</td>
+</tr>
+<tr>
+<td>key()</td>
+<td>获取指定索引的 key</td>
+</tr>
+</tbody></table>
+<h4 id="setItem"><a href="#setItem" class="headerlink" title="setItem()"></a>setItem()</h4><p>保存数据，但只能保存字符串。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable language_">localStorage</span>.<span class="title function_">setItem</span>(key, value)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable language_">localStorage</span>.<span class="title function_">setItem</span>(<span class="string">&quot;username&quot;</span>, <span class="string">&quot;Tom&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<h4 id="getItem"><a href="#getItem" class="headerlink" title="getItem()"></a>getItem()</h4><p>根据 key 获取数据，如果 key 不存在返回 null。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable language_">localStorage</span>.<span class="title function_">getItem</span>(key)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> name = <span class="variable language_">localStorage</span>.<span class="title function_">getItem</span>(<span class="string">&quot;username&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(name)</span><br></pre></td></tr></table></figure>
+
+<h4 id="removeItem"><a href="#removeItem" class="headerlink" title="removeItem()"></a>removeItem()</h4><p>根据 key 删除数据。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable language_">localStorage</span>.<span class="title function_">removeItem</span>(key)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable language_">localStorage</span>.<span class="title function_">removeItem</span>(<span class="string">&quot;username&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<h4 id="clear"><a href="#clear" class="headerlink" title="clear()"></a>clear()</h4><p>清空所有数据。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable language_">localStorage</span>.<span class="title function_">clear</span>()</span><br></pre></td></tr></table></figure>
+
+<h4 id="key"><a href="#key" class="headerlink" title="key()"></a>key()</h4><p>获取索引对应的 key 名称。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable language_">localStorage</span>.<span class="title function_">key</span>(index)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable language_">localStorage</span>.<span class="title function_">setItem</span>(<span class="string">&quot;name&quot;</span>, <span class="string">&quot;Tom&quot;</span>)</span><br><span class="line"><span class="variable language_">localStorage</span>.<span class="title function_">setItem</span>(<span class="string">&quot;age&quot;</span>, <span class="string">&quot;20&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="variable language_">localStorage</span>.<span class="title function_">key</span>(<span class="number">0</span>)) <span class="comment">// name</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="storage-事件"><a href="#storage-事件" class="headerlink" title="storage 事件"></a><code>storage</code> 事件</h3><p>当 <strong>一个页面修改 localStorage 时，其他页面会收到 storage 事件</strong>。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable language_">window</span>.<span class="title function_">addEventListener</span>(<span class="string">&quot;storage&quot;</span>, <span class="keyword">function</span>(<span class="params">e</span>)&#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(e.<span class="property">key</span>)</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(e.<span class="property">newValue</span>)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<table>
+<thead>
+<tr>
+<th>属性</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>key</td>
+<td>修改的 key</td>
+</tr>
+<tr>
+<td>oldValue</td>
+<td>旧值</td>
+</tr>
+<tr>
+<td>newValue</td>
+<td>新值</td>
+</tr>
+<tr>
+<td>url</td>
+<td>触发修改 localStorage 页面的 url</td>
+</tr>
+<tr>
+<td>storageArea</td>
+<td>localStorage 对象</td>
+</tr>
+</tbody></table>
+<h2 id="sessionStorage-对象"><a href="#sessionStorage-对象" class="headerlink" title="sessionStorage 对象"></a><code>sessionStorage</code> 对象</h2><p><code>sessionStorage</code> 用于在 <strong>浏览器会话（session）期间存储数据</strong>。它的用法和 <code>localStorage</code> 很像，但 <strong>生命周期更短</strong>。</p>
+<p>特点：</p>
+<ol>
+<li><strong>按会话存储</strong><ul>
+<li>数据只在 <strong>当前浏览器标签页</strong> 有效。</li>
+<li><strong>关闭标签页或窗口后数据就会被清除</strong>。</li>
+</ul>
+</li>
+<li><strong>同源限制</strong><ul>
+<li>只能在 <strong>同协议 + 同域名 + 同端口</strong> 下访问。</li>
+</ul>
+</li>
+<li><strong>每个标签页独立</strong><ul>
+<li>即使是同一个网站，不同标签页的 <code>sessionStorage</code> 也是独立的。</li>
+</ul>
+</li>
+<li><strong>存储格式</strong><ul>
+<li>只能存储 <strong>字符串（string）</strong>。</li>
+<li>如果要存对象，需要使用 <code>JSON.stringify()</code>。</li>
+</ul>
+</li>
+<li><strong>存储容量</strong><ul>
+<li>一般 <strong>5MB 左右</strong>（不同浏览器略有差异）。</li>
+</ul>
+</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>setItem()</td>
+<td>保存数据</td>
+</tr>
+<tr>
+<td>getItem()</td>
+<td>读取数据</td>
+</tr>
+<tr>
+<td>removeItem()</td>
+<td>删除数据</td>
+</tr>
+<tr>
+<td>clear()</td>
+<td>清空所有数据</td>
+</tr>
+<tr>
+<td>key()</td>
+<td>获取指定索引的 key</td>
+</tr>
+</tbody></table>
+<h2 id="定时任务函数-setInterval"><a href="#定时任务函数-setInterval" class="headerlink" title="定时任务函数  setInterval "></a>定时任务函数  <code>setInterval </code></h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">setInterval</span>(函数, 循环执行时间-毫秒)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">setInterval</span>(<span class="function">()=&gt;</span> <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;hello&#x27;</span>), <span class="number">1000</span>)</span><br></pre></td></tr></table></figure>
+
+<h2 id="延迟执行一次任务函数-setTimeout"><a href="#延迟执行一次任务函数-setTimeout" class="headerlink" title="延迟执行一次任务函数 setTimeout"></a>延迟执行一次任务函数 <code>setTimeout</code></h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">setTimeout</span>(函数, 循环执行时间-毫秒)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 延迟函数返回的是一个正整数，表示延迟函数的编号</span></span><br><span class="line"><span class="keyword">let</span> timerId = <span class="built_in">setTimeout</span>(<span class="function">()=&gt;</span> <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;hello&#x27;</span>), <span class="number">1000</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 其他 js 代码...</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 关闭延迟函数</span></span><br><span class="line"><span class="built_in">clearTimeout</span>(timerId)</span><br></pre></td></tr></table></figure>
+
+</div>
+        </div>
+        
+        <footer class="kratos-entry-footer clearfix">
+            
+            <div class="footer-tag clearfix">
+                <div class="pull-left">
+                <i class="fa fa-tags"></i>
+                    <a class="tag-none-link" href="/blog/tags/CSS/" rel="tag">CSS</a>, <a class="tag-none-link" href="/blog/tags/HTML/" rel="tag">HTML</a>, <a class="tag-none-link" href="/blog/tags/JavaScript/" rel="tag">JavaScript</a>
+                </div>
+                <div class="pull-date">
+                    <time datetime="2026-03-08T13:13:58.784Z" itemprop="dateModified">最后编辑：2026-03-08</time>
+                </div>
+            </div>
+        </footer>
+    </div>
+    
+        <nav class="navigation post-navigation clearfix" role="navigation">
+            
+            <div class="nav-previous clearfix">
+                <a title=" 【JavaScript】事件监听" href="/blog/2026/03/01/HTML前端三大件/33.JS事件监听/">&lt; 上一篇</a>
+            </div>
+            
+            
+            <div class="nav-next clearfix">
+                <a title=" 【JavaScript】JS 对象基础语法" href="/blog/2026/03/07/HTML前端三大件/35.JavaScript对象基础语法/">下一篇 &gt;</a>
+            </div>
+            
+        </nav>
+    
+    
+</article>
+
+        
+
+            </section>
+
+        
+
+                
+            
+
+<section id="kratos-widget-area" class="col-md-4 hidden-xs hidden-sm">
+    <!-- 文章和页面根据splitter来分割，没有的话就从头开始设置为sticky -->
+    
+    
+                <aside id="krw-about" class="widget widget-kratos-about clearfix">
+    <div class="photo-background"></div>
+    <div class="photo-wrapper clearfix">
+        <div class="photo-wrapper-tip text-center">
+            <img class="about-photo" src="/blog/images/avatar.webp" loading="lazy" decoding="auto" />
+        </div>
+    </div>
+    <div class="textwidget">
+        <p class="text-center">极简主义</p>
+    </div>
+    <div class="site-meta">
+        <a class="meta-item" href="/blog/archives/">
+            <span class="title">
+                文章
+            </span>
+            <span class="count">
+                94
+            </span>
+        </a>
+        <a class="meta-item" href="/blog/categories/">
+            <span class="title">
+                分类
+            </span>
+            <span class="count">
+                11
+            </span>
+        </a>
+        <a class="meta-item" href="/blog/tags/">
+            <span class="title">
+                标签
+            </span>
+            <span class="count">
+                33
+            </span>
+        </a>
+    </div>
+</aside>
+            
+                    <div class="sticky-area">
+                
+                    <aside id="krw-toc" class="widget widget-kratos-toc clearfix toc-div-class" >
+    <div class="photo-background"></div>
+    <h4 class="widget-title no-after">
+        <i class="fa fa-compass"></i>
+        文章目录
+        <span class="toc-progress-bar" role="progressbar" aria-label="阅读进度："></span>
+    </h4>
+    <div class="textwidget">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Date-%E6%97%A5%E6%9C%9F%E5%AF%B9%E8%B1%A1"><span class="toc-text">Date 日期对象</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA-Date-%E5%AF%B9%E8%B1%A1"><span class="toc-text">创建 Date 对象</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%8E%B7%E5%8F%96%E6%96%B9%E6%B3%95"><span class="toc-text">获取方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BF%AE%E6%94%B9%E6%96%B9%E6%B3%95"><span class="toc-text">修改方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%97%A5%E6%9C%9F%E8%87%AA%E5%8A%A8%E8%BF%9B%E4%BD%8D"><span class="toc-text">日期自动进位</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%97%B6%E9%97%B4%E6%88%B3"><span class="toc-text">时间戳</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A0%BC%E5%BC%8F%E5%8C%96%E6%96%B9%E6%B3%95"><span class="toc-text">格式化方法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#location-%E5%AF%B9%E8%B1%A1"><span class="toc-text">location 对象</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AF%B9%E8%B1%A1%E5%B1%9E%E6%80%A7"><span class="toc-text">对象属性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%B8%E7%94%A8%E6%96%B9%E6%B3%95"><span class="toc-text">常用方法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#assign"><span class="toc-text">assign()</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#replace"><span class="toc-text">replace()</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#reload"><span class="toc-text">reload()</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%B8%E7%94%A8%E6%93%8D%E4%BD%9C"><span class="toc-text">常用操作</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%A1%B5%E9%9D%A2%E8%B7%B3%E8%BD%AC"><span class="toc-text">页面跳转</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%8E%B7%E5%8F%96URL%E5%8F%82%E6%95%B0"><span class="toc-text">获取URL参数</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BF%AE%E6%94%B9URL%E5%8F%82%E6%95%B0"><span class="toc-text">修改URL参数</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%A1%B5%E9%9D%A2%E5%88%B7%E6%96%B0"><span class="toc-text">页面刷新</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%A4%E6%96%AD%E5%BD%93%E5%89%8D%E9%A1%B5%E9%9D%A2"><span class="toc-text">判断当前页面</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#navigator-%E5%AF%B9%E8%B1%A1"><span class="toc-text">navigator 对象</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%B8%E7%94%A8%E5%B1%9E%E6%80%A7"><span class="toc-text">常用属性</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#userAgent"><span class="toc-text">userAgent</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#language"><span class="toc-text">language</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#languages"><span class="toc-text">languages</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#onLine"><span class="toc-text">onLine</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#cookieEnabled"><span class="toc-text">cookieEnabled</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#hardwareConcurrency"><span class="toc-text">hardwareConcurrency</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#deviceMemory"><span class="toc-text">deviceMemory</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#maxTouchPoints"><span class="toc-text">maxTouchPoints</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%B8%E7%94%A8%E6%96%B9%E6%B3%95-1"><span class="toc-text">常用方法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#vibrate"><span class="toc-text">vibrate()</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#sendBeacon"><span class="toc-text">sendBeacon()</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AD%90%E5%AF%B9%E8%B1%A1"><span class="toc-text">子对象</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#geolocation"><span class="toc-text">geolocation</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#clipboard"><span class="toc-text">clipboard</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#connection"><span class="toc-text">connection</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#history-%E5%AF%B9%E8%B1%A1"><span class="toc-text">history 对象</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%B8%E7%94%A8%E5%B1%9E%E6%80%A7-1"><span class="toc-text">常用属性</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#length"><span class="toc-text">length</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%B8%E7%94%A8%E6%96%B9%E6%B3%95-2"><span class="toc-text">常用方法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#back"><span class="toc-text">back()</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#forward"><span class="toc-text">forward()</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#go"><span class="toc-text">go()</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#pushState"><span class="toc-text">pushState()</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#replaceState"><span class="toc-text">replaceState()</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#localStorage-%E5%AF%B9%E8%B1%A1"><span class="toc-text">localStorage 对象</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AF%B9%E8%B1%A1%E4%BB%8B%E7%BB%8D"><span class="toc-text">对象介绍</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%B8%E7%94%A8%E5%B1%9E%E6%80%A7-2"><span class="toc-text">常用属性</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#length-1"><span class="toc-text">length</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%B8%E7%94%A8%E6%96%B9%E6%B3%95-3"><span class="toc-text">常用方法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#setItem"><span class="toc-text">setItem()</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#getItem"><span class="toc-text">getItem()</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#removeItem"><span class="toc-text">removeItem()</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#clear"><span class="toc-text">clear()</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#key"><span class="toc-text">key()</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#storage-%E4%BA%8B%E4%BB%B6"><span class="toc-text">storage 事件</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#sessionStorage-%E5%AF%B9%E8%B1%A1"><span class="toc-text">sessionStorage 对象</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1%E5%87%BD%E6%95%B0-setInterval"><span class="toc-text">定时任务函数  setInterval </span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BB%B6%E8%BF%9F%E6%89%A7%E8%A1%8C%E4%B8%80%E6%AC%A1%E4%BB%BB%E5%8A%A1%E5%87%BD%E6%95%B0-setTimeout"><span class="toc-text">延迟执行一次任务函数 setTimeout</span></a></li></ol>
+    </div>
+</aside>
+                
+                
+  <aside id="krw-tags" class="widget widget-kratos-tags clearfix">
+    <h4 class="widget-title"><i class="fa fa-tags"></i>标签聚合</h4>
+      <div class="tag-clouds">
+        <a href="/blog/tags/CORS/" style="font-size: 0.8em;">CORS</a> <a href="/blog/tags/CSS/" style="font-size: 0.8em;">CSS</a> <a href="/blog/tags/Docker/" style="font-size: 0.8em;">Docker</a> <a href="/blog/tags/Dubbo/" style="font-size: 0.8em;">Dubbo</a> <a href="/blog/tags/ELK/" style="font-size: 0.8em;">ELK</a> <a href="/blog/tags/Elasticsearch/" style="font-size: 0.8em;">Elasticsearch</a> <a href="/blog/tags/Eureka/" style="font-size: 0.8em;">Eureka</a> <a href="/blog/tags/Feign/" style="font-size: 0.8em;">Feign</a> <a href="/blog/tags/Gateway/" style="font-size: 0.8em;">Gateway</a> <a href="/blog/tags/HTML/" style="font-size: 0.8em;">HTML</a> <a href="/blog/tags/Idea/" style="font-size: 0.8em;">Idea</a> <a href="/blog/tags/Java/" style="font-size: 0.8em;">Java</a> <a href="/blog/tags/JavaScript/" style="font-size: 0.8em;">JavaScript</a> <a href="/blog/tags/JavaWeb/" style="font-size: 0.8em;">JavaWeb</a> <a href="/blog/tags/K8s/" style="font-size: 0.8em;">K8s</a> <a href="/blog/tags/Linux/" style="font-size: 0.8em;">Linux</a> <a href="/blog/tags/Maven/" style="font-size: 0.8em;">Maven</a> <a href="/blog/tags/MySQL/" style="font-size: 0.8em;">MySQL</a>
+      </div>
+  </aside>
+
+            
+                
+  <aside id="krw-posts" class="widget widget-kratos-posts">
+  <h4 class="widget-title"><i class="fa fa-file"></i>最新文章</h4>
+  <div class="tab-content">
+      <ul class="list-group">
+        
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/03/08/HTML%E5%89%8D%E7%AB%AF%E4%B8%89%E5%A4%A7%E4%BB%B6/36.Ajax%E4%BD%BF%E7%94%A8/"><i class="fa  fa-book"></i> 【JavaScript】Ajax 的使用</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/03/08/01%E5%AD%A6%E4%B9%A0%E8%B7%AF%E7%BA%BF/10.%E5%89%8D%E7%AB%AF%E5%AD%A6%E4%B9%A0%E8%B7%AF%E7%BA%BF/"><i class="fa  fa-book"></i> 【学习路线】前端学习路线</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/03/07/HTML%E5%89%8D%E7%AB%AF%E4%B8%89%E5%A4%A7%E4%BB%B6/35.JavaScript%E5%AF%B9%E8%B1%A1%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95/"><i class="fa  fa-book"></i> 【JavaScript】JS 对象基础语法</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/03/04/HTML%E5%89%8D%E7%AB%AF%E4%B8%89%E5%A4%A7%E4%BB%B6/34.JS%E8%87%AA%E5%B8%A6%E7%9A%84%E5%AF%B9%E8%B1%A1%E5%92%8C%E5%87%BD%E6%95%B0/"><i class="fa  fa-book"></i> 【JavaScript】JS 自带的对象和函数</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/03/01/HTML%E5%89%8D%E7%AB%AF%E4%B8%89%E5%A4%A7%E4%BB%B6/33.JS%E4%BA%8B%E4%BB%B6%E7%9B%91%E5%90%AC/"><i class="fa  fa-book"></i> 【JavaScript】事件监听</a>
+            
+          
+        
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+      </ul>
+  </div>
+  </aside>
+
+            
+    </div>
+</section>
+        
+        </div>
+    </div>
+</div>
+<footer>
+    <div id="footer"  >
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3 footer-list text-center">
+                    <ul class="kratos-social-icons">
+                        <!-- Keep for compatibility -->
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <!-- New links -->
+                        
+                    </ul>
+                    <ul class="kratos-copyright">
+                        <div>
+                            <li>&copy; 2026 溪岚花的博客 版权所有.</li>
+                            <li>本站已运行<span id="span_dt">Loading...</span></li>
+                        </div>
+                        <div>
+                            <li>Theme <a href="https://github.com/Candinya/Kratos-Rebirth" target="_blank">Kratos:Rebirth</a></li>
+                            <li>Site built with&nbsp;<i class="fa fa-heart throb" style="color:#d43f57"></i>&nbsp;by 林家隆.</li>
+                        </div>
+                        <div>
+                            <li>Powered by <a href="https://hexo.io" target="_blank" rel="nofollow">Hexo</a></li>
+                            <li>Hosted on <a href="https://gitee.com/" target="_blank">Gitee Pages</a></li>
+                        </div>
+                        <div>
+                            
+                            
+                        </div>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="kr-tool text-center">
+            <div class="tool">
+                
+                    <div class="box search-box">
+                        <a href="/blog/search/">
+                            <span class="fa fa-search"></span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="box theme-box" id="darkmode-switch">
+                        <span class="fa fa-adjust"></span>
+                    </div>
+                
+                
+                
+            </div>
+            <div class="box gotop-box">
+                <span class="fa fa-chevron-up"></span>
+            </div>
+        </div>
+    </div>
+</footer>
+</div>
+</div>
+
+        <script defer src="/blog/vendors/bootstrap@3.3.4/dist/js/bootstrap.min.js"></script>
+<script defer src="/blog/vendors/nprogress@0.2.0/nprogress.js"></script>
+<script>
+    if (!window.kr) {
+        window.kr = {};
+    }
+    window.kr.notMobile = (!(navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i)));
+    window.kr.siteRoot = "/blog/";
+</script>
+
+
+
+
+
+    <script defer src="/blog/vendors/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+
+<script defer src="/blog/js/kratosr.min.js"></script>
+<script defer src="/blog/js/pjax.min.js"></script>
+
+
+
+<!-- Extra support for third-party plguins  -->
+
+
+    </body>
+</html>
