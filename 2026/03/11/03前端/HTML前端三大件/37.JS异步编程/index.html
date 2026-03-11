@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+  <!-- 元数据 -->
+  <meta charset="utf-8">
+  <link rel="icon" href="/blog/images/logo.png">
+  
+  <title>【JavaScript】异步编程 | 溪岚花的博客</title>
+  
+  <meta name="author" content="林家隆" />
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="robots" content="index,follow" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <meta name="format-detection" content="telphone=no, email=no" />
+  
+    <meta name="keywords" content="CSS, HTML, JavaScript" />
+  
+  <meta name="description" content="Promise 的介绍Promise 表示一个 未来才会完成的操作。 一个“承诺”：未来会返回 成功结果 或 失败原因。  Promise 有 三种状态：    状态 含义    pending 进行中   fulfilled 已成功   rejected 已失败    Promise 的使用创建 Promise 对象通过创建 Promise 对象进行异步操作： 123new Promise((r">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【JavaScript】异步编程">
+<meta property="og:url" content="https://lin316.gitee.io/blog/2026/03/11/03%E5%89%8D%E7%AB%AF/HTML%E5%89%8D%E7%AB%AF%E4%B8%89%E5%A4%A7%E4%BB%B6/37.JS%E5%BC%82%E6%AD%A5%E7%BC%96%E7%A8%8B/index.html">
+<meta property="og:site_name" content="溪岚花的博客">
+<meta property="og:description" content="Promise 的介绍Promise 表示一个 未来才会完成的操作。 一个“承诺”：未来会返回 成功结果 或 失败原因。  Promise 有 三种状态：    状态 含义    pending 进行中   fulfilled 已成功   rejected 已失败    Promise 的使用创建 Promise 对象通过创建 Promise 对象进行异步操作： 123new Promise((r">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://lin316.gitee.io/blog/blog/images/logo.png">
+<meta property="article:published_time" content="2026-03-11T13:00:00.000Z">
+<meta property="article:modified_time" content="2026-03-11T15:36:16.490Z">
+<meta property="article:author" content="林家隆">
+<meta property="article:tag" content="HTML">
+<meta property="article:tag" content="CSS">
+<meta property="article:tag" content="JavaScript">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://lin316.gitee.io/blog/blog/images/logo.png">
+  
+  <!-- 站点验证相关 -->
+  
+    
+    
+    
+  
+  <!-- 样式表文件 -->
+  <link rel="stylesheet" id="kratos-css" href="/blog/css/kratosr.min.css" media="all"></script>
+  
+    <link rel="stylesheet" id="darkmode-css" href="/blog/css/kr-color-dark.min.css" media="(prefers-color-scheme: dark)"></script>
+    <script src="/blog/js/kr-dark.min.js"></script>
+  
+  
+    <link rel="stylesheet" id="highlight-css" href="/blog/css/highlight/night-eighties.min.css" media="all"></script>
+  
+  <link rel="stylesheet" id="fontawe-css" href="/blog/vendors/font-awesome@4.7.0/css/font-awesome.min.css" media="all"></script>
+  <link rel="stylesheet" id="nprogress-css" href="/blog/vendors/nprogress@0.2.0/nprogress.css" media="all"></script>
+  
+  
+  
+    <link rel="stylesheet" href="/blog/vendors/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css"></script>
+  
+  <!-- 不得不预先加载的一些JS文件 -->
+  <script src="/blog/vendors/jquery@3.6.0/dist/jquery.min.js"></script>
+  
+  
+  <style>
+    
+    
+  </style>
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+    <body class="custom-background">
+        <div id="kratos-wrapper">
+    <div id="kratos-page">
+        <div id="kratos-header">
+            <header id="kratos-desktop-topnav" class="kratos-topnav">
+                <div class="container">
+                    <div class="nav-header">
+                        <nav id="kratos-menu-wrap">
+                            <ul id="kratos-primary-menu" class="sf-menu">
+                                
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/">
+                                            
+                                                
+                                                    <i class="fa fa-home"></i>
+                                                
+                                                首页
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/archives/">
+                                            
+                                                
+                                                    <i class="fa fa-file"></i>
+                                                
+                                                归档
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/tags/">
+                                            
+                                                
+                                                    <i class="fa fa-tag"></i>
+                                                
+                                                标签
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/categories/">
+                                            
+                                                
+                                                    <i class="fa fa-folder"></i>
+                                                
+                                                目录
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/search/">
+                                            
+                                                
+                                                    <i class="fa fa-search"></i>
+                                                
+                                                搜索
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </header>
+            <header id="kratos-mobile-topnav" class="kratos-topnav">
+                <div class="container">
+                    <div class="color-logo"><a href="/blog/">溪岚花的博客</a></div>
+                    <div class="nav-toggle">
+                        <a class="kratos-nav-toggle js-kratos-nav-toggle">
+                            <i></i>
+                        </a>
+                    </div>
+                </div>
+            </header>
+        </div>
+        <div class="kratos-start kratos-hero-2">
+            <!-- <div class="kratos-overlay"></div> -->
+            <div class="kratos-cover kratos-cover-2 text-center">
+                <div class="desc desc2 animate-box">
+                    <a href="/blog/">
+                        <h2 style="opacity: 0.2;">溪岚花的博客</h2> <br />
+                        <span></span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div id="kratos-blog-post">
+            <div class="container">
+                <div id="main" class="row">
+                    
+
+        
+
+            <section class="col-md-8">
+
+        
+
+            <article itemscope itemtype="https://schema.org/Article">
+    
+    <link itemprop="mainEntityOfPage" href="https://lin316.gitee.io/blog/2026/03/11/03%E5%89%8D%E7%AB%AF/HTML%E5%89%8D%E7%AB%AF%E4%B8%89%E5%A4%A7%E4%BB%B6/37.JS%E5%BC%82%E6%AD%A5%E7%BC%96%E7%A8%8B/">
+    <div class="kratos-hentry kratos-post-inner clearfix">
+        <header class="kratos-entry-header">
+            
+                <h1 class="kratos-entry-title text-center" itemprop="name headline">【JavaScript】异步编程</h1>
+            
+            
+            <ul class="kratos-post-meta text-center">
+                <li><time datetime="2026-03-11T13:00:00.000Z" itemprop="datePublished"><i class="fa fa-calendar"></i> 2026-03-11</time></li>
+                <li itemprop="author" itemscope itemtype="https://schema.org/Person">
+                    <i class="fa fa-user"></i> 作者 <span itemprop="name">林家隆</span>
+                </li>
+                
+                    <li>
+                        <i class="fa fa-edit"></i> 
+                        
+                        
+                            4.42K
+                        
+                        字
+                    </li>
+                
+                
+            </ul>
+        </header>
+        <div class="kratos-post-content">
+            
+            <div id="expire-alert" class="alert alert-warning hidden" role="alert">
+                <div class="icon"><i class="fa fa-warning"></i></div>
+                <div class="text"><p>本文最后编辑于 <time datetime="1773243376490"></time> 前，其中的内容可能需要更新。</p></div>
+            </div>
+            
+            
+            
+                <div class="kratos-post-inner-toc toc-div-class" >
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Promise-%E7%9A%84%E4%BB%8B%E7%BB%8D"><span class="toc-number">1.</span> <span class="toc-text">Promise 的介绍</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Promise-%E7%9A%84%E4%BD%BF%E7%94%A8"><span class="toc-number">2.</span> <span class="toc-text">Promise 的使用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA-Promise-%E5%AF%B9%E8%B1%A1"><span class="toc-number">2.1.</span> <span class="toc-text">创建 Promise 对象</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A4%84%E7%90%86%E6%88%90%E5%8A%9F%E7%BB%93%E6%9E%9C"><span class="toc-number">2.2.</span> <span class="toc-text">处理成功结果</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A4%84%E7%90%86%E5%BC%82%E5%B8%B8%E7%BB%93%E6%9E%9C"><span class="toc-number">2.3.</span> <span class="toc-text">处理异常结果</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%8C%E6%95%B4%E7%A4%BA%E4%BE%8B"><span class="toc-number">2.4.</span> <span class="toc-text">完整示例</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Promise-%E9%93%BE%E5%BC%8F%E8%B0%83%E7%94%A8"><span class="toc-number">3.</span> <span class="toc-text">Promise 链式调用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Promise-%E9%9D%99%E6%80%81%E6%96%B9%E6%B3%95"><span class="toc-number">4.</span> <span class="toc-text">Promise 静态方法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Promise-resolve"><span class="toc-number">4.1.</span> <span class="toc-text">Promise.resolve()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Promise-reject"><span class="toc-number">4.2.</span> <span class="toc-text">Promise.reject()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Promise-all"><span class="toc-number">4.3.</span> <span class="toc-text">Promise.all()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Promise-race"><span class="toc-number">4.4.</span> <span class="toc-text">Promise.race()</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#async-x2F-await"><span class="toc-number">5.</span> <span class="toc-text">async &#x2F; await</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#async"><span class="toc-number">5.1.</span> <span class="toc-text">async</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#await"><span class="toc-number">5.2.</span> <span class="toc-text">await</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%8E%B7%E5%8F%96%E6%AD%A3%E5%B8%B8%E6%89%A7%E8%A1%8C%E7%BB%93%E6%9E%9C"><span class="toc-number">5.2.1.</span> <span class="toc-text">获取正常执行结果</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%8E%B7%E5%8F%96%E5%BC%82%E5%B8%B8%E4%BF%A1%E6%81%AF"><span class="toc-number">5.2.2.</span> <span class="toc-text">获取异常信息</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">6.</span> <span class="toc-text">总结</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5"><span class="toc-number">7.</span> <span class="toc-text">最佳实践</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#await-%E5%B9%B6%E5%8F%91%E6%89%A7%E8%A1%8C"><span class="toc-number">7.1.</span> <span class="toc-text">await 并发执行</span></a></li></ol></li></ol>
+                </div>
+            
+            <hr />
+            <div itemprop="articleBody"><h2 id="Promise-的介绍"><a href="#Promise-的介绍" class="headerlink" title="Promise 的介绍"></a>Promise 的介绍</h2><p>Promise 表示一个 <strong>未来才会完成的操作</strong>。</p>
+<p>一个“承诺”：未来会返回 <strong>成功结果</strong> 或 <strong>失败原因</strong>。</p>
+<blockquote>
+<p>Promise 有 <strong>三种状态</strong>：</p>
+<table>
+<thead>
+<tr>
+<th>状态</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>pending</td>
+<td>进行中</td>
+</tr>
+<tr>
+<td>fulfilled</td>
+<td>已成功</td>
+</tr>
+<tr>
+<td>rejected</td>
+<td>已失败</td>
+</tr>
+</tbody></table>
+</blockquote>
+<h2 id="Promise-的使用"><a href="#Promise-的使用" class="headerlink" title="Promise 的使用"></a>Promise 的使用</h2><h3 id="创建-Promise-对象"><a href="#创建-Promise-对象" class="headerlink" title="创建 Promise 对象"></a>创建 Promise 对象</h3><p>通过创建 Promise 对象进行异步操作：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">new</span> <span class="title class_">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="comment">// 异步代码</span></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>如果异步代码正常执行，使用 resolve 返回执行结果。</p>
+<p>如果异步代码执行异常，使用 reject 返回异常信息。</p>
+<h3 id="处理成功结果"><a href="#处理成功结果" class="headerlink" title="处理成功结果"></a>处理成功结果</h3><p>使用 <code>then()</code> 方法接收异步代码的执行结果。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">new</span> <span class="title class_">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="comment">// 异步代码</span></span><br><span class="line">&#125;).<span class="title function_">then</span>(<span class="function"><span class="params">res</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="comment">// 处理执行结果</span></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<h3 id="处理异常结果"><a href="#处理异常结果" class="headerlink" title="处理异常结果"></a>处理异常结果</h3><p>使用 <code>catch()</code> 方法接收异步代码的异常信息。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">new</span> <span class="title class_">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="comment">// 异步代码</span></span><br><span class="line">&#125;).<span class="title function_">catch</span>(<span class="function"><span class="params">err</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="comment">// 处理异常结果</span></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<h3 id="完整示例"><a href="#完整示例" class="headerlink" title="完整示例"></a>完整示例</h3><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;div-button&quot;</span>&gt;</span></span><br><span class="line">    执行 Promise 异步请求</span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">    <span class="variable language_">document</span>.<span class="title function_">querySelector</span>(<span class="string">&quot;.div-button&quot;</span>).<span class="title function_">addEventListener</span>(<span class="string">&quot;click&quot;</span>, <span class="keyword">function</span> (<span class="params">e</span>) &#123;</span></span><br><span class="line"><span class="language-javascript">        <span class="keyword">new</span> <span class="title class_">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</span></span><br><span class="line"><span class="language-javascript">            <span class="keyword">let</span> time = <span class="title class_">Date</span>.<span class="title function_">now</span>();</span></span><br><span class="line"><span class="language-javascript">            <span class="keyword">if</span> (time % <span class="number">2</span> === <span class="number">0</span>) &#123;</span></span><br><span class="line"><span class="language-javascript">                <span class="keyword">return</span> <span class="title function_">resolve</span>(<span class="string">&quot;时间搓是偶数，方法执行成功，时间戳：&quot;</span> + time);</span></span><br><span class="line"><span class="language-javascript">            &#125; <span class="keyword">else</span> &#123;</span></span><br><span class="line"><span class="language-javascript">                <span class="keyword">return</span> <span class="title function_">reject</span>(<span class="string">&quot;时间搓是奇数，方法执行失败，时间戳：&quot;</span> + time)</span></span><br><span class="line"><span class="language-javascript">            &#125;</span></span><br><span class="line"><span class="language-javascript">        &#125;).<span class="title function_">then</span>(<span class="function"><span class="params">res</span> =&gt;</span> &#123;</span></span><br><span class="line"><span class="language-javascript">            <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;处理执行结果&quot;</span>)</span></span><br><span class="line"><span class="language-javascript">            <span class="variable language_">console</span>.<span class="title function_">log</span>(res)</span></span><br><span class="line"><span class="language-javascript">        &#125;).<span class="title function_">catch</span>(<span class="function"><span class="params">err</span> =&gt;</span> &#123;</span></span><br><span class="line"><span class="language-javascript">            <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;处理异常结果&quot;</span>)</span></span><br><span class="line"><span class="language-javascript">            <span class="variable language_">console</span>.<span class="title function_">log</span>(err)</span></span><br><span class="line"><span class="language-javascript">        &#125;)</span></span><br><span class="line"><span class="language-javascript">    &#125;)</span></span><br><span class="line"><span class="language-javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="Promise-链式调用"><a href="#Promise-链式调用" class="headerlink" title="Promise 链式调用"></a>Promise 链式调用</h2><p>Promise 可以链式调用：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">new</span> <span class="title class_">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="comment">// 异步代码</span></span><br><span class="line">&#125;).<span class="title function_">then</span>(<span class="function"><span class="params">res</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="comment">// 处理执行结果</span></span><br><span class="line">&#125;).<span class="title function_">then</span>(<span class="function"><span class="params">res</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="comment">// 处理执行结果</span></span><br><span class="line">&#125;).<span class="title function_">then</span>(<span class="function"><span class="params">res</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="comment">// 处理执行结果</span></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>上一个 <code>then</code> 方法的执行结果作为下一个 <code>then</code> 方法的入参。</p>
+<h2 id="Promise-静态方法"><a href="#Promise-静态方法" class="headerlink" title="Promise 静态方法"></a>Promise 静态方法</h2><blockquote>
+<p>在链式调用中， <code>then</code> 或 <code>catch</code> 的回调函数通过返回 <code>Promise.resolve()</code> 还是 <code>Promise.reject()</code> 来决定下一个分支该走 <code>then</code> 还是 <code>catch</code> 。</p>
+</blockquote>
+<h3 id="Promise-resolve"><a href="#Promise-resolve" class="headerlink" title="Promise.resolve()"></a>Promise.resolve()</h3><p>创建成功 Promise 对象：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="title class_">Promise</span>.<span class="title function_">resolve</span>(<span class="string">&quot;成功&quot;</span>)</span><br><span class="line">    .<span class="title function_">then</span>(<span class="function"><span class="params">res</span> =&gt;</span> <span class="variable language_">console</span>.<span class="title function_">log</span>(res))</span><br></pre></td></tr></table></figure>
+
+<h3 id="Promise-reject"><a href="#Promise-reject" class="headerlink" title="Promise.reject()"></a>Promise.reject()</h3><p>创建失败 Promise 对象：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="title class_">Promise</span>.<span class="title function_">reject</span>(<span class="string">&quot;错误&quot;</span>)</span><br><span class="line">    .<span class="title function_">catch</span>(<span class="function"><span class="params">err</span> =&gt;</span> <span class="variable language_">console</span>.<span class="title function_">log</span>(err))</span><br></pre></td></tr></table></figure>
+
+<h3 id="Promise-all"><a href="#Promise-all" class="headerlink" title="Promise.all()"></a>Promise.all()</h3><p>多个任务全部成功才成功。</p>
+<p>成功执行成功示例：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="title class_">Promise</span>.<span class="title function_">all</span>([</span><br><span class="line">    <span class="title class_">Promise</span>.<span class="title function_">resolve</span>(<span class="number">1</span>),</span><br><span class="line">    <span class="title class_">Promise</span>.<span class="title function_">resolve</span>(<span class="number">2</span>),</span><br><span class="line">    <span class="title class_">Promise</span>.<span class="title function_">resolve</span>(<span class="number">3</span>)</span><br><span class="line">]).<span class="title function_">then</span>(<span class="function"><span class="params">res</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;处理执行结果&#x27;</span>)</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(res)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>输出： <code>[1, 2, 3]</code></p>
+<p><code>res</code> 是个数组，记录了每个执行任务的返回结果。</p>
+</blockquote>
+<p>执行失败示例：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="title class_">Promise</span>.<span class="title function_">all</span>([</span><br><span class="line">    <span class="title class_">Promise</span>.<span class="title function_">resolve</span>(<span class="number">1</span>),</span><br><span class="line">    <span class="title class_">Promise</span>.<span class="title function_">reject</span>(<span class="number">2</span>),</span><br><span class="line">    <span class="title class_">Promise</span>.<span class="title function_">reject</span>(<span class="number">3</span>)</span><br><span class="line">]).<span class="title function_">catch</span>(<span class="function"><span class="params">err</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;处理异常结果&#x27;</span>)</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(err)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>输出：2</p>
+<p><code>err</code> 记录的是第一个返回 <code>Promise.reject()</code> 的结果。</p>
+</blockquote>
+<h3 id="Promise-race"><a href="#Promise-race" class="headerlink" title="Promise.race()"></a>Promise.race()</h3><p>谁先完成就返回谁的执行结果</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="title class_">Promise</span>.<span class="title function_">race</span>([</span><br><span class="line">    <span class="keyword">new</span> <span class="title class_">Promise</span>(<span class="function"><span class="params">r</span> =&gt;</span> <span class="built_in">setTimeout</span>(<span class="function">() =&gt;</span> <span class="title function_">r</span>(<span class="string">&quot;A&quot;</span>), <span class="number">1000</span>)),</span><br><span class="line">    <span class="keyword">new</span> <span class="title class_">Promise</span>(<span class="function"><span class="params">r</span> =&gt;</span> <span class="built_in">setTimeout</span>(<span class="function">() =&gt;</span> <span class="title function_">r</span>(<span class="string">&quot;B&quot;</span>), <span class="number">2000</span>))</span><br><span class="line">]).<span class="title function_">then</span>(<span class="function"><span class="params">res</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(res)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>输出 A</p>
+</blockquote>
+<h2 id="async-x2F-await"><a href="#async-x2F-await" class="headerlink" title="async &#x2F; await"></a>async &#x2F; await</h2><h3 id="async"><a href="#async" class="headerlink" title="async"></a>async</h3><p><code>async</code> 用来标记函数，使得函数的返回值被封装为 <code>Promise.resolve()</code> 或 <code>Promise.reject()</code>。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">async</span> <span class="keyword">function</span> <span class="title function_">test</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">let</span> time = <span class="title class_">Date</span>.<span class="title function_">now</span>();</span><br><span class="line">    <span class="keyword">if</span> (time % <span class="number">2</span> === <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;时间戳是偶数，执行成功，时间戳：&quot;</span> + time;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="string">&quot;时间戳是奇数，执行失败，时间戳：&quot;</span> + time;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="title function_">test</span>());</span><br></pre></td></tr></table></figure>
+
+<p>被 <code>async</code> 修饰的函数，<strong>return 返回值被封装在 Promise.resolve()</strong> 中，<strong>throw 返回值被封装在 Promise.reject()</strong> 中</p>
+<h3 id="await"><a href="#await" class="headerlink" title="await"></a>await</h3><h4 id="获取正常执行结果"><a href="#获取正常执行结果" class="headerlink" title="获取正常执行结果"></a>获取正常执行结果</h4><p><strong>await 用来等待 Promise 执行完成，并把  <code>Promise.resolve()</code> 结果赋值给变量</strong>。</p>
+<p><strong>await 必须在 async 修饰的函数中使用</strong>，否则语法错误。</p>
+<blockquote>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> result = <span class="keyword">await</span> <span class="title class_">Promise</span>.<span class="title function_">resolve</span>(<span class="string">&quot;hello&quot;</span>); <span class="comment">// result 变量值：hello</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>就是把 then 方法中的入参值赋值给了 result 变量</strong>。</p>
+</blockquote>
+<h4 id="获取异常信息"><a href="#获取异常信息" class="headerlink" title="获取异常信息"></a>获取异常信息</h4><p>如果异步代码返回 <code>Promise.reject()</code> ，那么使用 await 时候就需要<strong>使用 <code>try catch</code> 捕获 <code>Promise.reject()</code> 信息</strong>。</p>
+<blockquote>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">async</span> <span class="keyword">function</span> <span class="title function_">test</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">let</span> p = <span class="keyword">new</span> <span class="title class_">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</span><br><span class="line">        <span class="keyword">let</span> time = <span class="title class_">Date</span>.<span class="title function_">now</span>();</span><br><span class="line">        <span class="keyword">if</span> (time % <span class="number">2</span> === <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="title function_">resolve</span>(<span class="string">&quot;时间戳是偶数，执行成功，时间戳：&quot;</span> + time);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="title function_">reject</span>(<span class="string">&quot;时间戳是奇数，执行失败，时间戳：&quot;</span> + time);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="keyword">let</span> result = <span class="keyword">await</span> p;</span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">log</span>(result)</span><br><span class="line">    &#125; <span class="keyword">catch</span> (err) &#123;</span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;处理异常信息&#x27;</span>)</span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">log</span>(err)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="title function_">test</span>();</span><br><span class="line"><span class="title function_">test</span>();</span><br><span class="line"><span class="title function_">test</span>();</span><br></pre></td></tr></table></figure>
+
+<p><code>result 输出</code>：时间戳是偶数，执行成功，时间戳：1773242523164。</p>
+<p><code> err  输出</code>：时间戳是奇数，执行失败，时间戳：1773242525949。</p>
+</blockquote>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p><strong>await 会阻塞当前 async 函数，不会阻塞整个 JS 线程</strong>。</p>
+<p>JS 是单线程，代码会一直执行下去，除非代码执行完成或<strong>遇到 Promise 异步代码</strong>，才会去执行另一块代码，另一块代码同样会一直执行下去，除非代码执行完成或<strong>遇到 Promise 异步代码</strong>。</p>
+<h2 id="最佳实践"><a href="#最佳实践" class="headerlink" title="最佳实践"></a>最佳实践</h2><h3 id="await-并发执行"><a href="#await-并发执行" class="headerlink" title="await 并发执行"></a>await 并发执行</h3><p>错误写法：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> a = <span class="keyword">await</span> <span class="title function_">task1</span>()</span><br><span class="line"><span class="keyword">let</span> b = <span class="keyword">await</span> <span class="title function_">task2</span>()</span><br><span class="line"><span class="keyword">let</span> c = <span class="keyword">await</span> <span class="title function_">task3</span>()</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>执行顺序：task1 → task2 → task3</p>
+</blockquote>
+<p>正确写法：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> [a,b,c] = <span class="keyword">await</span> <span class="title class_">Promise</span>.<span class="title function_">all</span>([</span><br><span class="line">    <span class="title function_">task1</span>(),</span><br><span class="line">    <span class="title function_">task2</span>(),</span><br><span class="line">    <span class="title function_">task3</span>()</span><br><span class="line">])</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>执行顺畅：task1、task2、task3 同时执行</p>
+</blockquote>
+</div>
+        </div>
+        
+        <footer class="kratos-entry-footer clearfix">
+            
+            <div class="footer-tag clearfix">
+                <div class="pull-left">
+                <i class="fa fa-tags"></i>
+                    <a class="tag-none-link" href="/blog/tags/CSS/" rel="tag">CSS</a>, <a class="tag-none-link" href="/blog/tags/HTML/" rel="tag">HTML</a>, <a class="tag-none-link" href="/blog/tags/JavaScript/" rel="tag">JavaScript</a>
+                </div>
+                <div class="pull-date">
+                    <time datetime="2026-03-11T15:36:16.490Z" itemprop="dateModified">最后编辑：2026-03-11</time>
+                </div>
+            </div>
+        </footer>
+    </div>
+    
+        <nav class="navigation post-navigation clearfix" role="navigation">
+            
+            <div class="nav-previous clearfix">
+                <a title=" 【JavaScript】Ajax 的使用" href="/blog/2026/03/08/03前端/HTML前端三大件/36.Ajax使用/">&lt; 上一篇</a>
+            </div>
+            
+            
+        </nav>
+    
+    
+</article>
+
+        
+
+            </section>
+
+        
+
+                
+            
+
+<section id="kratos-widget-area" class="col-md-4 hidden-xs hidden-sm">
+    <!-- 文章和页面根据splitter来分割，没有的话就从头开始设置为sticky -->
+    
+    
+                <aside id="krw-about" class="widget widget-kratos-about clearfix">
+    <div class="photo-background"></div>
+    <div class="photo-wrapper clearfix">
+        <div class="photo-wrapper-tip text-center">
+            <img class="about-photo" src="/blog/images/avatar.webp" loading="lazy" decoding="auto" />
+        </div>
+    </div>
+    <div class="textwidget">
+        <p class="text-center">极简主义</p>
+    </div>
+    <div class="site-meta">
+        <a class="meta-item" href="/blog/archives/">
+            <span class="title">
+                文章
+            </span>
+            <span class="count">
+                95
+            </span>
+        </a>
+        <a class="meta-item" href="/blog/categories/">
+            <span class="title">
+                分类
+            </span>
+            <span class="count">
+                11
+            </span>
+        </a>
+        <a class="meta-item" href="/blog/tags/">
+            <span class="title">
+                标签
+            </span>
+            <span class="count">
+                33
+            </span>
+        </a>
+    </div>
+</aside>
+            
+                    <div class="sticky-area">
+                
+                    <aside id="krw-toc" class="widget widget-kratos-toc clearfix toc-div-class" >
+    <div class="photo-background"></div>
+    <h4 class="widget-title no-after">
+        <i class="fa fa-compass"></i>
+        文章目录
+        <span class="toc-progress-bar" role="progressbar" aria-label="阅读进度："></span>
+    </h4>
+    <div class="textwidget">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Promise-%E7%9A%84%E4%BB%8B%E7%BB%8D"><span class="toc-text">Promise 的介绍</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Promise-%E7%9A%84%E4%BD%BF%E7%94%A8"><span class="toc-text">Promise 的使用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA-Promise-%E5%AF%B9%E8%B1%A1"><span class="toc-text">创建 Promise 对象</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A4%84%E7%90%86%E6%88%90%E5%8A%9F%E7%BB%93%E6%9E%9C"><span class="toc-text">处理成功结果</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A4%84%E7%90%86%E5%BC%82%E5%B8%B8%E7%BB%93%E6%9E%9C"><span class="toc-text">处理异常结果</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%8C%E6%95%B4%E7%A4%BA%E4%BE%8B"><span class="toc-text">完整示例</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Promise-%E9%93%BE%E5%BC%8F%E8%B0%83%E7%94%A8"><span class="toc-text">Promise 链式调用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Promise-%E9%9D%99%E6%80%81%E6%96%B9%E6%B3%95"><span class="toc-text">Promise 静态方法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Promise-resolve"><span class="toc-text">Promise.resolve()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Promise-reject"><span class="toc-text">Promise.reject()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Promise-all"><span class="toc-text">Promise.all()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Promise-race"><span class="toc-text">Promise.race()</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#async-x2F-await"><span class="toc-text">async &#x2F; await</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#async"><span class="toc-text">async</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#await"><span class="toc-text">await</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%8E%B7%E5%8F%96%E6%AD%A3%E5%B8%B8%E6%89%A7%E8%A1%8C%E7%BB%93%E6%9E%9C"><span class="toc-text">获取正常执行结果</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%8E%B7%E5%8F%96%E5%BC%82%E5%B8%B8%E4%BF%A1%E6%81%AF"><span class="toc-text">获取异常信息</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-text">总结</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5"><span class="toc-text">最佳实践</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#await-%E5%B9%B6%E5%8F%91%E6%89%A7%E8%A1%8C"><span class="toc-text">await 并发执行</span></a></li></ol></li></ol>
+    </div>
+</aside>
+                
+                
+  <aside id="krw-tags" class="widget widget-kratos-tags clearfix">
+    <h4 class="widget-title"><i class="fa fa-tags"></i>标签聚合</h4>
+      <div class="tag-clouds">
+        <a href="/blog/tags/CORS/" style="font-size: 0.8em;">CORS</a> <a href="/blog/tags/CSS/" style="font-size: 0.8em;">CSS</a> <a href="/blog/tags/Docker/" style="font-size: 0.8em;">Docker</a> <a href="/blog/tags/Dubbo/" style="font-size: 0.8em;">Dubbo</a> <a href="/blog/tags/ELK/" style="font-size: 0.8em;">ELK</a> <a href="/blog/tags/Elasticsearch/" style="font-size: 0.8em;">Elasticsearch</a> <a href="/blog/tags/Eureka/" style="font-size: 0.8em;">Eureka</a> <a href="/blog/tags/Feign/" style="font-size: 0.8em;">Feign</a> <a href="/blog/tags/Gateway/" style="font-size: 0.8em;">Gateway</a> <a href="/blog/tags/HTML/" style="font-size: 0.8em;">HTML</a> <a href="/blog/tags/Idea/" style="font-size: 0.8em;">Idea</a> <a href="/blog/tags/Java/" style="font-size: 0.8em;">Java</a> <a href="/blog/tags/JavaScript/" style="font-size: 0.8em;">JavaScript</a> <a href="/blog/tags/JavaWeb/" style="font-size: 0.8em;">JavaWeb</a> <a href="/blog/tags/K8s/" style="font-size: 0.8em;">K8s</a> <a href="/blog/tags/Linux/" style="font-size: 0.8em;">Linux</a> <a href="/blog/tags/Maven/" style="font-size: 0.8em;">Maven</a> <a href="/blog/tags/MySQL/" style="font-size: 0.8em;">MySQL</a>
+      </div>
+  </aside>
+
+            
+                
+  <aside id="krw-posts" class="widget widget-kratos-posts">
+  <h4 class="widget-title"><i class="fa fa-file"></i>最新文章</h4>
+  <div class="tab-content">
+      <ul class="list-group">
+        
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/03/11/03%E5%89%8D%E7%AB%AF/HTML%E5%89%8D%E7%AB%AF%E4%B8%89%E5%A4%A7%E4%BB%B6/37.JS%E5%BC%82%E6%AD%A5%E7%BC%96%E7%A8%8B/"><i class="fa  fa-book"></i> 【JavaScript】异步编程</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/03/08/03%E5%89%8D%E7%AB%AF/HTML%E5%89%8D%E7%AB%AF%E4%B8%89%E5%A4%A7%E4%BB%B6/36.Ajax%E4%BD%BF%E7%94%A8/"><i class="fa  fa-book"></i> 【JavaScript】Ajax 的使用</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/03/08/01%E5%AD%A6%E4%B9%A0%E8%B7%AF%E7%BA%BF/10.%E5%89%8D%E7%AB%AF%E5%AD%A6%E4%B9%A0%E8%B7%AF%E7%BA%BF/"><i class="fa  fa-book"></i> 【学习路线】前端学习路线</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/03/07/03%E5%89%8D%E7%AB%AF/HTML%E5%89%8D%E7%AB%AF%E4%B8%89%E5%A4%A7%E4%BB%B6/35.JavaScript%E5%AF%B9%E8%B1%A1%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95/"><i class="fa  fa-book"></i> 【JavaScript】JS 对象基础语法</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/03/04/03%E5%89%8D%E7%AB%AF/HTML%E5%89%8D%E7%AB%AF%E4%B8%89%E5%A4%A7%E4%BB%B6/34.JS%E8%87%AA%E5%B8%A6%E7%9A%84%E5%AF%B9%E8%B1%A1%E5%92%8C%E5%87%BD%E6%95%B0/"><i class="fa  fa-book"></i> 【JavaScript】JS 自带的对象和函数</a>
+            
+          
+        
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+      </ul>
+  </div>
+  </aside>
+
+            
+    </div>
+</section>
+        
+        </div>
+    </div>
+</div>
+<footer>
+    <div id="footer"  >
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3 footer-list text-center">
+                    <ul class="kratos-social-icons">
+                        <!-- Keep for compatibility -->
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <!-- New links -->
+                        
+                    </ul>
+                    <ul class="kratos-copyright">
+                        <div>
+                            <li>&copy; 2026 溪岚花的博客 版权所有.</li>
+                            <li>本站已运行<span id="span_dt">Loading...</span></li>
+                        </div>
+                        <div>
+                            <li>Theme <a href="https://github.com/Candinya/Kratos-Rebirth" target="_blank">Kratos:Rebirth</a></li>
+                            <li>Site built with&nbsp;<i class="fa fa-heart throb" style="color:#d43f57"></i>&nbsp;by 林家隆.</li>
+                        </div>
+                        <div>
+                            <li>Powered by <a href="https://hexo.io" target="_blank" rel="nofollow">Hexo</a></li>
+                            <li>Hosted on <a href="https://gitee.com/" target="_blank">Gitee Pages</a></li>
+                        </div>
+                        <div>
+                            
+                            
+                        </div>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="kr-tool text-center">
+            <div class="tool">
+                
+                    <div class="box search-box">
+                        <a href="/blog/search/">
+                            <span class="fa fa-search"></span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="box theme-box" id="darkmode-switch">
+                        <span class="fa fa-adjust"></span>
+                    </div>
+                
+                
+                
+            </div>
+            <div class="box gotop-box">
+                <span class="fa fa-chevron-up"></span>
+            </div>
+        </div>
+    </div>
+</footer>
+</div>
+</div>
+
+        <script defer src="/blog/vendors/bootstrap@3.3.4/dist/js/bootstrap.min.js"></script>
+<script defer src="/blog/vendors/nprogress@0.2.0/nprogress.js"></script>
+<script>
+    if (!window.kr) {
+        window.kr = {};
+    }
+    window.kr.notMobile = (!(navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i)));
+    window.kr.siteRoot = "/blog/";
+</script>
+
+
+
+
+
+    <script defer src="/blog/vendors/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+
+<script defer src="/blog/js/kratosr.min.js"></script>
+<script defer src="/blog/js/pjax.min.js"></script>
+
+
+
+<!-- Extra support for third-party plguins  -->
+
+
+    </body>
+</html>
