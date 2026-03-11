@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+  <!-- 元数据 -->
+  <meta charset="utf-8">
+  <link rel="icon" href="/blog/images/logo.png">
+  
+  <title>【JavaScript】Ajax 的使用 | 溪岚花的博客</title>
+  
+  <meta name="author" content="林家隆" />
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="robots" content="index,follow" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <meta name="format-detection" content="telphone=no, email=no" />
+  
+    <meta name="keywords" content="CSS, HTML, JavaScript" />
+  
+  <meta name="description" content="Axios 介绍Axios 主要用于在浏览器和 Node.js 中发送 HTTP 请求。 引入 Axios： 1&lt;script src&#x3D;&quot;https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;npm&#x2F;axios&#x2F;dist&#x2F;axios.min.js&quot;&gt;&lt;&#x2F;script&gt;  Axios 常用方法   Axios 函数 说明    axios(config) 通用">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【JavaScript】Ajax 的使用">
+<meta property="og:url" content="https://lin316.gitee.io/blog/2026/03/08/03%E5%89%8D%E7%AB%AF/HTML%E5%89%8D%E7%AB%AF%E4%B8%89%E5%A4%A7%E4%BB%B6/36.Ajax%E4%BD%BF%E7%94%A8/index.html">
+<meta property="og:site_name" content="溪岚花的博客">
+<meta property="og:description" content="Axios 介绍Axios 主要用于在浏览器和 Node.js 中发送 HTTP 请求。 引入 Axios： 1&lt;script src&#x3D;&quot;https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;npm&#x2F;axios&#x2F;dist&#x2F;axios.min.js&quot;&gt;&lt;&#x2F;script&gt;  Axios 常用方法   Axios 函数 说明    axios(config) 通用">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://lin316.gitee.io/blog/blog/images/logo.png">
+<meta property="article:published_time" content="2026-03-08T13:00:00.000Z">
+<meta property="article:modified_time" content="2026-03-10T14:36:40.865Z">
+<meta property="article:author" content="林家隆">
+<meta property="article:tag" content="HTML">
+<meta property="article:tag" content="CSS">
+<meta property="article:tag" content="JavaScript">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://lin316.gitee.io/blog/blog/images/logo.png">
+  
+  <!-- 站点验证相关 -->
+  
+    
+    
+    
+  
+  <!-- 样式表文件 -->
+  <link rel="stylesheet" id="kratos-css" href="/blog/css/kratosr.min.css" media="all"></script>
+  
+    <link rel="stylesheet" id="darkmode-css" href="/blog/css/kr-color-dark.min.css" media="(prefers-color-scheme: dark)"></script>
+    <script src="/blog/js/kr-dark.min.js"></script>
+  
+  
+    <link rel="stylesheet" id="highlight-css" href="/blog/css/highlight/night-eighties.min.css" media="all"></script>
+  
+  <link rel="stylesheet" id="fontawe-css" href="/blog/vendors/font-awesome@4.7.0/css/font-awesome.min.css" media="all"></script>
+  <link rel="stylesheet" id="nprogress-css" href="/blog/vendors/nprogress@0.2.0/nprogress.css" media="all"></script>
+  
+  
+  
+    <link rel="stylesheet" href="/blog/vendors/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css"></script>
+  
+  <!-- 不得不预先加载的一些JS文件 -->
+  <script src="/blog/vendors/jquery@3.6.0/dist/jquery.min.js"></script>
+  
+  
+  <style>
+    
+    
+  </style>
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+    <body class="custom-background">
+        <div id="kratos-wrapper">
+    <div id="kratos-page">
+        <div id="kratos-header">
+            <header id="kratos-desktop-topnav" class="kratos-topnav">
+                <div class="container">
+                    <div class="nav-header">
+                        <nav id="kratos-menu-wrap">
+                            <ul id="kratos-primary-menu" class="sf-menu">
+                                
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/">
+                                            
+                                                
+                                                    <i class="fa fa-home"></i>
+                                                
+                                                首页
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/archives/">
+                                            
+                                                
+                                                    <i class="fa fa-file"></i>
+                                                
+                                                归档
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/tags/">
+                                            
+                                                
+                                                    <i class="fa fa-tag"></i>
+                                                
+                                                标签
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/categories/">
+                                            
+                                                
+                                                    <i class="fa fa-folder"></i>
+                                                
+                                                目录
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/search/">
+                                            
+                                                
+                                                    <i class="fa fa-search"></i>
+                                                
+                                                搜索
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </header>
+            <header id="kratos-mobile-topnav" class="kratos-topnav">
+                <div class="container">
+                    <div class="color-logo"><a href="/blog/">溪岚花的博客</a></div>
+                    <div class="nav-toggle">
+                        <a class="kratos-nav-toggle js-kratos-nav-toggle">
+                            <i></i>
+                        </a>
+                    </div>
+                </div>
+            </header>
+        </div>
+        <div class="kratos-start kratos-hero-2">
+            <!-- <div class="kratos-overlay"></div> -->
+            <div class="kratos-cover kratos-cover-2 text-center">
+                <div class="desc desc2 animate-box">
+                    <a href="/blog/">
+                        <h2 style="opacity: 0.2;">溪岚花的博客</h2> <br />
+                        <span></span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div id="kratos-blog-post">
+            <div class="container">
+                <div id="main" class="row">
+                    
+
+        
+
+            <section class="col-md-8">
+
+        
+
+            <article itemscope itemtype="https://schema.org/Article">
+    
+    <link itemprop="mainEntityOfPage" href="https://lin316.gitee.io/blog/2026/03/08/03%E5%89%8D%E7%AB%AF/HTML%E5%89%8D%E7%AB%AF%E4%B8%89%E5%A4%A7%E4%BB%B6/36.Ajax%E4%BD%BF%E7%94%A8/">
+    <div class="kratos-hentry kratos-post-inner clearfix">
+        <header class="kratos-entry-header">
+            
+                <h1 class="kratos-entry-title text-center" itemprop="name headline">【JavaScript】Ajax 的使用</h1>
+            
+            
+            <ul class="kratos-post-meta text-center">
+                <li><time datetime="2026-03-08T13:00:00.000Z" itemprop="datePublished"><i class="fa fa-calendar"></i> 2026-03-08</time></li>
+                <li itemprop="author" itemscope itemtype="https://schema.org/Person">
+                    <i class="fa fa-user"></i> 作者 <span itemprop="name">林家隆</span>
+                </li>
+                
+                    <li>
+                        <i class="fa fa-edit"></i> 
+                        
+                        
+                            12.73K
+                        
+                        字
+                    </li>
+                
+                
+            </ul>
+        </header>
+        <div class="kratos-post-content">
+            
+            <div id="expire-alert" class="alert alert-warning hidden" role="alert">
+                <div class="icon"><i class="fa fa-warning"></i></div>
+                <div class="text"><p>本文最后编辑于 <time datetime="1773153400865"></time> 前，其中的内容可能需要更新。</p></div>
+            </div>
+            
+            
+            
+                <div class="kratos-post-inner-toc toc-div-class" >
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Axios-%E4%BB%8B%E7%BB%8D"><span class="toc-number">1.</span> <span class="toc-text">Axios 介绍</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Axios-%E5%B8%B8%E7%94%A8%E6%96%B9%E6%B3%95"><span class="toc-number">2.</span> <span class="toc-text">Axios 常用方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Axios-%E6%94%AF%E6%8C%81%E7%9A%84%E9%85%8D%E7%BD%AE"><span class="toc-number">3.</span> <span class="toc-text">Axios 支持的配置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Axios-%E5%9F%BA%E6%9C%AC%E8%AF%B7%E6%B1%82"><span class="toc-number">4.</span> <span class="toc-text">Axios 基本请求</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#GET-%E8%AF%B7%E6%B1%82"><span class="toc-number">4.1.</span> <span class="toc-text">GET 请求</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#POST-%E8%AF%B7%E6%B1%82"><span class="toc-number">4.2.</span> <span class="toc-text">POST 请求</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Axios-%E5%88%9B%E5%BB%BA%E5%AE%9E%E4%BE%8B"><span class="toc-number">5.</span> <span class="toc-text">Axios 创建实例</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Axios-%E8%BF%94%E5%9B%9E%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84"><span class="toc-number">6.</span> <span class="toc-text">Axios 返回数据结构</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Axios-%E6%8B%A6%E6%88%AA%E5%99%A8"><span class="toc-number">7.</span> <span class="toc-text">Axios 拦截器</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AF%B7%E6%B1%82%E6%8B%A6%E6%88%AA%E5%99%A8"><span class="toc-number">7.1.</span> <span class="toc-text">请求拦截器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%93%8D%E5%BA%94%E6%8B%A6%E6%88%AA%E5%99%A8"><span class="toc-number">7.2.</span> <span class="toc-text">响应拦截器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A4%9A%E4%B8%AA%E6%8B%A6%E6%88%AA%E5%99%A8"><span class="toc-number">7.3.</span> <span class="toc-text">多个拦截器</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Axios-%E6%96%87%E4%BB%B6%E4%BC%A0%E8%BE%93"><span class="toc-number">8.</span> <span class="toc-text">Axios 文件传输</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%8A%E4%BC%A0%E6%96%87%E4%BB%B6"><span class="toc-number">8.1.</span> <span class="toc-text">上传文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%8B%E8%BD%BD%E6%96%87%E4%BB%B6"><span class="toc-number">8.2.</span> <span class="toc-text">下载文件</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Axios-%E5%8F%96%E6%B6%88%E8%AF%B7%E6%B1%82"><span class="toc-number">9.</span> <span class="toc-text">Axios 取消请求</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Axios-%E5%90%8C%E6%97%B6%E5%8F%91%E8%B5%B7%E5%A4%9A%E4%B8%AA%E8%AF%B7%E6%B1%82"><span class="toc-number">10.</span> <span class="toc-text">Axios 同时发起多个请求</span></a></li></ol>
+                </div>
+            
+            <hr />
+            <div itemprop="articleBody"><h2 id="Axios-介绍"><a href="#Axios-介绍" class="headerlink" title="Axios 介绍"></a>Axios 介绍</h2><p><code>Axios</code> 主要用于在浏览器和 Node.js 中发送 HTTP 请求。</p>
+<p>引入 Axios：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="Axios-常用方法"><a href="#Axios-常用方法" class="headerlink" title="Axios 常用方法"></a>Axios 常用方法</h2><table>
+<thead>
+<tr>
+<th>Axios 函数</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>axios(config)</td>
+<td>通用&#x2F;最本质的发任意类型请求的方式</td>
+</tr>
+<tr>
+<td>axios.get(url[, config])</td>
+<td>发 get 请求</td>
+</tr>
+<tr>
+<td>axios.delete(url[, config])</td>
+<td>发 delete 请求</td>
+</tr>
+<tr>
+<td>axios.post(url[, data[, config]])</td>
+<td>发 post 请求</td>
+</tr>
+<tr>
+<td>axios.put(url[, data[, config]])</td>
+<td>发 put 请求</td>
+</tr>
+<tr>
+<td>axios.create(config)</td>
+<td>创建一个新的 axios 对象</td>
+</tr>
+<tr>
+<td>axios.defaults.xxx</td>
+<td>axios 默认全局 config 配置</td>
+</tr>
+<tr>
+<td>axios.all(promises)</td>
+<td>用于批量执行多个异步请求</td>
+</tr>
+</tbody></table>
+<h2 id="Axios-支持的配置"><a href="#Axios-支持的配置" class="headerlink" title="Axios 支持的配置"></a>Axios 支持的配置</h2><p>Axios 支持配置参数：</p>
+<table>
+<thead>
+<tr>
+<th>配置</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>method</td>
+<td>请求方式</td>
+</tr>
+<tr>
+<td>url</td>
+<td>请求地址</td>
+</tr>
+<tr>
+<td>headers</td>
+<td>请求头</td>
+</tr>
+<tr>
+<td>params</td>
+<td>GET参数</td>
+</tr>
+<tr>
+<td>data</td>
+<td>POST参数</td>
+</tr>
+<tr>
+<td>timeout</td>
+<td>超时时间</td>
+</tr>
+<tr>
+<td>responseType</td>
+<td>返回数据类型</td>
+</tr>
+<tr>
+<td>baseURL</td>
+<td>基础 URL</td>
+</tr>
+<tr>
+<td>signal</td>
+<td>由 AbortController 对象控制请求是否中断</td>
+</tr>
+</tbody></table>
+<p>示例：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_">axios</span>(&#123;</span><br><span class="line">  <span class="attr">method</span>: <span class="string">&#x27;get&#x27;</span>,</span><br><span class="line">  <span class="attr">url</span>: <span class="string">&#x27;/api/user&#x27;</span>,</span><br><span class="line">  <span class="attr">baseURL</span>: <span class="string">&#x27;http://localhost:8080&#x27;</span>,</span><br><span class="line">  <span class="attr">timeout</span>: <span class="number">5000</span>,</span><br><span class="line">  <span class="attr">headers</span>: &#123;</span><br><span class="line">    <span class="attr">token</span>: <span class="string">&#x27;123&#x27;</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<h2 id="Axios-基本请求"><a href="#Axios-基本请求" class="headerlink" title="Axios 基本请求"></a>Axios 基本请求</h2><h3 id="GET-请求"><a href="#GET-请求" class="headerlink" title="GET 请求"></a>GET 请求</h3><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;div-button&quot;</span>&gt;</span></span><br><span class="line">    发送 Ajax 请求</span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">    <span class="variable language_">document</span>.<span class="title function_">querySelector</span>(<span class="string">&quot;.div-button&quot;</span>).<span class="title function_">addEventListener</span>(<span class="string">&#x27;click&#x27;</span>, <span class="function">(<span class="params">e</span>) =&gt;</span> &#123;</span></span><br><span class="line"><span class="language-javascript">        axios.<span class="title function_">get</span>(<span class="string">&#x27;http://localhost:8100/ajax/test/get&#x27;</span>, &#123;</span></span><br><span class="line"><span class="language-javascript">            <span class="attr">params</span>: &#123;</span></span><br><span class="line"><span class="language-javascript">                <span class="attr">id</span>: <span class="number">1</span>,</span></span><br><span class="line"><span class="language-javascript">                <span class="attr">name</span>: <span class="string">&#x27;Tom&#x27;</span></span></span><br><span class="line"><span class="language-javascript">            &#125;</span></span><br><span class="line"><span class="language-javascript">        &#125;).<span class="title function_">then</span>(<span class="function"><span class="params">res</span> =&gt;</span> &#123;</span></span><br><span class="line"><span class="language-javascript">            <span class="variable language_">console</span>.<span class="title function_">log</span>(res)</span></span><br><span class="line"><span class="language-javascript">        &#125;).<span class="title function_">catch</span>(<span class="function"><span class="params">err</span> =&gt;</span> &#123;</span></span><br><span class="line"><span class="language-javascript">            <span class="variable language_">console</span>.<span class="title function_">log</span>(err)</span></span><br><span class="line"><span class="language-javascript">        &#125;)</span></span><br><span class="line"><span class="language-javascript">    &#125;)</span></span><br><span class="line"><span class="language-javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;div-button&quot;</span>&gt;</span></span><br><span class="line">    发送 Ajax 请求</span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">    <span class="variable language_">document</span>.<span class="title function_">querySelector</span>(<span class="string">&quot;.div-button&quot;</span>).<span class="title function_">addEventListener</span>(<span class="string">&#x27;click&#x27;</span>, <span class="function">(<span class="params">e</span>) =&gt;</span> &#123;</span></span><br><span class="line"><span class="language-javascript">        <span class="title function_">axios</span>(&#123;</span></span><br><span class="line"><span class="language-javascript">            <span class="attr">method</span>: <span class="string">&quot;GET&quot;</span>,</span></span><br><span class="line"><span class="language-javascript">            <span class="attr">url</span>: <span class="string">&quot;http://localhost:8100/ajax/test/get&quot;</span>,</span></span><br><span class="line"><span class="language-javascript">            <span class="attr">params</span>: &#123;</span></span><br><span class="line"><span class="language-javascript">                <span class="attr">id</span>: <span class="number">1</span>,</span></span><br><span class="line"><span class="language-javascript">                <span class="attr">name</span>: <span class="string">&#x27;Tom&#x27;</span></span></span><br><span class="line"><span class="language-javascript">            &#125;</span></span><br><span class="line"><span class="language-javascript">        &#125;).<span class="title function_">then</span>(<span class="function"><span class="params">res</span> =&gt;</span> &#123;</span></span><br><span class="line"><span class="language-javascript">            <span class="variable language_">console</span>.<span class="title function_">log</span>(res)</span></span><br><span class="line"><span class="language-javascript">        &#125;).<span class="title function_">catch</span>(<span class="function"><span class="params">err</span> =&gt;</span> &#123;</span></span><br><span class="line"><span class="language-javascript">            <span class="variable language_">console</span>.<span class="title function_">log</span>(err)</span></span><br><span class="line"><span class="language-javascript">        &#125;)</span></span><br><span class="line"><span class="language-javascript">    &#125;)</span></span><br><span class="line"><span class="language-javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="POST-请求"><a href="#POST-请求" class="headerlink" title="POST 请求"></a>POST 请求</h3><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;div-button&quot;</span>&gt;</span></span><br><span class="line">    发送 Ajax 请求</span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">    <span class="variable language_">document</span>.<span class="title function_">querySelector</span>(<span class="string">&quot;.div-button&quot;</span>).<span class="title function_">addEventListener</span>(<span class="string">&#x27;click&#x27;</span>, <span class="function">(<span class="params">e</span>) =&gt;</span> &#123;</span></span><br><span class="line"><span class="language-javascript">        axios.<span class="title function_">post</span>(<span class="string">&#x27;http://localhost:8100/ajax/test/post&#x27;</span>, &#123;</span></span><br><span class="line"><span class="language-javascript">            <span class="attr">username</span>: <span class="string">&#x27;admin&#x27;</span>,</span></span><br><span class="line"><span class="language-javascript">            <span class="attr">password</span>: <span class="string">&#x27;123456&#x27;</span></span></span><br><span class="line"><span class="language-javascript">        &#125;, &#123;</span></span><br><span class="line"><span class="language-javascript">            <span class="attr">timeout</span>: <span class="number">5000</span></span></span><br><span class="line"><span class="language-javascript">        &#125;).<span class="title function_">then</span>(<span class="function"><span class="params">res</span> =&gt;</span> &#123;</span></span><br><span class="line"><span class="language-javascript">            <span class="variable language_">console</span>.<span class="title function_">log</span>(res)</span></span><br><span class="line"><span class="language-javascript">        &#125;).<span class="title function_">catch</span>(<span class="function"><span class="params">err</span> =&gt;</span> &#123;</span></span><br><span class="line"><span class="language-javascript">            <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;请求超时&quot;</span>)</span></span><br><span class="line"><span class="language-javascript">            <span class="variable language_">console</span>.<span class="title function_">log</span>(err)</span></span><br><span class="line"><span class="language-javascript">        &#125;)</span></span><br><span class="line"><span class="language-javascript">    &#125;)</span></span><br><span class="line"><span class="language-javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;div-button&quot;</span>&gt;</span></span><br><span class="line">    发送 Ajax 请求</span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">    <span class="variable language_">document</span>.<span class="title function_">querySelector</span>(<span class="string">&quot;.div-button&quot;</span>).<span class="title function_">addEventListener</span>(<span class="string">&#x27;click&#x27;</span>, <span class="function">(<span class="params">e</span>) =&gt;</span> &#123;</span></span><br><span class="line"><span class="language-javascript">        <span class="title function_">axios</span>(&#123;</span></span><br><span class="line"><span class="language-javascript">            <span class="attr">method</span>: <span class="string">&quot;post&quot;</span>,</span></span><br><span class="line"><span class="language-javascript">            <span class="attr">url</span>: <span class="string">&quot;http://localhost:8100/ajax/test/post&quot;</span>,</span></span><br><span class="line"><span class="language-javascript">            <span class="attr">data</span>: &#123;</span></span><br><span class="line"><span class="language-javascript">                <span class="attr">username</span>: <span class="string">&#x27;admin&#x27;</span>,</span></span><br><span class="line"><span class="language-javascript">                <span class="attr">password</span>: <span class="string">&#x27;123456&#x27;</span></span></span><br><span class="line"><span class="language-javascript">            &#125;</span></span><br><span class="line"><span class="language-javascript">        &#125;).<span class="title function_">then</span>(<span class="function"><span class="params">res</span> =&gt;</span> &#123;</span></span><br><span class="line"><span class="language-javascript">            <span class="variable language_">console</span>.<span class="title function_">log</span>(res)</span></span><br><span class="line"><span class="language-javascript">        &#125;).<span class="title function_">catch</span>(<span class="function"><span class="params">err</span> =&gt;</span> &#123;</span></span><br><span class="line"><span class="language-javascript">            <span class="variable language_">console</span>.<span class="title function_">log</span>(err)</span></span><br><span class="line"><span class="language-javascript">        &#125;)</span></span><br><span class="line"><span class="language-javascript">    &#125;)</span></span><br><span class="line"><span class="language-javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="Axios-创建实例"><a href="#Axios-创建实例" class="headerlink" title="Axios 创建实例"></a>Axios 创建实例</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> request = axios.<span class="title function_">create</span>(&#123;</span><br><span class="line">  <span class="attr">baseURL</span>: <span class="string">&#x27;http://localhost:8080&#x27;</span>,</span><br><span class="line">  <span class="attr">timeout</span>: <span class="number">5000</span></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">request.<span class="title function_">get</span>(<span class="string">&#x27;/user&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<h2 id="Axios-返回数据结构"><a href="#Axios-返回数据结构" class="headerlink" title="Axios 返回数据结构"></a>Axios 返回数据结构</h2><p>Axios 返回对象结构：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  data<span class="punctuation">:</span> <span class="punctuation">&#123;</span><span class="punctuation">&#125;</span><span class="punctuation">,</span>          <span class="comment">// 服务器返回数据</span></span><br><span class="line">  status<span class="punctuation">:</span> <span class="number">200</span><span class="punctuation">,</span>       <span class="comment">// HTTP状态码</span></span><br><span class="line">  statusText<span class="punctuation">:</span> &#x27;OK&#x27;<span class="punctuation">,</span></span><br><span class="line">  headers<span class="punctuation">:</span> <span class="punctuation">&#123;</span><span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">  config<span class="punctuation">:</span> <span class="punctuation">&#123;</span><span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">  request<span class="punctuation">:</span> <span class="punctuation">&#123;</span><span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>获取示例：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">axios.<span class="title function_">get</span>(<span class="string">&#x27;/api/user&#x27;</span>)</span><br><span class="line">.<span class="title function_">then</span>(<span class="function"><span class="params">res</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(res.<span class="property">data</span>)</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(res.<span class="property">status</span>)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<h2 id="Axios-拦截器"><a href="#Axios-拦截器" class="headerlink" title="Axios 拦截器"></a>Axios 拦截器</h2><h3 id="请求拦截器"><a href="#请求拦截器" class="headerlink" title="请求拦截器"></a>请求拦截器</h3><p>请求拦截器：请求发送之前执行的操作。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">axios.<span class="property">interceptors</span>.<span class="property">request</span>.<span class="title function_">use</span>(</span><br><span class="line">    <span class="keyword">function</span> (<span class="params">config</span>) &#123;</span><br><span class="line">        <span class="comment">// 获取 token</span></span><br><span class="line">        <span class="keyword">let</span> token = <span class="variable language_">localStorage</span>.<span class="title function_">getItem</span>(<span class="string">&quot;token&quot;</span>)</span><br><span class="line">        <span class="keyword">if</span> (!token) &#123;</span><br><span class="line">            token = <span class="string">&#x27;1234567890&#x27;</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">log</span>(token)</span><br><span class="line">        <span class="comment">// 添加到请求头</span></span><br><span class="line">        <span class="keyword">if</span> (token) &#123;</span><br><span class="line">            config.<span class="property">headers</span>.<span class="property">Authorization</span> = <span class="string">&quot;Bearer &quot;</span> + token</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> config</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="keyword">function</span> (<span class="params">error</span>) &#123;</span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;请求失败&#x27;</span>)</span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">log</span>(error)</span><br><span class="line">        <span class="keyword">return</span> <span class="title class_">Promise</span>.<span class="title function_">reject</span>(error)</span><br><span class="line">    &#125;</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<h3 id="响应拦截器"><a href="#响应拦截器" class="headerlink" title="响应拦截器"></a>响应拦截器</h3><p>响应拦截器：服务器返回数据之后执行的操作。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">axios.<span class="property">interceptors</span>.<span class="property">response</span>.<span class="title function_">use</span>(</span><br><span class="line">    <span class="keyword">function</span> (<span class="params">response</span>) &#123;</span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;响应拦截器，服务器返回结果：&#x27;</span> + response)</span><br><span class="line">        <span class="keyword">return</span> response</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="keyword">function</span> (<span class="params">error</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="title class_">Promise</span>.<span class="title function_">reject</span>(error)</span><br><span class="line">    &#125;</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<h3 id="多个拦截器"><a href="#多个拦截器" class="headerlink" title="多个拦截器"></a>多个拦截器</h3><p>请求拦截器：后定义的先执行。</p>
+<p>响应拦截器：先定义的先执行。</p>
+<p>示例：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;div-button&quot;</span>&gt;</span></span><br><span class="line">    发送 Ajax 请求</span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">    axios.<span class="property">interceptors</span>.<span class="property">request</span>.<span class="title function_">use</span>(</span></span><br><span class="line"><span class="language-javascript">        <span class="keyword">function</span> (<span class="params">config</span>) &#123;</span></span><br><span class="line"><span class="language-javascript">            <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;请求拦截器-config-001&#x27;</span>)</span></span><br><span class="line"><span class="language-javascript">            <span class="keyword">return</span> config;</span></span><br><span class="line"><span class="language-javascript">        &#125;,</span></span><br><span class="line"><span class="language-javascript">        <span class="keyword">function</span> (<span class="params">error</span>) &#123;</span></span><br><span class="line"><span class="language-javascript">            <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;请求拦截器-error-001&#x27;</span>)</span></span><br><span class="line"><span class="language-javascript">            <span class="keyword">return</span> <span class="title class_">Promise</span>.<span class="title function_">reject</span>(error);</span></span><br><span class="line"><span class="language-javascript">        &#125;)</span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">    axios.<span class="property">interceptors</span>.<span class="property">request</span>.<span class="title function_">use</span>(</span></span><br><span class="line"><span class="language-javascript">        <span class="keyword">function</span> (<span class="params">config</span>) &#123;</span></span><br><span class="line"><span class="language-javascript">            <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;请求拦截器-config-002&#x27;</span>)</span></span><br><span class="line"><span class="language-javascript">            <span class="keyword">return</span> config;</span></span><br><span class="line"><span class="language-javascript">            <span class="comment">// throw new Error(&quot;请求拦截器-002-异常&quot;)</span></span></span><br><span class="line"><span class="language-javascript">        &#125;,</span></span><br><span class="line"><span class="language-javascript">        <span class="keyword">function</span> (<span class="params">error</span>) &#123;</span></span><br><span class="line"><span class="language-javascript">            <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;请求拦截器-error-002&#x27;</span>)</span></span><br><span class="line"><span class="language-javascript">            <span class="keyword">return</span> <span class="title class_">Promise</span>.<span class="title function_">reject</span>(error);</span></span><br><span class="line"><span class="language-javascript">        &#125;)</span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">    axios.<span class="property">interceptors</span>.<span class="property">response</span>.<span class="title function_">use</span>(</span></span><br><span class="line"><span class="language-javascript">        <span class="keyword">function</span> (<span class="params">response</span>) &#123;</span></span><br><span class="line"><span class="language-javascript">            <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;响应拦截器-response-001&#x27;</span>)</span></span><br><span class="line"><span class="language-javascript">            <span class="keyword">return</span> response;</span></span><br><span class="line"><span class="language-javascript">        &#125;,</span></span><br><span class="line"><span class="language-javascript">        <span class="keyword">function</span> (<span class="params">error</span>) &#123;</span></span><br><span class="line"><span class="language-javascript">            <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;响应拦截器-error-001&#x27;</span>)</span></span><br><span class="line"><span class="language-javascript">            <span class="keyword">return</span> <span class="title class_">Promise</span>.<span class="title function_">reject</span>(error);</span></span><br><span class="line"><span class="language-javascript">        &#125;</span></span><br><span class="line"><span class="language-javascript">    )</span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">    axios.<span class="property">interceptors</span>.<span class="property">response</span>.<span class="title function_">use</span>(</span></span><br><span class="line"><span class="language-javascript">        <span class="keyword">function</span> (<span class="params">response</span>) &#123;</span></span><br><span class="line"><span class="language-javascript">            <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;响应拦截器-response-002&#x27;</span>)</span></span><br><span class="line"><span class="language-javascript">            <span class="keyword">return</span> response;</span></span><br><span class="line"><span class="language-javascript">        &#125;,</span></span><br><span class="line"><span class="language-javascript">        <span class="keyword">function</span> (<span class="params">error</span>) &#123;</span></span><br><span class="line"><span class="language-javascript">            <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;响应拦截器-error-002&#x27;</span>)</span></span><br><span class="line"><span class="language-javascript">            <span class="keyword">return</span> <span class="title class_">Promise</span>.<span class="title function_">reject</span>(error);</span></span><br><span class="line"><span class="language-javascript">        &#125;</span></span><br><span class="line"><span class="language-javascript">    )</span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">    <span class="variable language_">document</span>.<span class="title function_">querySelector</span>(<span class="string">&quot;.div-button&quot;</span>).<span class="title function_">addEventListener</span>(<span class="string">&#x27;click&#x27;</span>, <span class="function">(<span class="params">e</span>) =&gt;</span> &#123;</span></span><br><span class="line"><span class="language-javascript">        axios.<span class="title function_">post</span>(<span class="string">&#x27;http://localhost:8100/ajax/test/post&#x27;</span>, &#123;</span></span><br><span class="line"><span class="language-javascript">            <span class="attr">username</span>: <span class="string">&#x27;admin&#x27;</span>,</span></span><br><span class="line"><span class="language-javascript">            <span class="attr">password</span>: <span class="string">&#x27;123456&#x27;</span></span></span><br><span class="line"><span class="language-javascript">        &#125;, &#123;</span></span><br><span class="line"><span class="language-javascript">            <span class="attr">timeout</span>: <span class="number">5000</span></span></span><br><span class="line"><span class="language-javascript">        &#125;).<span class="title function_">then</span>(<span class="function"><span class="params">res</span> =&gt;</span> &#123;</span></span><br><span class="line"><span class="language-javascript">            <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;处理请求结果&#x27;</span>)</span></span><br><span class="line"><span class="language-javascript">        &#125;).<span class="title function_">catch</span>(<span class="function"><span class="params">err</span> =&gt;</span> &#123;</span></span><br><span class="line"><span class="language-javascript">            <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;处理请求异常&#x27;</span>)</span></span><br><span class="line"><span class="language-javascript">        &#125;)</span></span><br><span class="line"><span class="language-javascript">    &#125;)</span></span><br><span class="line"><span class="language-javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>注：拦截器异常处理返回 <code>return Promise.reject(error);</code> 是为了将异常传递下去。</p>
+<blockquote>
+<p>执行顺序：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">请求拦截器02 -&gt; 请求拦截器01 -&gt; 发送请求 -&gt; 响应拦截器01 -&gt; 响应拦截器02 -&gt;  axios 结果处理 / axios 异常处理</span><br></pre></td></tr></table></figure>
+
+<p>底层原理：</p>
+<p>axios 会生成 chain 链：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">请求拦截器正常处理02，请求拦截器异常处理02，请求拦截器正常处理01，请求拦截器异常处理01，发送请求，undefined，响应拦截器正常处理01，响应拦截器异常处理01，响应拦截器正常处理02，响应拦截器异常处理02</span><br></pre></td></tr></table></figure>
+
+<p>如果有一个请求拦截器走了异常处理逻辑，后面就不会发送请求了，因为 <code>config</code> 对象丢失了。</p>
+<p>如果有一个响应拦截器走了异常处理逻辑，处理完异常后没有把异常传递下去，那么 <code>axios</code> 会走 <code>then</code> 分支，如果把异常传递下去，那么 <code>axios</code> 会走 <code>catch</code> 分支。</p>
+</blockquote>
+<h2 id="Axios-文件传输"><a href="#Axios-文件传输" class="headerlink" title="Axios 文件传输"></a>Axios 文件传输</h2><h3 id="上传文件"><a href="#上传文件" class="headerlink" title="上传文件"></a>上传文件</h3><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;div-button&quot;</span>&gt;</span></span><br><span class="line">    发送 Ajax 请求</span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;file&quot;</span> <span class="attr">id</span>=<span class="string">&quot;file-input&quot;</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">    <span class="variable language_">document</span>.<span class="title function_">querySelector</span>(<span class="string">&quot;.div-button&quot;</span>).<span class="title function_">addEventListener</span>(<span class="string">&#x27;click&#x27;</span>, <span class="function">(<span class="params">e</span>) =&gt;</span> &#123;</span></span><br><span class="line"><span class="language-javascript">        <span class="comment">// 读取文件信息</span></span></span><br><span class="line"><span class="language-javascript">        <span class="keyword">let</span> file = <span class="variable language_">document</span>.<span class="title function_">querySelector</span>(<span class="string">&quot;#file-input&quot;</span>).<span class="property">files</span>[<span class="number">0</span>];  </span></span><br><span class="line"><span class="language-javascript">        <span class="variable language_">console</span>.<span class="title function_">log</span>(file);</span></span><br><span class="line"><span class="language-javascript">        </span></span><br><span class="line"><span class="language-javascript">        <span class="comment">// 封装文件信息</span></span></span><br><span class="line"><span class="language-javascript">        <span class="keyword">let</span> formData = <span class="keyword">new</span> <span class="title class_">FormData</span>();</span></span><br><span class="line"><span class="language-javascript">        formData.<span class="title function_">append</span>(<span class="string">&quot;file&quot;</span>, file);   </span></span><br><span class="line"><span class="language-javascript">        formData.<span class="title function_">append</span>(<span class="string">&quot;fileName&quot;</span>, <span class="string">&quot;用户信息.xlsx&quot;</span>);</span></span><br><span class="line"><span class="language-javascript">        </span></span><br><span class="line"><span class="language-javascript">        <span class="comment">// 调用接口，上传文件到服务器</span></span></span><br><span class="line"><span class="language-javascript">        axios.<span class="title function_">post</span>(<span class="string">&quot;http://localhost:8100/ajax/excel/read&quot;</span>, formData, &#123;  </span></span><br><span class="line"><span class="language-javascript">            <span class="attr">headers</span>: &#123;</span></span><br><span class="line"><span class="language-javascript">                <span class="string">&quot;Content-Type&quot;</span>: <span class="string">&quot;multipart/form-data&quot;</span></span></span><br><span class="line"><span class="language-javascript">            &#125;</span></span><br><span class="line"><span class="language-javascript">        &#125;).<span class="title function_">then</span>(<span class="function"><span class="params">res</span> =&gt;</span> &#123;</span></span><br><span class="line"><span class="language-javascript">            <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;上传成功&quot;</span>, res.<span class="property">data</span>)</span></span><br><span class="line"><span class="language-javascript">        &#125;).<span class="title function_">catch</span>(<span class="function"><span class="params">err</span> =&gt;</span> &#123;</span></span><br><span class="line"><span class="language-javascript">            <span class="variable language_">console</span>.<span class="title function_">error</span>(<span class="string">&quot;上传失败&quot;</span>, err)</span></span><br><span class="line"><span class="language-javascript">        &#125;)</span></span><br><span class="line"><span class="language-javascript">    &#125;)</span></span><br><span class="line"><span class="language-javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>第二种写法：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;div-button&quot;</span>&gt;</span></span><br><span class="line">    发送 Ajax 请求</span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;file&quot;</span> <span class="attr">id</span>=<span class="string">&quot;file-input&quot;</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">    <span class="variable language_">document</span>.<span class="title function_">querySelector</span>(<span class="string">&quot;.div-button&quot;</span>).<span class="title function_">addEventListener</span>(<span class="string">&#x27;click&#x27;</span>, <span class="function">(<span class="params">e</span>) =&gt;</span> &#123;</span></span><br><span class="line"><span class="language-javascript">        <span class="comment">// 读取文件信息</span></span></span><br><span class="line"><span class="language-javascript">        <span class="keyword">let</span> file = <span class="variable language_">document</span>.<span class="title function_">querySelector</span>(<span class="string">&quot;#file-input&quot;</span>).<span class="property">files</span>[<span class="number">0</span>];</span></span><br><span class="line"><span class="language-javascript">        </span></span><br><span class="line"><span class="language-javascript">        <span class="comment">// 封装文件信息</span></span></span><br><span class="line"><span class="language-javascript">        <span class="keyword">let</span> formData = <span class="keyword">new</span> <span class="title class_">FormData</span>();</span></span><br><span class="line"><span class="language-javascript">        formData.<span class="title function_">append</span>(<span class="string">&quot;file&quot;</span>, file);</span></span><br><span class="line"><span class="language-javascript">        formData.<span class="title function_">append</span>(<span class="string">&quot;fileName&quot;</span>, <span class="string">&quot;用户信息.xlsx&quot;</span>)</span></span><br><span class="line"><span class="language-javascript">        </span></span><br><span class="line"><span class="language-javascript">		<span class="comment">// 调用接口，上传文件到服务器</span></span></span><br><span class="line"><span class="language-javascript">        <span class="title function_">axios</span>(&#123;</span></span><br><span class="line"><span class="language-javascript">            <span class="attr">method</span>: <span class="string">&quot;POST&quot;</span>,</span></span><br><span class="line"><span class="language-javascript">            <span class="attr">url</span>: <span class="string">&quot;http://localhost:8100/ajax/excel/read&quot;</span>,</span></span><br><span class="line"><span class="language-javascript">            <span class="attr">data</span>: formData,</span></span><br><span class="line"><span class="language-javascript">            <span class="attr">headers</span>: &#123;</span></span><br><span class="line"><span class="language-javascript">                <span class="string">&quot;Content-Type&quot;</span>: <span class="string">&quot;multipart/form-data&quot;</span></span></span><br><span class="line"><span class="language-javascript">            &#125;</span></span><br><span class="line"><span class="language-javascript">        &#125;).<span class="title function_">then</span>(<span class="function"><span class="params">res</span> =&gt;</span> &#123;</span></span><br><span class="line"><span class="language-javascript">            <span class="variable language_">console</span>.<span class="title function_">log</span>(res.<span class="property">data</span>)</span></span><br><span class="line"><span class="language-javascript">        &#125;).<span class="title function_">catch</span>(<span class="function"><span class="params">err</span> =&gt;</span> &#123;</span></span><br><span class="line"><span class="language-javascript">            <span class="variable language_">console</span>.<span class="title function_">log</span>(err)</span></span><br><span class="line"><span class="language-javascript">        &#125;)</span></span><br><span class="line"><span class="language-javascript">    &#125;)</span></span><br><span class="line"><span class="language-javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="下载文件"><a href="#下载文件" class="headerlink" title="下载文件"></a>下载文件</h3><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;div-button&quot;</span>&gt;</span></span><br><span class="line">    发送 Ajax 请求</span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;file&quot;</span> <span class="attr">id</span>=<span class="string">&quot;file-input&quot;</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">    <span class="variable language_">document</span>.<span class="title function_">querySelector</span>(<span class="string">&quot;.div-button&quot;</span>).<span class="title function_">addEventListener</span>(<span class="string">&#x27;click&#x27;</span>, <span class="function">(<span class="params">e</span>) =&gt;</span> &#123;</span></span><br><span class="line"><span class="language-javascript">        <span class="title function_">axios</span>(&#123;</span></span><br><span class="line"><span class="language-javascript">            <span class="attr">method</span>: <span class="string">&quot;GET&quot;</span>,</span></span><br><span class="line"><span class="language-javascript">            <span class="attr">url</span>: <span class="string">&quot;http://localhost:8100/ajax/excel/download&quot;</span>,</span></span><br><span class="line"><span class="language-javascript">            <span class="attr">params</span>: &#123;</span></span><br><span class="line"><span class="language-javascript">                <span class="string">&quot;path&quot;</span>: <span class="string">&quot;P://JavaStudy//05.AJAX入门到项目实战//测试数据//用户Excel测试数据.xlsx&quot;</span></span></span><br><span class="line"><span class="language-javascript">            &#125;,</span></span><br><span class="line"><span class="language-javascript">            <span class="attr">responseType</span>: <span class="string">&quot;blob&quot;</span></span></span><br><span class="line"><span class="language-javascript">        &#125;).<span class="title function_">then</span>(<span class="function"><span class="params">res</span> =&gt;</span> &#123;</span></span><br><span class="line"><span class="language-javascript">            <span class="variable language_">console</span>.<span class="title function_">log</span>(res)</span></span><br><span class="line"><span class="language-javascript">            <span class="comment">// axios 获取 blob</span></span></span><br><span class="line"><span class="language-javascript">            <span class="keyword">const</span> blob = <span class="keyword">new</span> <span class="title class_">Blob</span>([res.<span class="property">data</span>])</span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">            <span class="comment">// 创建 URL</span></span></span><br><span class="line"><span class="language-javascript">            <span class="keyword">const</span> link = <span class="variable language_">document</span>.<span class="title function_">createElement</span>(<span class="string">&quot;a&quot;</span>)</span></span><br><span class="line"><span class="language-javascript">            link.<span class="property">href</span> = <span class="variable language_">window</span>.<span class="property">URL</span>.<span class="title function_">createObjectURL</span>(blob)</span></span><br><span class="line"><span class="language-javascript">            link.<span class="property">download</span> = <span class="string">&quot;用户信息.xlsx&quot;</span></span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">            <span class="comment">// 模拟点击下载</span></span></span><br><span class="line"><span class="language-javascript">            link.<span class="title function_">click</span>()</span></span><br><span class="line"><span class="language-javascript">        &#125;)</span></span><br><span class="line"><span class="language-javascript">    &#125;)</span></span><br><span class="line"><span class="language-javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="Axios-取消请求"><a href="#Axios-取消请求" class="headerlink" title="Axios 取消请求"></a>Axios 取消请求</h2><p><strong>AbortController</strong>：是浏览器提供的一个 Web API，用来 <strong>中止异步操作</strong>。</p>
+<p>核心作用：<strong>让请求还没完成时主动取消它</strong>。</p>
+<p>Axios 取消请求示例：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;div-button&quot;</span>&gt;</span></span><br><span class="line">    发送 Ajax 请求</span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;file&quot;</span> <span class="attr">id</span>=<span class="string">&quot;file-input&quot;</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">    <span class="variable language_">document</span>.<span class="title function_">querySelector</span>(<span class="string">&quot;.div-button&quot;</span>).<span class="title function_">addEventListener</span>(<span class="string">&#x27;click&#x27;</span>, <span class="function">(<span class="params">e</span>) =&gt;</span> &#123;</span></span><br><span class="line"><span class="language-javascript">        <span class="keyword">let</span> file = <span class="variable language_">document</span>.<span class="title function_">querySelector</span>(<span class="string">&quot;#file-input&quot;</span>).<span class="property">files</span>[<span class="number">0</span>];</span></span><br><span class="line"><span class="language-javascript">        <span class="keyword">let</span> formData = <span class="keyword">new</span> <span class="title class_">FormData</span>();</span></span><br><span class="line"><span class="language-javascript">        formData.<span class="title function_">append</span>(<span class="string">&quot;file&quot;</span>, file);</span></span><br><span class="line"><span class="language-javascript">        formData.<span class="title function_">append</span>(<span class="string">&quot;fileName&quot;</span>, <span class="string">&quot;用户信息.xlsx&quot;</span>)</span></span><br><span class="line"><span class="language-javascript">        <span class="comment">// 创建一个 取消控制器对象</span></span></span><br><span class="line"><span class="language-javascript">        <span class="keyword">let</span> abortController = <span class="keyword">new</span> <span class="title class_">AbortController</span>();</span></span><br><span class="line"><span class="language-javascript">        <span class="title function_">axios</span>(&#123;</span></span><br><span class="line"><span class="language-javascript">            <span class="attr">method</span>: <span class="string">&quot;POST&quot;</span>,</span></span><br><span class="line"><span class="language-javascript">            <span class="attr">url</span>: <span class="string">&quot;http://localhost:8100/ajax/excel/read&quot;</span>,</span></span><br><span class="line"><span class="language-javascript">            <span class="attr">data</span>: formData,</span></span><br><span class="line"><span class="language-javascript">            <span class="attr">headers</span>: &#123;</span></span><br><span class="line"><span class="language-javascript">                <span class="string">&quot;Content-Type&quot;</span>: <span class="string">&quot;multipart/form-data&quot;</span></span></span><br><span class="line"><span class="language-javascript">            &#125;,</span></span><br><span class="line"><span class="language-javascript">            <span class="comment">// 标记，这个请求受 controller 控制</span></span></span><br><span class="line"><span class="language-javascript">            <span class="attr">signal</span>: abortController.<span class="property">signal</span></span></span><br><span class="line"><span class="language-javascript">        &#125;).<span class="title function_">then</span>(<span class="function"><span class="params">res</span> =&gt;</span> &#123;</span></span><br><span class="line"><span class="language-javascript">            <span class="variable language_">console</span>.<span class="title function_">log</span>(res.<span class="property">data</span>)</span></span><br><span class="line"><span class="language-javascript">        &#125;).<span class="title function_">catch</span>(<span class="function"><span class="params">err</span> =&gt;</span> &#123;</span></span><br><span class="line"><span class="language-javascript">            <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;请求中断&quot;</span>)</span></span><br><span class="line"><span class="language-javascript">            <span class="variable language_">console</span>.<span class="title function_">log</span>(err)</span></span><br><span class="line"><span class="language-javascript">        &#125;)</span></span><br><span class="line"><span class="language-javascript">        <span class="comment">// 5秒后中断请求</span></span></span><br><span class="line"><span class="language-javascript">        <span class="built_in">setTimeout</span>(<span class="function">()=&gt;</span>abortController.<span class="title function_">abort</span>(), <span class="number">5000</span>)</span></span><br><span class="line"><span class="language-javascript">    &#125;)</span></span><br><span class="line"><span class="language-javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>AbortController 结构：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">AbortController</span><br><span class="line">   │</span><br><span class="line">   ├── signal  (信号)</span><br><span class="line">   └── abort() (取消方法)</span><br></pre></td></tr></table></figure>
+</blockquote>
+<h2 id="Axios-同时发起多个请求"><a href="#Axios-同时发起多个请求" class="headerlink" title="Axios 同时发起多个请求"></a>Axios 同时发起多个请求</h2><p>使用 <code>Promise.all</code> 一次调用多个接口，但只有所有接口都执行成功才会执行 <code>then</code> 方法。</p>
+<p>只有有一个接口被阻塞了，其他接口也会被阻塞。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;div-button&quot;</span>&gt;</span></span><br><span class="line">    发送 Ajax 请求</span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">    <span class="keyword">let</span> request = axios.<span class="title function_">create</span>(&#123;</span></span><br><span class="line"><span class="language-javascript">        <span class="attr">baseURL</span>: <span class="string">&quot;http://localhost:8100&quot;</span>,</span></span><br><span class="line"><span class="language-javascript">        <span class="attr">timeout</span>: <span class="number">5000</span></span></span><br><span class="line"><span class="language-javascript">    &#125;)</span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">    <span class="variable language_">document</span>.<span class="title function_">querySelector</span>(<span class="string">&quot;.div-button&quot;</span>).<span class="title function_">addEventListener</span>(<span class="string">&#x27;click&#x27;</span>, <span class="function">(<span class="params">e</span>) =&gt;</span> &#123;</span></span><br><span class="line"><span class="language-javascript">        <span class="title class_">Promise</span>.<span class="title function_">all</span>([</span></span><br><span class="line"><span class="language-javascript">            <span class="comment">// 发起 get 请求</span></span></span><br><span class="line"><span class="language-javascript">            request.<span class="title function_">get</span>(<span class="string">&quot;/ajax/test/get&quot;</span>, &#123;</span></span><br><span class="line"><span class="language-javascript">                <span class="attr">params</span>: &#123;</span></span><br><span class="line"><span class="language-javascript">                    <span class="attr">id</span>: <span class="number">1</span>,</span></span><br><span class="line"><span class="language-javascript">                    <span class="attr">name</span>: <span class="string">&#x27;Tom&#x27;</span></span></span><br><span class="line"><span class="language-javascript">                &#125;</span></span><br><span class="line"><span class="language-javascript">            &#125;),</span></span><br><span class="line"><span class="language-javascript">            <span class="comment">// 发起 post 请求</span></span></span><br><span class="line"><span class="language-javascript">            request.<span class="title function_">post</span>(<span class="string">&quot;/ajax/test/post&quot;</span>, &#123;</span></span><br><span class="line"><span class="language-javascript">                <span class="attr">username</span>: <span class="string">&#x27;admin&#x27;</span>,</span></span><br><span class="line"><span class="language-javascript">                <span class="attr">password</span>: <span class="string">&#x27;123456&#x27;</span></span></span><br><span class="line"><span class="language-javascript">            &#125;)</span></span><br><span class="line"><span class="language-javascript">        ]).<span class="title function_">then</span>(<span class="function"><span class="params">res</span> =&gt;</span> &#123;</span></span><br><span class="line"><span class="language-javascript">            <span class="variable language_">console</span>.<span class="title function_">log</span>(res)</span></span><br><span class="line"><span class="language-javascript">        &#125;)</span></span><br><span class="line"><span class="language-javascript">    &#125;)</span></span><br><span class="line"><span class="language-javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+</div>
+        </div>
+        
+        <footer class="kratos-entry-footer clearfix">
+            
+            <div class="footer-tag clearfix">
+                <div class="pull-left">
+                <i class="fa fa-tags"></i>
+                    <a class="tag-none-link" href="/blog/tags/CSS/" rel="tag">CSS</a>, <a class="tag-none-link" href="/blog/tags/HTML/" rel="tag">HTML</a>, <a class="tag-none-link" href="/blog/tags/JavaScript/" rel="tag">JavaScript</a>
+                </div>
+                <div class="pull-date">
+                    <time datetime="2026-03-10T14:36:40.865Z" itemprop="dateModified">最后编辑：2026-03-10</time>
+                </div>
+            </div>
+        </footer>
+    </div>
+    
+        <nav class="navigation post-navigation clearfix" role="navigation">
+            
+            <div class="nav-previous clearfix">
+                <a title=" 【学习路线】前端学习路线" href="/blog/2026/03/08/01学习路线/10.前端学习路线/">&lt; 上一篇</a>
+            </div>
+            
+            
+        </nav>
+    
+    
+</article>
+
+        
+
+            </section>
+
+        
+
+                
+            
+
+<section id="kratos-widget-area" class="col-md-4 hidden-xs hidden-sm">
+    <!-- 文章和页面根据splitter来分割，没有的话就从头开始设置为sticky -->
+    
+    
+                <aside id="krw-about" class="widget widget-kratos-about clearfix">
+    <div class="photo-background"></div>
+    <div class="photo-wrapper clearfix">
+        <div class="photo-wrapper-tip text-center">
+            <img class="about-photo" src="/blog/images/avatar.webp" loading="lazy" decoding="auto" />
+        </div>
+    </div>
+    <div class="textwidget">
+        <p class="text-center">极简主义</p>
+    </div>
+    <div class="site-meta">
+        <a class="meta-item" href="/blog/archives/">
+            <span class="title">
+                文章
+            </span>
+            <span class="count">
+                94
+            </span>
+        </a>
+        <a class="meta-item" href="/blog/categories/">
+            <span class="title">
+                分类
+            </span>
+            <span class="count">
+                11
+            </span>
+        </a>
+        <a class="meta-item" href="/blog/tags/">
+            <span class="title">
+                标签
+            </span>
+            <span class="count">
+                33
+            </span>
+        </a>
+    </div>
+</aside>
+            
+                    <div class="sticky-area">
+                
+                    <aside id="krw-toc" class="widget widget-kratos-toc clearfix toc-div-class" >
+    <div class="photo-background"></div>
+    <h4 class="widget-title no-after">
+        <i class="fa fa-compass"></i>
+        文章目录
+        <span class="toc-progress-bar" role="progressbar" aria-label="阅读进度："></span>
+    </h4>
+    <div class="textwidget">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Axios-%E4%BB%8B%E7%BB%8D"><span class="toc-text">Axios 介绍</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Axios-%E5%B8%B8%E7%94%A8%E6%96%B9%E6%B3%95"><span class="toc-text">Axios 常用方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Axios-%E6%94%AF%E6%8C%81%E7%9A%84%E9%85%8D%E7%BD%AE"><span class="toc-text">Axios 支持的配置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Axios-%E5%9F%BA%E6%9C%AC%E8%AF%B7%E6%B1%82"><span class="toc-text">Axios 基本请求</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#GET-%E8%AF%B7%E6%B1%82"><span class="toc-text">GET 请求</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#POST-%E8%AF%B7%E6%B1%82"><span class="toc-text">POST 请求</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Axios-%E5%88%9B%E5%BB%BA%E5%AE%9E%E4%BE%8B"><span class="toc-text">Axios 创建实例</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Axios-%E8%BF%94%E5%9B%9E%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84"><span class="toc-text">Axios 返回数据结构</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Axios-%E6%8B%A6%E6%88%AA%E5%99%A8"><span class="toc-text">Axios 拦截器</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AF%B7%E6%B1%82%E6%8B%A6%E6%88%AA%E5%99%A8"><span class="toc-text">请求拦截器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%93%8D%E5%BA%94%E6%8B%A6%E6%88%AA%E5%99%A8"><span class="toc-text">响应拦截器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A4%9A%E4%B8%AA%E6%8B%A6%E6%88%AA%E5%99%A8"><span class="toc-text">多个拦截器</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Axios-%E6%96%87%E4%BB%B6%E4%BC%A0%E8%BE%93"><span class="toc-text">Axios 文件传输</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%8A%E4%BC%A0%E6%96%87%E4%BB%B6"><span class="toc-text">上传文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%8B%E8%BD%BD%E6%96%87%E4%BB%B6"><span class="toc-text">下载文件</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Axios-%E5%8F%96%E6%B6%88%E8%AF%B7%E6%B1%82"><span class="toc-text">Axios 取消请求</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Axios-%E5%90%8C%E6%97%B6%E5%8F%91%E8%B5%B7%E5%A4%9A%E4%B8%AA%E8%AF%B7%E6%B1%82"><span class="toc-text">Axios 同时发起多个请求</span></a></li></ol>
+    </div>
+</aside>
+                
+                
+  <aside id="krw-tags" class="widget widget-kratos-tags clearfix">
+    <h4 class="widget-title"><i class="fa fa-tags"></i>标签聚合</h4>
+      <div class="tag-clouds">
+        <a href="/blog/tags/CORS/" style="font-size: 0.8em;">CORS</a> <a href="/blog/tags/CSS/" style="font-size: 0.8em;">CSS</a> <a href="/blog/tags/Docker/" style="font-size: 0.8em;">Docker</a> <a href="/blog/tags/Dubbo/" style="font-size: 0.8em;">Dubbo</a> <a href="/blog/tags/ELK/" style="font-size: 0.8em;">ELK</a> <a href="/blog/tags/Elasticsearch/" style="font-size: 0.8em;">Elasticsearch</a> <a href="/blog/tags/Eureka/" style="font-size: 0.8em;">Eureka</a> <a href="/blog/tags/Feign/" style="font-size: 0.8em;">Feign</a> <a href="/blog/tags/Gateway/" style="font-size: 0.8em;">Gateway</a> <a href="/blog/tags/HTML/" style="font-size: 0.8em;">HTML</a> <a href="/blog/tags/Idea/" style="font-size: 0.8em;">Idea</a> <a href="/blog/tags/Java/" style="font-size: 0.8em;">Java</a> <a href="/blog/tags/JavaScript/" style="font-size: 0.8em;">JavaScript</a> <a href="/blog/tags/JavaWeb/" style="font-size: 0.8em;">JavaWeb</a> <a href="/blog/tags/K8s/" style="font-size: 0.8em;">K8s</a> <a href="/blog/tags/Linux/" style="font-size: 0.8em;">Linux</a> <a href="/blog/tags/Maven/" style="font-size: 0.8em;">Maven</a> <a href="/blog/tags/MySQL/" style="font-size: 0.8em;">MySQL</a>
+      </div>
+  </aside>
+
+            
+                
+  <aside id="krw-posts" class="widget widget-kratos-posts">
+  <h4 class="widget-title"><i class="fa fa-file"></i>最新文章</h4>
+  <div class="tab-content">
+      <ul class="list-group">
+        
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/03/08/03%E5%89%8D%E7%AB%AF/HTML%E5%89%8D%E7%AB%AF%E4%B8%89%E5%A4%A7%E4%BB%B6/36.Ajax%E4%BD%BF%E7%94%A8/"><i class="fa  fa-book"></i> 【JavaScript】Ajax 的使用</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/03/08/01%E5%AD%A6%E4%B9%A0%E8%B7%AF%E7%BA%BF/10.%E5%89%8D%E7%AB%AF%E5%AD%A6%E4%B9%A0%E8%B7%AF%E7%BA%BF/"><i class="fa  fa-book"></i> 【学习路线】前端学习路线</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/03/07/03%E5%89%8D%E7%AB%AF/HTML%E5%89%8D%E7%AB%AF%E4%B8%89%E5%A4%A7%E4%BB%B6/35.JavaScript%E5%AF%B9%E8%B1%A1%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95/"><i class="fa  fa-book"></i> 【JavaScript】JS 对象基础语法</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/03/04/03%E5%89%8D%E7%AB%AF/HTML%E5%89%8D%E7%AB%AF%E4%B8%89%E5%A4%A7%E4%BB%B6/34.JS%E8%87%AA%E5%B8%A6%E7%9A%84%E5%AF%B9%E8%B1%A1%E5%92%8C%E5%87%BD%E6%95%B0/"><i class="fa  fa-book"></i> 【JavaScript】JS 自带的对象和函数</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/03/01/03%E5%89%8D%E7%AB%AF/HTML%E5%89%8D%E7%AB%AF%E4%B8%89%E5%A4%A7%E4%BB%B6/33.JS%E4%BA%8B%E4%BB%B6%E7%9B%91%E5%90%AC/"><i class="fa  fa-book"></i> 【JavaScript】事件监听</a>
+            
+          
+        
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+      </ul>
+  </div>
+  </aside>
+
+            
+    </div>
+</section>
+        
+        </div>
+    </div>
+</div>
+<footer>
+    <div id="footer"  >
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3 footer-list text-center">
+                    <ul class="kratos-social-icons">
+                        <!-- Keep for compatibility -->
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <!-- New links -->
+                        
+                    </ul>
+                    <ul class="kratos-copyright">
+                        <div>
+                            <li>&copy; 2026 溪岚花的博客 版权所有.</li>
+                            <li>本站已运行<span id="span_dt">Loading...</span></li>
+                        </div>
+                        <div>
+                            <li>Theme <a href="https://github.com/Candinya/Kratos-Rebirth" target="_blank">Kratos:Rebirth</a></li>
+                            <li>Site built with&nbsp;<i class="fa fa-heart throb" style="color:#d43f57"></i>&nbsp;by 林家隆.</li>
+                        </div>
+                        <div>
+                            <li>Powered by <a href="https://hexo.io" target="_blank" rel="nofollow">Hexo</a></li>
+                            <li>Hosted on <a href="https://gitee.com/" target="_blank">Gitee Pages</a></li>
+                        </div>
+                        <div>
+                            
+                            
+                        </div>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="kr-tool text-center">
+            <div class="tool">
+                
+                    <div class="box search-box">
+                        <a href="/blog/search/">
+                            <span class="fa fa-search"></span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="box theme-box" id="darkmode-switch">
+                        <span class="fa fa-adjust"></span>
+                    </div>
+                
+                
+                
+            </div>
+            <div class="box gotop-box">
+                <span class="fa fa-chevron-up"></span>
+            </div>
+        </div>
+    </div>
+</footer>
+</div>
+</div>
+
+        <script defer src="/blog/vendors/bootstrap@3.3.4/dist/js/bootstrap.min.js"></script>
+<script defer src="/blog/vendors/nprogress@0.2.0/nprogress.js"></script>
+<script>
+    if (!window.kr) {
+        window.kr = {};
+    }
+    window.kr.notMobile = (!(navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i)));
+    window.kr.siteRoot = "/blog/";
+</script>
+
+
+
+
+
+    <script defer src="/blog/vendors/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+
+<script defer src="/blog/js/kratosr.min.js"></script>
+<script defer src="/blog/js/pjax.min.js"></script>
+
+
+
+<!-- Extra support for third-party plguins  -->
+
+
+    </body>
+</html>
