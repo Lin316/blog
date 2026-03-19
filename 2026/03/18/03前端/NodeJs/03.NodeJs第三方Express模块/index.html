@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+  <!-- 元数据 -->
+  <meta charset="utf-8">
+  <link rel="icon" href="/blog/images/logo.png">
+  
+  <title>【Node.js】Express模块 | 溪岚花的博客</title>
+  
+  <meta name="author" content="林家隆" />
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="robots" content="index,follow" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <meta name="format-detection" content="telphone=no, email=no" />
+  
+    <meta name="keywords" content="Node.js, 前端" />
+  
+  <meta name="description" content="Express 介绍Express 是 Web 开发框架，主要两个作用：  Web 网站服务器：专门对外提供 Web 网页资源的服务器。 API 接口服务器：专门对外提供 API 接口的服务器。   安装 express 模块： 1npm install express@4.17.1  使用示例： 1234567const express &#x3D; require(&amp;#x27;express&amp;#x27;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【Node.js】Express模块">
+<meta property="og:url" content="https://lin316.gitee.io/blog/2026/03/18/03%E5%89%8D%E7%AB%AF/NodeJs/03.NodeJs%E7%AC%AC%E4%B8%89%E6%96%B9Express%E6%A8%A1%E5%9D%97/index.html">
+<meta property="og:site_name" content="溪岚花的博客">
+<meta property="og:description" content="Express 介绍Express 是 Web 开发框架，主要两个作用：  Web 网站服务器：专门对外提供 Web 网页资源的服务器。 API 接口服务器：专门对外提供 API 接口的服务器。   安装 express 模块： 1npm install express@4.17.1  使用示例： 1234567const express &#x3D; require(&amp;#x27;express&amp;#x27;">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://lin316.gitee.io/blog/blog/images/logo.png">
+<meta property="article:published_time" content="2026-03-18T13:00:00.000Z">
+<meta property="article:modified_time" content="2026-03-19T13:08:35.310Z">
+<meta property="article:author" content="林家隆">
+<meta property="article:tag" content="Node.js">
+<meta property="article:tag" content="前端">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://lin316.gitee.io/blog/blog/images/logo.png">
+  
+  <!-- 站点验证相关 -->
+  
+    
+    
+    
+  
+  <!-- 样式表文件 -->
+  <link rel="stylesheet" id="kratos-css" href="/blog/css/kratosr.min.css" media="all"></script>
+  
+    <link rel="stylesheet" id="darkmode-css" href="/blog/css/kr-color-dark.min.css" media="(prefers-color-scheme: dark)"></script>
+    <script src="/blog/js/kr-dark.min.js"></script>
+  
+  
+    <link rel="stylesheet" id="highlight-css" href="/blog/css/highlight/night-eighties.min.css" media="all"></script>
+  
+  <link rel="stylesheet" id="fontawe-css" href="/blog/vendors/font-awesome@4.7.0/css/font-awesome.min.css" media="all"></script>
+  <link rel="stylesheet" id="nprogress-css" href="/blog/vendors/nprogress@0.2.0/nprogress.css" media="all"></script>
+  
+  
+  
+    <link rel="stylesheet" href="/blog/vendors/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css"></script>
+  
+  <!-- 不得不预先加载的一些JS文件 -->
+  <script src="/blog/vendors/jquery@3.6.0/dist/jquery.min.js"></script>
+  
+  
+  <style>
+    
+    
+  </style>
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+    <body class="custom-background">
+        <div id="kratos-wrapper">
+    <div id="kratos-page">
+        <div id="kratos-header">
+            <header id="kratos-desktop-topnav" class="kratos-topnav">
+                <div class="container">
+                    <div class="nav-header">
+                        <nav id="kratos-menu-wrap">
+                            <ul id="kratos-primary-menu" class="sf-menu">
+                                
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/">
+                                            
+                                                
+                                                    <i class="fa fa-home"></i>
+                                                
+                                                首页
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/archives/">
+                                            
+                                                
+                                                    <i class="fa fa-file"></i>
+                                                
+                                                归档
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/tags/">
+                                            
+                                                
+                                                    <i class="fa fa-tag"></i>
+                                                
+                                                标签
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/categories/">
+                                            
+                                                
+                                                    <i class="fa fa-folder"></i>
+                                                
+                                                目录
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/search/">
+                                            
+                                                
+                                                    <i class="fa fa-search"></i>
+                                                
+                                                搜索
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </header>
+            <header id="kratos-mobile-topnav" class="kratos-topnav">
+                <div class="container">
+                    <div class="color-logo"><a href="/blog/">溪岚花的博客</a></div>
+                    <div class="nav-toggle">
+                        <a class="kratos-nav-toggle js-kratos-nav-toggle">
+                            <i></i>
+                        </a>
+                    </div>
+                </div>
+            </header>
+        </div>
+        <div class="kratos-start kratos-hero-2">
+            <!-- <div class="kratos-overlay"></div> -->
+            <div class="kratos-cover kratos-cover-2 text-center">
+                <div class="desc desc2 animate-box">
+                    <a href="/blog/">
+                        <h2 style="opacity: 0.2;">溪岚花的博客</h2> <br />
+                        <span></span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div id="kratos-blog-post">
+            <div class="container">
+                <div id="main" class="row">
+                    
+
+        
+
+            <section class="col-md-8">
+
+        
+
+            <article itemscope itemtype="https://schema.org/Article">
+    
+    <link itemprop="mainEntityOfPage" href="https://lin316.gitee.io/blog/2026/03/18/03%E5%89%8D%E7%AB%AF/NodeJs/03.NodeJs%E7%AC%AC%E4%B8%89%E6%96%B9Express%E6%A8%A1%E5%9D%97/">
+    <div class="kratos-hentry kratos-post-inner clearfix">
+        <header class="kratos-entry-header">
+            
+                <h1 class="kratos-entry-title text-center" itemprop="name headline">【Node.js】Express模块</h1>
+            
+            
+            <ul class="kratos-post-meta text-center">
+                <li><time datetime="2026-03-18T13:00:00.000Z" itemprop="datePublished"><i class="fa fa-calendar"></i> 2026-03-18</time></li>
+                <li itemprop="author" itemscope itemtype="https://schema.org/Person">
+                    <i class="fa fa-user"></i> 作者 <span itemprop="name">林家隆</span>
+                </li>
+                
+                    <li>
+                        <i class="fa fa-edit"></i> 
+                        
+                        
+                            7.26K
+                        
+                        字
+                    </li>
+                
+                
+            </ul>
+        </header>
+        <div class="kratos-post-content">
+            
+            <div id="expire-alert" class="alert alert-warning hidden" role="alert">
+                <div class="icon"><i class="fa fa-warning"></i></div>
+                <div class="text"><p>本文最后编辑于 <time datetime="1773925715310"></time> 前，其中的内容可能需要更新。</p></div>
+            </div>
+            
+            
+            
+                <div class="kratos-post-inner-toc toc-div-class" >
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Express-%E4%BB%8B%E7%BB%8D"><span class="toc-number">1.</span> <span class="toc-text">Express 介绍</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Express-%E8%AF%B7%E6%B1%82"><span class="toc-number">2.</span> <span class="toc-text">Express 请求</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#GET-%E8%AF%B7%E6%B1%82"><span class="toc-number">2.1.</span> <span class="toc-text">GET 请求</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#POST-%E8%AF%B7%E6%B1%82"><span class="toc-number">2.2.</span> <span class="toc-text">POST 请求</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#res-send"><span class="toc-number">2.3.</span> <span class="toc-text">res.send()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#req-query"><span class="toc-number">2.4.</span> <span class="toc-text">req.query</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#req-params"><span class="toc-number">2.5.</span> <span class="toc-text">req.params</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A8%A1%E5%9D%97%E5%8C%96%E8%B7%AF%E7%94%B1"><span class="toc-number">3.</span> <span class="toc-text">模块化路由</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8B%A6%E6%88%AA%E5%99%A8"><span class="toc-number">4.</span> <span class="toc-text">拦截器</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8B%A6%E6%88%AA%E5%99%A8%E4%BB%8B%E7%BB%8D"><span class="toc-number">4.1.</span> <span class="toc-text">拦截器介绍</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8B%A6%E6%88%AA%E5%99%A8%E5%B1%80%E9%83%A8%E7%94%9F%E6%95%88"><span class="toc-number">4.2.</span> <span class="toc-text">拦截器局部生效</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BC%82%E5%B8%B8%E6%8B%A6%E6%88%AA%E5%99%A8"><span class="toc-number">4.3.</span> <span class="toc-text">异常拦截器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Express-%E5%86%85%E7%BD%AE%E6%8B%A6%E6%88%AA%E5%99%A8"><span class="toc-number">4.4.</span> <span class="toc-text">Express 内置拦截器</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#express-static"><span class="toc-number">4.4.1.</span> <span class="toc-text">express.static()</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#express-json"><span class="toc-number">4.4.2.</span> <span class="toc-text">express.json()</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#express-urlencoded"><span class="toc-number">4.4.3.</span> <span class="toc-text">express.urlencoded()</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8B%A6%E6%88%AA%E5%99%A8%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="toc-number">4.5.</span> <span class="toc-text">拦截器注意事项</span></a></li></ol></li></ol>
+                </div>
+            
+            <hr />
+            <div itemprop="articleBody"><h2 id="Express-介绍"><a href="#Express-介绍" class="headerlink" title="Express 介绍"></a>Express 介绍</h2><p>Express 是 <strong>Web 开发框架</strong>，主要两个作用：</p>
+<ul>
+<li>Web 网站服务器：专门对外提供 Web 网页资源的服务器。</li>
+<li>API 接口服务器：专门对外提供 API 接口的服务器。</li>
+</ul>
+<blockquote>
+<p>安装 express 模块：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install express@4.17.1</span><br></pre></td></tr></table></figure>
+
+<p>使用示例：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> express = <span class="built_in">require</span>(<span class="string">&#x27;express&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> app = <span class="title function_">express</span>();</span><br><span class="line"></span><br><span class="line">app.<span class="title function_">listen</span>(<span class="number">8788</span>, <span class="function">()=&gt;</span>&#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;服务器运行中：http://localhost:8788&#x27;</span>);</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+</blockquote>
+<h2 id="Express-请求"><a href="#Express-请求" class="headerlink" title="Express 请求"></a>Express 请求</h2><h3 id="GET-请求"><a href="#GET-请求" class="headerlink" title="GET 请求"></a>GET 请求</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">app.<span class="title function_">get</span>(<span class="string">&#x27;/test/get&#x27;</span>, <span class="function">(<span class="params">req, res</span>) =&gt;</span> &#123;</span><br><span class="line">    res.<span class="title function_">send</span>(<span class="string">&#x27;Hello Node.js&#x27;</span>);</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<h3 id="POST-请求"><a href="#POST-请求" class="headerlink" title="POST 请求"></a>POST 请求</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">app.<span class="title function_">post</span>(<span class="string">&#x27;/test/post&#x27;</span>, <span class="function">(<span class="params">req, res</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> body = &#123;</span><br><span class="line">        <span class="attr">name</span>: <span class="string">&#x27;John Doe&#x27;</span>,</span><br><span class="line">        <span class="attr">age</span>: <span class="number">18</span></span><br><span class="line">    &#125;;</span><br><span class="line">    res.<span class="title function_">send</span>(body);</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<h3 id="res-send"><a href="#res-send" class="headerlink" title="res.send()"></a>res.send()</h3><p><strong>给客户端返回结果</strong>。</p>
+<p>发送文本内容：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">res.<span class="title function_">send</span>(<span class="string">&#x27;Hello Node.js&#x27;</span>);</span><br></pre></td></tr></table></figure>
+
+<p>发送 json 对象：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">res.<span class="title function_">send</span>(&#123;</span><br><span class="line">    <span class="attr">name</span>: <span class="string">&#x27;John Doe&#x27;</span>,</span><br><span class="line">    <span class="attr">age</span>: <span class="number">18</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<h3 id="req-query"><a href="#req-query" class="headerlink" title="req.query"></a>req.query</h3><p>通过 <strong>req.query 获取 <code>?name=zs&amp;age=20</code> 参数</strong>。</p>
+<p>示例：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">app.<span class="title function_">get</span>(<span class="string">&#x27;/test/query&#x27;</span>, <span class="function">(<span class="params">req, res</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(req.<span class="property">query</span>);</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(req.<span class="property">query</span>.<span class="property">name</span>);</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(req.<span class="property">query</span>.<span class="property">age</span>);</span><br><span class="line">    res.<span class="title function_">send</span>(<span class="string">&#x27;success&#x27;</span>);</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>url 请求：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://localhost:8788/test/query?name=zs&amp;age=20</span><br></pre></td></tr></table></figure>
+
+<p>输出：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123; name: &#x27;zs&#x27;, age: &#x27;20&#x27; &#125;</span><br><span class="line">zs</span><br><span class="line">20</span><br></pre></td></tr></table></figure>
+
+<h3 id="req-params"><a href="#req-params" class="headerlink" title="req.params"></a>req.params</h3><p>通过 <strong>req.params 获取 URL 路径中的参数</strong>。</p>
+<p>在 express 中，<strong>URL 路径通过 <code>:参数名</code> 的方式作为路径参数的占位符变量</strong>。</p>
+<p>示例：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">app.<span class="title function_">get</span>(<span class="string">&#x27;/test/param/:name/:age&#x27;</span>, <span class="function">(<span class="params">req, res</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(req.<span class="property">params</span>);</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(req.<span class="property">params</span>.<span class="property">name</span>);</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(req.<span class="property">params</span>.<span class="property">age</span>);</span><br><span class="line">    res.<span class="title function_">send</span>(<span class="string">&#x27;success&#x27;</span>);</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>url 请求：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://localhost:8788/test/param/tom/19</span><br></pre></td></tr></table></figure>
+
+<p>输出：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123; name: &#x27;tom&#x27;, age: &#x27;19&#x27; &#125;</span><br><span class="line">tom</span><br><span class="line">19</span><br></pre></td></tr></table></figure>
+
+<h2 id="模块化路由"><a href="#模块化路由" class="headerlink" title="模块化路由"></a>模块化路由</h2><p>模块化路由：<strong>同一类请求（例如都是跟用户相关的请求）放在一个 js 文件统一管理</strong>。</p>
+<p>目录结构：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">express/</span><br><span class="line">├── node_modules/          # 依赖库根目录</span><br><span class="line">├── api/                   # 接口目录</span><br><span class="line">│   ├── TestController.js  # 提供测试接口的文件</span><br><span class="line">│   └── Controller.js      # 注册路由模块文件</span><br><span class="line">│</span><br><span class="line">├── package.json           # 项目配置文件</span><br><span class="line">└── package-lock.json      # 依赖版本锁定文件</span><br></pre></td></tr></table></figure>
+
+<p><code>TestController.js</code> 文件内容：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> express = <span class="built_in">require</span>(<span class="string">&#x27;express&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 创建路由对象</span></span><br><span class="line"><span class="keyword">const</span> router = express.<span class="title class_">Router</span>();</span><br><span class="line"></span><br><span class="line"><span class="comment">// get 请求</span></span><br><span class="line">router.<span class="title function_">get</span>(<span class="string">&#x27;/get&#x27;</span>, <span class="function">(<span class="params">req, res</span>) =&gt;</span> &#123;</span><br><span class="line">    res.<span class="title function_">send</span>(<span class="string">&#x27;测试路由 get 请求&#x27;</span>)</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="comment">// post 请求</span></span><br><span class="line">router.<span class="title function_">post</span>(<span class="string">&#x27;/post&#x27;</span>, <span class="function">(<span class="params">req, res</span>) =&gt;</span> &#123;</span><br><span class="line">    res.<span class="title function_">send</span>(<span class="string">&#x27;测试路由 post 请求&#x27;</span>)</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 导出路由对象</span></span><br><span class="line"><span class="variable language_">module</span>.<span class="property">exports</span> = router;</span><br></pre></td></tr></table></figure>
+
+<p>Controller.js 文件内容：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> express = <span class="built_in">require</span>(<span class="string">&#x27;express&#x27;</span>);</span><br><span class="line"><span class="keyword">const</span> testRouter = <span class="built_in">require</span>(<span class="string">&#x27;./TestController&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> app = <span class="title function_">express</span>();</span><br><span class="line"></span><br><span class="line"><span class="comment">// 路径带 /test 前缀</span></span><br><span class="line">app.<span class="title function_">use</span>(<span class="string">&#x27;/test&#x27;</span>, testRouter)</span><br><span class="line"></span><br><span class="line">app.<span class="title function_">listen</span>(<span class="number">8788</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;服务器运行中：http://localhost:8788&#x27;</span>);</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>测试 url：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://localhost:8788/test/get</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://localhost:8788/test/post</span><br></pre></td></tr></table></figure>
+
+<h2 id="拦截器"><a href="#拦截器" class="headerlink" title="拦截器"></a>拦截器</h2><h3 id="拦截器介绍"><a href="#拦截器介绍" class="headerlink" title="拦截器介绍"></a>拦截器介绍</h3><p>拦截器：<strong>对请求预处理</strong>。</p>
+<p>语法：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 拦截器方法必须包含 next 参数</span></span><br><span class="line">app.<span class="title function_">use</span>(<span class="function">(<span class="params">req, res, next</span>) =&gt;</span> &#123;</span><br><span class="line">    </span><br><span class="line">	<span class="comment">// 拦截器处理内容</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 拦截器结尾必须调用 next() 方法，把请求转递下去</span></span><br><span class="line">    <span class="title function_">next</span>();</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>示例：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> express = <span class="built_in">require</span>(<span class="string">&#x27;express&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> app = <span class="title function_">express</span>();</span><br><span class="line"></span><br><span class="line"><span class="comment">// 定义拦截器</span></span><br><span class="line">app.<span class="title function_">use</span>(<span class="function">(<span class="params">req, res, next</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;预处理拦截器&#x27;</span>)</span><br><span class="line">    <span class="comment">// 拦截器结尾必须调用 next() 方法，把请求转递下去</span></span><br><span class="line">    <span class="title function_">next</span>();</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 定义请求</span></span><br><span class="line">app.<span class="title function_">get</span>(<span class="string">&#x27;/test/get&#x27;</span>, <span class="function">(<span class="params">req, res</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;处理 get 请求&#x27;</span>)</span><br><span class="line">    res.<span class="title function_">send</span>(<span class="string">&#x27;Hello Node.js&#x27;</span>);</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">app.<span class="title function_">listen</span>(<span class="number">8788</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;服务器运行中：http://localhost:8788&#x27;</span>);</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>url 请求：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://localhost:8788/test/get</span><br></pre></td></tr></table></figure>
+
+<p>输出：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">预处理拦截器</span><br><span class="line">处理 get 请求</span><br></pre></td></tr></table></figure>
+
+<h3 id="拦截器局部生效"><a href="#拦截器局部生效" class="headerlink" title="拦截器局部生效"></a>拦截器局部生效</h3><p>全局拦截器：对全部请求都生效。使用 <strong>app.use(拦截器函数)</strong> 定义全局拦截器。</p>
+<p>局部拦截器：只对指定的请求生效。</p>
+<p><strong>全局拦截器示例：</strong></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">app.<span class="title function_">use</span>(<span class="function">(<span class="params">req, res, next</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;全局拦截器&#x27;</span>)</span><br><span class="line">    <span class="title function_">next</span>();</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p><strong>局部拦截器示例：</strong></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> express = <span class="built_in">require</span>(<span class="string">&#x27;express&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> app = <span class="title function_">express</span>();</span><br><span class="line"></span><br><span class="line"><span class="comment">// 局部拦截器-01</span></span><br><span class="line"><span class="keyword">const</span> <span class="title function_">mw1</span> = (<span class="params">req, res, next</span>) =&gt; &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;局部拦截器1&#x27;</span>)</span><br><span class="line">    <span class="title function_">next</span>();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 局部拦截器-02</span></span><br><span class="line"><span class="keyword">const</span> <span class="title function_">mw2</span> = (<span class="params">req, res, next</span>) =&gt; &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;局部拦截器2&#x27;</span>)</span><br><span class="line">    <span class="title function_">next</span>();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 定义请求，并给请求添加拦截器</span></span><br><span class="line">app.<span class="title function_">get</span>(<span class="string">&#x27;/test/get&#x27;</span>, [mw1, mw2], <span class="function">(<span class="params">req, res</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;处理 get 请求&#x27;</span>)</span><br><span class="line">    res.<span class="title function_">send</span>(<span class="string">&#x27;Hello Node.js&#x27;</span>);</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">app.<span class="title function_">listen</span>(<span class="number">8788</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;服务器运行中：http://localhost:8788&#x27;</span>);</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<h3 id="异常拦截器"><a href="#异常拦截器" class="headerlink" title="异常拦截器"></a>异常拦截器</h3><p>异常拦截器：<strong>用来捕获请求中抛出的异常，并处理异常</strong>。异常拦截器必须在注册完所有请求后再定义。</p>
+<p>语法：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">app.<span class="title function_">use</span>(<span class="function">(<span class="params">err, req, res, next</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="comment">/*</span></span><br><span class="line"><span class="comment">        处理异常代码</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    </span><br><span class="line">    <span class="title function_">next</span>();</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>示例：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> express = <span class="built_in">require</span>(<span class="string">&#x27;express&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> app = <span class="title function_">express</span>();</span><br><span class="line"></span><br><span class="line"><span class="comment">// 定义请求</span></span><br><span class="line">app.<span class="title function_">get</span>(<span class="string">&#x27;/test/get&#x27;</span>, <span class="function">(<span class="params">req, res</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;处理 get 请求&#x27;</span>)</span><br><span class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">Error</span>(<span class="string">&#x27;get 请求抛出异常&#x27;</span>)</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 定义异常拦截器</span></span><br><span class="line">app.<span class="title function_">use</span>(<span class="function">(<span class="params">err, req, res, next</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;进入异常拦截器&#x27;</span>)</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(err)</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(err.<span class="property">message</span>)</span><br><span class="line">    <span class="title function_">next</span>();</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">app.<span class="title function_">listen</span>(<span class="number">8788</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;服务器运行中：http://localhost:8788&#x27;</span>);</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<h3 id="Express-内置拦截器"><a href="#Express-内置拦截器" class="headerlink" title="Express 内置拦截器"></a>Express 内置拦截器</h3><h4 id="express-static"><a href="#express-static" class="headerlink" title="express.static()"></a>express.static()</h4><p>通过 <strong>express.static() 可以对外提供指定目录下所有静态资源（图片、CSS文件、JS文件等）的访问路径</strong>。</p>
+<p>目录结构：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">express/</span><br><span class="line">├── node_modules/          # 依赖库根目录</span><br><span class="line">├── public/                # 静态资源目录</span><br><span class="line">│   ├── css/               # 样式表目录</span><br><span class="line">│   │   └── test.css</span><br><span class="line">│   ├── images/            # 图片资源目录</span><br><span class="line">│   │   └── test.jpg</span><br><span class="line">│   └── js/                # 客户端脚本目录</span><br><span class="line">│       └── test.js</span><br><span class="line">├── 01.express第一天.js     # 入口文件/主程序脚本</span><br><span class="line">├── package.json           # 项目配置文件</span><br><span class="line">└── package-lock.json      # 依赖版本锁定文件</span><br></pre></td></tr></table></figure>
+
+<p><code>express.static()</code> 使用示例：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> express = <span class="built_in">require</span>(<span class="string">&#x27;express&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> app = <span class="title function_">express</span>();</span><br><span class="line"></span><br><span class="line">app.<span class="title function_">use</span>(express.<span class="title function_">static</span>(<span class="string">&#x27;./public&#x27;</span>));</span><br><span class="line"></span><br><span class="line">app.<span class="title function_">listen</span>(<span class="number">8788</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;服务器运行中：http://localhost:8788&#x27;</span>);</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>url 请求：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://localhost:8788/images/test.jpg</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://localhost:8788/css/test.css</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://localhost:8788/js/test.js</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>添加路径前缀：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">app.<span class="title function_">use</span>(<span class="string">&#x27;/public&#x27;</span>, express.<span class="title function_">static</span>(<span class="string">&#x27;./public&#x27;</span>));</span><br></pre></td></tr></table></figure>
+
+<p>url 请求：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://localhost:8788/public/images/test.jpg</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://localhost:8788/public/css/test.css</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://localhost:8788/public/js/test.js</span><br></pre></td></tr></table></figure>
+</blockquote>
+<h4 id="express-json"><a href="#express-json" class="headerlink" title="express.json()"></a>express.json()</h4><p>express.json()：<strong>解析 json 格式的请求体数据</strong>，通过 <code>req.body</code> 获取 json 数据。</p>
+<p>示例：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> express = <span class="built_in">require</span>(<span class="string">&#x27;express&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> app = <span class="title function_">express</span>();</span><br><span class="line"></span><br><span class="line">app.<span class="title function_">use</span>(express.<span class="title function_">json</span>());</span><br><span class="line"></span><br><span class="line">app.<span class="title function_">post</span>(<span class="string">&quot;/test/json&quot;</span>, <span class="function">(<span class="params">req,res</span>)=&gt;</span>&#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(req.<span class="property">body</span>);</span><br><span class="line">    res.<span class="title function_">send</span>(<span class="string">&#x27;success&#x27;</span>)</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">app.<span class="title function_">listen</span>(<span class="number">8788</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;服务器运行中：http://localhost:8788&#x27;</span>);</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>url 请求：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">curl -X POST  \</span><br><span class="line">  &#x27;http://localhost:8788/test/json&#x27; \</span><br><span class="line">  -H &#x27;Content-Type: application/json&#x27; \</span><br><span class="line">  -d &#x27;&#123;</span><br><span class="line">    &quot;name&quot;: &quot;tom&quot;,</span><br><span class="line">    &quot;age&quot;: 18</span><br><span class="line">&#125;&#x27;</span><br></pre></td></tr></table></figure>
+
+<p>输出：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span> name<span class="punctuation">:</span> &#x27;tom&#x27;<span class="punctuation">,</span> age<span class="punctuation">:</span> <span class="number">18</span> <span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="express-urlencoded"><a href="#express-urlencoded" class="headerlink" title="express.urlencoded()"></a>express.urlencoded()</h4><p>express.urlencoded()：<strong>解析表单格式的请求数据</strong>，通过 <code>req.body</code> 获取表单数据。</p>
+<p>示例：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> express = <span class="built_in">require</span>(<span class="string">&#x27;express&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> app = <span class="title function_">express</span>();</span><br><span class="line"></span><br><span class="line">app.<span class="title function_">use</span>(express.<span class="title function_">urlencoded</span>(&#123;<span class="attr">extended</span>: <span class="literal">false</span>&#125;));</span><br><span class="line"></span><br><span class="line">app.<span class="title function_">post</span>(<span class="string">&#x27;/test/form/data&#x27;</span>, <span class="function">(<span class="params">req, res</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(req.<span class="property">body</span>);</span><br><span class="line">    res.<span class="title function_">send</span>(<span class="string">&#x27;form success&#x27;</span>)</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">app.<span class="title function_">listen</span>(<span class="number">8788</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;服务器运行中：http://localhost:8788&#x27;</span>);</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>url 请求：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">curl -X POST  \</span><br><span class="line">  &#x27;http://localhost:8788/test/form/data&#x27; \</span><br><span class="line">  -H &#x27;Content-Type: application/x-www-form-urlencoded&#x27; \</span><br><span class="line">  -d &#x27;name=tom&amp;age=19&#x27;</span><br></pre></td></tr></table></figure>
+
+<p>输出：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[Object: null prototype] &#123; name: &#x27;tom&#x27;, age: &#x27;19&#x27; &#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="拦截器注意事项"><a href="#拦截器注意事项" class="headerlink" title="拦截器注意事项"></a>拦截器注意事项</h3><ol>
+<li>要在定义接口之前定义拦截器，否则拦截器不生效。</li>
+<li>每个拦截器结尾都需要执行 next() 函数，并且 next() 函数之后不准在写代码。</li>
+</ol>
+</div>
+        </div>
+        
+        <footer class="kratos-entry-footer clearfix">
+            
+            <div class="footer-tag clearfix">
+                <div class="pull-left">
+                <i class="fa fa-tags"></i>
+                    <a class="tag-none-link" href="/blog/tags/Node-js/" rel="tag">Node.js</a>, <a class="tag-none-link" href="/blog/tags/%E5%89%8D%E7%AB%AF/" rel="tag">前端</a>
+                </div>
+                <div class="pull-date">
+                    <time datetime="2026-03-19T13:08:35.310Z" itemprop="dateModified">最后编辑：2026-03-19</time>
+                </div>
+            </div>
+        </footer>
+    </div>
+    
+        <nav class="navigation post-navigation clearfix" role="navigation">
+            
+            <div class="nav-previous clearfix">
+                <a title=" 【Node.js】基础知识" href="/blog/2026/03/12/03前端/NodeJs/01.NodeJs基础知识/">&lt; 上一篇</a>
+            </div>
+            
+            
+        </nav>
+    
+    
+</article>
+
+        
+
+            </section>
+
+        
+
+                
+            
+
+<section id="kratos-widget-area" class="col-md-4 hidden-xs hidden-sm">
+    <!-- 文章和页面根据splitter来分割，没有的话就从头开始设置为sticky -->
+    
+    
+                <aside id="krw-about" class="widget widget-kratos-about clearfix">
+    <div class="photo-background"></div>
+    <div class="photo-wrapper clearfix">
+        <div class="photo-wrapper-tip text-center">
+            <img class="about-photo" src="/blog/images/avatar.webp" loading="lazy" decoding="auto" />
+        </div>
+    </div>
+    <div class="textwidget">
+        <p class="text-center">极简主义</p>
+    </div>
+    <div class="site-meta">
+        <a class="meta-item" href="/blog/archives/">
+            <span class="title">
+                文章
+            </span>
+            <span class="count">
+                98
+            </span>
+        </a>
+        <a class="meta-item" href="/blog/categories/">
+            <span class="title">
+                分类
+            </span>
+            <span class="count">
+                12
+            </span>
+        </a>
+        <a class="meta-item" href="/blog/tags/">
+            <span class="title">
+                标签
+            </span>
+            <span class="count">
+                35
+            </span>
+        </a>
+    </div>
+</aside>
+            
+                    <div class="sticky-area">
+                
+                    <aside id="krw-toc" class="widget widget-kratos-toc clearfix toc-div-class" >
+    <div class="photo-background"></div>
+    <h4 class="widget-title no-after">
+        <i class="fa fa-compass"></i>
+        文章目录
+        <span class="toc-progress-bar" role="progressbar" aria-label="阅读进度："></span>
+    </h4>
+    <div class="textwidget">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Express-%E4%BB%8B%E7%BB%8D"><span class="toc-text">Express 介绍</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Express-%E8%AF%B7%E6%B1%82"><span class="toc-text">Express 请求</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#GET-%E8%AF%B7%E6%B1%82"><span class="toc-text">GET 请求</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#POST-%E8%AF%B7%E6%B1%82"><span class="toc-text">POST 请求</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#res-send"><span class="toc-text">res.send()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#req-query"><span class="toc-text">req.query</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#req-params"><span class="toc-text">req.params</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A8%A1%E5%9D%97%E5%8C%96%E8%B7%AF%E7%94%B1"><span class="toc-text">模块化路由</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8B%A6%E6%88%AA%E5%99%A8"><span class="toc-text">拦截器</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8B%A6%E6%88%AA%E5%99%A8%E4%BB%8B%E7%BB%8D"><span class="toc-text">拦截器介绍</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8B%A6%E6%88%AA%E5%99%A8%E5%B1%80%E9%83%A8%E7%94%9F%E6%95%88"><span class="toc-text">拦截器局部生效</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BC%82%E5%B8%B8%E6%8B%A6%E6%88%AA%E5%99%A8"><span class="toc-text">异常拦截器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Express-%E5%86%85%E7%BD%AE%E6%8B%A6%E6%88%AA%E5%99%A8"><span class="toc-text">Express 内置拦截器</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#express-static"><span class="toc-text">express.static()</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#express-json"><span class="toc-text">express.json()</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#express-urlencoded"><span class="toc-text">express.urlencoded()</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8B%A6%E6%88%AA%E5%99%A8%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="toc-text">拦截器注意事项</span></a></li></ol></li></ol>
+    </div>
+</aside>
+                
+                
+  <aside id="krw-tags" class="widget widget-kratos-tags clearfix">
+    <h4 class="widget-title"><i class="fa fa-tags"></i>标签聚合</h4>
+      <div class="tag-clouds">
+        <a href="/blog/tags/CORS/" style="font-size: 0.8em;">CORS</a> <a href="/blog/tags/CSS/" style="font-size: 0.8em;">CSS</a> <a href="/blog/tags/Docker/" style="font-size: 0.8em;">Docker</a> <a href="/blog/tags/Dubbo/" style="font-size: 0.8em;">Dubbo</a> <a href="/blog/tags/ELK/" style="font-size: 0.8em;">ELK</a> <a href="/blog/tags/Elasticsearch/" style="font-size: 0.8em;">Elasticsearch</a> <a href="/blog/tags/Eureka/" style="font-size: 0.8em;">Eureka</a> <a href="/blog/tags/Feign/" style="font-size: 0.8em;">Feign</a> <a href="/blog/tags/Gateway/" style="font-size: 0.8em;">Gateway</a> <a href="/blog/tags/HTML/" style="font-size: 0.8em;">HTML</a> <a href="/blog/tags/Idea/" style="font-size: 0.8em;">Idea</a> <a href="/blog/tags/Java/" style="font-size: 0.8em;">Java</a> <a href="/blog/tags/JavaScript/" style="font-size: 0.8em;">JavaScript</a> <a href="/blog/tags/JavaWeb/" style="font-size: 0.8em;">JavaWeb</a> <a href="/blog/tags/K8s/" style="font-size: 0.8em;">K8s</a> <a href="/blog/tags/Linux/" style="font-size: 0.8em;">Linux</a> <a href="/blog/tags/Maven/" style="font-size: 0.8em;">Maven</a> <a href="/blog/tags/MySQL/" style="font-size: 0.8em;">MySQL</a>
+      </div>
+  </aside>
+
+            
+                
+  <aside id="krw-posts" class="widget widget-kratos-posts">
+  <h4 class="widget-title"><i class="fa fa-file"></i>最新文章</h4>
+  <div class="tab-content">
+      <ul class="list-group">
+        
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/03/18/03%E5%89%8D%E7%AB%AF/NodeJs/03.NodeJs%E7%AC%AC%E4%B8%89%E6%96%B9Express%E6%A8%A1%E5%9D%97/"><i class="fa  fa-book"></i> 【Node.js】Express模块</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/03/12/03%E5%89%8D%E7%AB%AF/NodeJs/01.NodeJs%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/"><i class="fa  fa-book"></i> 【Node.js】基础知识</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/03/12/03%E5%89%8D%E7%AB%AF/NodeJs/02.NodeJs%E5%86%85%E7%BD%AE%E6%A8%A1%E5%9D%97/"><i class="fa  fa-book"></i> 【Node.js】内置模块</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/03/11/03%E5%89%8D%E7%AB%AF/HTML%E5%89%8D%E7%AB%AF%E4%B8%89%E5%A4%A7%E4%BB%B6/37.JS%E5%BC%82%E6%AD%A5%E7%BC%96%E7%A8%8B/"><i class="fa  fa-book"></i> 【JavaScript】异步编程</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/03/08/03%E5%89%8D%E7%AB%AF/HTML%E5%89%8D%E7%AB%AF%E4%B8%89%E5%A4%A7%E4%BB%B6/36.Ajax%E4%BD%BF%E7%94%A8/"><i class="fa  fa-book"></i> 【JavaScript】Ajax 的使用</a>
+            
+          
+        
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+      </ul>
+  </div>
+  </aside>
+
+            
+    </div>
+</section>
+        
+        </div>
+    </div>
+</div>
+<footer>
+    <div id="footer"  >
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3 footer-list text-center">
+                    <ul class="kratos-social-icons">
+                        <!-- Keep for compatibility -->
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <!-- New links -->
+                        
+                    </ul>
+                    <ul class="kratos-copyright">
+                        <div>
+                            <li>&copy; 2026 溪岚花的博客 版权所有.</li>
+                            <li>本站已运行<span id="span_dt">Loading...</span></li>
+                        </div>
+                        <div>
+                            <li>Theme <a href="https://github.com/Candinya/Kratos-Rebirth" target="_blank">Kratos:Rebirth</a></li>
+                            <li>Site built with&nbsp;<i class="fa fa-heart throb" style="color:#d43f57"></i>&nbsp;by 林家隆.</li>
+                        </div>
+                        <div>
+                            <li>Powered by <a href="https://hexo.io" target="_blank" rel="nofollow">Hexo</a></li>
+                            <li>Hosted on <a href="https://gitee.com/" target="_blank">Gitee Pages</a></li>
+                        </div>
+                        <div>
+                            
+                            
+                        </div>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="kr-tool text-center">
+            <div class="tool">
+                
+                    <div class="box search-box">
+                        <a href="/blog/search/">
+                            <span class="fa fa-search"></span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="box theme-box" id="darkmode-switch">
+                        <span class="fa fa-adjust"></span>
+                    </div>
+                
+                
+                
+            </div>
+            <div class="box gotop-box">
+                <span class="fa fa-chevron-up"></span>
+            </div>
+        </div>
+    </div>
+</footer>
+</div>
+</div>
+
+        <script defer src="/blog/vendors/bootstrap@3.3.4/dist/js/bootstrap.min.js"></script>
+<script defer src="/blog/vendors/nprogress@0.2.0/nprogress.js"></script>
+<script>
+    if (!window.kr) {
+        window.kr = {};
+    }
+    window.kr.notMobile = (!(navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i)));
+    window.kr.siteRoot = "/blog/";
+</script>
+
+
+
+
+
+    <script defer src="/blog/vendors/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+
+<script defer src="/blog/js/kratosr.min.js"></script>
+<script defer src="/blog/js/pjax.min.js"></script>
+
+
+
+<!-- Extra support for third-party plguins  -->
+
+
+    </body>
+</html>

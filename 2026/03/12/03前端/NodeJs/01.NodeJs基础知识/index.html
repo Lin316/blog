@@ -1,0 +1,854 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+  <!-- 元数据 -->
+  <meta charset="utf-8">
+  <link rel="icon" href="/blog/images/logo.png">
+  
+  <title>【Node.js】基础知识 | 溪岚花的博客</title>
+  
+  <meta name="author" content="林家隆" />
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="robots" content="index,follow" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <meta name="format-detection" content="telphone=no, email=no" />
+  
+    <meta name="keywords" content="Node.js, 前端" />
+  
+  <meta name="description" content="Node.js 介绍Node.js 是一个 JavaScript 运行环境，可以让 JavaScript 在 浏览器之外（服务器端）运行。 Node.js 是一个基于 Chrome V8 引擎的 JavaScript 运行环境，让 JavaScript 既能写前端，又能写后端。 内置模块ode.js 有很多内置模块：    模块 功能    fs 文件系统   path 路径   http Web">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【Node.js】基础知识">
+<meta property="og:url" content="https://lin316.gitee.io/blog/2026/03/12/03%E5%89%8D%E7%AB%AF/NodeJs/01.NodeJs%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/index.html">
+<meta property="og:site_name" content="溪岚花的博客">
+<meta property="og:description" content="Node.js 介绍Node.js 是一个 JavaScript 运行环境，可以让 JavaScript 在 浏览器之外（服务器端）运行。 Node.js 是一个基于 Chrome V8 引擎的 JavaScript 运行环境，让 JavaScript 既能写前端，又能写后端。 内置模块ode.js 有很多内置模块：    模块 功能    fs 文件系统   path 路径   http Web">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://lin316.gitee.io/blog/blog/images/logo.png">
+<meta property="article:published_time" content="2026-03-12T13:00:00.000Z">
+<meta property="article:modified_time" content="2026-03-18T12:40:27.297Z">
+<meta property="article:author" content="林家隆">
+<meta property="article:tag" content="Node.js">
+<meta property="article:tag" content="前端">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://lin316.gitee.io/blog/blog/images/logo.png">
+  
+  <!-- 站点验证相关 -->
+  
+    
+    
+    
+  
+  <!-- 样式表文件 -->
+  <link rel="stylesheet" id="kratos-css" href="/blog/css/kratosr.min.css" media="all"></script>
+  
+    <link rel="stylesheet" id="darkmode-css" href="/blog/css/kr-color-dark.min.css" media="(prefers-color-scheme: dark)"></script>
+    <script src="/blog/js/kr-dark.min.js"></script>
+  
+  
+    <link rel="stylesheet" id="highlight-css" href="/blog/css/highlight/night-eighties.min.css" media="all"></script>
+  
+  <link rel="stylesheet" id="fontawe-css" href="/blog/vendors/font-awesome@4.7.0/css/font-awesome.min.css" media="all"></script>
+  <link rel="stylesheet" id="nprogress-css" href="/blog/vendors/nprogress@0.2.0/nprogress.css" media="all"></script>
+  
+  
+  
+    <link rel="stylesheet" href="/blog/vendors/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css"></script>
+  
+  <!-- 不得不预先加载的一些JS文件 -->
+  <script src="/blog/vendors/jquery@3.6.0/dist/jquery.min.js"></script>
+  
+  
+  <style>
+    
+    
+  </style>
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+    <body class="custom-background">
+        <div id="kratos-wrapper">
+    <div id="kratos-page">
+        <div id="kratos-header">
+            <header id="kratos-desktop-topnav" class="kratos-topnav">
+                <div class="container">
+                    <div class="nav-header">
+                        <nav id="kratos-menu-wrap">
+                            <ul id="kratos-primary-menu" class="sf-menu">
+                                
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/">
+                                            
+                                                
+                                                    <i class="fa fa-home"></i>
+                                                
+                                                首页
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/archives/">
+                                            
+                                                
+                                                    <i class="fa fa-file"></i>
+                                                
+                                                归档
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/tags/">
+                                            
+                                                
+                                                    <i class="fa fa-tag"></i>
+                                                
+                                                标签
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/categories/">
+                                            
+                                                
+                                                    <i class="fa fa-folder"></i>
+                                                
+                                                目录
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/search/">
+                                            
+                                                
+                                                    <i class="fa fa-search"></i>
+                                                
+                                                搜索
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </header>
+            <header id="kratos-mobile-topnav" class="kratos-topnav">
+                <div class="container">
+                    <div class="color-logo"><a href="/blog/">溪岚花的博客</a></div>
+                    <div class="nav-toggle">
+                        <a class="kratos-nav-toggle js-kratos-nav-toggle">
+                            <i></i>
+                        </a>
+                    </div>
+                </div>
+            </header>
+        </div>
+        <div class="kratos-start kratos-hero-2">
+            <!-- <div class="kratos-overlay"></div> -->
+            <div class="kratos-cover kratos-cover-2 text-center">
+                <div class="desc desc2 animate-box">
+                    <a href="/blog/">
+                        <h2 style="opacity: 0.2;">溪岚花的博客</h2> <br />
+                        <span></span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div id="kratos-blog-post">
+            <div class="container">
+                <div id="main" class="row">
+                    
+
+        
+
+            <section class="col-md-8">
+
+        
+
+            <article itemscope itemtype="https://schema.org/Article">
+    
+    <link itemprop="mainEntityOfPage" href="https://lin316.gitee.io/blog/2026/03/12/03%E5%89%8D%E7%AB%AF/NodeJs/01.NodeJs%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/">
+    <div class="kratos-hentry kratos-post-inner clearfix">
+        <header class="kratos-entry-header">
+            
+                <h1 class="kratos-entry-title text-center" itemprop="name headline">【Node.js】基础知识</h1>
+            
+            
+            <ul class="kratos-post-meta text-center">
+                <li><time datetime="2026-03-12T13:00:00.000Z" itemprop="datePublished"><i class="fa fa-calendar"></i> 2026-03-12</time></li>
+                <li itemprop="author" itemscope itemtype="https://schema.org/Person">
+                    <i class="fa fa-user"></i> 作者 <span itemprop="name">林家隆</span>
+                </li>
+                
+                    <li>
+                        <i class="fa fa-edit"></i> 
+                        
+                        
+                            5.17K
+                        
+                        字
+                    </li>
+                
+                
+            </ul>
+        </header>
+        <div class="kratos-post-content">
+            
+            <div id="expire-alert" class="alert alert-warning hidden" role="alert">
+                <div class="icon"><i class="fa fa-warning"></i></div>
+                <div class="text"><p>本文最后编辑于 <time datetime="1773837627297"></time> 前，其中的内容可能需要更新。</p></div>
+            </div>
+            
+            
+            
+                <div class="kratos-post-inner-toc toc-div-class" >
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Node-js-%E4%BB%8B%E7%BB%8D"><span class="toc-number">1.</span> <span class="toc-text">Node.js 介绍</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%86%85%E7%BD%AE%E6%A8%A1%E5%9D%97"><span class="toc-number">2.</span> <span class="toc-text">内置模块</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A8%A1%E5%9D%97%E5%8C%96"><span class="toc-number">3.</span> <span class="toc-text">模块化</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A8%A1%E5%9D%97%E5%8C%96%E4%BB%8B%E7%BB%8D"><span class="toc-number">3.1.</span> <span class="toc-text">模块化介绍</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ES6-%E6%A0%87%E5%87%86%E6%A8%A1%E5%9D%97"><span class="toc-number">3.2.</span> <span class="toc-text">ES6 标准模块</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#export"><span class="toc-number">3.2.1.</span> <span class="toc-text">export</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#import"><span class="toc-number">3.2.2.</span> <span class="toc-text">import</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%A4%BA%E4%BE%8B"><span class="toc-number">3.2.3.</span> <span class="toc-text">示例</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#CommonJS-%E6%A8%A1%E5%9D%97"><span class="toc-number">3.3.</span> <span class="toc-text">CommonJS 模块</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#CommonJS-%E6%A8%A1%E5%9D%97%E4%BB%8B%E7%BB%8D"><span class="toc-number">3.3.1.</span> <span class="toc-text">CommonJS 模块介绍</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#require"><span class="toc-number">3.3.2.</span> <span class="toc-text">require()</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#module-exports"><span class="toc-number">3.3.3.</span> <span class="toc-text">module.exports</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#exports"><span class="toc-number">3.3.4.</span> <span class="toc-text">exports</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A8%A1%E5%9D%97%E7%BC%93%E5%AD%98%E6%9C%BA%E5%88%B6"><span class="toc-number">3.4.</span> <span class="toc-text">模块缓存机制</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#npm-%E5%8C%85%E7%AE%A1%E7%90%86"><span class="toc-number">4.</span> <span class="toc-text">npm 包管理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#npm-%E4%BB%8B%E7%BB%8D"><span class="toc-number">4.1.</span> <span class="toc-text">npm 介绍</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#npm-%E5%91%BD%E4%BB%A4"><span class="toc-number">4.2.</span> <span class="toc-text">npm 命令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BF%AE%E6%94%B9-npm-%E9%95%9C%E5%83%8F%E6%BA%90"><span class="toc-number">4.3.</span> <span class="toc-text">修改 npm 镜像源</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8C%85%E5%88%86%E7%B1%BB"><span class="toc-number">4.4.</span> <span class="toc-text">包分类</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%A1%B9%E7%9B%AE%E5%8C%85"><span class="toc-number">4.4.1.</span> <span class="toc-text">项目包</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%85%A8%E5%B1%80%E5%8C%85"><span class="toc-number">4.4.2.</span> <span class="toc-text">全局包</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A7%84%E8%8C%83%E7%9A%84%E5%8C%85%E7%BB%93%E6%9E%84"><span class="toc-number">4.5.</span> <span class="toc-text">规范的包结构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#package-json-%E8%AF%A6%E8%A7%A3"><span class="toc-number">4.6.</span> <span class="toc-text">package.json 详解</span></a></li></ol></li></ol>
+                </div>
+            
+            <hr />
+            <div itemprop="articleBody"><h2 id="Node-js-介绍"><a href="#Node-js-介绍" class="headerlink" title="Node.js 介绍"></a>Node.js 介绍</h2><p><strong>Node.js</strong> 是一个 <strong>JavaScript 运行环境</strong>，可以让 JavaScript 在 <strong>浏览器之外（服务器端）运行</strong>。</p>
+<p>Node.js 是<strong>一个基于 Chrome V8 引擎的</strong> JavaScript 运行环境，让 <strong>JavaScript 既能写前端，又能写后端</strong>。</p>
+<h2 id="内置模块"><a href="#内置模块" class="headerlink" title="内置模块"></a>内置模块</h2><p>ode.js 有很多内置模块：</p>
+<table>
+<thead>
+<tr>
+<th>模块</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>fs</td>
+<td>文件系统</td>
+</tr>
+<tr>
+<td>path</td>
+<td>路径</td>
+</tr>
+<tr>
+<td>http</td>
+<td>Web 服务器</td>
+</tr>
+<tr>
+<td>url</td>
+<td>URL 解析</td>
+</tr>
+<tr>
+<td>os</td>
+<td>系统信息</td>
+</tr>
+<tr>
+<td>events</td>
+<td>事件</td>
+</tr>
+</tbody></table>
+<h2 id="模块化"><a href="#模块化" class="headerlink" title="模块化"></a>模块化</h2><h3 id="模块化介绍"><a href="#模块化介绍" class="headerlink" title="模块化介绍"></a>模块化介绍</h3><p>在 Node.js 中：</p>
+<ul>
+<li><strong>每个文件就是一个模块</strong></li>
+<li>每个模块都有自己的作用域</li>
+<li>模块之间通过 <strong>导出（export）和导入（require&#x2F;import）</strong> 进行通信</li>
+</ul>
+<h3 id="ES6-标准模块"><a href="#ES6-标准模块" class="headerlink" title="ES6 标准模块"></a>ES6 标准模块</h3><blockquote>
+<p>使用 ES6 标准模块，需要在项目中<strong>创建 package.json 文件</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">node-demo</span><br><span class="line">│</span><br><span class="line">├─ package.json</span><br><span class="line">├─ math.js</span><br><span class="line">└─ app.js</span><br></pre></td></tr></table></figure>
+
+<p>package.json 文件内容：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;type&quot;</span><span class="punctuation">:</span> <span class="string">&quot;module&quot;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+</blockquote>
+<h4 id="export"><a href="#export" class="headerlink" title="export"></a>export</h4><p>导出变量：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> name = <span class="string">&quot;node&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>导出函数：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">function</span> <span class="title function_">add</span>(<span class="params">a, b</span>) &#123;</span><br><span class="line">  <span class="keyword">return</span> a + b</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>默认导出，<strong>一个模块只能有一个 default</strong>：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="keyword">function</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;hello&quot;</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="import"><a href="#import" class="headerlink" title="import"></a>import</h4><p>导入模块：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; add &#125; <span class="keyword">from</span> <span class="string">&#x27;./math.js&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>默认导入：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> add <span class="keyword">from</span> <span class="string">&#x27;./math.js&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>全部导入：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> * <span class="keyword">as</span> math <span class="keyword">from</span> <span class="string">&#x27;./math.js&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h4><p>math.js 模块文件：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> name = <span class="string">&quot;math package&quot;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">function</span> <span class="title function_">add</span>(<span class="params">a, b</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> a + b</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">function</span> <span class="title function_">sub</span>(<span class="params">a, b</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> a - b</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="keyword">function</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;hello math&quot;</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>导入 math.js 部分模块：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123;add, sub, name&#125; <span class="keyword">from</span> <span class="string">&#x27;./math.js&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="title function_">add</span>(<span class="number">1</span>, <span class="number">2</span>));</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="title function_">sub</span>(<span class="number">1</span>, <span class="number">2</span>));</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(name);  <span class="comment">// &quot;math package&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>导入 math.js 默认模块：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> default_fun <span class="keyword">from</span> <span class="string">&#x27;./math.js&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="title function_">default_fun</span>() <span class="comment">// 打印 “hello math”</span></span><br></pre></td></tr></table></figure>
+
+<p>导入 math.js 全部模块：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> * <span class="keyword">as</span> math <span class="keyword">from</span> <span class="string">&#x27;./math.js&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(math.<span class="property">name</span>);          <span class="comment">// &quot;math package&quot;</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(math.<span class="title function_">add</span>(<span class="number">1</span>, <span class="number">2</span>));</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(math.<span class="title function_">sub</span>(<span class="number">5</span>, <span class="number">2</span>));</span><br><span class="line">math.<span class="title function_">default</span>()                   <span class="comment">// 打印 “hello math”</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="CommonJS-模块"><a href="#CommonJS-模块" class="headerlink" title="CommonJS 模块"></a>CommonJS 模块</h3><h4 id="CommonJS-模块介绍"><a href="#CommonJS-模块介绍" class="headerlink" title="CommonJS 模块介绍"></a>CommonJS 模块介绍</h4><p>CommonJS 是 Node.js 最早的模块规范。</p>
+<p>核心 API：</p>
+<ul>
+<li>require()：加载模块</li>
+<li>module.exports：导出模块</li>
+<li>exports：导出模块</li>
+</ul>
+<h4 id="require"><a href="#require" class="headerlink" title="require()"></a>require()</h4><p>用于 <strong>加载模块</strong>，加载自己写的文件模块，模块路径必须用 <code>./</code> 或 <code>../</code></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> fs = <span class="built_in">require</span>(<span class="string">&#x27;fs&#x27;</span>)</span><br><span class="line"><span class="keyword">const</span> math = <span class="built_in">require</span>(<span class="string">&#x27;./math&#x27;</span>) <span class="comment">// 加载自己的模块</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="module-exports"><a href="#module-exports" class="headerlink" title="module.exports"></a>module.exports</h4><p>用于 <strong>导出模块</strong></p>
+<p>示例：</p>
+<p>math.js 文件</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">add</span>(<span class="params">a, b</span>) &#123;</span><br><span class="line">  <span class="keyword">return</span> a + b</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="variable language_">module</span>.<span class="property">exports</span> = &#123;</span><br><span class="line">    add</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>test.js 文件</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> add = <span class="built_in">require</span>(<span class="string">&#x27;./math&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="title function_">add</span>(<span class="number">1</span>, <span class="number">2</span>));</span><br></pre></td></tr></table></figure>
+
+<h4 id="exports"><a href="#exports" class="headerlink" title="exports"></a>exports</h4><p><code>exports</code> 是 <code>module.exports</code> 的一个引用，<code>exports === module.exports</code> 为 true。</p>
+<blockquote>
+<p><strong>不要在同一个模块中同时使用 <code>exports</code> 和 <code>module.exports</code></strong></p>
+</blockquote>
+<p>示例：</p>
+<p>math.js 文件</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">exports</span>.<span class="property">add</span> = <span class="keyword">function</span>(<span class="params">a, b</span>) &#123;</span><br><span class="line">  <span class="keyword">return</span> a + b</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">exports</span>.<span class="property">sub</span> = <span class="keyword">function</span>(<span class="params">a, b</span>) &#123;</span><br><span class="line">  <span class="keyword">return</span> a - b</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>test.js 文件</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> math = <span class="built_in">require</span>(<span class="string">&#x27;./math&#x27;</span>)</span><br><span class="line"></span><br><span class="line">math.<span class="title function_">add</span>(<span class="number">1</span>,<span class="number">2</span>)</span><br><span class="line">math.<span class="title function_">sub</span>(<span class="number">5</span>,<span class="number">3</span>)</span><br></pre></td></tr></table></figure>
+
+<h3 id="模块缓存机制"><a href="#模块缓存机制" class="headerlink" title="模块缓存机制"></a>模块缓存机制</h3><p>Node.js 模块 <strong>只会加载一次</strong>。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">require</span>(<span class="string">&#x27;./test&#x27;</span>)</span><br><span class="line"><span class="built_in">require</span>(<span class="string">&#x27;./test&#x27;</span>)</span><br><span class="line"><span class="built_in">require</span>(<span class="string">&#x27;./test&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>多次 <code>require</code> 模块也只会加载一次，<strong>加载后的模块会缓存在 <code>require.cache</code> 中</strong>。</p>
+<h2 id="npm-包管理"><a href="#npm-包管理" class="headerlink" title="npm 包管理"></a>npm 包管理</h2><h3 id="npm-介绍"><a href="#npm-介绍" class="headerlink" title="npm 介绍"></a>npm 介绍</h3><p><strong>npm（Node Package Manager）</strong> 是 <strong>Node.js 自带的包管理工具</strong>。</p>
+<p>主要作用：</p>
+<ul>
+<li><strong>安装第三方包</strong></li>
+<li><strong>管理项目依赖</strong></li>
+<li><strong>运行脚本</strong></li>
+<li><strong>管理版本</strong></li>
+</ul>
+<blockquote>
+<p><strong>npm 包介绍</strong></p>
+<p>在 Node.js 中：<strong>包 &#x3D; 一个可以复用的代码模块</strong></p>
+<p>通常是一个目录，包含：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">my-package/</span><br><span class="line">│</span><br><span class="line">├── package.json</span><br><span class="line">├── index.js</span><br><span class="line">├── lib/</span><br><span class="line">├── README.md</span><br><span class="line">└── node_modules/</span><br></pre></td></tr></table></figure>
+</blockquote>
+<h3 id="npm-命令"><a href="#npm-命令" class="headerlink" title="npm 命令"></a>npm 命令</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">npm install 包名@版本号     // 安装包，并在 package.json 的 dependencies 中添加包信息</span><br><span class="line"></span><br><span class="line">npm install 包名@版本号 -D  // 安装包，并在 package.json 的 devDependencies 中添加包信息</span><br><span class="line"></span><br><span class="line">npm install               // 下载项目所有的包依赖</span><br><span class="line"></span><br><span class="line">npm uninstall 包名         // 卸载包，并删除 package.json 包信息</span><br><span class="line"></span><br><span class="line">npm init -y               // 初始化 node.js 项目，只能在全英目录下执行（目录不能有空格）</span><br></pre></td></tr></table></figure>
+
+<h3 id="修改-npm-镜像源"><a href="#修改-npm-镜像源" class="headerlink" title="修改 npm 镜像源"></a>修改 npm 镜像源</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">查看 npm 的镜像源</span></span><br><span class="line">npm config get registry</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">修改 npm 的镜像源</span></span><br><span class="line">npm config set registry=https://registry.npm.taobao.org/</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">检查 npm 的镜像源是否修改成功</span></span><br><span class="line">npm config get registry</span><br></pre></td></tr></table></figure>
+
+<h3 id="包分类"><a href="#包分类" class="headerlink" title="包分类"></a>包分类</h3><h4 id="项目包"><a href="#项目包" class="headerlink" title="项目包"></a>项目包</h4><p><strong>项目包是只在当前项目中使用的依赖包</strong>。</p>
+<p>安装后会记录在项目的 <strong>package.json</strong> 中，并放在项目目录下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">project/</span><br><span class="line"> ├─ node_modules/</span><br><span class="line"> │   └─ axios</span><br><span class="line"> ├─ package.json</span><br><span class="line"> └─ index.js</span><br></pre></td></tr></table></figure>
+
+<table>
+<thead>
+<tr>
+<th>特点</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>作用范围</td>
+<td>当前项目</td>
+</tr>
+<tr>
+<td>安装位置</td>
+<td>project&#x2F;node_modules</td>
+</tr>
+<tr>
+<td>是否记录</td>
+<td>记录在 package.json</td>
+</tr>
+<tr>
+<td>使用方式</td>
+<td>require &#x2F; import</td>
+</tr>
+<tr>
+<td>常见用途</td>
+<td>项目依赖库</td>
+</tr>
+</tbody></table>
+<h4 id="全局包"><a href="#全局包" class="headerlink" title="全局包"></a>全局包</h4><p><strong>全局包是安装到系统环境中的工具包</strong>，通常是 <strong>命令行工具</strong>。</p>
+<p>安装后可以在 <strong>任何目录</strong> 使用。</p>
+<table>
+<thead>
+<tr>
+<th>特点</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>作用范围</td>
+<td>整个系统</td>
+</tr>
+<tr>
+<td>安装位置</td>
+<td>全局 node_modules</td>
+</tr>
+<tr>
+<td>是否记录</td>
+<td>不记录在项目 package.json</td>
+</tr>
+<tr>
+<td>使用方式</td>
+<td>命令行</td>
+</tr>
+<tr>
+<td>常见用途</td>
+<td>CLI工具</td>
+</tr>
+</tbody></table>
+<h3 id="规范的包结构"><a href="#规范的包结构" class="headerlink" title="规范的包结构"></a>规范的包结构</h3><p>现代 Node.js 包结构：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">my-package</span><br><span class="line">│</span><br><span class="line">├── package.json</span><br><span class="line">├── README.md</span><br><span class="line">├── LICENSE</span><br><span class="line">│</span><br><span class="line">├── src/        # 源代码</span><br><span class="line">│</span><br><span class="line">├── dist/       # 构建产物</span><br><span class="line">│</span><br><span class="line">├── test/       # 测试</span><br><span class="line">│</span><br><span class="line">└── bin/        # CLI</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>一个典型的 Node.js 包结构：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">my-package/</span><br><span class="line">│</span><br><span class="line">├── package.json        # 包描述文件（必须）</span><br><span class="line">├── README.md           # 说明文档</span><br><span class="line">├── LICENSE             # 开源协议</span><br><span class="line">├── .gitignore          # git忽略文件</span><br><span class="line">│</span><br><span class="line">├── index.js            # 包入口文件</span><br><span class="line">│</span><br><span class="line">├── lib/                # 核心源码</span><br><span class="line">│   ├── math.js</span><br><span class="line">│   └── util.js</span><br><span class="line">│</span><br><span class="line">├── bin/                # 命令行工具</span><br><span class="line">│   └── cli.js</span><br><span class="line">│</span><br><span class="line">├── test/               # 测试代码</span><br><span class="line">│   └── test.js</span><br><span class="line">│</span><br><span class="line">├── examples/           # 示例代码</span><br><span class="line">│</span><br><span class="line">└── docs/               # 文档</span><br></pre></td></tr></table></figure>
+</blockquote>
+<h3 id="package-json-详解"><a href="#package-json-详解" class="headerlink" title="package.json 详解"></a>package.json 详解</h3><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;name&quot;</span><span class="punctuation">:</span> <span class="string">&quot;my-project&quot;</span><span class="punctuation">,</span>              <span class="comment">// 包名：发布到 npm 时必须唯一</span></span><br><span class="line">  <span class="attr">&quot;version&quot;</span><span class="punctuation">:</span> <span class="string">&quot;1.0.0&quot;</span><span class="punctuation">,</span>                <span class="comment">// 版本号：主版本.次版本.修订版本</span></span><br><span class="line">  <span class="attr">&quot;main&quot;</span><span class="punctuation">:</span> <span class="string">&quot;index.js&quot;</span><span class="punctuation">,</span>                <span class="comment">// 包的入口文件</span></span><br><span class="line">  <span class="attr">&quot;type&quot;</span><span class="punctuation">:</span> <span class="string">&quot;commonjs&quot;</span><span class="punctuation">,</span>                <span class="comment">// 模块类型</span></span><br><span class="line">  <span class="attr">&quot;description&quot;</span><span class="punctuation">:</span> <span class="string">&quot;demo project&quot;</span><span class="punctuation">,</span>     <span class="comment">// 模块描述</span></span><br><span class="line">  <span class="attr">&quot;scripts&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span>                       <span class="comment">// npm 脚本命令</span></span><br><span class="line">    <span class="attr">&quot;start&quot;</span><span class="punctuation">:</span> <span class="string">&quot;node index.js&quot;</span></span><br><span class="line">  <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;dependencies&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span>                  <span class="comment">// 生产依赖管理</span></span><br><span class="line">    <span class="attr">&quot;axios&quot;</span><span class="punctuation">:</span> <span class="string">&quot;^1.6.0&quot;</span></span><br><span class="line">  <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;devDependencies&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span>               <span class="comment">// 开发依赖管理：只在开发阶段使用</span></span><br><span class="line">    <span class="attr">&quot;nodemon&quot;</span><span class="punctuation">:</span> <span class="string">&quot;^3.0.0&quot;</span></span><br><span class="line">  <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;keywords&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">&quot;key01&quot;</span><span class="punctuation">,</span> <span class="string">&quot;key02&quot;</span><span class="punctuation">]</span>     <span class="comment">// npm 官网搜索包关键字</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+</div>
+        </div>
+        
+        <footer class="kratos-entry-footer clearfix">
+            
+            <div class="footer-tag clearfix">
+                <div class="pull-left">
+                <i class="fa fa-tags"></i>
+                    <a class="tag-none-link" href="/blog/tags/Node-js/" rel="tag">Node.js</a>, <a class="tag-none-link" href="/blog/tags/%E5%89%8D%E7%AB%AF/" rel="tag">前端</a>
+                </div>
+                <div class="pull-date">
+                    <time datetime="2026-03-18T12:40:27.297Z" itemprop="dateModified">最后编辑：2026-03-18</time>
+                </div>
+            </div>
+        </footer>
+    </div>
+    
+        <nav class="navigation post-navigation clearfix" role="navigation">
+            
+            <div class="nav-previous clearfix">
+                <a title=" 【Node.js】内置模块" href="/blog/2026/03/12/03前端/NodeJs/02.NodeJs内置模块/">&lt; 上一篇</a>
+            </div>
+            
+            
+            <div class="nav-next clearfix">
+                <a title=" 【Node.js】Express模块" href="/blog/2026/03/18/03前端/NodeJs/03.NodeJs第三方Express模块/">下一篇 &gt;</a>
+            </div>
+            
+        </nav>
+    
+    
+</article>
+
+        
+
+            </section>
+
+        
+
+                
+            
+
+<section id="kratos-widget-area" class="col-md-4 hidden-xs hidden-sm">
+    <!-- 文章和页面根据splitter来分割，没有的话就从头开始设置为sticky -->
+    
+    
+                <aside id="krw-about" class="widget widget-kratos-about clearfix">
+    <div class="photo-background"></div>
+    <div class="photo-wrapper clearfix">
+        <div class="photo-wrapper-tip text-center">
+            <img class="about-photo" src="/blog/images/avatar.webp" loading="lazy" decoding="auto" />
+        </div>
+    </div>
+    <div class="textwidget">
+        <p class="text-center">极简主义</p>
+    </div>
+    <div class="site-meta">
+        <a class="meta-item" href="/blog/archives/">
+            <span class="title">
+                文章
+            </span>
+            <span class="count">
+                98
+            </span>
+        </a>
+        <a class="meta-item" href="/blog/categories/">
+            <span class="title">
+                分类
+            </span>
+            <span class="count">
+                12
+            </span>
+        </a>
+        <a class="meta-item" href="/blog/tags/">
+            <span class="title">
+                标签
+            </span>
+            <span class="count">
+                35
+            </span>
+        </a>
+    </div>
+</aside>
+            
+                    <div class="sticky-area">
+                
+                    <aside id="krw-toc" class="widget widget-kratos-toc clearfix toc-div-class" >
+    <div class="photo-background"></div>
+    <h4 class="widget-title no-after">
+        <i class="fa fa-compass"></i>
+        文章目录
+        <span class="toc-progress-bar" role="progressbar" aria-label="阅读进度："></span>
+    </h4>
+    <div class="textwidget">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Node-js-%E4%BB%8B%E7%BB%8D"><span class="toc-text">Node.js 介绍</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%86%85%E7%BD%AE%E6%A8%A1%E5%9D%97"><span class="toc-text">内置模块</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A8%A1%E5%9D%97%E5%8C%96"><span class="toc-text">模块化</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A8%A1%E5%9D%97%E5%8C%96%E4%BB%8B%E7%BB%8D"><span class="toc-text">模块化介绍</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ES6-%E6%A0%87%E5%87%86%E6%A8%A1%E5%9D%97"><span class="toc-text">ES6 标准模块</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#export"><span class="toc-text">export</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#import"><span class="toc-text">import</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%A4%BA%E4%BE%8B"><span class="toc-text">示例</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#CommonJS-%E6%A8%A1%E5%9D%97"><span class="toc-text">CommonJS 模块</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#CommonJS-%E6%A8%A1%E5%9D%97%E4%BB%8B%E7%BB%8D"><span class="toc-text">CommonJS 模块介绍</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#require"><span class="toc-text">require()</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#module-exports"><span class="toc-text">module.exports</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#exports"><span class="toc-text">exports</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A8%A1%E5%9D%97%E7%BC%93%E5%AD%98%E6%9C%BA%E5%88%B6"><span class="toc-text">模块缓存机制</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#npm-%E5%8C%85%E7%AE%A1%E7%90%86"><span class="toc-text">npm 包管理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#npm-%E4%BB%8B%E7%BB%8D"><span class="toc-text">npm 介绍</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#npm-%E5%91%BD%E4%BB%A4"><span class="toc-text">npm 命令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BF%AE%E6%94%B9-npm-%E9%95%9C%E5%83%8F%E6%BA%90"><span class="toc-text">修改 npm 镜像源</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8C%85%E5%88%86%E7%B1%BB"><span class="toc-text">包分类</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%A1%B9%E7%9B%AE%E5%8C%85"><span class="toc-text">项目包</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%85%A8%E5%B1%80%E5%8C%85"><span class="toc-text">全局包</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A7%84%E8%8C%83%E7%9A%84%E5%8C%85%E7%BB%93%E6%9E%84"><span class="toc-text">规范的包结构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#package-json-%E8%AF%A6%E8%A7%A3"><span class="toc-text">package.json 详解</span></a></li></ol></li></ol>
+    </div>
+</aside>
+                
+                
+  <aside id="krw-tags" class="widget widget-kratos-tags clearfix">
+    <h4 class="widget-title"><i class="fa fa-tags"></i>标签聚合</h4>
+      <div class="tag-clouds">
+        <a href="/blog/tags/CORS/" style="font-size: 0.8em;">CORS</a> <a href="/blog/tags/CSS/" style="font-size: 0.8em;">CSS</a> <a href="/blog/tags/Docker/" style="font-size: 0.8em;">Docker</a> <a href="/blog/tags/Dubbo/" style="font-size: 0.8em;">Dubbo</a> <a href="/blog/tags/ELK/" style="font-size: 0.8em;">ELK</a> <a href="/blog/tags/Elasticsearch/" style="font-size: 0.8em;">Elasticsearch</a> <a href="/blog/tags/Eureka/" style="font-size: 0.8em;">Eureka</a> <a href="/blog/tags/Feign/" style="font-size: 0.8em;">Feign</a> <a href="/blog/tags/Gateway/" style="font-size: 0.8em;">Gateway</a> <a href="/blog/tags/HTML/" style="font-size: 0.8em;">HTML</a> <a href="/blog/tags/Idea/" style="font-size: 0.8em;">Idea</a> <a href="/blog/tags/Java/" style="font-size: 0.8em;">Java</a> <a href="/blog/tags/JavaScript/" style="font-size: 0.8em;">JavaScript</a> <a href="/blog/tags/JavaWeb/" style="font-size: 0.8em;">JavaWeb</a> <a href="/blog/tags/K8s/" style="font-size: 0.8em;">K8s</a> <a href="/blog/tags/Linux/" style="font-size: 0.8em;">Linux</a> <a href="/blog/tags/Maven/" style="font-size: 0.8em;">Maven</a> <a href="/blog/tags/MySQL/" style="font-size: 0.8em;">MySQL</a>
+      </div>
+  </aside>
+
+            
+                
+  <aside id="krw-posts" class="widget widget-kratos-posts">
+  <h4 class="widget-title"><i class="fa fa-file"></i>最新文章</h4>
+  <div class="tab-content">
+      <ul class="list-group">
+        
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/03/18/03%E5%89%8D%E7%AB%AF/NodeJs/03.NodeJs%E7%AC%AC%E4%B8%89%E6%96%B9Express%E6%A8%A1%E5%9D%97/"><i class="fa  fa-book"></i> 【Node.js】Express模块</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/03/12/03%E5%89%8D%E7%AB%AF/NodeJs/01.NodeJs%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/"><i class="fa  fa-book"></i> 【Node.js】基础知识</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/03/12/03%E5%89%8D%E7%AB%AF/NodeJs/02.NodeJs%E5%86%85%E7%BD%AE%E6%A8%A1%E5%9D%97/"><i class="fa  fa-book"></i> 【Node.js】内置模块</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/03/11/03%E5%89%8D%E7%AB%AF/HTML%E5%89%8D%E7%AB%AF%E4%B8%89%E5%A4%A7%E4%BB%B6/37.JS%E5%BC%82%E6%AD%A5%E7%BC%96%E7%A8%8B/"><i class="fa  fa-book"></i> 【JavaScript】异步编程</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/03/08/03%E5%89%8D%E7%AB%AF/HTML%E5%89%8D%E7%AB%AF%E4%B8%89%E5%A4%A7%E4%BB%B6/36.Ajax%E4%BD%BF%E7%94%A8/"><i class="fa  fa-book"></i> 【JavaScript】Ajax 的使用</a>
+            
+          
+        
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+      </ul>
+  </div>
+  </aside>
+
+            
+    </div>
+</section>
+        
+        </div>
+    </div>
+</div>
+<footer>
+    <div id="footer"  >
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3 footer-list text-center">
+                    <ul class="kratos-social-icons">
+                        <!-- Keep for compatibility -->
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <!-- New links -->
+                        
+                    </ul>
+                    <ul class="kratos-copyright">
+                        <div>
+                            <li>&copy; 2026 溪岚花的博客 版权所有.</li>
+                            <li>本站已运行<span id="span_dt">Loading...</span></li>
+                        </div>
+                        <div>
+                            <li>Theme <a href="https://github.com/Candinya/Kratos-Rebirth" target="_blank">Kratos:Rebirth</a></li>
+                            <li>Site built with&nbsp;<i class="fa fa-heart throb" style="color:#d43f57"></i>&nbsp;by 林家隆.</li>
+                        </div>
+                        <div>
+                            <li>Powered by <a href="https://hexo.io" target="_blank" rel="nofollow">Hexo</a></li>
+                            <li>Hosted on <a href="https://gitee.com/" target="_blank">Gitee Pages</a></li>
+                        </div>
+                        <div>
+                            
+                            
+                        </div>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="kr-tool text-center">
+            <div class="tool">
+                
+                    <div class="box search-box">
+                        <a href="/blog/search/">
+                            <span class="fa fa-search"></span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="box theme-box" id="darkmode-switch">
+                        <span class="fa fa-adjust"></span>
+                    </div>
+                
+                
+                
+            </div>
+            <div class="box gotop-box">
+                <span class="fa fa-chevron-up"></span>
+            </div>
+        </div>
+    </div>
+</footer>
+</div>
+</div>
+
+        <script defer src="/blog/vendors/bootstrap@3.3.4/dist/js/bootstrap.min.js"></script>
+<script defer src="/blog/vendors/nprogress@0.2.0/nprogress.js"></script>
+<script>
+    if (!window.kr) {
+        window.kr = {};
+    }
+    window.kr.notMobile = (!(navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i)));
+    window.kr.siteRoot = "/blog/";
+</script>
+
+
+
+
+
+    <script defer src="/blog/vendors/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+
+<script defer src="/blog/js/kratosr.min.js"></script>
+<script defer src="/blog/js/pjax.min.js"></script>
+
+
+
+<!-- Extra support for third-party plguins  -->
+
+
+    </body>
+</html>

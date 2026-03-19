@@ -1,0 +1,1268 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+  <!-- 元数据 -->
+  <meta charset="utf-8">
+  <link rel="icon" href="/blog/images/logo.png">
+  
+  <title>【Node.js】内置模块 | 溪岚花的博客</title>
+  
+  <meta name="author" content="林家隆" />
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="robots" content="index,follow" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <meta name="format-detection" content="telphone=no, email=no" />
+  
+    <meta name="keywords" content="Node.js, 前端" />
+  
+  <meta name="description" content="fs 模块模块介绍fs 模块用于操作文件和目录，比如创建文件、读取文件、写入文件、删除文件、创建目录等。 引入模块： 1const fs &#x3D; require(&amp;#x27;fs&amp;#x27;)  fs 提供的 API 风格：    类型 特点 推荐程度    回调 API 非阻塞 常用   Promise API async&#x2F;await 推荐   回调 API（异步 + 回调）： 12345">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【Node.js】内置模块">
+<meta property="og:url" content="https://lin316.gitee.io/blog/2026/03/12/03%E5%89%8D%E7%AB%AF/NodeJs/02.NodeJs%E5%86%85%E7%BD%AE%E6%A8%A1%E5%9D%97/index.html">
+<meta property="og:site_name" content="溪岚花的博客">
+<meta property="og:description" content="fs 模块模块介绍fs 模块用于操作文件和目录，比如创建文件、读取文件、写入文件、删除文件、创建目录等。 引入模块： 1const fs &#x3D; require(&amp;#x27;fs&amp;#x27;)  fs 提供的 API 风格：    类型 特点 推荐程度    回调 API 非阻塞 常用   Promise API async&#x2F;await 推荐   回调 API（异步 + 回调）： 12345">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://lin316.gitee.io/blog/blog/images/logo.png">
+<meta property="article:published_time" content="2026-03-12T13:00:00.000Z">
+<meta property="article:modified_time" content="2026-03-19T13:29:13.145Z">
+<meta property="article:author" content="林家隆">
+<meta property="article:tag" content="Node.js">
+<meta property="article:tag" content="前端">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://lin316.gitee.io/blog/blog/images/logo.png">
+  
+  <!-- 站点验证相关 -->
+  
+    
+    
+    
+  
+  <!-- 样式表文件 -->
+  <link rel="stylesheet" id="kratos-css" href="/blog/css/kratosr.min.css" media="all"></script>
+  
+    <link rel="stylesheet" id="darkmode-css" href="/blog/css/kr-color-dark.min.css" media="(prefers-color-scheme: dark)"></script>
+    <script src="/blog/js/kr-dark.min.js"></script>
+  
+  
+    <link rel="stylesheet" id="highlight-css" href="/blog/css/highlight/night-eighties.min.css" media="all"></script>
+  
+  <link rel="stylesheet" id="fontawe-css" href="/blog/vendors/font-awesome@4.7.0/css/font-awesome.min.css" media="all"></script>
+  <link rel="stylesheet" id="nprogress-css" href="/blog/vendors/nprogress@0.2.0/nprogress.css" media="all"></script>
+  
+  
+  
+    <link rel="stylesheet" href="/blog/vendors/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css"></script>
+  
+  <!-- 不得不预先加载的一些JS文件 -->
+  <script src="/blog/vendors/jquery@3.6.0/dist/jquery.min.js"></script>
+  
+  
+  <style>
+    
+    
+  </style>
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+    <body class="custom-background">
+        <div id="kratos-wrapper">
+    <div id="kratos-page">
+        <div id="kratos-header">
+            <header id="kratos-desktop-topnav" class="kratos-topnav">
+                <div class="container">
+                    <div class="nav-header">
+                        <nav id="kratos-menu-wrap">
+                            <ul id="kratos-primary-menu" class="sf-menu">
+                                
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/">
+                                            
+                                                
+                                                    <i class="fa fa-home"></i>
+                                                
+                                                首页
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/archives/">
+                                            
+                                                
+                                                    <i class="fa fa-file"></i>
+                                                
+                                                归档
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/tags/">
+                                            
+                                                
+                                                    <i class="fa fa-tag"></i>
+                                                
+                                                标签
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/categories/">
+                                            
+                                                
+                                                    <i class="fa fa-folder"></i>
+                                                
+                                                目录
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/search/">
+                                            
+                                                
+                                                    <i class="fa fa-search"></i>
+                                                
+                                                搜索
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </header>
+            <header id="kratos-mobile-topnav" class="kratos-topnav">
+                <div class="container">
+                    <div class="color-logo"><a href="/blog/">溪岚花的博客</a></div>
+                    <div class="nav-toggle">
+                        <a class="kratos-nav-toggle js-kratos-nav-toggle">
+                            <i></i>
+                        </a>
+                    </div>
+                </div>
+            </header>
+        </div>
+        <div class="kratos-start kratos-hero-2">
+            <!-- <div class="kratos-overlay"></div> -->
+            <div class="kratos-cover kratos-cover-2 text-center">
+                <div class="desc desc2 animate-box">
+                    <a href="/blog/">
+                        <h2 style="opacity: 0.2;">溪岚花的博客</h2> <br />
+                        <span></span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div id="kratos-blog-post">
+            <div class="container">
+                <div id="main" class="row">
+                    
+
+        
+
+            <section class="col-md-8">
+
+        
+
+            <article itemscope itemtype="https://schema.org/Article">
+    
+    <link itemprop="mainEntityOfPage" href="https://lin316.gitee.io/blog/2026/03/12/03%E5%89%8D%E7%AB%AF/NodeJs/02.NodeJs%E5%86%85%E7%BD%AE%E6%A8%A1%E5%9D%97/">
+    <div class="kratos-hentry kratos-post-inner clearfix">
+        <header class="kratos-entry-header">
+            
+                <h1 class="kratos-entry-title text-center" itemprop="name headline">【Node.js】内置模块</h1>
+            
+            
+            <ul class="kratos-post-meta text-center">
+                <li><time datetime="2026-03-12T13:00:00.000Z" itemprop="datePublished"><i class="fa fa-calendar"></i> 2026-03-12</time></li>
+                <li itemprop="author" itemscope itemtype="https://schema.org/Person">
+                    <i class="fa fa-user"></i> 作者 <span itemprop="name">林家隆</span>
+                </li>
+                
+                    <li>
+                        <i class="fa fa-edit"></i> 
+                        
+                        
+                            12.66K
+                        
+                        字
+                    </li>
+                
+                
+            </ul>
+        </header>
+        <div class="kratos-post-content">
+            
+            <div id="expire-alert" class="alert alert-warning hidden" role="alert">
+                <div class="icon"><i class="fa fa-warning"></i></div>
+                <div class="text"><p>本文最后编辑于 <time datetime="1773926953145"></time> 前，其中的内容可能需要更新。</p></div>
+            </div>
+            
+            
+            
+                <div class="kratos-post-inner-toc toc-div-class" >
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#fs-%E6%A8%A1%E5%9D%97"><span class="toc-number">1.</span> <span class="toc-text">fs 模块</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A8%A1%E5%9D%97%E4%BB%8B%E7%BB%8D"><span class="toc-number">1.1.</span> <span class="toc-text">模块介绍</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%B8%E7%94%A8%E6%96%B9%E6%B3%95"><span class="toc-number">1.2.</span> <span class="toc-text">常用方法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#readFile"><span class="toc-number">1.2.1.</span> <span class="toc-text">readFile()</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#writeFile"><span class="toc-number">1.2.2.</span> <span class="toc-text">writeFile()</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#appendFile"><span class="toc-number">1.2.3.</span> <span class="toc-text">appendFile()</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#unlink"><span class="toc-number">1.2.4.</span> <span class="toc-text">unlink()</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#rename"><span class="toc-number">1.2.5.</span> <span class="toc-text">rename()</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#access"><span class="toc-number">1.2.6.</span> <span class="toc-text">access()</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#mkdir"><span class="toc-number">1.2.7.</span> <span class="toc-text">mkdir()</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#readdir"><span class="toc-number">1.2.8.</span> <span class="toc-text">readdir()</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#rmdir"><span class="toc-number">1.2.9.</span> <span class="toc-text">rmdir()</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#stat"><span class="toc-number">1.2.10.</span> <span class="toc-text">stat()</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B5%81%E5%BC%8F%E6%96%87%E4%BB%B6%E6%93%8D%E4%BD%9C"><span class="toc-number">1.3.</span> <span class="toc-text">流式文件操作</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#createReadStream"><span class="toc-number">1.3.1.</span> <span class="toc-text">createReadStream()</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#createWriteStream"><span class="toc-number">1.3.2.</span> <span class="toc-text">createWriteStream()</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#pipe"><span class="toc-number">1.3.3.</span> <span class="toc-text">pipe()</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="toc-number">1.4.</span> <span class="toc-text">注意事项</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#path-%E6%A8%A1%E5%9D%97"><span class="toc-number">2.</span> <span class="toc-text">path 模块</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A8%A1%E5%9D%97%E4%BB%8B%E7%BB%8D-1"><span class="toc-number">2.1.</span> <span class="toc-text">模块介绍</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%B8%E7%94%A8%E5%B1%9E%E6%80%A7"><span class="toc-number">2.2.</span> <span class="toc-text">常用属性</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#path-sep"><span class="toc-number">2.2.1.</span> <span class="toc-text">path.sep</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#path-delimiter"><span class="toc-number">2.2.2.</span> <span class="toc-text">path.delimiter</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%B8%E7%94%A8%E6%96%B9%E6%B3%95-1"><span class="toc-number">2.3.</span> <span class="toc-text">常用方法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#join"><span class="toc-number">2.3.1.</span> <span class="toc-text">join()</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#resolve"><span class="toc-number">2.3.2.</span> <span class="toc-text">resolve()</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#basename"><span class="toc-number">2.3.3.</span> <span class="toc-text">basename()</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#dirname"><span class="toc-number">2.3.4.</span> <span class="toc-text">dirname()</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#extname"><span class="toc-number">2.3.5.</span> <span class="toc-text">extname()</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#parse"><span class="toc-number">2.3.6.</span> <span class="toc-text">parse()</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#format"><span class="toc-number">2.3.7.</span> <span class="toc-text">format()</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#normalize"><span class="toc-number">2.3.8.</span> <span class="toc-text">normalize()</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#isAbsolute"><span class="toc-number">2.3.9.</span> <span class="toc-text">isAbsolute()</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#relative"><span class="toc-number">2.3.10.</span> <span class="toc-text">relative()</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5"><span class="toc-number">2.4.</span> <span class="toc-text">最佳实践</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#http-%E6%A8%A1%E5%9D%97"><span class="toc-number">3.</span> <span class="toc-text">http 模块</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A8%A1%E5%9D%97%E4%BB%8B%E7%BB%8D-2"><span class="toc-number">3.1.</span> <span class="toc-text">模块介绍</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA-HTTP-%E6%9C%8D%E5%8A%A1%E5%99%A8"><span class="toc-number">3.2.</span> <span class="toc-text">创建 HTTP 服务器</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#HTTP-%E6%9C%8D%E5%8A%A1%E5%99%A8"><span class="toc-number">3.2.1.</span> <span class="toc-text">HTTP 服务器</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#req-%E5%AF%B9%E8%B1%A1"><span class="toc-number">3.2.2.</span> <span class="toc-text">req 对象</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#res-%E5%AF%B9%E8%B1%A1"><span class="toc-number">3.2.3.</span> <span class="toc-text">res 对象</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%9B%91%E5%90%AC%E7%AB%AF%E5%8F%A3"><span class="toc-number">3.2.4.</span> <span class="toc-text">监听端口</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%BA%8B%E4%BB%B6"><span class="toc-number">3.2.5.</span> <span class="toc-text">服务器事件</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA-HTTP-%E5%AE%A2%E6%88%B7%E7%AB%AF"><span class="toc-number">3.3.</span> <span class="toc-text">创建 HTTP 客户端</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#HTTP-%E5%AE%A2%E6%88%B7%E7%AB%AF%E4%BB%8B%E7%BB%8D"><span class="toc-number">3.3.1.</span> <span class="toc-text">HTTP 客户端介绍</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#get-%E8%AF%B7%E6%B1%82"><span class="toc-number">3.3.2.</span> <span class="toc-text">get() 请求</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#request-%E8%AF%B7%E6%B1%82"><span class="toc-number">3.3.3.</span> <span class="toc-text">request() 请求</span></a></li></ol></li></ol></li></ol>
+                </div>
+            
+            <hr />
+            <div itemprop="articleBody"><h2 id="fs-模块"><a href="#fs-模块" class="headerlink" title="fs 模块"></a><code>fs</code> 模块</h2><h3 id="模块介绍"><a href="#模块介绍" class="headerlink" title="模块介绍"></a>模块介绍</h3><p><code>fs</code> 模块用于操作文件和目录，比如创建文件、读取文件、写入文件、删除文件、创建目录等。</p>
+<p>引入模块：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> fs = <span class="built_in">require</span>(<span class="string">&#x27;fs&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<p><code>fs</code> 提供的 API 风格：</p>
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>特点</th>
+<th>推荐程度</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>回调 API</td>
+<td>非阻塞</td>
+<td>常用</td>
+</tr>
+<tr>
+<td>Promise API</td>
+<td>async&#x2F;await</td>
+<td>推荐</td>
+</tr>
+</tbody></table>
+<p><strong>回调 API</strong>（异步 + 回调）：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> fs = <span class="built_in">require</span>(<span class="string">&#x27;fs&#x27;</span>)</span><br><span class="line"></span><br><span class="line">fs.<span class="title function_">readFile</span>(<span class="string">&#x27;test.txt&#x27;</span>, <span class="string">&#x27;utf8&#x27;</span>, <span class="function">(<span class="params">err, data</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (err) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;读取失败&#x27;</span>, err)</span><br><span class="line">    <span class="keyword">return</span></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(data)</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;程序继续执行&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<p><strong>Promise API</strong>（异步 + async&#x2F;await）：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> fs = <span class="built_in">require</span>(<span class="string">&#x27;fs/promises&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="keyword">function</span> <span class="title function_">read</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">const</span> data = <span class="keyword">await</span> fs.<span class="title function_">readFile</span>(<span class="string">&#x27;test.txt&#x27;</span>, <span class="string">&#x27;utf8&#x27;</span>)</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(data)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="title function_">read</span>()</span><br></pre></td></tr></table></figure>
+
+<h3 id="常用方法"><a href="#常用方法" class="headerlink" title="常用方法"></a>常用方法</h3><h4 id="readFile"><a href="#readFile" class="headerlink" title="readFile()"></a>readFile()</h4><p>读取文件。</p>
+<p>语法：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fs.<span class="title function_">readFile</span>(path[, options])</span><br></pre></td></tr></table></figure>
+
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>path</td>
+<td>文件路径</td>
+</tr>
+<tr>
+<td>options</td>
+<td>编码</td>
+</tr>
+</tbody></table>
+<p>示例：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> fs = <span class="built_in">require</span>(<span class="string">&#x27;fs/promises&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="keyword">function</span> <span class="title function_">readFile</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">const</span> result = <span class="keyword">await</span> fs.<span class="title function_">readFile</span>(<span class="string">&#x27;./test.txt&#x27;</span>, <span class="string">&#x27;utf8&#x27;</span>)</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(result)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="title function_">readFile</span>()</span><br></pre></td></tr></table></figure>
+
+<h4 id="writeFile"><a href="#writeFile" class="headerlink" title="writeFile()"></a>writeFile()</h4><p>写入文件，特点：</p>
+<ul>
+<li>如果文件不存在 → 自动创建</li>
+<li>如果文件存在 → <strong>覆盖内容</strong></li>
+</ul>
+<p>语法：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fs.<span class="title function_">writeFile</span>(file, data[, options])</span><br></pre></td></tr></table></figure>
+
+<p>示例：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> fs = <span class="built_in">require</span>(<span class="string">&#x27;fs/promises&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="keyword">function</span> <span class="title function_">write</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">await</span> fs.<span class="title function_">writeFile</span>(<span class="string">&#x27;./test-02.txt&#x27;</span>, <span class="string">&#x27;hello linjl 02&#x27;</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="title function_">write</span>()</span><br></pre></td></tr></table></figure>
+
+<h4 id="appendFile"><a href="#appendFile" class="headerlink" title="appendFile()"></a>appendFile()</h4><p>追加内容，语法：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fs.<span class="title function_">appendFile</span>(path, data[, options])</span><br></pre></td></tr></table></figure>
+
+<p>示例：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> fs = <span class="built_in">require</span>(<span class="string">&#x27;fs/promises&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="keyword">function</span> <span class="title function_">write</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">await</span> fs.<span class="title function_">appendFile</span>(<span class="string">&#x27;./test-03.txt&#x27;</span>, <span class="string">&#x27;\nhello linjl 02&#x27;</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="title function_">write</span>()</span><br></pre></td></tr></table></figure>
+
+<h4 id="unlink"><a href="#unlink" class="headerlink" title="unlink()"></a>unlink()</h4><p>删除文件，语法：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fs.<span class="title function_">unlink</span>(file)</span><br></pre></td></tr></table></figure>
+
+<p>示例：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> fs = <span class="built_in">require</span>(<span class="string">&#x27;fs/promises&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="keyword">function</span> <span class="title function_">unlink</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">try</span> &#123;</span><br><span class="line">    <span class="keyword">await</span> fs.<span class="title function_">unlink</span>(<span class="string">&#x27;./test.txt&#x27;</span>)</span><br><span class="line">  &#125; <span class="keyword">catch</span> (err) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;删除文件失败&#x27;</span>)</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(err)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="title function_">unlink</span>()</span><br></pre></td></tr></table></figure>
+
+<h4 id="rename"><a href="#rename" class="headerlink" title="rename()"></a>rename()</h4><p>重命名文件，语法：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fs.<span class="title function_">rename</span>(oldPath, newPath)</span><br></pre></td></tr></table></figure>
+
+<p>示例：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> fs = <span class="built_in">require</span>(<span class="string">&#x27;fs/promises&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="keyword">function</span> <span class="title function_">rename</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">try</span> &#123;</span><br><span class="line">    <span class="keyword">await</span> fs.<span class="title function_">rename</span>(<span class="string">&#x27;./test-03.txt&#x27;</span>, <span class="string">&#x27;./test-04.txt&#x27;</span>)</span><br><span class="line">  &#125; <span class="keyword">catch</span> (err) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;修改文件名失败&#x27;</span>)</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(err)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="title function_">rename</span>()</span><br></pre></td></tr></table></figure>
+
+<h4 id="access"><a href="#access" class="headerlink" title="access()"></a>access()</h4><p>异步检查文件或目录是否存在，语法：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fs.<span class="title function_">access</span>(path[, mode])</span><br></pre></td></tr></table></figure>
+
+<p>参数说明：</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>path</td>
+<td>文件路径</td>
+</tr>
+<tr>
+<td>mode</td>
+<td>检查的权限模式</td>
+</tr>
+</tbody></table>
+<p>mode 权限常量：</p>
+<table>
+<thead>
+<tr>
+<th>mode 常量</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>F_OK</td>
+<td>文件存在</td>
+</tr>
+<tr>
+<td>R_OK</td>
+<td>可读</td>
+</tr>
+<tr>
+<td>W_OK</td>
+<td>可写</td>
+</tr>
+<tr>
+<td>X_OK</td>
+<td>可执行</td>
+</tr>
+</tbody></table>
+<p>示例：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> fs = <span class="built_in">require</span>(<span class="string">&#x27;fs/promises&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="keyword">function</span> <span class="title function_">access</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">try</span> &#123;</span><br><span class="line">    <span class="keyword">await</span> fs.<span class="title function_">access</span>(<span class="string">&#x27;./test-04.txt&#x27;</span>, fs.<span class="property">constants</span>.<span class="property">R_OK</span>)</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;文件存在&#x27;</span>)</span><br><span class="line">  &#125; <span class="keyword">catch</span> (err) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;文件不存在&#x27;</span>, err)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="title function_">access</span>()</span><br></pre></td></tr></table></figure>
+
+<p>使用 <code>try...catch</code> 来判断文件是否存在。</p>
+<ul>
+<li><code>err == null</code> → 可以访问</li>
+<li><code>err != null</code> → 不可访问</li>
+</ul>
+<h4 id="mkdir"><a href="#mkdir" class="headerlink" title="mkdir()"></a>mkdir()</h4><p>创建目录，语法：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">fs.<span class="title function_">mkdir</span>(path[, options]) <span class="comment">// 创建单级目录</span></span><br><span class="line">fs.<span class="title function_">mkdir</span>(path, &#123; <span class="attr">recursive</span>: <span class="literal">true</span> &#125;) <span class="comment">// 创建多级目录</span></span><br></pre></td></tr></table></figure>
+
+<p>示例：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> fs = <span class="built_in">require</span>(<span class="string">&#x27;fs/promises&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="keyword">function</span> <span class="title function_">mkdir</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">try</span> &#123;</span><br><span class="line">    <span class="keyword">await</span> fs.<span class="title function_">mkdir</span>(<span class="string">&#x27;dir1/dir2/dir3&#x27;</span>, &#123; <span class="attr">recursive</span>: <span class="literal">true</span> &#125;)</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;dir 目录创建成功&#x27;</span>)</span><br><span class="line">  &#125; <span class="keyword">catch</span> (err) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;dir 目录创建失败：&#x27;</span>, err)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="title function_">mkdir</span>()</span><br></pre></td></tr></table></figure>
+
+<h4 id="readdir"><a href="#readdir" class="headerlink" title="readdir()"></a>readdir()</h4><p>读取目录，语法：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fs.<span class="title function_">readdir</span>(path[, options])</span><br></pre></td></tr></table></figure>
+
+<h4 id="rmdir"><a href="#rmdir" class="headerlink" title="rmdir()"></a>rmdir()</h4><p>删除目录，语法：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">fs.<span class="title function_">rmdir</span>(path[, options]) <span class="comment">// 删除单个目录</span></span><br><span class="line">fs.<span class="title function_">rmdir</span>(path, &#123; <span class="attr">recursive</span>: <span class="literal">true</span> &#125;) <span class="comment">// 删除多级目录（新版本 Node.js 已不推荐）</span></span><br></pre></td></tr></table></figure>
+
+<p>建议在新版本 Node.js 中使用 <code>fs.rm(path, &#123; recursive: true, force: true &#125;)</code> 删除多级目录。</p>
+<h4 id="stat"><a href="#stat" class="headerlink" title="stat()"></a>stat()</h4><p>读取文件信息，语法：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fs.<span class="title function_">stat</span>(path[, options])</span><br></pre></td></tr></table></figure>
+
+<h3 id="流式文件操作"><a href="#流式文件操作" class="headerlink" title="流式文件操作"></a>流式文件操作</h3><h4 id="createReadStream"><a href="#createReadStream" class="headerlink" title="createReadStream()"></a>createReadStream()</h4><p>创建读取流，语法：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fs.<span class="title function_">createReadStream</span>(path, options)</span><br></pre></td></tr></table></figure>
+
+<p><strong>常见 options：</strong></p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>flags</td>
+<td>打开文件方式</td>
+</tr>
+<tr>
+<td>encoding</td>
+<td>编码</td>
+</tr>
+<tr>
+<td>start</td>
+<td>起始字节</td>
+</tr>
+<tr>
+<td>end</td>
+<td>结束字节</td>
+</tr>
+<tr>
+<td>highWaterMark</td>
+<td>每次读取大小</td>
+</tr>
+<tr>
+<td>autoClose</td>
+<td>是否自动关闭</td>
+</tr>
+</tbody></table>
+<p>示例：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> fs = <span class="built_in">require</span>(<span class="string">&#x27;fs&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> readStream = fs.<span class="title function_">createReadStream</span>(<span class="string">&#x27;test.txt&#x27;</span>, &#123;</span><br><span class="line">  <span class="attr">encoding</span>: <span class="string">&#x27;utf8&#x27;</span>,</span><br><span class="line">  <span class="attr">highWaterMark</span>: <span class="number">1024</span></span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">readStream.<span class="title function_">on</span>(<span class="string">&#x27;data&#x27;</span>, <span class="function">(<span class="params">chunk</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;读取数据块:&#x27;</span>, chunk.<span class="title function_">toString</span>())</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">readStream.<span class="title function_">on</span>(<span class="string">&#x27;end&#x27;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;读取完成&#x27;</span>)</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">readStream.<span class="title function_">on</span>(<span class="string">&#x27;error&#x27;</span>, <span class="function">(<span class="params">err</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;读取失败&#x27;</span>, err)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>执行流程：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">打开文件</span><br><span class="line">↓</span><br><span class="line">读取 chunk</span><br><span class="line">↓</span><br><span class="line">触发 data 事件</span><br><span class="line">↓</span><br><span class="line">读取完毕</span><br><span class="line">↓</span><br><span class="line">触发 end 事件</span><br></pre></td></tr></table></figure>
+</blockquote>
+<h4 id="createWriteStream"><a href="#createWriteStream" class="headerlink" title="createWriteStream()"></a>createWriteStream()</h4><p>用于 <strong>写入数据</strong>，语法：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fs.<span class="title function_">createWriteStream</span>(path)</span><br></pre></td></tr></table></figure>
+
+<p>示例：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> fs = <span class="built_in">require</span>(<span class="string">&#x27;fs&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> writeStream = fs.<span class="title function_">createWriteStream</span>(<span class="string">&#x27;output.txt&#x27;</span>)</span><br><span class="line"></span><br><span class="line">writeStream.<span class="title function_">write</span>(<span class="string">&#x27;Hello\n&#x27;</span>)</span><br><span class="line">writeStream.<span class="title function_">write</span>(<span class="string">&#x27;Node.js\n&#x27;</span>)</span><br><span class="line"></span><br><span class="line">writeStream.<span class="title function_">end</span>()</span><br></pre></td></tr></table></figure>
+
+<p>常用事件：</p>
+<table>
+<thead>
+<tr>
+<th>事件</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>finish</td>
+<td>写入完成</td>
+</tr>
+<tr>
+<td>error</td>
+<td>出错</td>
+</tr>
+<tr>
+<td>close</td>
+<td>流关闭</td>
+</tr>
+</tbody></table>
+<p>示例：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">writeStream.<span class="title function_">on</span>(<span class="string">&#x27;finish&#x27;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;写入完成&#x27;</span>)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<h4 id="pipe"><a href="#pipe" class="headerlink" title="pipe()"></a>pipe()</h4><p><code>pipe</code> 机制：把一个可读流连接到一个可写流。</p>
+<p>数据流向：读取流 → 写入流</p>
+<p>示例：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> fs = <span class="built_in">require</span>(<span class="string">&#x27;fs&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> readStream = fs.<span class="title function_">createReadStream</span>(<span class="string">&#x27;source.txt&#x27;</span>)</span><br><span class="line"><span class="keyword">const</span> writeStream = fs.<span class="title function_">createWriteStream</span>(<span class="string">&#x27;target.txt&#x27;</span>)</span><br><span class="line"></span><br><span class="line">readStream.<span class="title function_">pipe</span>(writeStream)</span><br></pre></td></tr></table></figure>
+
+<h3 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h3><p>在 Node.js 里，建议用 <code>__dirname</code> + <code>path.join()</code> 拼出绝对路径，避免相对路径在不同启动目录下失效。</p>
+<p>示例：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> fs = <span class="built_in">require</span>(<span class="string">&#x27;fs/promises&#x27;</span>)</span><br><span class="line"><span class="keyword">const</span> path = <span class="built_in">require</span>(<span class="string">&#x27;path&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="keyword">function</span> <span class="title function_">readFile</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">const</span> filePath = path.<span class="title function_">join</span>(__dirname, <span class="string">&#x27;test-04.txt&#x27;</span>)</span><br><span class="line">  <span class="keyword">const</span> result = <span class="keyword">await</span> fs.<span class="title function_">readFile</span>(filePath, <span class="string">&#x27;utf8&#x27;</span>)</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(result)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="title function_">readFile</span>()</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="path-模块"><a href="#path-模块" class="headerlink" title="path 模块"></a><code>path</code> 模块</h2><h3 id="模块介绍-1"><a href="#模块介绍-1" class="headerlink" title="模块介绍"></a>模块介绍</h3><p><code>path</code> 模块是一个用于处理文件路径的核心模块。</p>
+<p>引入模块：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> path = <span class="built_in">require</span>(<span class="string">&#x27;path&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>主要作用：</p>
+<ol>
+<li>处理文件路径</li>
+<li>规范化路径</li>
+<li>拼接路径</li>
+<li>获取文件名、扩展名、目录</li>
+<li>解析路径结构</li>
+</ol>
+<p>特点：</p>
+<ul>
+<li>自动处理 <strong>Windows &#x2F; Linux 路径差异</strong></li>
+<li>提供 <strong>同步工具函数</strong></li>
+<li><strong>不访问文件系统</strong>（只处理字符串）</li>
+</ul>
+<h3 id="常用属性"><a href="#常用属性" class="headerlink" title="常用属性"></a>常用属性</h3><h4 id="path-sep"><a href="#path-sep" class="headerlink" title="path.sep"></a>path.sep</h4><p>表示 <strong>系统路径分隔符</strong></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(path.<span class="property">sep</span>)</span><br></pre></td></tr></table></figure>
+
+<p>系统路径分隔符：</p>
+<table>
+<thead>
+<tr>
+<th>系统</th>
+<th>分隔符</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Windows</td>
+<td><code>\</code></td>
+</tr>
+<tr>
+<td>Linux &#x2F; macOS</td>
+<td><code>/</code></td>
+</tr>
+</tbody></table>
+<h4 id="path-delimiter"><a href="#path-delimiter" class="headerlink" title="path.delimiter"></a>path.delimiter</h4><p>表示 <strong>环境变量分隔符</strong></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(path.<span class="property">delimiter</span>)</span><br></pre></td></tr></table></figure>
+
+<p>环境变量分隔符：</p>
+<table>
+<thead>
+<tr>
+<th>系统</th>
+<th>分隔符</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Windows</td>
+<td><code>;</code></td>
+</tr>
+<tr>
+<td>Linux</td>
+<td><code>:</code></td>
+</tr>
+</tbody></table>
+<h3 id="常用方法-1"><a href="#常用方法-1" class="headerlink" title="常用方法"></a>常用方法</h3><h4 id="join"><a href="#join" class="headerlink" title="join()"></a>join()</h4><p>拼接路径，语法：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">path.<span class="title function_">join</span>([...paths])</span><br></pre></td></tr></table></figure>
+
+<p>示例：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> path = <span class="built_in">require</span>(<span class="string">&#x27;path&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> result = path.<span class="title function_">join</span>(<span class="string">&#x27;/user&#x27;</span>, <span class="string">&#x27;local&#x27;</span>, <span class="string">&#x27;bin&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(result)</span><br></pre></td></tr></table></figure>
+
+<p>输出：<code>/user/local/bin</code></p>
+<blockquote>
+<p>特点：</p>
+<ul>
+<li>自动添加分隔符</li>
+<li>自动处理 <code>..</code> <code>.</code></li>
+</ul>
+<p>示例：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">path.<span class="title function_">join</span>(<span class="string">&#x27;/a&#x27;</span>, <span class="string">&#x27;/b&#x27;</span>, <span class="string">&#x27;../c&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>输出：<code>/a/c</code></p>
+</blockquote>
+<h4 id="resolve"><a href="#resolve" class="headerlink" title="resolve()"></a>resolve()</h4><p>解析为绝对路径，语法：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">path.<span class="title function_">resolve</span>([...paths])</span><br></pre></td></tr></table></figure>
+
+<p>示例：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">path.<span class="title function_">resolve</span>(<span class="string">&#x27;a&#x27;</span>, <span class="string">&#x27;b&#x27;</span>, <span class="string">&#x27;c&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>如果当前目录：&#x2F;Users&#x2F;test</p>
+<p>输出：<code>/Users/test/a/b/c</code></p>
+<blockquote>
+<p>特点：</p>
+<ul>
+<li>从 <strong>右向左解析</strong></li>
+<li>返回 <strong>绝对路径</strong></li>
+</ul>
+<p>示例：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">path.<span class="title function_">resolve</span>(<span class="string">&#x27;a&#x27;</span>, <span class="string">&#x27;b&#x27;</span>, <span class="string">&#x27;c&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>输出：<code>/Users/test/a/b/c</code></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">path.<span class="title function_">resolve</span>(<span class="string">&#x27;/a&#x27;</span>, <span class="string">&#x27;b&#x27;</span>, <span class="string">&#x27;c&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>输出：<code>/a/b/c</code></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">path.<span class="title function_">resolve</span>(<span class="string">&#x27;/a&#x27;</span>, <span class="string">&#x27;/b&#x27;</span>, <span class="string">&#x27;c&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>输出：<code>/b/c</code></p>
+</blockquote>
+<h4 id="basename"><a href="#basename" class="headerlink" title="basename()"></a>basename()</h4><p>获取文件名，语法：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">path.<span class="title function_">basename</span>(path[, ext])</span><br></pre></td></tr></table></figure>
+
+<p>示例：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">path.<span class="title function_">basename</span>(<span class="string">&#x27;/a/b/c/test.txt&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>输出：<code>test.txt</code></p>
+<p>去掉扩展名示例：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">path.<span class="title function_">basename</span>(<span class="string">&#x27;/a/b/c/test.txt&#x27;</span>, <span class="string">&#x27;.txt&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>输出：<code>test</code></p>
+<h4 id="dirname"><a href="#dirname" class="headerlink" title="dirname()"></a>dirname()</h4><p>获取目录路径，语法：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">path.<span class="title function_">dirname</span>(path)</span><br></pre></td></tr></table></figure>
+
+<p>示例：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">path.<span class="title function_">dirname</span>(<span class="string">&#x27;/a/b/c/test.txt&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>输出：<code>/a/b/c</code></p>
+<h4 id="extname"><a href="#extname" class="headerlink" title="extname()"></a>extname()</h4><p>获取文件扩展名，语法：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">path.<span class="title function_">extname</span>(path)</span><br></pre></td></tr></table></figure>
+
+<p>示例：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">path.<span class="title function_">extname</span>(<span class="string">&#x27;index.html&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>输出：<code>.html</code></p>
+<h4 id="parse"><a href="#parse" class="headerlink" title="parse()"></a>parse()</h4><p>解析路径为对象，语法：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">path.<span class="title function_">parse</span>(path)</span><br></pre></td></tr></table></figure>
+
+<p>示例：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">path.<span class="title function_">parse</span>(<span class="string">&#x27;/home/user/file.txt&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>输出：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;root&quot;</span><span class="punctuation">:</span> <span class="string">&quot;/&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;dir&quot;</span><span class="punctuation">:</span> <span class="string">&quot;/home/user&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;base&quot;</span><span class="punctuation">:</span> <span class="string">&quot;file.txt&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;ext&quot;</span><span class="punctuation">:</span> <span class="string">&quot;.txt&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;name&quot;</span><span class="punctuation">:</span> <span class="string">&quot;file&quot;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="format"><a href="#format" class="headerlink" title="format()"></a>format()</h4><p>对象转路径，语法：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">path.<span class="title function_">format</span>(pathObject)</span><br></pre></td></tr></table></figure>
+
+<p>示例：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">path.<span class="title function_">format</span>(&#123;</span><br><span class="line">  <span class="attr">dir</span>: <span class="string">&#x27;/home/user&#x27;</span>,</span><br><span class="line">  <span class="attr">name</span>: <span class="string">&#x27;file&#x27;</span>,</span><br><span class="line">  <span class="attr">ext</span>: <span class="string">&#x27;.txt&#x27;</span></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>结果：<code>/home/user/file.txt</code></p>
+<h4 id="normalize"><a href="#normalize" class="headerlink" title="normalize()"></a>normalize()</h4><p>规范化路径，语法：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">path.<span class="title function_">normalize</span>(path)</span><br></pre></td></tr></table></figure>
+
+<p>示例：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">path.<span class="title function_">normalize</span>(<span class="string">&#x27;/foo/bar//baz/asdf/quux/..&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>结果：<code>/foo/bar/baz/asdf</code></p>
+<blockquote>
+<p>功能：</p>
+<ul>
+<li>去掉多余 <code>/</code></li>
+<li>解析 <code>..</code></li>
+<li>解析 <code>.</code></li>
+</ul>
+</blockquote>
+<h4 id="isAbsolute"><a href="#isAbsolute" class="headerlink" title="isAbsolute()"></a>isAbsolute()</h4><p>判断是否绝对路径，语法：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">path.<span class="title function_">isAbsolute</span>(path)</span><br></pre></td></tr></table></figure>
+
+<p>示例：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">path.<span class="title function_">isAbsolute</span>(<span class="string">&#x27;/foo/bar&#x27;</span>) <span class="comment">// true</span></span><br><span class="line">path.<span class="title function_">isAbsolute</span>(<span class="string">&#x27;foo/bar&#x27;</span>)  <span class="comment">// false</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="relative"><a href="#relative" class="headerlink" title="relative()"></a>relative()</h4><p>计算相对路径，语法：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">path.<span class="title function_">relative</span>(<span class="keyword">from</span>, to)</span><br></pre></td></tr></table></figure>
+
+<p>示例：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">path.<span class="title function_">relative</span>(<span class="string">&#x27;/a/b/c&#x27;</span>, <span class="string">&#x27;/a/d/e&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>结果：<code>../../d/e</code></p>
+<h3 id="最佳实践"><a href="#最佳实践" class="headerlink" title="最佳实践"></a>最佳实践</h3><p><code>__dirname</code> 和 <code>path.join</code> 组合拼接文件绝对路径：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> path = <span class="built_in">require</span>(<span class="string">&#x27;path&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> filePath = path.<span class="title function_">join</span>(__dirname, <span class="string">&#x27;data&#x27;</span>, <span class="string">&#x27;test.txt&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(filePath)</span><br></pre></td></tr></table></figure>
+
+<p>优点：</p>
+<ul>
+<li><strong>避免相对路径错误</strong></li>
+<li><strong>跨平台兼容</strong></li>
+</ul>
+<hr>
+<h2 id="http-模块"><a href="#http-模块" class="headerlink" title="http 模块"></a><code>http</code> 模块</h2><h3 id="模块介绍-2"><a href="#模块介绍-2" class="headerlink" title="模块介绍"></a>模块介绍</h3><p><code>http</code> 模块主要提供两类能力：</p>
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>HTTP Server</td>
+<td>创建 Web 服务器</td>
+</tr>
+<tr>
+<td>HTTP Client</td>
+<td>发送 HTTP 请求</td>
+</tr>
+</tbody></table>
+<h3 id="创建-HTTP-服务器"><a href="#创建-HTTP-服务器" class="headerlink" title="创建 HTTP 服务器"></a>创建 HTTP 服务器</h3><h4 id="HTTP-服务器"><a href="#HTTP-服务器" class="headerlink" title="HTTP 服务器"></a>HTTP 服务器</h4><p>最常用的方法是：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http.<span class="title function_">createServer</span>([options], requestListener)</span><br></pre></td></tr></table></figure>
+
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>options</td>
+<td>可选配置</td>
+</tr>
+<tr>
+<td>requestListener</td>
+<td>请求处理函数</td>
+</tr>
+</tbody></table>
+<p>请求处理函数：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(req, res) =&gt; &#123;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>其中：</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>req</td>
+<td>IncomingMessage</td>
+<td>请求对象</td>
+</tr>
+<tr>
+<td>res</td>
+<td>ServerResponse</td>
+<td>响应对象</td>
+</tr>
+</tbody></table>
+<h4 id="req-对象"><a href="#req-对象" class="headerlink" title="req 对象"></a>req 对象</h4><p><code>req</code> 代表 <strong>客户端请求信息</strong>。</p>
+<p>常用属性：</p>
+<table>
+<thead>
+<tr>
+<th>属性</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>req.url</td>
+<td>请求路径</td>
+</tr>
+<tr>
+<td>req.method</td>
+<td>请求方法</td>
+</tr>
+<tr>
+<td>req.headers</td>
+<td>请求头</td>
+</tr>
+<tr>
+<td>req.httpVersion</td>
+<td>HTTP版本</td>
+</tr>
+</tbody></table>
+<p>示例：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> http = <span class="built_in">require</span>(<span class="string">&#x27;http&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> server = http.<span class="title function_">createServer</span>(<span class="function">(<span class="params">req, res</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(req.<span class="property">url</span>)</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(req.<span class="property">method</span>)</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(req.<span class="property">httpVersion</span>)</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(req.<span class="property">headers</span>)</span><br><span class="line"></span><br><span class="line">  res.<span class="title function_">end</span>(<span class="string">&#x27;ok&#x27;</span>)</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">server.<span class="title function_">listen</span>(<span class="number">3000</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;Server running at http://localhost:3000/&#x27;</span>)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>访问接口：</p>
+<figure class="highlight http"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://localhost:3000/test/nodejs/server</span><br></pre></td></tr></table></figure>
+
+<p>输出：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">/test/nodejs/server</span><br><span class="line">GET</span><br><span class="line">1.1</span><br><span class="line">&#123;</span><br><span class="line">  host: &#x27;localhost:3000&#x27;,</span><br><span class="line">  connection: &#x27;keep-alive&#x27;,</span><br><span class="line">  &#x27;cache-control&#x27;: &#x27;max-age=0&#x27;,</span><br><span class="line">  &#x27;sec-ch-ua&#x27;: &#x27;&quot;Not:A-Brand&quot;;v=&quot;99&quot;, &quot;Google Chrome&quot;;v=&quot;145&quot;, &quot;Chromium&quot;;v=&quot;145&quot;&#x27;,</span><br><span class="line">  &#x27;sec-ch-ua-mobile&#x27;: &#x27;?0&#x27;,</span><br><span class="line">  &#x27;sec-ch-ua-platform&#x27;: &#x27;&quot;Windows&quot;&#x27;,</span><br><span class="line">  &#x27;upgrade-insecure-requests&#x27;: &#x27;1&#x27;,</span><br><span class="line">  &#x27;user-agent&#x27;: &#x27;Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36&#x27;,</span><br><span class="line">  accept: &#x27;text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7&#x27;,</span><br><span class="line">  &#x27;sec-fetch-site&#x27;: &#x27;none&#x27;,</span><br><span class="line">  &#x27;sec-fetch-mode&#x27;: &#x27;navigate&#x27;,</span><br><span class="line">  &#x27;sec-fetch-user&#x27;: &#x27;?1&#x27;,</span><br><span class="line">  &#x27;sec-fetch-dest&#x27;: &#x27;document&#x27;,</span><br><span class="line">  &#x27;accept-encoding&#x27;: &#x27;gzip, deflate, br, zstd&#x27;,</span><br><span class="line">  &#x27;accept-language&#x27;: &#x27;zh-CN,zh;q=0.9&#x27;,</span><br><span class="line">  cookie: &#x27;Webstorm-d0bbca0b=2bf0605f-60e3-4d86-8a3f-c041cc5f621d&#x27;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>读取请求体示例（<code>req</code> 是可读流，需要监听事件）：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> http = <span class="built_in">require</span>(<span class="string">&#x27;http&#x27;</span>)</span><br><span class="line"></span><br><span class="line">http.<span class="title function_">createServer</span>(<span class="function">(<span class="params">req, res</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">let</span> body = <span class="string">&#x27;&#x27;</span></span><br><span class="line"></span><br><span class="line">  req.<span class="title function_">on</span>(<span class="string">&#x27;data&#x27;</span>, <span class="function">(<span class="params">chunk</span>) =&gt;</span> &#123;</span><br><span class="line">    body += chunk</span><br><span class="line">  &#125;)</span><br><span class="line"></span><br><span class="line">  req.<span class="title function_">on</span>(<span class="string">&#x27;end&#x27;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(body)</span><br><span class="line">    res.<span class="title function_">end</span>(<span class="string">&#x27;received&#x27;</span>)</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<h4 id="res-对象"><a href="#res-对象" class="headerlink" title="res 对象"></a>res 对象</h4><p><code>res</code> 用于 <strong>向客户端返回数据</strong>。</p>
+<p>常用方法：</p>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>res.writeHead()</td>
+<td>设置响应头</td>
+</tr>
+<tr>
+<td>res.setHeader()</td>
+<td>设置响应头</td>
+</tr>
+<tr>
+<td>res.write()</td>
+<td>写入响应数据</td>
+</tr>
+<tr>
+<td>res.end()</td>
+<td>结束响应</td>
+</tr>
+</tbody></table>
+<p>返回 json 数据：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> http = <span class="built_in">require</span>(<span class="string">&#x27;http&#x27;</span>)</span><br><span class="line"></span><br><span class="line">http.<span class="title function_">createServer</span>(<span class="function">(<span class="params">req, res</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">const</span> data = &#123;</span><br><span class="line">    <span class="attr">name</span>: <span class="string">&#x27;node&#x27;</span>,</span><br><span class="line">    <span class="attr">version</span>: <span class="string">&#x27;18&#x27;</span></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  res.<span class="title function_">setHeader</span>(<span class="string">&#x27;Content-Type&#x27;</span>, <span class="string">&#x27;application/json&#x27;</span>)</span><br><span class="line"></span><br><span class="line">  res.<span class="title function_">end</span>(<span class="title class_">JSON</span>.<span class="title function_">stringify</span>(data))</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<h4 id="监听端口"><a href="#监听端口" class="headerlink" title="监听端口"></a>监听端口</h4><p><code>server.listen()</code> 用于 <strong>启动服务器并监听指定端口</strong>，等待客户端连接。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">server.<span class="title function_">listen</span>(port, hostname, callback)</span><br></pre></td></tr></table></figure>
+
+<table>
+<thead>
+<tr>
+<th>listen 参数</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>port</td>
+<td>监听端口号，范围：<code>0 - 65535</code></td>
+</tr>
+<tr>
+<td>hostname</td>
+<td>IP 地址 &#x2F; 主机名</td>
+</tr>
+<tr>
+<td>callback</td>
+<td>服务器启动成功后的回调函数。</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>只允许本机访问：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">server.<span class="title function_">listen</span>(<span class="number">3000</span>, <span class="string">&#x27;127.0.0.1&#x27;</span>)</span><br><span class="line">server.<span class="title function_">listen</span>(<span class="number">3000</span>, <span class="string">&#x27;localhost&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>允许局域网访问：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">server.<span class="title function_">listen</span>(<span class="number">3000</span>, <span class="string">&#x27;0.0.0.0&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>不写 hostname，默认 <code>0.0.0.0</code>：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">server.<span class="title function_">listen</span>(<span class="number">3000</span>)</span><br></pre></td></tr></table></figure>
+</blockquote>
+<h4 id="服务器事件"><a href="#服务器事件" class="headerlink" title="服务器事件"></a>服务器事件</h4><p>服务器对象常见事件：</p>
+<table>
+<thead>
+<tr>
+<th>事件</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>request</td>
+<td>收到请求</td>
+</tr>
+<tr>
+<td>connection</td>
+<td>TCP连接建立</td>
+</tr>
+<tr>
+<td>close</td>
+<td>服务器关闭</td>
+</tr>
+<tr>
+<td>error</td>
+<td>出现错误</td>
+</tr>
+</tbody></table>
+<p>示例：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">server.<span class="title function_">on</span>(<span class="string">&#x27;request&#x27;</span>, <span class="function">(<span class="params">req, res</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;收到请求&#x27;</span>)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<h3 id="创建-HTTP-客户端"><a href="#创建-HTTP-客户端" class="headerlink" title="创建 HTTP 客户端"></a>创建 HTTP 客户端</h3><h4 id="HTTP-客户端介绍"><a href="#HTTP-客户端介绍" class="headerlink" title="HTTP 客户端介绍"></a>HTTP 客户端介绍</h4><p><code>http</code> 模块可以作为客户端请求其他服务器。</p>
+<p>方法：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">http.<span class="title function_">request</span>()</span><br><span class="line">http.<span class="title function_">get</span>()</span><br></pre></td></tr></table></figure>
+
+<h4 id="get-请求"><a href="#get-请求" class="headerlink" title="get() 请求"></a>get() 请求</h4><p>发送 <code>get</code> 请求示例：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> http = <span class="built_in">require</span>(<span class="string">&#x27;http&#x27;</span>)</span><br><span class="line"></span><br><span class="line">http.<span class="title function_">get</span>(<span class="string">&#x27;http://example.com&#x27;</span>, <span class="function">(<span class="params">res</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">let</span> data = <span class="string">&#x27;&#x27;</span></span><br><span class="line"></span><br><span class="line">  res.<span class="title function_">on</span>(<span class="string">&#x27;data&#x27;</span>, <span class="function">(<span class="params">chunk</span>) =&gt;</span> &#123;</span><br><span class="line">    data += chunk</span><br><span class="line">  &#125;)</span><br><span class="line"></span><br><span class="line">  res.<span class="title function_">on</span>(<span class="string">&#x27;end&#x27;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(data)</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<h4 id="request-请求"><a href="#request-请求" class="headerlink" title="request() 请求"></a>request() 请求</h4><p>request() 请求更通用，可用于 <code>GET、POST、PUT、DELETE</code> 请求。</p>
+<p><strong>get 请求示例：</strong></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> http = <span class="built_in">require</span>(<span class="string">&#x27;http&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> options = &#123;</span><br><span class="line">  <span class="attr">method</span>: <span class="string">&#x27;GET&#x27;</span>,</span><br><span class="line">  <span class="attr">hostname</span>: <span class="string">&#x27;localhost&#x27;</span>,</span><br><span class="line">  <span class="attr">port</span>: <span class="number">3000</span>,</span><br><span class="line">  <span class="attr">path</span>: <span class="string">&#x27;/test/nodejs/http&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> req = http.<span class="title function_">request</span>(options, <span class="function">(<span class="params">res</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">let</span> data = <span class="string">&#x27;&#x27;</span></span><br><span class="line"></span><br><span class="line">  res.<span class="title function_">on</span>(<span class="string">&#x27;data&#x27;</span>, <span class="function">(<span class="params">chunk</span>) =&gt;</span> &#123;</span><br><span class="line">    data += chunk</span><br><span class="line">  &#125;)</span><br><span class="line"></span><br><span class="line">  res.<span class="title function_">on</span>(<span class="string">&#x27;end&#x27;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(data)</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">req.<span class="title function_">end</span>()</span><br></pre></td></tr></table></figure>
+
+<p><strong>post 请求示例</strong>：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> http = <span class="built_in">require</span>(<span class="string">&#x27;http&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> postData = <span class="title class_">JSON</span>.<span class="title function_">stringify</span>(&#123;</span><br><span class="line">  <span class="attr">name</span>: <span class="string">&#x27;node&#x27;</span></span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> options = &#123;</span><br><span class="line">  <span class="attr">method</span>: <span class="string">&#x27;POST&#x27;</span>,</span><br><span class="line">  <span class="attr">hostname</span>: <span class="string">&#x27;localhost&#x27;</span>,</span><br><span class="line">  <span class="attr">port</span>: <span class="number">3000</span>,</span><br><span class="line">  <span class="attr">path</span>: <span class="string">&#x27;/test/nodejs/http/post&#x27;</span>,</span><br><span class="line">  <span class="attr">headers</span>: &#123;</span><br><span class="line">    <span class="string">&#x27;Content-Type&#x27;</span>: <span class="string">&#x27;application/json&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;Content-Length&#x27;</span>: <span class="title class_">Buffer</span>.<span class="title function_">byteLength</span>(postData)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> req = http.<span class="title function_">request</span>(options, <span class="function">(<span class="params">res</span>) =&gt;</span> &#123;</span><br><span class="line">  res.<span class="title function_">on</span>(<span class="string">&#x27;data&#x27;</span>, <span class="function">(<span class="params">chunk</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(chunk.<span class="title function_">toString</span>())</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">req.<span class="title function_">write</span>(postData)</span><br><span class="line">req.<span class="title function_">end</span>()</span><br></pre></td></tr></table></figure>
+
+</div>
+        </div>
+        
+        <footer class="kratos-entry-footer clearfix">
+            
+            <div class="footer-tag clearfix">
+                <div class="pull-left">
+                <i class="fa fa-tags"></i>
+                    <a class="tag-none-link" href="/blog/tags/Node-js/" rel="tag">Node.js</a>, <a class="tag-none-link" href="/blog/tags/%E5%89%8D%E7%AB%AF/" rel="tag">前端</a>
+                </div>
+                <div class="pull-date">
+                    <time datetime="2026-03-19T13:29:13.145Z" itemprop="dateModified">最后编辑：2026-03-19</time>
+                </div>
+            </div>
+        </footer>
+    </div>
+    
+        <nav class="navigation post-navigation clearfix" role="navigation">
+            
+            <div class="nav-previous clearfix">
+                <a title=" 【JavaScript】异步编程" href="/blog/2026/03/11/03前端/HTML前端三大件/37.JS异步编程/">&lt; 上一篇</a>
+            </div>
+            
+            
+            <div class="nav-next clearfix">
+                <a title=" 【Node.js】基础知识" href="/blog/2026/03/12/03前端/NodeJs/01.NodeJs基础知识/">下一篇 &gt;</a>
+            </div>
+            
+        </nav>
+    
+    
+</article>
+
+        
+
+            </section>
+
+        
+
+                
+            
+
+<section id="kratos-widget-area" class="col-md-4 hidden-xs hidden-sm">
+    <!-- 文章和页面根据splitter来分割，没有的话就从头开始设置为sticky -->
+    
+    
+                <aside id="krw-about" class="widget widget-kratos-about clearfix">
+    <div class="photo-background"></div>
+    <div class="photo-wrapper clearfix">
+        <div class="photo-wrapper-tip text-center">
+            <img class="about-photo" src="/blog/images/avatar.webp" loading="lazy" decoding="auto" />
+        </div>
+    </div>
+    <div class="textwidget">
+        <p class="text-center">极简主义</p>
+    </div>
+    <div class="site-meta">
+        <a class="meta-item" href="/blog/archives/">
+            <span class="title">
+                文章
+            </span>
+            <span class="count">
+                98
+            </span>
+        </a>
+        <a class="meta-item" href="/blog/categories/">
+            <span class="title">
+                分类
+            </span>
+            <span class="count">
+                12
+            </span>
+        </a>
+        <a class="meta-item" href="/blog/tags/">
+            <span class="title">
+                标签
+            </span>
+            <span class="count">
+                35
+            </span>
+        </a>
+    </div>
+</aside>
+            
+                    <div class="sticky-area">
+                
+                    <aside id="krw-toc" class="widget widget-kratos-toc clearfix toc-div-class" >
+    <div class="photo-background"></div>
+    <h4 class="widget-title no-after">
+        <i class="fa fa-compass"></i>
+        文章目录
+        <span class="toc-progress-bar" role="progressbar" aria-label="阅读进度："></span>
+    </h4>
+    <div class="textwidget">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#fs-%E6%A8%A1%E5%9D%97"><span class="toc-text">fs 模块</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A8%A1%E5%9D%97%E4%BB%8B%E7%BB%8D"><span class="toc-text">模块介绍</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%B8%E7%94%A8%E6%96%B9%E6%B3%95"><span class="toc-text">常用方法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#readFile"><span class="toc-text">readFile()</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#writeFile"><span class="toc-text">writeFile()</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#appendFile"><span class="toc-text">appendFile()</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#unlink"><span class="toc-text">unlink()</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#rename"><span class="toc-text">rename()</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#access"><span class="toc-text">access()</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#mkdir"><span class="toc-text">mkdir()</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#readdir"><span class="toc-text">readdir()</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#rmdir"><span class="toc-text">rmdir()</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#stat"><span class="toc-text">stat()</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B5%81%E5%BC%8F%E6%96%87%E4%BB%B6%E6%93%8D%E4%BD%9C"><span class="toc-text">流式文件操作</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#createReadStream"><span class="toc-text">createReadStream()</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#createWriteStream"><span class="toc-text">createWriteStream()</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#pipe"><span class="toc-text">pipe()</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="toc-text">注意事项</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#path-%E6%A8%A1%E5%9D%97"><span class="toc-text">path 模块</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A8%A1%E5%9D%97%E4%BB%8B%E7%BB%8D-1"><span class="toc-text">模块介绍</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%B8%E7%94%A8%E5%B1%9E%E6%80%A7"><span class="toc-text">常用属性</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#path-sep"><span class="toc-text">path.sep</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#path-delimiter"><span class="toc-text">path.delimiter</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%B8%E7%94%A8%E6%96%B9%E6%B3%95-1"><span class="toc-text">常用方法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#join"><span class="toc-text">join()</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#resolve"><span class="toc-text">resolve()</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#basename"><span class="toc-text">basename()</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#dirname"><span class="toc-text">dirname()</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#extname"><span class="toc-text">extname()</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#parse"><span class="toc-text">parse()</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#format"><span class="toc-text">format()</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#normalize"><span class="toc-text">normalize()</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#isAbsolute"><span class="toc-text">isAbsolute()</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#relative"><span class="toc-text">relative()</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5"><span class="toc-text">最佳实践</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#http-%E6%A8%A1%E5%9D%97"><span class="toc-text">http 模块</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A8%A1%E5%9D%97%E4%BB%8B%E7%BB%8D-2"><span class="toc-text">模块介绍</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA-HTTP-%E6%9C%8D%E5%8A%A1%E5%99%A8"><span class="toc-text">创建 HTTP 服务器</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#HTTP-%E6%9C%8D%E5%8A%A1%E5%99%A8"><span class="toc-text">HTTP 服务器</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#req-%E5%AF%B9%E8%B1%A1"><span class="toc-text">req 对象</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#res-%E5%AF%B9%E8%B1%A1"><span class="toc-text">res 对象</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%9B%91%E5%90%AC%E7%AB%AF%E5%8F%A3"><span class="toc-text">监听端口</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%BA%8B%E4%BB%B6"><span class="toc-text">服务器事件</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA-HTTP-%E5%AE%A2%E6%88%B7%E7%AB%AF"><span class="toc-text">创建 HTTP 客户端</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#HTTP-%E5%AE%A2%E6%88%B7%E7%AB%AF%E4%BB%8B%E7%BB%8D"><span class="toc-text">HTTP 客户端介绍</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#get-%E8%AF%B7%E6%B1%82"><span class="toc-text">get() 请求</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#request-%E8%AF%B7%E6%B1%82"><span class="toc-text">request() 请求</span></a></li></ol></li></ol></li></ol>
+    </div>
+</aside>
+                
+                
+  <aside id="krw-tags" class="widget widget-kratos-tags clearfix">
+    <h4 class="widget-title"><i class="fa fa-tags"></i>标签聚合</h4>
+      <div class="tag-clouds">
+        <a href="/blog/tags/CORS/" style="font-size: 0.8em;">CORS</a> <a href="/blog/tags/CSS/" style="font-size: 0.8em;">CSS</a> <a href="/blog/tags/Docker/" style="font-size: 0.8em;">Docker</a> <a href="/blog/tags/Dubbo/" style="font-size: 0.8em;">Dubbo</a> <a href="/blog/tags/ELK/" style="font-size: 0.8em;">ELK</a> <a href="/blog/tags/Elasticsearch/" style="font-size: 0.8em;">Elasticsearch</a> <a href="/blog/tags/Eureka/" style="font-size: 0.8em;">Eureka</a> <a href="/blog/tags/Feign/" style="font-size: 0.8em;">Feign</a> <a href="/blog/tags/Gateway/" style="font-size: 0.8em;">Gateway</a> <a href="/blog/tags/HTML/" style="font-size: 0.8em;">HTML</a> <a href="/blog/tags/Idea/" style="font-size: 0.8em;">Idea</a> <a href="/blog/tags/Java/" style="font-size: 0.8em;">Java</a> <a href="/blog/tags/JavaScript/" style="font-size: 0.8em;">JavaScript</a> <a href="/blog/tags/JavaWeb/" style="font-size: 0.8em;">JavaWeb</a> <a href="/blog/tags/K8s/" style="font-size: 0.8em;">K8s</a> <a href="/blog/tags/Linux/" style="font-size: 0.8em;">Linux</a> <a href="/blog/tags/Maven/" style="font-size: 0.8em;">Maven</a> <a href="/blog/tags/MySQL/" style="font-size: 0.8em;">MySQL</a>
+      </div>
+  </aside>
+
+            
+                
+  <aside id="krw-posts" class="widget widget-kratos-posts">
+  <h4 class="widget-title"><i class="fa fa-file"></i>最新文章</h4>
+  <div class="tab-content">
+      <ul class="list-group">
+        
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/03/18/03%E5%89%8D%E7%AB%AF/NodeJs/03.NodeJs%E7%AC%AC%E4%B8%89%E6%96%B9Express%E6%A8%A1%E5%9D%97/"><i class="fa  fa-book"></i> 【Node.js】Express模块</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/03/12/03%E5%89%8D%E7%AB%AF/NodeJs/01.NodeJs%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/"><i class="fa  fa-book"></i> 【Node.js】基础知识</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/03/12/03%E5%89%8D%E7%AB%AF/NodeJs/02.NodeJs%E5%86%85%E7%BD%AE%E6%A8%A1%E5%9D%97/"><i class="fa  fa-book"></i> 【Node.js】内置模块</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/03/11/03%E5%89%8D%E7%AB%AF/HTML%E5%89%8D%E7%AB%AF%E4%B8%89%E5%A4%A7%E4%BB%B6/37.JS%E5%BC%82%E6%AD%A5%E7%BC%96%E7%A8%8B/"><i class="fa  fa-book"></i> 【JavaScript】异步编程</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/03/08/03%E5%89%8D%E7%AB%AF/HTML%E5%89%8D%E7%AB%AF%E4%B8%89%E5%A4%A7%E4%BB%B6/36.Ajax%E4%BD%BF%E7%94%A8/"><i class="fa  fa-book"></i> 【JavaScript】Ajax 的使用</a>
+            
+          
+        
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+      </ul>
+  </div>
+  </aside>
+
+            
+    </div>
+</section>
+        
+        </div>
+    </div>
+</div>
+<footer>
+    <div id="footer"  >
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3 footer-list text-center">
+                    <ul class="kratos-social-icons">
+                        <!-- Keep for compatibility -->
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <!-- New links -->
+                        
+                    </ul>
+                    <ul class="kratos-copyright">
+                        <div>
+                            <li>&copy; 2026 溪岚花的博客 版权所有.</li>
+                            <li>本站已运行<span id="span_dt">Loading...</span></li>
+                        </div>
+                        <div>
+                            <li>Theme <a href="https://github.com/Candinya/Kratos-Rebirth" target="_blank">Kratos:Rebirth</a></li>
+                            <li>Site built with&nbsp;<i class="fa fa-heart throb" style="color:#d43f57"></i>&nbsp;by 林家隆.</li>
+                        </div>
+                        <div>
+                            <li>Powered by <a href="https://hexo.io" target="_blank" rel="nofollow">Hexo</a></li>
+                            <li>Hosted on <a href="https://gitee.com/" target="_blank">Gitee Pages</a></li>
+                        </div>
+                        <div>
+                            
+                            
+                        </div>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="kr-tool text-center">
+            <div class="tool">
+                
+                    <div class="box search-box">
+                        <a href="/blog/search/">
+                            <span class="fa fa-search"></span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="box theme-box" id="darkmode-switch">
+                        <span class="fa fa-adjust"></span>
+                    </div>
+                
+                
+                
+            </div>
+            <div class="box gotop-box">
+                <span class="fa fa-chevron-up"></span>
+            </div>
+        </div>
+    </div>
+</footer>
+</div>
+</div>
+
+        <script defer src="/blog/vendors/bootstrap@3.3.4/dist/js/bootstrap.min.js"></script>
+<script defer src="/blog/vendors/nprogress@0.2.0/nprogress.js"></script>
+<script>
+    if (!window.kr) {
+        window.kr = {};
+    }
+    window.kr.notMobile = (!(navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i)));
+    window.kr.siteRoot = "/blog/";
+</script>
+
+
+
+
+
+    <script defer src="/blog/vendors/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+
+<script defer src="/blog/js/kratosr.min.js"></script>
+<script defer src="/blog/js/pjax.min.js"></script>
+
+
+
+<!-- Extra support for third-party plguins  -->
+
+
+    </body>
+</html>
