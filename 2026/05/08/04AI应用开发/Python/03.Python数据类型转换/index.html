@@ -1,0 +1,962 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+  <!-- 元数据 -->
+  <meta charset="utf-8">
+  <link rel="icon" href="/blog/images/logo.png">
+  
+  <title>【Python】数据类型转换 | 溪岚花的博客</title>
+  
+  <meta name="author" content="林家隆" />
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="robots" content="index,follow" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <meta name="format-detection" content="telphone=no, email=no" />
+  
+    <meta name="keywords" content="AI, Python" />
+  
+  <meta name="description" content="数据类型转换分类Python 类型转换分为：    类型 说明    隐式转换 Python 自动完成   显式转换 使用函数手动转换    隐式类型转换Python 会自动进行某些类型转换。  示例1234a &#x3D; 10b &#x3D; 3.5print(a + b)  输出： 113.5  这里： 1int -&gt; float  Python 自动把整数转成浮点数。  显式类型转换（重点）常用转换函数">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【Python】数据类型转换">
+<meta property="og:url" content="https://lin316.gitee.io/blog/2026/05/08/04AI%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91/Python/03.Python%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2/index.html">
+<meta property="og:site_name" content="溪岚花的博客">
+<meta property="og:description" content="数据类型转换分类Python 类型转换分为：    类型 说明    隐式转换 Python 自动完成   显式转换 使用函数手动转换    隐式类型转换Python 会自动进行某些类型转换。  示例1234a &#x3D; 10b &#x3D; 3.5print(a + b)  输出： 113.5  这里： 1int -&gt; float  Python 自动把整数转成浮点数。  显式类型转换（重点）常用转换函数">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://lin316.gitee.io/blog/blog/images/logo.png">
+<meta property="article:published_time" content="2026-05-08T11:00:00.000Z">
+<meta property="article:modified_time" content="2026-05-08T12:56:13.466Z">
+<meta property="article:author" content="林家隆">
+<meta property="article:tag" content="AI">
+<meta property="article:tag" content="Python">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://lin316.gitee.io/blog/blog/images/logo.png">
+  
+  <!-- 站点验证相关 -->
+  
+    
+    
+    
+  
+  <!-- 样式表文件 -->
+  <link rel="stylesheet" id="kratos-css" href="/blog/css/kratosr.min.css" media="all"></script>
+  
+    <link rel="stylesheet" id="darkmode-css" href="/blog/css/kr-color-dark.min.css" media="(prefers-color-scheme: dark)"></script>
+    <script src="/blog/js/kr-dark.min.js"></script>
+  
+  
+    <link rel="stylesheet" id="highlight-css" href="/blog/css/highlight/night-eighties.min.css" media="all"></script>
+  
+  <link rel="stylesheet" id="fontawe-css" href="/blog/vendors/font-awesome@4.7.0/css/font-awesome.min.css" media="all"></script>
+  <link rel="stylesheet" id="nprogress-css" href="/blog/vendors/nprogress@0.2.0/nprogress.css" media="all"></script>
+  
+  
+  
+    <link rel="stylesheet" href="/blog/vendors/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css"></script>
+  
+  <!-- 不得不预先加载的一些JS文件 -->
+  <script src="/blog/vendors/jquery@3.6.0/dist/jquery.min.js"></script>
+  
+  
+  <style>
+    
+    
+  </style>
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+    <body class="custom-background">
+        <div id="kratos-wrapper">
+    <div id="kratos-page">
+        <div id="kratos-header">
+            <header id="kratos-desktop-topnav" class="kratos-topnav">
+                <div class="container">
+                    <div class="nav-header">
+                        <nav id="kratos-menu-wrap">
+                            <ul id="kratos-primary-menu" class="sf-menu">
+                                
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/">
+                                            
+                                                
+                                                    <i class="fa fa-home"></i>
+                                                
+                                                首页
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/archives/">
+                                            
+                                                
+                                                    <i class="fa fa-file"></i>
+                                                
+                                                归档
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/tags/">
+                                            
+                                                
+                                                    <i class="fa fa-tag"></i>
+                                                
+                                                标签
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/categories/">
+                                            
+                                                
+                                                    <i class="fa fa-folder"></i>
+                                                
+                                                目录
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/search/">
+                                            
+                                                
+                                                    <i class="fa fa-search"></i>
+                                                
+                                                搜索
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </header>
+            <header id="kratos-mobile-topnav" class="kratos-topnav">
+                <div class="container">
+                    <div class="color-logo"><a href="/blog/">溪岚花的博客</a></div>
+                    <div class="nav-toggle">
+                        <a class="kratos-nav-toggle js-kratos-nav-toggle">
+                            <i></i>
+                        </a>
+                    </div>
+                </div>
+            </header>
+        </div>
+        <div class="kratos-start kratos-hero-2">
+            <!-- <div class="kratos-overlay"></div> -->
+            <div class="kratos-cover kratos-cover-2 text-center">
+                <div class="desc desc2 animate-box">
+                    <a href="/blog/">
+                        <h2 style="opacity: 0.2;">溪岚花的博客</h2> <br />
+                        <span></span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div id="kratos-blog-post">
+            <div class="container">
+                <div id="main" class="row">
+                    
+
+        
+
+            <section class="col-md-8">
+
+        
+
+            <article itemscope itemtype="https://schema.org/Article">
+    
+    <link itemprop="mainEntityOfPage" href="https://lin316.gitee.io/blog/2026/05/08/04AI%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91/Python/03.Python%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2/">
+    <div class="kratos-hentry kratos-post-inner clearfix">
+        <header class="kratos-entry-header">
+            
+                <h1 class="kratos-entry-title text-center" itemprop="name headline">【Python】数据类型转换</h1>
+            
+            
+            <ul class="kratos-post-meta text-center">
+                <li><time datetime="2026-05-08T11:00:00.000Z" itemprop="datePublished"><i class="fa fa-calendar"></i> 2026-05-08</time></li>
+                <li itemprop="author" itemscope itemtype="https://schema.org/Person">
+                    <i class="fa fa-user"></i> 作者 <span itemprop="name">林家隆</span>
+                </li>
+                
+                    <li>
+                        <i class="fa fa-edit"></i> 
+                        
+                        
+                            2.74K
+                        
+                        字
+                    </li>
+                
+                
+            </ul>
+        </header>
+        <div class="kratos-post-content">
+            
+            <div id="expire-alert" class="alert alert-warning hidden" role="alert">
+                <div class="icon"><i class="fa fa-warning"></i></div>
+                <div class="text"><p>本文最后编辑于 <time datetime="1778244973466"></time> 前，其中的内容可能需要更新。</p></div>
+            </div>
+            
+            
+            
+                <div class="kratos-post-inner-toc toc-div-class" >
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2%E5%88%86%E7%B1%BB"><span class="toc-number">1.</span> <span class="toc-text">数据类型转换分类</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%9A%90%E5%BC%8F%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2"><span class="toc-number">2.</span> <span class="toc-text">隐式类型转换</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%A4%BA%E4%BE%8B"><span class="toc-number">2.1.</span> <span class="toc-text">示例</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%98%BE%E5%BC%8F%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2%EF%BC%88%E9%87%8D%E7%82%B9%EF%BC%89"><span class="toc-number">3.</span> <span class="toc-text">显式类型转换（重点）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#int-%E8%BD%AC%E6%95%B4%E6%95%B0"><span class="toc-number">3.1.</span> <span class="toc-text">int() 转整数</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2%E8%BD%AC%E6%95%B4%E6%95%B0"><span class="toc-number">3.1.1.</span> <span class="toc-text">字符串转整数</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%B5%AE%E7%82%B9%E6%95%B0%E8%BD%AC%E6%95%B4%E6%95%B0"><span class="toc-number">3.1.2.</span> <span class="toc-text">浮点数转整数</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BA%8C%E8%BF%9B%E5%88%B6%E8%BD%AC%E6%8D%A2"><span class="toc-number">3.1.3.</span> <span class="toc-text">二进制转换</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%94%99%E8%AF%AF%E7%A4%BA%E4%BE%8B"><span class="toc-number">3.1.4.</span> <span class="toc-text">错误示例</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#float-%E8%BD%AC%E6%B5%AE%E7%82%B9%E6%95%B0"><span class="toc-number">3.2.</span> <span class="toc-text">float() 转浮点数</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2%E8%BD%AC%E6%B5%AE%E7%82%B9"><span class="toc-number">3.2.1.</span> <span class="toc-text">字符串转浮点</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%95%B4%E6%95%B0%E8%BD%AC%E6%B5%AE%E7%82%B9"><span class="toc-number">3.2.2.</span> <span class="toc-text">整数转浮点</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#str-%E8%BD%AC%E5%AD%97%E7%AC%A6%E4%B8%B2"><span class="toc-number">3.3.</span> <span class="toc-text">str() 转字符串</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%95%B0%E5%AD%97%E8%BD%AC%E5%AD%97%E7%AC%A6%E4%B8%B2"><span class="toc-number">3.3.1.</span> <span class="toc-text">数字转字符串</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%97%E8%A1%A8%E8%BD%AC%E5%AD%97%E7%AC%A6%E4%B8%B2"><span class="toc-number">3.3.2.</span> <span class="toc-text">列表转字符串</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#bool-%E8%BD%AC%E5%B8%83%E5%B0%94%EF%BC%88%E9%87%8D%E7%82%B9%EF%BC%89"><span class="toc-number">3.4.</span> <span class="toc-text">bool() 转布尔（重点）</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%95%B0%E5%AD%97%E8%BD%AC%E6%8D%A2"><span class="toc-number">3.4.1.</span> <span class="toc-text">数字转换</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2%E8%BD%AC%E6%8D%A2"><span class="toc-number">3.4.2.</span> <span class="toc-text">字符串转换</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%9B%86%E5%90%88%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2"><span class="toc-number">3.4.3.</span> <span class="toc-text">集合类型转换</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#list-%E8%BD%AC%E5%88%97%E8%A1%A8"><span class="toc-number">3.5.</span> <span class="toc-text">list() 转列表</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2%E8%BD%AC%E5%88%97%E8%A1%A8"><span class="toc-number">3.5.1.</span> <span class="toc-text">字符串转列表</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%85%83%E7%BB%84%E8%BD%AC%E5%88%97%E8%A1%A8"><span class="toc-number">3.5.2.</span> <span class="toc-text">元组转列表</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%9B%86%E5%90%88%E8%BD%AC%E5%88%97%E8%A1%A8"><span class="toc-number">3.5.3.</span> <span class="toc-text">集合转列表</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#tuple-%E8%BD%AC%E5%85%83%E7%BB%84"><span class="toc-number">3.6.</span> <span class="toc-text">tuple() 转元组</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%97%E8%A1%A8%E8%BD%AC%E5%85%83%E7%BB%84"><span class="toc-number">3.6.1.</span> <span class="toc-text">列表转元组</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2%E8%BD%AC%E5%85%83%E7%BB%84"><span class="toc-number">3.6.2.</span> <span class="toc-text">字符串转元组</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#set-%E8%BD%AC%E9%9B%86%E5%90%88"><span class="toc-number">3.7.</span> <span class="toc-text">set() 转集合</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%97%E8%A1%A8%E5%8E%BB%E9%87%8D"><span class="toc-number">3.7.1.</span> <span class="toc-text">列表去重</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%8E%BB%E9%87%8D"><span class="toc-number">3.7.2.</span> <span class="toc-text">字符串去重</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#dict-%E8%BD%AC%E5%AD%97%E5%85%B8"><span class="toc-number">3.8.</span> <span class="toc-text">dict() 转字典</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%A4%BA%E4%BE%8B-1"><span class="toc-number">3.8.1.</span> <span class="toc-text">示例</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#bytes-%E5%AD%97%E8%8A%82%E8%BD%AC%E6%8D%A2"><span class="toc-number">3.9.</span> <span class="toc-text">bytes() 字节转换</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2%E8%BD%ACbytes"><span class="toc-number">3.9.1.</span> <span class="toc-text">字符串转bytes</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#chr-%E4%B8%8E-ord"><span class="toc-number">3.10.</span> <span class="toc-text">chr() 与 ord()</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#ord"><span class="toc-number">3.10.1.</span> <span class="toc-text">ord()</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#chr"><span class="toc-number">3.10.2.</span> <span class="toc-text">chr()</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%B8%E8%A7%81%E9%94%99%E8%AF%AF"><span class="toc-number">3.11.</span> <span class="toc-text">常见错误</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%9D%9E%E6%B3%95%E5%AD%97%E7%AC%A6%E4%B8%B2%E8%BD%AC%E6%95%B4%E6%95%B0"><span class="toc-number">3.11.1.</span> <span class="toc-text">非法字符串转整数</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#None-%E8%BD%AC%E6%95%B4%E6%95%B0"><span class="toc-number">3.11.2.</span> <span class="toc-text">None 转整数</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BC%80%E5%8F%91%E4%B8%AD%E7%9A%84%E5%B8%B8%E8%A7%81%E5%9C%BA%E6%99%AF"><span class="toc-number">3.12.</span> <span class="toc-text">开发中的常见场景</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#input-%E8%8E%B7%E5%8F%96%E6%95%B0%E5%AD%97"><span class="toc-number">3.12.1.</span> <span class="toc-text">input() 获取数字</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%97%E8%A1%A8%E5%8E%BB%E9%87%8D-1"><span class="toc-number">3.12.2.</span> <span class="toc-text">列表去重</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%8B%BC%E6%8E%A5%E5%AD%97%E7%AC%A6%E4%B8%B2"><span class="toc-number">3.12.3.</span> <span class="toc-text">拼接字符串</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2%E5%85%B3%E7%B3%BB%E5%9B%BE"><span class="toc-number">3.13.</span> <span class="toc-text">数据类型转换关系图</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9C%80%E6%A0%B8%E5%BF%83%E7%9F%A5%E8%AF%86%EF%BC%88%E9%9D%A2%E8%AF%95%E9%87%8D%E7%82%B9%EF%BC%89"><span class="toc-number">3.14.</span> <span class="toc-text">最核心知识（面试重点）</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#bool%E8%BD%AC%E6%8D%A2%E8%A7%84%E5%88%99"><span class="toc-number">3.14.1.</span> <span class="toc-text">bool转换规则</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#int-%E4%B8%8D%E4%BC%9A%E5%9B%9B%E8%88%8D%E4%BA%94%E5%85%A5"><span class="toc-number">3.14.2.</span> <span class="toc-text">int() 不会四舍五入</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#set-%E5%B8%B8%E7%94%A8%E4%BA%8E%E5%8E%BB%E9%87%8D"><span class="toc-number">3.14.3.</span> <span class="toc-text">set() 常用于去重</span></a></li></ol></li></ol></li></ol>
+                </div>
+            
+            <hr />
+            <div itemprop="articleBody"><h2 id="数据类型转换分类"><a href="#数据类型转换分类" class="headerlink" title="数据类型转换分类"></a>数据类型转换分类</h2><p>Python 类型转换分为：</p>
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>隐式转换</td>
+<td>Python 自动完成</td>
+</tr>
+<tr>
+<td>显式转换</td>
+<td>使用函数手动转换</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="隐式类型转换"><a href="#隐式类型转换" class="headerlink" title="隐式类型转换"></a>隐式类型转换</h2><p>Python 会自动进行某些类型转换。</p>
+<hr>
+<h3 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">a = <span class="number">10</span></span><br><span class="line">b = <span class="number">3.5</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(a + b)</span><br></pre></td></tr></table></figure>
+
+<p>输出：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">13.5</span><br></pre></td></tr></table></figure>
+
+<p>这里：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">int -&gt; float</span><br></pre></td></tr></table></figure>
+
+<p>Python 自动把整数转成浮点数。</p>
+<hr>
+<h2 id="显式类型转换（重点）"><a href="#显式类型转换（重点）" class="headerlink" title="显式类型转换（重点）"></a>显式类型转换（重点）</h2><p>常用转换函数：</p>
+<table>
+<thead>
+<tr>
+<th>函数</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>int()</td>
+<td>转整数</td>
+</tr>
+<tr>
+<td>float()</td>
+<td>转浮点</td>
+</tr>
+<tr>
+<td>str()</td>
+<td>转字符串</td>
+</tr>
+<tr>
+<td>bool()</td>
+<td>转布尔</td>
+</tr>
+<tr>
+<td>list()</td>
+<td>转列表</td>
+</tr>
+<tr>
+<td>tuple()</td>
+<td>转元组</td>
+</tr>
+<tr>
+<td>set()</td>
+<td>转集合</td>
+</tr>
+<tr>
+<td>dict()</td>
+<td>转字典</td>
+</tr>
+<tr>
+<td>bytes()</td>
+<td>转字节</td>
+</tr>
+<tr>
+<td>chr()</td>
+<td>数字转字符</td>
+</tr>
+<tr>
+<td>ord()</td>
+<td>字符转ASCII&#x2F;Unicode</td>
+</tr>
+</tbody></table>
+<hr>
+<h3 id="int-转整数"><a href="#int-转整数" class="headerlink" title="int() 转整数"></a>int() 转整数</h3><hr>
+<h4 id="字符串转整数"><a href="#字符串转整数" class="headerlink" title="字符串转整数"></a>字符串转整数</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(<span class="built_in">int</span>(<span class="string">&quot;100&quot;</span>))</span><br></pre></td></tr></table></figure>
+
+<p>输出：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">100</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h4 id="浮点数转整数"><a href="#浮点数转整数" class="headerlink" title="浮点数转整数"></a>浮点数转整数</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(<span class="built_in">int</span>(<span class="number">3.9</span>))</span><br></pre></td></tr></table></figure>
+
+<p>输出：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">3</span><br></pre></td></tr></table></figure>
+
+<p>注意：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">不是四舍五入</span><br><span class="line">而是直接去掉小数部分</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h4 id="二进制转换"><a href="#二进制转换" class="headerlink" title="二进制转换"></a>二进制转换</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(<span class="built_in">int</span>(<span class="string">&quot;1010&quot;</span>, <span class="number">2</span>))</span><br></pre></td></tr></table></figure>
+
+<p>输出：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">10</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h4 id="错误示例"><a href="#错误示例" class="headerlink" title="错误示例"></a>错误示例</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># ValueError</span></span><br><span class="line"><span class="built_in">int</span>(<span class="string">&quot;3.14&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>因为：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">字符串 &quot;3.14&quot; 不是整数格式</span><br></pre></td></tr></table></figure>
+
+<p>正确：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">int</span>(<span class="built_in">float</span>(<span class="string">&quot;3.14&quot;</span>))</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="float-转浮点数"><a href="#float-转浮点数" class="headerlink" title="float() 转浮点数"></a>float() 转浮点数</h3><hr>
+<h4 id="字符串转浮点"><a href="#字符串转浮点" class="headerlink" title="字符串转浮点"></a>字符串转浮点</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(<span class="built_in">float</span>(<span class="string">&quot;3.14&quot;</span>))</span><br></pre></td></tr></table></figure>
+
+<p>输出：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">3.14</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h4 id="整数转浮点"><a href="#整数转浮点" class="headerlink" title="整数转浮点"></a>整数转浮点</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(<span class="built_in">float</span>(<span class="number">10</span>))</span><br></pre></td></tr></table></figure>
+
+<p>输出：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">10.0</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="str-转字符串"><a href="#str-转字符串" class="headerlink" title="str() 转字符串"></a>str() 转字符串</h3><p>任何类型都可以转字符串。</p>
+<hr>
+<h4 id="数字转字符串"><a href="#数字转字符串" class="headerlink" title="数字转字符串"></a>数字转字符串</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(<span class="built_in">str</span>(<span class="number">100</span>))</span><br></pre></td></tr></table></figure>
+
+<p>输出：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#x27;100&#x27;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h4 id="列表转字符串"><a href="#列表转字符串" class="headerlink" title="列表转字符串"></a>列表转字符串</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(<span class="built_in">str</span>([<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>]))</span><br></pre></td></tr></table></figure>
+
+<p>输出：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#x27;[1, 2, 3]&#x27;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="bool-转布尔（重点）"><a href="#bool-转布尔（重点）" class="headerlink" title="bool() 转布尔（重点）"></a>bool() 转布尔（重点）</h3><p>Python 中：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">空 -&gt; False</span><br><span class="line">非空 -&gt; True</span><br><span class="line">0 -&gt; False</span><br><span class="line">非0 -&gt; True</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h4 id="数字转换"><a href="#数字转换" class="headerlink" title="数字转换"></a>数字转换</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(<span class="built_in">bool</span>(<span class="number">0</span>))</span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">bool</span>(<span class="number">1</span>))</span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">bool</span>(-<span class="number">1</span>))</span><br></pre></td></tr></table></figure>
+
+<p>输出：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">False</span><br><span class="line">True</span><br><span class="line">True</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h4 id="字符串转换"><a href="#字符串转换" class="headerlink" title="字符串转换"></a>字符串转换</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(<span class="built_in">bool</span>(<span class="string">&quot;&quot;</span>))</span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">bool</span>(<span class="string">&quot;hello&quot;</span>))</span><br></pre></td></tr></table></figure>
+
+<p>输出：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">False</span><br><span class="line">True</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h4 id="集合类型转换"><a href="#集合类型转换" class="headerlink" title="集合类型转换"></a>集合类型转换</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(<span class="built_in">bool</span>([]))</span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">bool</span>([<span class="number">1</span>]))</span><br></pre></td></tr></table></figure>
+
+<p>输出：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">False</span><br><span class="line">True</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="list-转列表"><a href="#list-转列表" class="headerlink" title="list() 转列表"></a>list() 转列表</h3><hr>
+<h4 id="字符串转列表"><a href="#字符串转列表" class="headerlink" title="字符串转列表"></a>字符串转列表</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(<span class="built_in">list</span>(<span class="string">&quot;abc&quot;</span>))</span><br></pre></td></tr></table></figure>
+
+<p>输出：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[&#x27;a&#x27;, &#x27;b&#x27;, &#x27;c&#x27;]</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h4 id="元组转列表"><a href="#元组转列表" class="headerlink" title="元组转列表"></a>元组转列表</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(<span class="built_in">list</span>((<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>)))</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h4 id="集合转列表"><a href="#集合转列表" class="headerlink" title="集合转列表"></a>集合转列表</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(<span class="built_in">list</span>(&#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>&#125;))</span><br></pre></td></tr></table></figure>
+
+<p>注意：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">集合转列表顺序不固定</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="tuple-转元组"><a href="#tuple-转元组" class="headerlink" title="tuple() 转元组"></a>tuple() 转元组</h3><hr>
+<h4 id="列表转元组"><a href="#列表转元组" class="headerlink" title="列表转元组"></a>列表转元组</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(<span class="built_in">tuple</span>([<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>]))</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h4 id="字符串转元组"><a href="#字符串转元组" class="headerlink" title="字符串转元组"></a>字符串转元组</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(<span class="built_in">tuple</span>(<span class="string">&quot;abc&quot;</span>))</span><br></pre></td></tr></table></figure>
+
+<p>输出：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(&#x27;a&#x27;, &#x27;b&#x27;, &#x27;c&#x27;)</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="set-转集合"><a href="#set-转集合" class="headerlink" title="set() 转集合"></a>set() 转集合</h3><p>主要用于：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">去重</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h4 id="列表去重"><a href="#列表去重" class="headerlink" title="列表去重"></a>列表去重</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(<span class="built_in">set</span>([<span class="number">1</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>]))</span><br></pre></td></tr></table></figure>
+
+<p>输出：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;1, 2, 3&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h4 id="字符串去重"><a href="#字符串去重" class="headerlink" title="字符串去重"></a>字符串去重</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(<span class="built_in">set</span>(<span class="string">&quot;hello&quot;</span>))</span><br></pre></td></tr></table></figure>
+
+<p>输出类似：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#x27;h&#x27;, &#x27;e&#x27;, &#x27;l&#x27;, &#x27;o&#x27;&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="dict-转字典"><a href="#dict-转字典" class="headerlink" title="dict() 转字典"></a>dict() 转字典</h3><p>要求：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">元素必须是 key-value 结构</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h4 id="示例-1"><a href="#示例-1" class="headerlink" title="示例"></a>示例</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">data = [</span><br><span class="line">    (<span class="string">&quot;name&quot;</span>, <span class="string">&quot;Tom&quot;</span>),</span><br><span class="line">    (<span class="string">&quot;age&quot;</span>, <span class="number">18</span>)</span><br><span class="line">]</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">dict</span>(data))</span><br></pre></td></tr></table></figure>
+
+<p>输出：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span>&#x27;name&#x27;<span class="punctuation">:</span> &#x27;Tom&#x27;<span class="punctuation">,</span> &#x27;age&#x27;<span class="punctuation">:</span> <span class="number">18</span><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="bytes-字节转换"><a href="#bytes-字节转换" class="headerlink" title="bytes() 字节转换"></a>bytes() 字节转换</h3><p>用于：</p>
+<ul>
+<li>网络传输</li>
+<li>文件操作</li>
+<li>编码处理</li>
+</ul>
+<hr>
+<h4 id="字符串转bytes"><a href="#字符串转bytes" class="headerlink" title="字符串转bytes"></a>字符串转bytes</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">s = <span class="string">&quot;hello&quot;</span></span><br><span class="line"></span><br><span class="line">b = <span class="built_in">bytes</span>(s, encoding=<span class="string">&quot;utf-8&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(b)</span><br></pre></td></tr></table></figure>
+
+<p>输出：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">b&#x27;hello&#x27;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="chr-与-ord"><a href="#chr-与-ord" class="headerlink" title="chr() 与 ord()"></a>chr() 与 ord()</h3><hr>
+<h4 id="ord"><a href="#ord" class="headerlink" title="ord()"></a>ord()</h4><p>字符 -&gt; Unicode编码</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(<span class="built_in">ord</span>(<span class="string">&quot;A&quot;</span>))</span><br></pre></td></tr></table></figure>
+
+<p>输出：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">65</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h4 id="chr"><a href="#chr" class="headerlink" title="chr()"></a>chr()</h4><p>Unicode编码 -&gt; 字符</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(<span class="built_in">chr</span>(<span class="number">65</span>))</span><br></pre></td></tr></table></figure>
+
+<p>输出：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">A</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="常见错误"><a href="#常见错误" class="headerlink" title="常见错误"></a>常见错误</h3><hr>
+<h4 id="非法字符串转整数"><a href="#非法字符串转整数" class="headerlink" title="非法字符串转整数"></a>非法字符串转整数</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">int</span>(<span class="string">&quot;abc&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>错误：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ValueError</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h4 id="None-转整数"><a href="#None-转整数" class="headerlink" title="None 转整数"></a>None 转整数</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">int</span>(<span class="literal">None</span>)</span><br></pre></td></tr></table></figure>
+
+<p>错误：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">TypeError</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="开发中的常见场景"><a href="#开发中的常见场景" class="headerlink" title="开发中的常见场景"></a>开发中的常见场景</h3><hr>
+<h4 id="input-获取数字"><a href="#input-获取数字" class="headerlink" title="input() 获取数字"></a>input() 获取数字</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">age = <span class="built_in">int</span>(<span class="built_in">input</span>(<span class="string">&quot;请输入年龄：&quot;</span>))</span><br></pre></td></tr></table></figure>
+
+<p>因为：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">input() 返回字符串</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h4 id="列表去重-1"><a href="#列表去重-1" class="headerlink" title="列表去重"></a>列表去重</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">nums = [<span class="number">1</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>]</span><br><span class="line"></span><br><span class="line">nums = <span class="built_in">list</span>(<span class="built_in">set</span>(nums))</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h4 id="拼接字符串"><a href="#拼接字符串" class="headerlink" title="拼接字符串"></a>拼接字符串</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">name = <span class="string">&quot;Tom&quot;</span></span><br><span class="line">age = <span class="number">18</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(name + <span class="built_in">str</span>(age))</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="数据类型转换关系图"><a href="#数据类型转换关系图" class="headerlink" title="数据类型转换关系图"></a>数据类型转换关系图</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">str &lt;-&gt; int</span><br><span class="line">str &lt;-&gt; float</span><br><span class="line">list &lt;-&gt; tuple &lt;-&gt; set</span><br><span class="line">str -&gt; list</span><br><span class="line">list -&gt; dict（特殊格式）</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="最核心知识（面试重点）"><a href="#最核心知识（面试重点）" class="headerlink" title="最核心知识（面试重点）"></a>最核心知识（面试重点）</h3><hr>
+<h4 id="bool转换规则"><a href="#bool转换规则" class="headerlink" title="bool转换规则"></a>bool转换规则</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">以下为 False：</span><br><span class="line"></span><br><span class="line">0</span><br><span class="line">0.0</span><br><span class="line">&#x27;&#x27;</span><br><span class="line">[]</span><br><span class="line">&#123;&#125;</span><br><span class="line">()</span><br><span class="line">set()</span><br><span class="line">None</span><br></pre></td></tr></table></figure>
+
+<p>其余基本都为 True。</p>
+<hr>
+<h4 id="int-不会四舍五入"><a href="#int-不会四舍五入" class="headerlink" title="int() 不会四舍五入"></a>int() 不会四舍五入</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">int</span>(<span class="number">3.99</span>)</span><br></pre></td></tr></table></figure>
+
+<p>结果：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">3</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h4 id="set-常用于去重"><a href="#set-常用于去重" class="headerlink" title="set() 常用于去重"></a>set() 常用于去重</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">list</span>(<span class="built_in">set</span>(data))</span><br></pre></td></tr></table></figure>
+
+</div>
+        </div>
+        
+        <footer class="kratos-entry-footer clearfix">
+            
+            <div class="footer-tag clearfix">
+                <div class="pull-left">
+                <i class="fa fa-tags"></i>
+                    <a class="tag-none-link" href="/blog/tags/AI/" rel="tag">AI</a>, <a class="tag-none-link" href="/blog/tags/Python/" rel="tag">Python</a>
+                </div>
+                <div class="pull-date">
+                    <time datetime="2026-05-08T12:56:13.466Z" itemprop="dateModified">最后编辑：2026-05-08</time>
+                </div>
+            </div>
+        </footer>
+    </div>
+    
+        <nav class="navigation post-navigation clearfix" role="navigation">
+            
+            <div class="nav-previous clearfix">
+                <a title=" 【Python】字符串" href="/blog/2026/05/07/04AI应用开发/Python/02.Python字符串/">&lt; 上一篇</a>
+            </div>
+            
+            
+            <div class="nav-next clearfix">
+                <a title=" 【学习路线】前端学习路线" href="/blog/2026/07/01/01学习路线/10.前端学习路线/">下一篇 &gt;</a>
+            </div>
+            
+        </nav>
+    
+    
+</article>
+
+        
+
+            </section>
+
+        
+
+                
+            
+
+<section id="kratos-widget-area" class="col-md-4 hidden-xs hidden-sm">
+    <!-- 文章和页面根据splitter来分割，没有的话就从头开始设置为sticky -->
+    
+    
+                <aside id="krw-about" class="widget widget-kratos-about clearfix">
+    <div class="photo-background"></div>
+    <div class="photo-wrapper clearfix">
+        <div class="photo-wrapper-tip text-center">
+            <img class="about-photo" src="/blog/images/avatar.webp" loading="lazy" decoding="auto" />
+        </div>
+    </div>
+    <div class="textwidget">
+        <p class="text-center">极简主义</p>
+    </div>
+    <div class="site-meta">
+        <a class="meta-item" href="/blog/archives/">
+            <span class="title">
+                文章
+            </span>
+            <span class="count">
+                109
+            </span>
+        </a>
+        <a class="meta-item" href="/blog/categories/">
+            <span class="title">
+                分类
+            </span>
+            <span class="count">
+                14
+            </span>
+        </a>
+        <a class="meta-item" href="/blog/tags/">
+            <span class="title">
+                标签
+            </span>
+            <span class="count">
+                38
+            </span>
+        </a>
+    </div>
+</aside>
+            
+                    <div class="sticky-area">
+                
+                    <aside id="krw-toc" class="widget widget-kratos-toc clearfix toc-div-class" >
+    <div class="photo-background"></div>
+    <h4 class="widget-title no-after">
+        <i class="fa fa-compass"></i>
+        文章目录
+        <span class="toc-progress-bar" role="progressbar" aria-label="阅读进度："></span>
+    </h4>
+    <div class="textwidget">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2%E5%88%86%E7%B1%BB"><span class="toc-text">数据类型转换分类</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%9A%90%E5%BC%8F%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2"><span class="toc-text">隐式类型转换</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%A4%BA%E4%BE%8B"><span class="toc-text">示例</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%98%BE%E5%BC%8F%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2%EF%BC%88%E9%87%8D%E7%82%B9%EF%BC%89"><span class="toc-text">显式类型转换（重点）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#int-%E8%BD%AC%E6%95%B4%E6%95%B0"><span class="toc-text">int() 转整数</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2%E8%BD%AC%E6%95%B4%E6%95%B0"><span class="toc-text">字符串转整数</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%B5%AE%E7%82%B9%E6%95%B0%E8%BD%AC%E6%95%B4%E6%95%B0"><span class="toc-text">浮点数转整数</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BA%8C%E8%BF%9B%E5%88%B6%E8%BD%AC%E6%8D%A2"><span class="toc-text">二进制转换</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%94%99%E8%AF%AF%E7%A4%BA%E4%BE%8B"><span class="toc-text">错误示例</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#float-%E8%BD%AC%E6%B5%AE%E7%82%B9%E6%95%B0"><span class="toc-text">float() 转浮点数</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2%E8%BD%AC%E6%B5%AE%E7%82%B9"><span class="toc-text">字符串转浮点</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%95%B4%E6%95%B0%E8%BD%AC%E6%B5%AE%E7%82%B9"><span class="toc-text">整数转浮点</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#str-%E8%BD%AC%E5%AD%97%E7%AC%A6%E4%B8%B2"><span class="toc-text">str() 转字符串</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%95%B0%E5%AD%97%E8%BD%AC%E5%AD%97%E7%AC%A6%E4%B8%B2"><span class="toc-text">数字转字符串</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%97%E8%A1%A8%E8%BD%AC%E5%AD%97%E7%AC%A6%E4%B8%B2"><span class="toc-text">列表转字符串</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#bool-%E8%BD%AC%E5%B8%83%E5%B0%94%EF%BC%88%E9%87%8D%E7%82%B9%EF%BC%89"><span class="toc-text">bool() 转布尔（重点）</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%95%B0%E5%AD%97%E8%BD%AC%E6%8D%A2"><span class="toc-text">数字转换</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2%E8%BD%AC%E6%8D%A2"><span class="toc-text">字符串转换</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%9B%86%E5%90%88%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2"><span class="toc-text">集合类型转换</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#list-%E8%BD%AC%E5%88%97%E8%A1%A8"><span class="toc-text">list() 转列表</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2%E8%BD%AC%E5%88%97%E8%A1%A8"><span class="toc-text">字符串转列表</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%85%83%E7%BB%84%E8%BD%AC%E5%88%97%E8%A1%A8"><span class="toc-text">元组转列表</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%9B%86%E5%90%88%E8%BD%AC%E5%88%97%E8%A1%A8"><span class="toc-text">集合转列表</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#tuple-%E8%BD%AC%E5%85%83%E7%BB%84"><span class="toc-text">tuple() 转元组</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%97%E8%A1%A8%E8%BD%AC%E5%85%83%E7%BB%84"><span class="toc-text">列表转元组</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2%E8%BD%AC%E5%85%83%E7%BB%84"><span class="toc-text">字符串转元组</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#set-%E8%BD%AC%E9%9B%86%E5%90%88"><span class="toc-text">set() 转集合</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%97%E8%A1%A8%E5%8E%BB%E9%87%8D"><span class="toc-text">列表去重</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%8E%BB%E9%87%8D"><span class="toc-text">字符串去重</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#dict-%E8%BD%AC%E5%AD%97%E5%85%B8"><span class="toc-text">dict() 转字典</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%A4%BA%E4%BE%8B-1"><span class="toc-text">示例</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#bytes-%E5%AD%97%E8%8A%82%E8%BD%AC%E6%8D%A2"><span class="toc-text">bytes() 字节转换</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2%E8%BD%ACbytes"><span class="toc-text">字符串转bytes</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#chr-%E4%B8%8E-ord"><span class="toc-text">chr() 与 ord()</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#ord"><span class="toc-text">ord()</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#chr"><span class="toc-text">chr()</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%B8%E8%A7%81%E9%94%99%E8%AF%AF"><span class="toc-text">常见错误</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%9D%9E%E6%B3%95%E5%AD%97%E7%AC%A6%E4%B8%B2%E8%BD%AC%E6%95%B4%E6%95%B0"><span class="toc-text">非法字符串转整数</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#None-%E8%BD%AC%E6%95%B4%E6%95%B0"><span class="toc-text">None 转整数</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BC%80%E5%8F%91%E4%B8%AD%E7%9A%84%E5%B8%B8%E8%A7%81%E5%9C%BA%E6%99%AF"><span class="toc-text">开发中的常见场景</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#input-%E8%8E%B7%E5%8F%96%E6%95%B0%E5%AD%97"><span class="toc-text">input() 获取数字</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%97%E8%A1%A8%E5%8E%BB%E9%87%8D-1"><span class="toc-text">列表去重</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%8B%BC%E6%8E%A5%E5%AD%97%E7%AC%A6%E4%B8%B2"><span class="toc-text">拼接字符串</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2%E5%85%B3%E7%B3%BB%E5%9B%BE"><span class="toc-text">数据类型转换关系图</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9C%80%E6%A0%B8%E5%BF%83%E7%9F%A5%E8%AF%86%EF%BC%88%E9%9D%A2%E8%AF%95%E9%87%8D%E7%82%B9%EF%BC%89"><span class="toc-text">最核心知识（面试重点）</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#bool%E8%BD%AC%E6%8D%A2%E8%A7%84%E5%88%99"><span class="toc-text">bool转换规则</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#int-%E4%B8%8D%E4%BC%9A%E5%9B%9B%E8%88%8D%E4%BA%94%E5%85%A5"><span class="toc-text">int() 不会四舍五入</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#set-%E5%B8%B8%E7%94%A8%E4%BA%8E%E5%8E%BB%E9%87%8D"><span class="toc-text">set() 常用于去重</span></a></li></ol></li></ol></li></ol>
+    </div>
+</aside>
+                
+                
+  <aside id="krw-tags" class="widget widget-kratos-tags clearfix">
+    <h4 class="widget-title"><i class="fa fa-tags"></i>标签聚合</h4>
+      <div class="tag-clouds">
+        <a href="/blog/tags/AI/" style="font-size: 0.8em;">AI</a> <a href="/blog/tags/CORS/" style="font-size: 0.8em;">CORS</a> <a href="/blog/tags/CSS/" style="font-size: 0.8em;">CSS</a> <a href="/blog/tags/Docker/" style="font-size: 0.8em;">Docker</a> <a href="/blog/tags/Dubbo/" style="font-size: 0.8em;">Dubbo</a> <a href="/blog/tags/ELK/" style="font-size: 0.8em;">ELK</a> <a href="/blog/tags/Elasticsearch/" style="font-size: 0.8em;">Elasticsearch</a> <a href="/blog/tags/Eureka/" style="font-size: 0.8em;">Eureka</a> <a href="/blog/tags/Feign/" style="font-size: 0.8em;">Feign</a> <a href="/blog/tags/Gateway/" style="font-size: 0.8em;">Gateway</a> <a href="/blog/tags/HTML/" style="font-size: 0.8em;">HTML</a> <a href="/blog/tags/Idea/" style="font-size: 0.8em;">Idea</a> <a href="/blog/tags/Java/" style="font-size: 0.8em;">Java</a> <a href="/blog/tags/JavaScript/" style="font-size: 0.8em;">JavaScript</a> <a href="/blog/tags/JavaWeb/" style="font-size: 0.8em;">JavaWeb</a> <a href="/blog/tags/K8s/" style="font-size: 0.8em;">K8s</a> <a href="/blog/tags/Linux/" style="font-size: 0.8em;">Linux</a> <a href="/blog/tags/Maven/" style="font-size: 0.8em;">Maven</a>
+      </div>
+  </aside>
+
+            
+                
+  <aside id="krw-posts" class="widget widget-kratos-posts">
+  <h4 class="widget-title"><i class="fa fa-file"></i>最新文章</h4>
+  <div class="tab-content">
+      <ul class="list-group">
+        
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/07/02/01%E5%AD%A6%E4%B9%A0%E8%B7%AF%E7%BA%BF/20.AI%E5%BA%94%E8%AF%A5%E5%BC%80%E5%8F%91%E5%AD%A6%E4%B9%A0%E8%B7%AF%E7%BA%BF/"><i class="fa  fa-book"></i> 【学习路线】AI应该开发学习路线</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/07/01/01%E5%AD%A6%E4%B9%A0%E8%B7%AF%E7%BA%BF/10.%E5%89%8D%E7%AB%AF%E5%AD%A6%E4%B9%A0%E8%B7%AF%E7%BA%BF/"><i class="fa  fa-book"></i> 【学习路线】前端学习路线</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/05/08/04AI%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91/Python/03.Python%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2/"><i class="fa  fa-book"></i> 【Python】数据类型转换</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/05/07/04AI%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91/Python/02.Python%E5%AD%97%E7%AC%A6%E4%B8%B2/"><i class="fa  fa-book"></i> 【Python】字符串</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/05/07/04AI%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91/Python/01.Python%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95/"><i class="fa  fa-book"></i> 【Python】基础语法</a>
+            
+          
+        
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+      </ul>
+  </div>
+  </aside>
+
+            
+    </div>
+</section>
+        
+        </div>
+    </div>
+</div>
+<footer>
+    <div id="footer"  >
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3 footer-list text-center">
+                    <ul class="kratos-social-icons">
+                        <!-- Keep for compatibility -->
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <!-- New links -->
+                        
+                    </ul>
+                    <ul class="kratos-copyright">
+                        <div>
+                            <li>&copy; 2026 溪岚花的博客 版权所有.</li>
+                            <li>本站已运行<span id="span_dt">Loading...</span></li>
+                        </div>
+                        <div>
+                            <li>Theme <a href="https://github.com/Candinya/Kratos-Rebirth" target="_blank">Kratos:Rebirth</a></li>
+                            <li>Site built with&nbsp;<i class="fa fa-heart throb" style="color:#d43f57"></i>&nbsp;by 林家隆.</li>
+                        </div>
+                        <div>
+                            <li>Powered by <a href="https://hexo.io" target="_blank" rel="nofollow">Hexo</a></li>
+                            <li>Hosted on <a href="https://gitee.com/" target="_blank">Gitee Pages</a></li>
+                        </div>
+                        <div>
+                            
+                            
+                        </div>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="kr-tool text-center">
+            <div class="tool">
+                
+                    <div class="box search-box">
+                        <a href="/blog/search/">
+                            <span class="fa fa-search"></span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="box theme-box" id="darkmode-switch">
+                        <span class="fa fa-adjust"></span>
+                    </div>
+                
+                
+                
+            </div>
+            <div class="box gotop-box">
+                <span class="fa fa-chevron-up"></span>
+            </div>
+        </div>
+    </div>
+</footer>
+</div>
+</div>
+
+        <script defer src="/blog/vendors/bootstrap@3.3.4/dist/js/bootstrap.min.js"></script>
+<script defer src="/blog/vendors/nprogress@0.2.0/nprogress.js"></script>
+<script>
+    if (!window.kr) {
+        window.kr = {};
+    }
+    window.kr.notMobile = (!(navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i)));
+    window.kr.siteRoot = "/blog/";
+</script>
+
+
+
+
+
+    <script defer src="/blog/vendors/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+
+<script defer src="/blog/js/kratosr.min.js"></script>
+<script defer src="/blog/js/pjax.min.js"></script>
+
+
+
+<!-- Extra support for third-party plguins  -->
+
+
+    </body>
+</html>
