@@ -1,0 +1,884 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+  <!-- 元数据 -->
+  <meta charset="utf-8">
+  <link rel="icon" href="/blog/images/logo.png">
+  
+  <title>【Python】异常 | 溪岚花的博客</title>
+  
+  <meta name="author" content="林家隆" />
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="robots" content="index,follow" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <meta name="format-detection" content="telphone=no, email=no" />
+  
+    <meta name="keywords" content="AI, Python" />
+  
+  <meta name="description" content="异常结构 完整异常结构12345678try:    代码except 异常类型:    处理else:    正常逻辑finally:    收尾逻辑  完整示例： 123456789101112131415try:    num &#x3D; int(input(&quot;请输入数字：&quot;))    result &#x3D; 10 &#x2F; numexcept ValueError:    print(&amp;q">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【Python】异常">
+<meta property="og:url" content="https://lin316.gitee.io/blog/2026/05/14/04AI%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91/Python/09.Python%E5%BC%82%E5%B8%B8/index.html">
+<meta property="og:site_name" content="溪岚花的博客">
+<meta property="og:description" content="异常结构 完整异常结构12345678try:    代码except 异常类型:    处理else:    正常逻辑finally:    收尾逻辑  完整示例： 123456789101112131415try:    num &#x3D; int(input(&quot;请输入数字：&quot;))    result &#x3D; 10 &#x2F; numexcept ValueError:    print(&amp;q">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://lin316.gitee.io/blog/blog/images/logo.png">
+<meta property="article:published_time" content="2026-05-14T13:00:00.000Z">
+<meta property="article:modified_time" content="2026-05-14T14:03:05.159Z">
+<meta property="article:author" content="林家隆">
+<meta property="article:tag" content="AI">
+<meta property="article:tag" content="Python">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://lin316.gitee.io/blog/blog/images/logo.png">
+  
+  <!-- 站点验证相关 -->
+  
+    
+    
+    
+  
+  <!-- 样式表文件 -->
+  <link rel="stylesheet" id="kratos-css" href="/blog/css/kratosr.min.css" media="all"></script>
+  
+    <link rel="stylesheet" id="darkmode-css" href="/blog/css/kr-color-dark.min.css" media="(prefers-color-scheme: dark)"></script>
+    <script src="/blog/js/kr-dark.min.js"></script>
+  
+  
+    <link rel="stylesheet" id="highlight-css" href="/blog/css/highlight/night-eighties.min.css" media="all"></script>
+  
+  <link rel="stylesheet" id="fontawe-css" href="/blog/vendors/font-awesome@4.7.0/css/font-awesome.min.css" media="all"></script>
+  <link rel="stylesheet" id="nprogress-css" href="/blog/vendors/nprogress@0.2.0/nprogress.css" media="all"></script>
+  
+  
+  
+    <link rel="stylesheet" href="/blog/vendors/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css"></script>
+  
+  <!-- 不得不预先加载的一些JS文件 -->
+  <script src="/blog/vendors/jquery@3.6.0/dist/jquery.min.js"></script>
+  
+  
+  <style>
+    
+    
+  </style>
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+    <body class="custom-background">
+        <div id="kratos-wrapper">
+    <div id="kratos-page">
+        <div id="kratos-header">
+            <header id="kratos-desktop-topnav" class="kratos-topnav">
+                <div class="container">
+                    <div class="nav-header">
+                        <nav id="kratos-menu-wrap">
+                            <ul id="kratos-primary-menu" class="sf-menu">
+                                
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/">
+                                            
+                                                
+                                                    <i class="fa fa-home"></i>
+                                                
+                                                首页
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/archives/">
+                                            
+                                                
+                                                    <i class="fa fa-file"></i>
+                                                
+                                                归档
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/tags/">
+                                            
+                                                
+                                                    <i class="fa fa-tag"></i>
+                                                
+                                                标签
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/categories/">
+                                            
+                                                
+                                                    <i class="fa fa-folder"></i>
+                                                
+                                                目录
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/search/">
+                                            
+                                                
+                                                    <i class="fa fa-search"></i>
+                                                
+                                                搜索
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </header>
+            <header id="kratos-mobile-topnav" class="kratos-topnav">
+                <div class="container">
+                    <div class="color-logo"><a href="/blog/">溪岚花的博客</a></div>
+                    <div class="nav-toggle">
+                        <a class="kratos-nav-toggle js-kratos-nav-toggle">
+                            <i></i>
+                        </a>
+                    </div>
+                </div>
+            </header>
+        </div>
+        <div class="kratos-start kratos-hero-2">
+            <!-- <div class="kratos-overlay"></div> -->
+            <div class="kratos-cover kratos-cover-2 text-center">
+                <div class="desc desc2 animate-box">
+                    <a href="/blog/">
+                        <h2 style="opacity: 0.2;">溪岚花的博客</h2> <br />
+                        <span></span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div id="kratos-blog-post">
+            <div class="container">
+                <div id="main" class="row">
+                    
+
+        
+
+            <section class="col-md-8">
+
+        
+
+            <article itemscope itemtype="https://schema.org/Article">
+    
+    <link itemprop="mainEntityOfPage" href="https://lin316.gitee.io/blog/2026/05/14/04AI%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91/Python/09.Python%E5%BC%82%E5%B8%B8/">
+    <div class="kratos-hentry kratos-post-inner clearfix">
+        <header class="kratos-entry-header">
+            
+                <h1 class="kratos-entry-title text-center" itemprop="name headline">【Python】异常</h1>
+            
+            
+            <ul class="kratos-post-meta text-center">
+                <li><time datetime="2026-05-14T13:00:00.000Z" itemprop="datePublished"><i class="fa fa-calendar"></i> 2026-05-14</time></li>
+                <li itemprop="author" itemscope itemtype="https://schema.org/Person">
+                    <i class="fa fa-user"></i> 作者 <span itemprop="name">林家隆</span>
+                </li>
+                
+                    <li>
+                        <i class="fa fa-edit"></i> 
+                        
+                        
+                            2.92K
+                        
+                        字
+                    </li>
+                
+                
+            </ul>
+        </header>
+        <div class="kratos-post-content">
+            
+            <div id="expire-alert" class="alert alert-warning hidden" role="alert">
+                <div class="icon"><i class="fa fa-warning"></i></div>
+                <div class="text"><p>本文最后编辑于 <time datetime="1778767385159"></time> 前，其中的内容可能需要更新。</p></div>
+            </div>
+            
+            
+            
+                <div class="kratos-post-inner-toc toc-div-class" >
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BC%82%E5%B8%B8%E7%BB%93%E6%9E%84"><span class="toc-number">1.</span> <span class="toc-text">异常结构</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%8C%E6%95%B4%E5%BC%82%E5%B8%B8%E7%BB%93%E6%9E%84"><span class="toc-number">1.1.</span> <span class="toc-text">完整异常结构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#else-%E5%AD%90%E5%8F%A5"><span class="toc-number">1.2.</span> <span class="toc-text">else 子句</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#finally-%E5%AD%90%E5%8F%A5"><span class="toc-number">1.3.</span> <span class="toc-text">finally 子句</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86"><span class="toc-number">2.</span> <span class="toc-text">异常处理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8D%95%E8%8E%B7%E6%8C%87%E5%AE%9A%E5%BC%82%E5%B8%B8"><span class="toc-number">2.1.</span> <span class="toc-text">捕获指定异常</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%90%8C%E6%97%B6%E6%8D%95%E8%8E%B7%E5%A4%9A%E4%B8%AA%E5%BC%82%E5%B8%B8"><span class="toc-number">2.2.</span> <span class="toc-text">同时捕获多个异常</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8D%95%E8%8E%B7%E6%89%80%E6%9C%89%E5%BC%82%E5%B8%B8"><span class="toc-number">2.3.</span> <span class="toc-text">捕获所有异常</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%8E%B7%E5%8F%96%E5%BC%82%E5%B8%B8%E4%BF%A1%E6%81%AF"><span class="toc-number">2.4.</span> <span class="toc-text">获取异常信息</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BB%E5%8A%A8%E6%8A%9B%E5%87%BA%E5%BC%82%E5%B8%B8-raise"><span class="toc-number">2.5.</span> <span class="toc-text">主动抛出异常 raise</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B8%B8%E8%A7%81%E5%BC%82%E5%B8%B8%E7%B1%BB%E5%9E%8B"><span class="toc-number">3.</span> <span class="toc-text">常见异常类型</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#ZeroDivisionError"><span class="toc-number">3.1.</span> <span class="toc-text">ZeroDivisionError</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ValueError"><span class="toc-number">3.2.</span> <span class="toc-text">ValueError</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#TypeError"><span class="toc-number">3.3.</span> <span class="toc-text">TypeError</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#IndexError"><span class="toc-number">3.4.</span> <span class="toc-text">IndexError</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#KeyError"><span class="toc-number">3.5.</span> <span class="toc-text">KeyError</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#NameError"><span class="toc-number">3.6.</span> <span class="toc-text">NameError</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#FileNotFoundError"><span class="toc-number">3.7.</span> <span class="toc-text">FileNotFoundError</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#AttributeError"><span class="toc-number">3.8.</span> <span class="toc-text">AttributeError</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89%E5%BC%82%E5%B8%B8"><span class="toc-number">4.</span> <span class="toc-text">自定义异常</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E5%BC%82%E5%B8%B8%E7%B1%BB"><span class="toc-number">4.1.</span> <span class="toc-text">创建异常类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E5%BC%82%E5%B8%B8"><span class="toc-number">4.2.</span> <span class="toc-text">使用异常</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BC%82%E5%B8%B8%E9%93%BE%EF%BC%88raise-from%EF%BC%89"><span class="toc-number">5.</span> <span class="toc-text">异常链（raise from）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#assert-%E6%96%AD%E8%A8%80"><span class="toc-number">6.</span> <span class="toc-text">assert 断言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#with-%E4%B8%8E%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86"><span class="toc-number">7.</span> <span class="toc-text">with 与异常处理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%8F%E5%85%B8%E9%9D%A2%E8%AF%95%E9%A2%98"><span class="toc-number">8.</span> <span class="toc-text">经典面试题</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#return-%E4%B8%8E-finally-%E8%B0%81%E5%85%88%E6%89%A7%E8%A1%8C%EF%BC%9F"><span class="toc-number">8.1.</span> <span class="toc-text">return 与 finally 谁先执行？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#finally-%E4%B8%AD-return-%E7%9A%84%E5%8D%B1%E9%99%A9"><span class="toc-number">8.2.</span> <span class="toc-text">finally 中 return 的危险</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">9.</span> <span class="toc-text">总结</span></a></li></ol>
+                </div>
+            
+            <hr />
+            <div itemprop="articleBody"><h2 id="异常结构"><a href="#异常结构" class="headerlink" title="异常结构"></a>异常结构</h2><hr>
+<h3 id="完整异常结构"><a href="#完整异常结构" class="headerlink" title="完整异常结构"></a>完整异常结构</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    代码</span><br><span class="line"><span class="keyword">except</span> 异常类型:</span><br><span class="line">    处理</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    正常逻辑</span><br><span class="line"><span class="keyword">finally</span>:</span><br><span class="line">    收尾逻辑</span><br></pre></td></tr></table></figure>
+
+<p>完整示例：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    num = <span class="built_in">int</span>(<span class="built_in">input</span>(<span class="string">&quot;请输入数字：&quot;</span>))</span><br><span class="line">    result = <span class="number">10</span> / num</span><br><span class="line"></span><br><span class="line"><span class="keyword">except</span> ValueError:</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;必须输入数字&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">except</span> ZeroDivisionError:</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;除数不能为0&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;结果：&quot;</span>, result)</span><br><span class="line"></span><br><span class="line"><span class="keyword">finally</span>:</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;程序结束&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="else-子句"><a href="#else-子句" class="headerlink" title="else 子句"></a>else 子句</h3><p>当 <code>try</code> 没有异常时执行 <code>else</code> 子句。</p>
+<p>语法：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    ...</span><br><span class="line"><span class="keyword">except</span>:</span><br><span class="line">    ...</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    ...</span><br></pre></td></tr></table></figure>
+
+<p>示例：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    num = <span class="built_in">int</span>(<span class="built_in">input</span>(<span class="string">&quot;请输入数字：&quot;</span>))</span><br><span class="line"><span class="keyword">except</span> ValueError:</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;输入错误&quot;</span>)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;输入正确&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="finally-子句"><a href="#finally-子句" class="headerlink" title="finally 子句"></a>finally 子句</h3><p>无论是否发生异常都会执行。</p>
+<p>常用于：</p>
+<ul>
+<li>关闭文件</li>
+<li>关闭数据库</li>
+<li>释放锁</li>
+<li>释放资源</li>
+</ul>
+<p>语法：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    ...</span><br><span class="line"><span class="keyword">except</span>:</span><br><span class="line">    ...</span><br><span class="line"><span class="keyword">finally</span>:</span><br><span class="line">    ...</span><br></pre></td></tr></table></figure>
+
+<p>示例：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    f = <span class="built_in">open</span>(<span class="string">&quot;a.txt&quot;</span>)</span><br><span class="line"><span class="keyword">except</span> FileNotFoundError:</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;文件不存在&quot;</span>)</span><br><span class="line"><span class="keyword">finally</span>:</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;finally执行&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="异常处理"><a href="#异常处理" class="headerlink" title="异常处理"></a>异常处理</h2><hr>
+<h3 id="捕获指定异常"><a href="#捕获指定异常" class="headerlink" title="捕获指定异常"></a>捕获指定异常</h3><p>推荐只捕获需要的异常。</p>
+<p>语法：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    ...</span><br><span class="line"><span class="keyword">except</span> 异常类型:</span><br><span class="line">    ...</span><br></pre></td></tr></table></figure>
+
+<p>示例：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    num = <span class="built_in">int</span>(<span class="string">&quot;abc&quot;</span>)</span><br><span class="line"><span class="keyword">except</span> ValueError:</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;输入必须是数字&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="同时捕获多个异常"><a href="#同时捕获多个异常" class="headerlink" title="同时捕获多个异常"></a>同时捕获多个异常</h3><p>语法：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">except</span> (异常<span class="number">1</span>, 异常<span class="number">2</span>):</span><br></pre></td></tr></table></figure>
+
+<p>示例：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    num = <span class="built_in">int</span>(<span class="built_in">input</span>(<span class="string">&quot;请输入数字：&quot;</span>))</span><br><span class="line">    result = <span class="number">10</span> / num</span><br><span class="line"><span class="keyword">except</span> (ValueError, ZeroDivisionError):</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;输入有误&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="捕获所有异常"><a href="#捕获所有异常" class="headerlink" title="捕获所有异常"></a>捕获所有异常</h3><p>示例：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    ...</span><br><span class="line"><span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">    <span class="built_in">print</span>(e)</span><br></pre></td></tr></table></figure>
+
+<p><code>Exception</code> 是大多数异常的父类。</p>
+<hr>
+<h3 id="获取异常信息"><a href="#获取异常信息" class="headerlink" title="获取异常信息"></a>获取异常信息</h3><p>语法：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">except</span> 异常类型 <span class="keyword">as</span> 变量:</span><br></pre></td></tr></table></figure>
+
+<p>示例：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    <span class="built_in">print</span>(<span class="number">10</span> / <span class="number">0</span>)</span><br><span class="line"><span class="keyword">except</span> ZeroDivisionError <span class="keyword">as</span> e:</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;异常信息：&quot;</span>, e)</span><br></pre></td></tr></table></figure>
+
+<p>输出：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">异常信息： division by zero</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="主动抛出异常-raise"><a href="#主动抛出异常-raise" class="headerlink" title="主动抛出异常 raise"></a>主动抛出异常 raise</h3><p>语法：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">raise</span> 异常对象</span><br></pre></td></tr></table></figure>
+
+<p>示例：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">age = -<span class="number">1</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> age &lt; <span class="number">0</span>:</span><br><span class="line">    <span class="keyword">raise</span> ValueError(<span class="string">&quot;年龄不能小于0&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="常见异常类型"><a href="#常见异常类型" class="headerlink" title="常见异常类型"></a>常见异常类型</h2><hr>
+<h3 id="ZeroDivisionError"><a href="#ZeroDivisionError" class="headerlink" title="ZeroDivisionError"></a>ZeroDivisionError</h3><p>除零异常</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">10</span> / <span class="number">0</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="ValueError"><a href="#ValueError" class="headerlink" title="ValueError"></a>ValueError</h3><p>值错误</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">int</span>(<span class="string">&quot;abc&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="TypeError"><a href="#TypeError" class="headerlink" title="TypeError"></a>TypeError</h3><p>类型错误</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&quot;1&quot;</span> + <span class="number">1</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="IndexError"><a href="#IndexError" class="headerlink" title="IndexError"></a>IndexError</h3><p>索引越界</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">lst = [<span class="number">1</span>, <span class="number">2</span>]</span><br><span class="line"><span class="built_in">print</span>(lst[<span class="number">5</span>])</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="KeyError"><a href="#KeyError" class="headerlink" title="KeyError"></a>KeyError</h3><p>字典键不存在</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">d = &#123;<span class="string">&quot;name&quot;</span>: <span class="string">&quot;Tom&quot;</span>&#125;</span><br><span class="line"><span class="built_in">print</span>(d[<span class="string">&quot;age&quot;</span>])</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="NameError"><a href="#NameError" class="headerlink" title="NameError"></a>NameError</h3><p>变量未定义</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(a)</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="FileNotFoundError"><a href="#FileNotFoundError" class="headerlink" title="FileNotFoundError"></a>FileNotFoundError</h3><p>文件不存在</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">open</span>(<span class="string">&quot;a.txt&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="AttributeError"><a href="#AttributeError" class="headerlink" title="AttributeError"></a>AttributeError</h3><p>对象没有该属性</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1.</span>append(<span class="number">10</span>)</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="自定义异常"><a href="#自定义异常" class="headerlink" title="自定义异常"></a>自定义异常</h2><h3 id="创建异常类"><a href="#创建异常类" class="headerlink" title="创建异常类"></a>创建异常类</h3><p>必须继承 Exception</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">MyError</span>(<span class="title class_ inherited__">Exception</span>):</span><br><span class="line">    <span class="keyword">pass</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="使用异常"><a href="#使用异常" class="headerlink" title="使用异常"></a>使用异常</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">AgeError</span>(<span class="title class_ inherited__">Exception</span>):</span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line">age = -<span class="number">10</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> age &lt; <span class="number">0</span>:</span><br><span class="line">    <span class="keyword">raise</span> AgeError(<span class="string">&quot;年龄非法&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="异常链（raise-from）"><a href="#异常链（raise-from）" class="headerlink" title="异常链（raise from）"></a>异常链（raise from）</h2><p>用于保留原始异常。</p>
+<p>语法：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">raise</span> 新异常 <span class="keyword">from</span> 原异常</span><br></pre></td></tr></table></figure>
+
+<p>示例：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    <span class="built_in">int</span>(<span class="string">&quot;abc&quot;</span>)</span><br><span class="line"><span class="keyword">except</span> ValueError <span class="keyword">as</span> e:</span><br><span class="line">    <span class="keyword">raise</span> RuntimeError(<span class="string">&quot;转换失败&quot;</span>) <span class="keyword">from</span> e</span><br></pre></td></tr></table></figure>
+
+<p>这样能看到：</p>
+<ul>
+<li>原始异常</li>
+<li>新异常</li>
+</ul>
+<p>便于调试。</p>
+<hr>
+<h2 id="assert-断言"><a href="#assert-断言" class="headerlink" title="assert 断言"></a>assert 断言</h2><p>用于调试阶段。</p>
+<p>语法：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">assert</span> 条件</span><br></pre></td></tr></table></figure>
+
+<p>示例：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">x = -<span class="number">1</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">assert</span> x &gt; <span class="number">0</span></span><br></pre></td></tr></table></figure>
+
+<p>等价于：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> <span class="keyword">not</span> x &gt; <span class="number">0</span>:</span><br><span class="line">    <span class="keyword">raise</span> AssertionError</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="with-与异常处理"><a href="#with-与异常处理" class="headerlink" title="with 与异常处理"></a>with 与异常处理</h2><p><code>with</code> 可以自动释放资源。</p>
+<p>推荐：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&quot;a.txt&quot;</span>) <span class="keyword">as</span> f:</span><br><span class="line">    data = f.read()</span><br></pre></td></tr></table></figure>
+
+<p>而不是：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">f = <span class="built_in">open</span>(<span class="string">&quot;a.txt&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    data = f.read()</span><br><span class="line"><span class="keyword">finally</span>:</span><br><span class="line">    f.close()</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="经典面试题"><a href="#经典面试题" class="headerlink" title="经典面试题"></a>经典面试题</h2><hr>
+<h3 id="return-与-finally-谁先执行？"><a href="#return-与-finally-谁先执行？" class="headerlink" title="return 与 finally 谁先执行？"></a>return 与 finally 谁先执行？</h3><p>示例：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">test</span>():</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span></span><br><span class="line">    <span class="keyword">finally</span>:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;finally&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(test())</span><br></pre></td></tr></table></figure>
+
+<p>输出：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">finally</span><br><span class="line">1</span><br></pre></td></tr></table></figure>
+
+<p>说明：</p>
+<ul>
+<li>return 值先保存</li>
+<li>finally 再执行</li>
+<li>最后返回</li>
+</ul>
+<hr>
+<h3 id="finally-中-return-的危险"><a href="#finally-中-return-的危险" class="headerlink" title="finally 中 return 的危险"></a>finally 中 return 的危险</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">test</span>():</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span></span><br><span class="line">    <span class="keyword">finally</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="number">2</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(test())</span><br></pre></td></tr></table></figure>
+
+<p>输出：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">2</span><br></pre></td></tr></table></figure>
+
+<p>finally 会覆盖 try 中 return。</p>
+<p>不推荐这样写。</p>
+<hr>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>Python 异常处理核心：</p>
+<table>
+<thead>
+<tr>
+<th>关键字</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>try</td>
+<td>监控异常</td>
+</tr>
+<tr>
+<td>except</td>
+<td>捕获异常</td>
+</tr>
+<tr>
+<td>else</td>
+<td>无异常时执行</td>
+</tr>
+<tr>
+<td>finally</td>
+<td>最终执行</td>
+</tr>
+<tr>
+<td>raise</td>
+<td>主动抛异常</td>
+</tr>
+<tr>
+<td>assert</td>
+<td>断言</td>
+</tr>
+</tbody></table>
+</div>
+        </div>
+        
+        <footer class="kratos-entry-footer clearfix">
+            
+            <div class="footer-tag clearfix">
+                <div class="pull-left">
+                <i class="fa fa-tags"></i>
+                    <a class="tag-none-link" href="/blog/tags/AI/" rel="tag">AI</a>, <a class="tag-none-link" href="/blog/tags/Python/" rel="tag">Python</a>
+                </div>
+                <div class="pull-date">
+                    <time datetime="2026-05-14T14:03:05.159Z" itemprop="dateModified">最后编辑：2026-05-14</time>
+                </div>
+            </div>
+        </footer>
+    </div>
+    
+        <nav class="navigation post-navigation clearfix" role="navigation">
+            
+            <div class="nav-previous clearfix">
+                <a title=" 【Python】函数进阶" href="/blog/2026/05/13/04AI应用开发/Python/05.Python函数进阶/">&lt; 上一篇</a>
+            </div>
+            
+            
+            <div class="nav-next clearfix">
+                <a title=" 【学习路线】前端学习路线" href="/blog/2026/07/01/01学习路线/10.前端学习路线/">下一篇 &gt;</a>
+            </div>
+            
+        </nav>
+    
+    
+</article>
+
+        
+
+            </section>
+
+        
+
+                
+            
+
+<section id="kratos-widget-area" class="col-md-4 hidden-xs hidden-sm">
+    <!-- 文章和页面根据splitter来分割，没有的话就从头开始设置为sticky -->
+    
+    
+                <aside id="krw-about" class="widget widget-kratos-about clearfix">
+    <div class="photo-background"></div>
+    <div class="photo-wrapper clearfix">
+        <div class="photo-wrapper-tip text-center">
+            <img class="about-photo" src="/blog/images/avatar.webp" loading="lazy" decoding="auto" />
+        </div>
+    </div>
+    <div class="textwidget">
+        <p class="text-center">极简主义</p>
+    </div>
+    <div class="site-meta">
+        <a class="meta-item" href="/blog/archives/">
+            <span class="title">
+                文章
+            </span>
+            <span class="count">
+                115
+            </span>
+        </a>
+        <a class="meta-item" href="/blog/categories/">
+            <span class="title">
+                分类
+            </span>
+            <span class="count">
+                14
+            </span>
+        </a>
+        <a class="meta-item" href="/blog/tags/">
+            <span class="title">
+                标签
+            </span>
+            <span class="count">
+                38
+            </span>
+        </a>
+    </div>
+</aside>
+            
+                    <div class="sticky-area">
+                
+                    <aside id="krw-toc" class="widget widget-kratos-toc clearfix toc-div-class" >
+    <div class="photo-background"></div>
+    <h4 class="widget-title no-after">
+        <i class="fa fa-compass"></i>
+        文章目录
+        <span class="toc-progress-bar" role="progressbar" aria-label="阅读进度："></span>
+    </h4>
+    <div class="textwidget">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BC%82%E5%B8%B8%E7%BB%93%E6%9E%84"><span class="toc-text">异常结构</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%8C%E6%95%B4%E5%BC%82%E5%B8%B8%E7%BB%93%E6%9E%84"><span class="toc-text">完整异常结构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#else-%E5%AD%90%E5%8F%A5"><span class="toc-text">else 子句</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#finally-%E5%AD%90%E5%8F%A5"><span class="toc-text">finally 子句</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86"><span class="toc-text">异常处理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8D%95%E8%8E%B7%E6%8C%87%E5%AE%9A%E5%BC%82%E5%B8%B8"><span class="toc-text">捕获指定异常</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%90%8C%E6%97%B6%E6%8D%95%E8%8E%B7%E5%A4%9A%E4%B8%AA%E5%BC%82%E5%B8%B8"><span class="toc-text">同时捕获多个异常</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8D%95%E8%8E%B7%E6%89%80%E6%9C%89%E5%BC%82%E5%B8%B8"><span class="toc-text">捕获所有异常</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%8E%B7%E5%8F%96%E5%BC%82%E5%B8%B8%E4%BF%A1%E6%81%AF"><span class="toc-text">获取异常信息</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BB%E5%8A%A8%E6%8A%9B%E5%87%BA%E5%BC%82%E5%B8%B8-raise"><span class="toc-text">主动抛出异常 raise</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B8%B8%E8%A7%81%E5%BC%82%E5%B8%B8%E7%B1%BB%E5%9E%8B"><span class="toc-text">常见异常类型</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#ZeroDivisionError"><span class="toc-text">ZeroDivisionError</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ValueError"><span class="toc-text">ValueError</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#TypeError"><span class="toc-text">TypeError</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#IndexError"><span class="toc-text">IndexError</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#KeyError"><span class="toc-text">KeyError</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#NameError"><span class="toc-text">NameError</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#FileNotFoundError"><span class="toc-text">FileNotFoundError</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#AttributeError"><span class="toc-text">AttributeError</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89%E5%BC%82%E5%B8%B8"><span class="toc-text">自定义异常</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E5%BC%82%E5%B8%B8%E7%B1%BB"><span class="toc-text">创建异常类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E5%BC%82%E5%B8%B8"><span class="toc-text">使用异常</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BC%82%E5%B8%B8%E9%93%BE%EF%BC%88raise-from%EF%BC%89"><span class="toc-text">异常链（raise from）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#assert-%E6%96%AD%E8%A8%80"><span class="toc-text">assert 断言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#with-%E4%B8%8E%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86"><span class="toc-text">with 与异常处理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%8F%E5%85%B8%E9%9D%A2%E8%AF%95%E9%A2%98"><span class="toc-text">经典面试题</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#return-%E4%B8%8E-finally-%E8%B0%81%E5%85%88%E6%89%A7%E8%A1%8C%EF%BC%9F"><span class="toc-text">return 与 finally 谁先执行？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#finally-%E4%B8%AD-return-%E7%9A%84%E5%8D%B1%E9%99%A9"><span class="toc-text">finally 中 return 的危险</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-text">总结</span></a></li></ol>
+    </div>
+</aside>
+                
+                
+  <aside id="krw-tags" class="widget widget-kratos-tags clearfix">
+    <h4 class="widget-title"><i class="fa fa-tags"></i>标签聚合</h4>
+      <div class="tag-clouds">
+        <a href="/blog/tags/AI/" style="font-size: 0.8em;">AI</a> <a href="/blog/tags/CORS/" style="font-size: 0.8em;">CORS</a> <a href="/blog/tags/CSS/" style="font-size: 0.8em;">CSS</a> <a href="/blog/tags/Docker/" style="font-size: 0.8em;">Docker</a> <a href="/blog/tags/Dubbo/" style="font-size: 0.8em;">Dubbo</a> <a href="/blog/tags/ELK/" style="font-size: 0.8em;">ELK</a> <a href="/blog/tags/Elasticsearch/" style="font-size: 0.8em;">Elasticsearch</a> <a href="/blog/tags/Eureka/" style="font-size: 0.8em;">Eureka</a> <a href="/blog/tags/Feign/" style="font-size: 0.8em;">Feign</a> <a href="/blog/tags/Gateway/" style="font-size: 0.8em;">Gateway</a> <a href="/blog/tags/HTML/" style="font-size: 0.8em;">HTML</a> <a href="/blog/tags/Idea/" style="font-size: 0.8em;">Idea</a> <a href="/blog/tags/Java/" style="font-size: 0.8em;">Java</a> <a href="/blog/tags/JavaScript/" style="font-size: 0.8em;">JavaScript</a> <a href="/blog/tags/JavaWeb/" style="font-size: 0.8em;">JavaWeb</a> <a href="/blog/tags/K8s/" style="font-size: 0.8em;">K8s</a> <a href="/blog/tags/Linux/" style="font-size: 0.8em;">Linux</a> <a href="/blog/tags/Maven/" style="font-size: 0.8em;">Maven</a>
+      </div>
+  </aside>
+
+            
+                
+  <aside id="krw-posts" class="widget widget-kratos-posts">
+  <h4 class="widget-title"><i class="fa fa-file"></i>最新文章</h4>
+  <div class="tab-content">
+      <ul class="list-group">
+        
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/07/02/01%E5%AD%A6%E4%B9%A0%E8%B7%AF%E7%BA%BF/20.AI%E5%BA%94%E8%AF%A5%E5%BC%80%E5%8F%91%E5%AD%A6%E4%B9%A0%E8%B7%AF%E7%BA%BF/"><i class="fa  fa-book"></i> 【学习路线】AI应该开发学习路线</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/07/01/01%E5%AD%A6%E4%B9%A0%E8%B7%AF%E7%BA%BF/10.%E5%89%8D%E7%AB%AF%E5%AD%A6%E4%B9%A0%E8%B7%AF%E7%BA%BF/"><i class="fa  fa-book"></i> 【学习路线】前端学习路线</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/05/14/04AI%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91/Python/09.Python%E5%BC%82%E5%B8%B8/"><i class="fa  fa-book"></i> 【Python】异常</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/05/13/04AI%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91/Python/05.Python%E5%87%BD%E6%95%B0%E8%BF%9B%E9%98%B6/"><i class="fa  fa-book"></i> 【Python】函数进阶</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/05/11/04AI%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91/Python/08.Python%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1/"><i class="fa  fa-book"></i> 【Python】面向对象</a>
+            
+          
+        
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+      </ul>
+  </div>
+  </aside>
+
+            
+    </div>
+</section>
+        
+        </div>
+    </div>
+</div>
+<footer>
+    <div id="footer"  >
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3 footer-list text-center">
+                    <ul class="kratos-social-icons">
+                        <!-- Keep for compatibility -->
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <!-- New links -->
+                        
+                    </ul>
+                    <ul class="kratos-copyright">
+                        <div>
+                            <li>&copy; 2026 溪岚花的博客 版权所有.</li>
+                            <li>本站已运行<span id="span_dt">Loading...</span></li>
+                        </div>
+                        <div>
+                            <li>Theme <a href="https://github.com/Candinya/Kratos-Rebirth" target="_blank">Kratos:Rebirth</a></li>
+                            <li>Site built with&nbsp;<i class="fa fa-heart throb" style="color:#d43f57"></i>&nbsp;by 林家隆.</li>
+                        </div>
+                        <div>
+                            <li>Powered by <a href="https://hexo.io" target="_blank" rel="nofollow">Hexo</a></li>
+                            <li>Hosted on <a href="https://gitee.com/" target="_blank">Gitee Pages</a></li>
+                        </div>
+                        <div>
+                            
+                            
+                        </div>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="kr-tool text-center">
+            <div class="tool">
+                
+                    <div class="box search-box">
+                        <a href="/blog/search/">
+                            <span class="fa fa-search"></span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="box theme-box" id="darkmode-switch">
+                        <span class="fa fa-adjust"></span>
+                    </div>
+                
+                
+                
+            </div>
+            <div class="box gotop-box">
+                <span class="fa fa-chevron-up"></span>
+            </div>
+        </div>
+    </div>
+</footer>
+</div>
+</div>
+
+        <script defer src="/blog/vendors/bootstrap@3.3.4/dist/js/bootstrap.min.js"></script>
+<script defer src="/blog/vendors/nprogress@0.2.0/nprogress.js"></script>
+<script>
+    if (!window.kr) {
+        window.kr = {};
+    }
+    window.kr.notMobile = (!(navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i)));
+    window.kr.siteRoot = "/blog/";
+</script>
+
+
+
+
+
+    <script defer src="/blog/vendors/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+
+<script defer src="/blog/js/kratosr.min.js"></script>
+<script defer src="/blog/js/pjax.min.js"></script>
+
+
+
+<!-- Extra support for third-party plguins  -->
+
+
+    </body>
+</html>
