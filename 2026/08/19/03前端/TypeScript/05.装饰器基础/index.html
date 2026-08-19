@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+  <!-- 元数据 -->
+  <meta charset="utf-8">
+  <link rel="icon" href="/blog/images/logo.png">
+  
+  <title>【TypeScript】装饰器基础 | 溪岚花的博客</title>
+  
+  <meta name="author" content="林家隆" />
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="robots" content="index,follow" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <meta name="format-detection" content="telphone=no, email=no" />
+  
+    <meta name="keywords" content="TypeScript, 前端, 装饰器" />
+  
+  <meta name="description" content="装饰器简介 装饰器本质是一种特殊的函数，它可以对：类、属性、方法、参数进行扩展，同时能让代码更简洁。 装饰器有 5 种：     装饰器 作用    类装饰器 修饰类   属性装饰器 修饰属性   方法装饰器 修饰方法   访问器装饰器 修饰访问器   参数装饰器 修饰参数    备注：虽然 TypeScript5.0 中可以直接使用类装饰器，但为了确保其他装饰器可用，现阶段使用时，仍建议使用 e">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【TypeScript】装饰器基础">
+<meta property="og:url" content="https://lin316.gitee.io/blog/2026/08/19/03%E5%89%8D%E7%AB%AF/TypeScript/05.%E8%A3%85%E9%A5%B0%E5%99%A8%E5%9F%BA%E7%A1%80/index.html">
+<meta property="og:site_name" content="溪岚花的博客">
+<meta property="og:description" content="装饰器简介 装饰器本质是一种特殊的函数，它可以对：类、属性、方法、参数进行扩展，同时能让代码更简洁。 装饰器有 5 种：     装饰器 作用    类装饰器 修饰类   属性装饰器 修饰属性   方法装饰器 修饰方法   访问器装饰器 修饰访问器   参数装饰器 修饰参数    备注：虽然 TypeScript5.0 中可以直接使用类装饰器，但为了确保其他装饰器可用，现阶段使用时，仍建议使用 e">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://lin316.gitee.io/blog/blog/images/logo.png">
+<meta property="article:published_time" content="2026-08-19T08:00:00.000Z">
+<meta property="article:modified_time" content="2026-08-19T10:49:23.870Z">
+<meta property="article:author" content="林家隆">
+<meta property="article:tag" content="前端">
+<meta property="article:tag" content="TypeScript">
+<meta property="article:tag" content="装饰器">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://lin316.gitee.io/blog/blog/images/logo.png">
+  
+  <!-- 站点验证相关 -->
+  
+    
+    
+    
+  
+  <!-- 样式表文件 -->
+  <link rel="stylesheet" id="kratos-css" href="/blog/css/kratosr.min.css" media="all"></script>
+  
+    <link rel="stylesheet" id="darkmode-css" href="/blog/css/kr-color-dark.min.css" media="(prefers-color-scheme: dark)"></script>
+    <script src="/blog/js/kr-dark.min.js"></script>
+  
+  
+    <link rel="stylesheet" id="highlight-css" href="/blog/css/highlight/night-eighties.min.css" media="all"></script>
+  
+  <link rel="stylesheet" id="fontawe-css" href="/blog/vendors/font-awesome@4.7.0/css/font-awesome.min.css" media="all"></script>
+  <link rel="stylesheet" id="nprogress-css" href="/blog/vendors/nprogress@0.2.0/nprogress.css" media="all"></script>
+  
+  
+  
+    <link rel="stylesheet" href="/blog/vendors/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css"></script>
+  
+  <!-- 不得不预先加载的一些JS文件 -->
+  <script src="/blog/vendors/jquery@3.6.0/dist/jquery.min.js"></script>
+  
+  
+  <style>
+    
+    
+  </style>
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+    <body class="custom-background">
+        <div id="kratos-wrapper">
+    <div id="kratos-page">
+        <div id="kratos-header">
+            <header id="kratos-desktop-topnav" class="kratos-topnav">
+                <div class="container">
+                    <div class="nav-header">
+                        <nav id="kratos-menu-wrap">
+                            <ul id="kratos-primary-menu" class="sf-menu">
+                                
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/">
+                                            
+                                                
+                                                    <i class="fa fa-home"></i>
+                                                
+                                                首页
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/archives/">
+                                            
+                                                
+                                                    <i class="fa fa-file"></i>
+                                                
+                                                归档
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/tags/">
+                                            
+                                                
+                                                    <i class="fa fa-tag"></i>
+                                                
+                                                标签
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/categories/">
+                                            
+                                                
+                                                    <i class="fa fa-folder"></i>
+                                                
+                                                目录
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/search/">
+                                            
+                                                
+                                                    <i class="fa fa-search"></i>
+                                                
+                                                搜索
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </header>
+            <header id="kratos-mobile-topnav" class="kratos-topnav">
+                <div class="container">
+                    <div class="color-logo"><a href="/blog/">溪岚花的博客</a></div>
+                    <div class="nav-toggle">
+                        <a class="kratos-nav-toggle js-kratos-nav-toggle">
+                            <i></i>
+                        </a>
+                    </div>
+                </div>
+            </header>
+        </div>
+        <div class="kratos-start kratos-hero-2">
+            <!-- <div class="kratos-overlay"></div> -->
+            <div class="kratos-cover kratos-cover-2 text-center">
+                <div class="desc desc2 animate-box">
+                    <a href="/blog/">
+                        <h2 style="opacity: 0.2;">溪岚花的博客</h2> <br />
+                        <span></span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div id="kratos-blog-post">
+            <div class="container">
+                <div id="main" class="row">
+                    
+
+        
+
+            <section class="col-md-8">
+
+        
+
+            <article itemscope itemtype="https://schema.org/Article">
+    
+    <link itemprop="mainEntityOfPage" href="https://lin316.gitee.io/blog/2026/08/19/03%E5%89%8D%E7%AB%AF/TypeScript/05.%E8%A3%85%E9%A5%B0%E5%99%A8%E5%9F%BA%E7%A1%80/">
+    <div class="kratos-hentry kratos-post-inner clearfix">
+        <header class="kratos-entry-header">
+            
+                <h1 class="kratos-entry-title text-center" itemprop="name headline">【TypeScript】装饰器基础</h1>
+            
+            
+            <ul class="kratos-post-meta text-center">
+                <li><time datetime="2026-08-19T08:00:00.000Z" itemprop="datePublished"><i class="fa fa-calendar"></i> 2026-08-19</time></li>
+                <li itemprop="author" itemscope itemtype="https://schema.org/Person">
+                    <i class="fa fa-user"></i> 作者 <span itemprop="name">林家隆</span>
+                </li>
+                
+                    <li>
+                        <i class="fa fa-edit"></i> 
+                        
+                        
+                            6.57K
+                        
+                        字
+                    </li>
+                
+                
+            </ul>
+        </header>
+        <div class="kratos-post-content">
+            
+            <div id="expire-alert" class="alert alert-warning hidden" role="alert">
+                <div class="icon"><i class="fa fa-warning"></i></div>
+                <div class="text"><p>本文最后编辑于 <time datetime="1787136563870"></time> 前，其中的内容可能需要更新。</p></div>
+            </div>
+            
+            
+            
+                <div class="kratos-post-inner-toc toc-div-class" >
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%A3%85%E9%A5%B0%E5%99%A8%E7%AE%80%E4%BB%8B"><span class="toc-number">1.</span> <span class="toc-text">装饰器简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%B1%BB%E8%A3%85%E9%A5%B0%E5%99%A8"><span class="toc-number">2.</span> <span class="toc-text">类装饰器</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9F%BA%E6%9C%AC%E8%AF%AD%E6%B3%95"><span class="toc-number">2.1.</span> <span class="toc-text">基本语法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BA%94%E7%94%A8%E4%B8%BE%E4%BE%8B"><span class="toc-number">2.2.</span> <span class="toc-text">应用举例</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B3%E4%BA%8E%E8%BF%94%E5%9B%9E%E5%80%BC"><span class="toc-number">2.3.</span> <span class="toc-text">关于返回值</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B3%E4%BA%8E%E6%9E%84%E9%80%A0%E7%B1%BB%E5%9E%8B"><span class="toc-number">2.4.</span> <span class="toc-text">关于构造类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9B%BF%E6%8D%A2%E8%A2%AB%E8%A3%85%E9%A5%B0%E7%9A%84%E7%B1%BB"><span class="toc-number">2.5.</span> <span class="toc-text">替换被装饰的类</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%A3%85%E9%A5%B0%E5%99%A8%E5%B7%A5%E5%8E%82"><span class="toc-number">3.</span> <span class="toc-text">装饰器工厂</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%A3%85%E9%A5%B0%E5%99%A8%E7%BB%84%E5%90%88"><span class="toc-number">4.</span> <span class="toc-text">装饰器组合</span></a></li></ol>
+                </div>
+            
+            <hr />
+            <div itemprop="articleBody"><h2 id="装饰器简介"><a href="#装饰器简介" class="headerlink" title="装饰器简介"></a>装饰器简介</h2><ol>
+<li>装饰器本质是一种特殊的<strong>函数</strong>，它可以对：类、属性、方法、参数进行扩展，同时能让代码更简洁。</li>
+<li>装饰器有 5 种：</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th>装饰器</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>类装饰器</td>
+<td>修饰类</td>
+</tr>
+<tr>
+<td>属性装饰器</td>
+<td>修饰属性</td>
+</tr>
+<tr>
+<td>方法装饰器</td>
+<td>修饰方法</td>
+</tr>
+<tr>
+<td>访问器装饰器</td>
+<td>修饰访问器</td>
+</tr>
+<tr>
+<td>参数装饰器</td>
+<td>修饰参数</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>备注：虽然 <code>TypeScript5.0</code> 中可以直接使用<strong>类装饰器</strong>，但为了确保其他装饰器可用，现阶段使用时，仍建议使用 <code>experimentalDecorators</code> 配置来开启装饰器支持。</p>
+</blockquote>
+<h2 id="类装饰器"><a href="#类装饰器" class="headerlink" title="类装饰器"></a>类装饰器</h2><h3 id="基本语法"><a href="#基本语法" class="headerlink" title="基本语法"></a>基本语法</h3><blockquote>
+<p>类装饰器是一个应用在<strong>类声明</strong>上的<strong>函数</strong>，可以为类添加额外的功能，或添加额外的逻辑。</p>
+</blockquote>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">  Demo函数会在Person类定义时执行</span></span><br><span class="line"><span class="comment">  参数说明：</span></span><br><span class="line"><span class="comment">    ○ target参数是被装饰的类，即：Person</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">Demo</span>(<span class="params">target: <span class="built_in">Function</span></span>) &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(target)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 使用装饰器</span></span><br><span class="line"><span class="meta">@Demo</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Person</span> &#123; &#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="应用举例"><a href="#应用举例" class="headerlink" title="应用举例"></a>应用举例</h3><blockquote>
+<p>需求：定义一个装饰器，实现 <code>Person</code> 实例调用 <code>toString</code> 时返回 <code>JSON.stringify</code> 的执行结果。</p>
+</blockquote>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 使用装饰器重写toString方法 + 封闭其原型对象</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">CustomString</span>(<span class="params">target: <span class="built_in">Function</span></span>) &#123;</span><br><span class="line">  <span class="comment">// 向被装饰类的原型上添加自定义的 toString 方法</span></span><br><span class="line">  target.<span class="property"><span class="keyword">prototype</span></span>.<span class="property">toString</span> = <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="title class_">JSON</span>.<span class="title function_">stringify</span>(<span class="variable language_">this</span>)</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// 封闭其原型对象，禁止随意操作其原型对象</span></span><br><span class="line">  <span class="title class_">Object</span>.<span class="title function_">seal</span>(target.<span class="property"><span class="keyword">prototype</span></span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 使用 CustomString 装饰器</span></span><br><span class="line"><span class="meta">@CustomString</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Person</span> &#123;</span><br><span class="line">  <span class="title function_">constructor</span>(<span class="params"><span class="keyword">public</span> name: <span class="built_in">string</span>, <span class="keyword">public</span> age: <span class="built_in">number</span></span>) &#123; &#125;</span><br><span class="line">  <span class="title function_">speak</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;你好呀！&#x27;</span>)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* 测试代码如下 */</span></span><br><span class="line"><span class="keyword">let</span> p1 = <span class="keyword">new</span> <span class="title class_">Person</span>(<span class="string">&#x27;张三&#x27;</span>, <span class="number">18</span>)</span><br><span class="line"><span class="comment">// 输出：&#123;&quot;name&quot;:&quot;张三&quot;,&quot;age&quot;:18&#125;</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(p1.<span class="title function_">toString</span>())</span><br><span class="line"><span class="comment">// 禁止随意操作其原型对象</span></span><br><span class="line"><span class="keyword">interface</span> <span class="title class_">Person</span> &#123;</span><br><span class="line">  <span class="attr">a</span>: <span class="built_in">any</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// Person.prototype.a = 100 // 此行会报错：Cannot add property a, object is not extensible</span></span><br><span class="line"><span class="comment">// console.log(p1.a)</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="关于返回值"><a href="#关于返回值" class="headerlink" title="关于返回值"></a>关于返回值</h3><blockquote>
+<ul>
+<li><strong>类装饰器有返回值</strong>：若类装饰器返回一个新的类，那这个新类将<strong>替换</strong>掉被装饰的类。</li>
+<li><strong>类装饰器无返回值</strong>：若类装饰器无返回值或返回 <code>undefined</code>，那被装饰的类<strong>不会</strong>被替换。</li>
+</ul>
+</blockquote>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">demo</span>(<span class="params">target: <span class="built_in">Function</span></span>) &#123;</span><br><span class="line">  <span class="comment">// 装饰器有返回值时，该返回值会替换掉被装饰的类</span></span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">class</span> &#123;</span><br><span class="line">    <span class="title function_">test</span>(<span class="params"></span>) &#123;</span><br><span class="line">      <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="number">200</span>)</span><br><span class="line">      <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="number">300</span>)</span><br><span class="line">      <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="number">400</span>)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@demo</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Person</span> &#123;</span><br><span class="line">  <span class="title function_">test</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="number">100</span>)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="title class_">Person</span>)</span><br></pre></td></tr></table></figure>
+
+<h3 id="关于构造类型"><a href="#关于构造类型" class="headerlink" title="关于构造类型"></a>关于构造类型</h3><blockquote>
+<p>在 TypeScript 中，<code>Function</code> 类型所表示的范围十分广泛，包括：普通函数、箭头函数、方法等等。但并非 <code>Function</code> 类型的函数都可以被 <code>new</code> 关键字实例化，例如箭头函数是不能被实例化的，那么 TypeScript 中该如何声明一个构造类型呢？有以下两种方式：</p>
+</blockquote>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">  ○ new     表示：该类型是可以用new操作符调用。</span></span><br><span class="line"><span class="comment">  ○ ...args 表示：构造器可以接受【任意数量】的参数。</span></span><br><span class="line"><span class="comment">  ○ any[]   表示：构造器可以接受【任意类型】的参数。</span></span><br><span class="line"><span class="comment">  ○ &#123;&#125;      表示：返回类型是对象(非null、非undefined的对象)。</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 定义Constructor类型，其含义是构造类型</span></span><br><span class="line"><span class="keyword">type</span> <span class="title class_">Constructor</span> = <span class="keyword">new</span> (...<span class="attr">args</span>: <span class="built_in">any</span>[]) =&gt; &#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">test</span>(<span class="params">fn: Constructor</span>) &#123; &#125;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Person</span> &#123; &#125;</span><br><span class="line"><span class="title function_">test</span>(<span class="title class_">Person</span>)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 定义一个构造类型，且包含一个静态属性 wife</span></span><br><span class="line"><span class="keyword">type</span> <span class="title class_">Constructor</span> = &#123;</span><br><span class="line">  <span class="title function_">new</span>(...<span class="attr">args</span>: <span class="built_in">any</span>[]): &#123;&#125; <span class="comment">// 构造签名</span></span><br><span class="line">  <span class="attr">wife</span>: <span class="built_in">string</span> <span class="comment">// wife属性</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">test</span>(<span class="params">fn: Constructor</span>) &#123; &#125;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Person</span> &#123;</span><br><span class="line">  <span class="keyword">static</span> wife = <span class="string">&#x27;asd&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="title function_">test</span>(<span class="title class_">Person</span>)</span><br></pre></td></tr></table></figure>
+
+<h3 id="替换被装饰的类"><a href="#替换被装饰的类" class="headerlink" title="替换被装饰的类"></a>替换被装饰的类</h3><p>对于高级一些的装饰器，不仅仅是覆盖一个原型上的方法，还要有更多功能，例如添加新的方法和状态。</p>
+<blockquote>
+<p>需求：设计一个 <code>LogTime</code> 装饰器，可以给实例添加一个属性，用于记录实例对象的创建时间，再添加一个方法用于读取创建时间。</p>
+</blockquote>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// User接口</span></span><br><span class="line"><span class="keyword">interface</span> <span class="title class_">User</span> &#123;</span><br><span class="line">  <span class="title function_">getTime</span>(): <span class="title class_">Date</span></span><br><span class="line">  <span class="title function_">log</span>(): <span class="built_in">void</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 自定义类型Class</span></span><br><span class="line"><span class="keyword">type</span> <span class="title class_">Constructor</span> = <span class="keyword">new</span> (...<span class="attr">args</span>: <span class="built_in">any</span>[]) =&gt; &#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 创建一个装饰器，为类添加日志功能和创建时间</span></span><br><span class="line"><span class="keyword">function</span> <span class="title class_">LogTime</span>&lt;T <span class="keyword">extends</span> <span class="title class_">Constructor</span>&gt;(<span class="attr">target</span>: T) &#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">class</span> <span class="title class_">extends</span> target &#123;</span><br><span class="line">    <span class="attr">createdTime</span>: <span class="title class_">Date</span></span><br><span class="line">    <span class="title function_">constructor</span>(<span class="params">...args: <span class="built_in">any</span>[]</span>) &#123;</span><br><span class="line">      <span class="variable language_">super</span>(...args)</span><br><span class="line">      <span class="variable language_">this</span>.<span class="property">createdTime</span> = <span class="keyword">new</span> <span class="title class_">Date</span>() <span class="comment">// 记录对象创建时间</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="title function_">getTime</span>(<span class="params"></span>) &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="string">`该对象创建时间为：<span class="subst">$&#123;<span class="variable language_">this</span>.createdTime&#125;</span>`</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@LogTime</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">User</span> &#123;</span><br><span class="line">  <span class="title function_">constructor</span>(<span class="params"></span></span><br><span class="line"><span class="params">    <span class="keyword">public</span> name: <span class="built_in">string</span>,</span></span><br><span class="line"><span class="params">    <span class="keyword">public</span> age: <span class="built_in">number</span></span></span><br><span class="line"><span class="params">  </span>) &#123; &#125;</span><br><span class="line">  <span class="title function_">speak</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">`<span class="subst">$&#123;<span class="variable language_">this</span>.name&#125;</span>说：你好啊！`</span>)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> user1 = <span class="keyword">new</span> <span class="title class_">User</span>(<span class="string">&#x27;张三&#x27;</span>, <span class="number">13</span>)</span><br><span class="line">user1.<span class="title function_">speak</span>()</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(user1.<span class="title function_">getTime</span>())</span><br></pre></td></tr></table></figure>
+
+<h2 id="装饰器工厂"><a href="#装饰器工厂" class="headerlink" title="装饰器工厂"></a>装饰器工厂</h2><p>装饰器工厂是<strong>一个返回装饰器函数的函数</strong>，可以为装饰器添加参数，可以更灵活地控制装饰器的行为。</p>
+<blockquote>
+<p>需求：定义一个 <code>LogInfo</code> 类装饰器工厂，实现 <code>Person</code> 实例可以调用到 <code>introduce</code> 方法，且 <code>introduce</code> 中输出内容的次数，由 <code>LogInfo</code> 接收的参数决定。</p>
+</blockquote>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> <span class="title class_">Person</span> &#123;</span><br><span class="line">  <span class="attr">introduce</span>: <span class="function">() =&gt;</span> <span class="built_in">void</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 定义一个装饰器工厂 LogInfo，它接受一个参数 n，返回一个类装饰器</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">LogInfo</span>(<span class="params">n: <span class="built_in">number</span></span>) &#123;</span><br><span class="line">  <span class="comment">// 装饰器函数，target 是被装饰的类</span></span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">function</span> (<span class="params">target: <span class="built_in">Function</span></span>) &#123;</span><br><span class="line">    target.<span class="property"><span class="keyword">prototype</span></span>.<span class="property">introduce</span> = <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">      <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; n; i++) &#123;</span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">`我的名字：<span class="subst">$&#123;<span class="variable language_">this</span>.name&#125;</span>，我的年龄：<span class="subst">$&#123;<span class="variable language_">this</span>.age&#125;</span>`</span>)</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@LogInfo</span>(<span class="number">5</span>)</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Person</span> &#123;</span><br><span class="line">  <span class="title function_">constructor</span>(<span class="params"></span></span><br><span class="line"><span class="params">    <span class="keyword">public</span> name: <span class="built_in">string</span>,</span></span><br><span class="line"><span class="params">    <span class="keyword">public</span> age: <span class="built_in">number</span></span></span><br><span class="line"><span class="params">  </span>) &#123; &#125;</span><br><span class="line">  <span class="title function_">speak</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;你好呀！&#x27;</span>)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> p1 = <span class="keyword">new</span> <span class="title class_">Person</span>(<span class="string">&#x27;张三&#x27;</span>, <span class="number">18</span>)</span><br><span class="line"><span class="comment">// console.log(p1) // 打印的p1是：_classThis，转换的JS版本比较旧时，会出现，不必纠结</span></span><br><span class="line">p1.<span class="title function_">speak</span>()</span><br><span class="line">p1.<span class="title function_">introduce</span>()</span><br></pre></td></tr></table></figure>
+
+<h2 id="装饰器组合"><a href="#装饰器组合" class="headerlink" title="装饰器组合"></a>装饰器组合</h2><p>装饰器可以组合使用，执行顺序为：先【由上到下】的执行所有的装饰器工厂，依次获取到装饰器，然后再【由下到上】执行所有的装饰器。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 装饰器</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">test1</span>(<span class="params">target: <span class="built_in">Function</span></span>) &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;test1&#x27;</span>)</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 装饰器工厂</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">test2</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;test2工厂&#x27;</span>)</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">function</span> (<span class="params">target: <span class="built_in">Function</span></span>) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;test2&#x27;</span>)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 装饰器工厂</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">test3</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;test3工厂&#x27;</span>)</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">function</span> (<span class="params">target: <span class="built_in">Function</span></span>) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;test3&#x27;</span>)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 装饰器</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">test4</span>(<span class="params">target: <span class="built_in">Function</span></span>) &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;test4&#x27;</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@test1</span></span><br><span class="line"><span class="meta">@test2</span>()</span><br><span class="line"><span class="meta">@test3</span>()</span><br><span class="line"><span class="meta">@test4</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Person</span> &#123; &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">  控制台打印：</span></span><br><span class="line"><span class="comment">    test2工厂</span></span><br><span class="line"><span class="comment">    test3工厂</span></span><br><span class="line"><span class="comment">    test4</span></span><br><span class="line"><span class="comment">    test3</span></span><br><span class="line"><span class="comment">    test2</span></span><br><span class="line"><span class="comment">    test1</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
+
+<p>组合使用的完整示例：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 自定义类型Class</span></span><br><span class="line"><span class="keyword">type</span> <span class="title class_">Constructor</span> = <span class="keyword">new</span> (...<span class="attr">args</span>: <span class="built_in">any</span>[]) =&gt; &#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">interface</span> <span class="title class_">Person</span> &#123;</span><br><span class="line">  <span class="title function_">introduce</span>(): <span class="built_in">void</span></span><br><span class="line">  <span class="title function_">getTime</span>(): <span class="built_in">void</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 使用装饰器重写toString方法 + 封闭其原型对象</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">customToString</span>(<span class="params">target: <span class="built_in">Function</span></span>) &#123;</span><br><span class="line">  <span class="comment">// 向被装饰类的原型上添加自定义的 toString 方法</span></span><br><span class="line">  target.<span class="property"><span class="keyword">prototype</span></span>.<span class="property">toString</span> = <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="title class_">JSON</span>.<span class="title function_">stringify</span>(<span class="variable language_">this</span>)</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// 封闭其原型对象，禁止随意操作其原型对象</span></span><br><span class="line">  <span class="title class_">Object</span>.<span class="title function_">seal</span>(target.<span class="property"><span class="keyword">prototype</span></span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 创建一个装饰器，为类添加日志功能和创建时间</span></span><br><span class="line"><span class="keyword">function</span> <span class="title class_">LogTime</span>&lt;T <span class="keyword">extends</span> <span class="title class_">Constructor</span>&gt;(<span class="attr">target</span>: T) &#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">class</span> <span class="title class_">extends</span> target &#123;</span><br><span class="line">    <span class="attr">createdTime</span>: <span class="title class_">Date</span></span><br><span class="line">    <span class="title function_">constructor</span>(<span class="params">...args: <span class="built_in">any</span>[]</span>) &#123;</span><br><span class="line">      <span class="variable language_">super</span>(...args)</span><br><span class="line">      <span class="variable language_">this</span>.<span class="property">createdTime</span> = <span class="keyword">new</span> <span class="title class_">Date</span>() <span class="comment">// 记录对象创建时间</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="title function_">getTime</span>(<span class="params"></span>) &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="string">`该对象创建时间为：<span class="subst">$&#123;<span class="variable language_">this</span>.createdTime&#125;</span>`</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 定义一个装饰器工厂 LogInfo，它接受一个参数 n，返回一个类装饰器</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">LogInfo</span>(<span class="params">n: <span class="built_in">number</span></span>) &#123;</span><br><span class="line">  <span class="comment">// 装饰器函数，target 是被装饰的类</span></span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">function</span> (<span class="params">target: <span class="built_in">Function</span></span>) &#123;</span><br><span class="line">    target.<span class="property"><span class="keyword">prototype</span></span>.<span class="property">introduce</span> = <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">      <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; n; i++) &#123;</span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">`我的名字：<span class="subst">$&#123;<span class="variable language_">this</span>.name&#125;</span>，我的年龄：<span class="subst">$&#123;<span class="variable language_">this</span>.age&#125;</span>`</span>)</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@customToString</span></span><br><span class="line"><span class="meta">@LogInfo</span>(<span class="number">3</span>)</span><br><span class="line"><span class="meta">@LogTime</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Person</span> &#123;</span><br><span class="line">  <span class="title function_">constructor</span>(<span class="params"></span></span><br><span class="line"><span class="params">    <span class="keyword">public</span> name: <span class="built_in">string</span>,</span></span><br><span class="line"><span class="params">    <span class="keyword">public</span> age: <span class="built_in">number</span></span></span><br><span class="line"><span class="params">  </span>) &#123; &#125;</span><br><span class="line">  <span class="title function_">speak</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;你好呀！&#x27;</span>)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> p1 = <span class="keyword">new</span> <span class="title class_">Person</span>(<span class="string">&#x27;张三&#x27;</span>, <span class="number">18</span>)</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(p1.<span class="title function_">toString</span>())</span><br><span class="line">p1.<span class="title function_">introduce</span>()</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(p1.<span class="title function_">getTime</span>())</span><br></pre></td></tr></table></figure>
+</div>
+        </div>
+        
+        <footer class="kratos-entry-footer clearfix">
+            
+            <div class="footer-tag clearfix">
+                <div class="pull-left">
+                <i class="fa fa-tags"></i>
+                    <a class="tag-none-link" href="/blog/tags/TypeScript/" rel="tag">TypeScript</a>, <a class="tag-none-link" href="/blog/tags/%E5%89%8D%E7%AB%AF/" rel="tag">前端</a>, <a class="tag-none-link" href="/blog/tags/%E8%A3%85%E9%A5%B0%E5%99%A8/" rel="tag">装饰器</a>
+                </div>
+                <div class="pull-date">
+                    <time datetime="2026-08-19T10:49:23.870Z" itemprop="dateModified">最后编辑：2026-08-19</time>
+                </div>
+            </div>
+        </footer>
+    </div>
+    
+        <nav class="navigation post-navigation clearfix" role="navigation">
+            
+            <div class="nav-previous clearfix">
+                <a title=" 【TypeScript】泛型" href="/blog/2026/08/19/03前端/TypeScript/04.泛型/">&lt; 上一篇</a>
+            </div>
+            
+            
+            <div class="nav-next clearfix">
+                <a title=" 【TypeScript】装饰器进阶" href="/blog/2026/08/19/03前端/TypeScript/06.装饰器进阶/">下一篇 &gt;</a>
+            </div>
+            
+        </nav>
+    
+    
+</article>
+
+        
+
+            </section>
+
+        
+
+                
+            
+
+<section id="kratos-widget-area" class="col-md-4 hidden-xs hidden-sm">
+    <!-- 文章和页面根据splitter来分割，没有的话就从头开始设置为sticky -->
+    
+    
+                <aside id="krw-about" class="widget widget-kratos-about clearfix">
+    <div class="photo-background"></div>
+    <div class="photo-wrapper clearfix">
+        <div class="photo-wrapper-tip text-center">
+            <img class="about-photo" src="/blog/images/avatar.webp" loading="lazy" decoding="auto" />
+        </div>
+    </div>
+    <div class="textwidget">
+        <p class="text-center">极简主义</p>
+    </div>
+    <div class="site-meta">
+        <a class="meta-item" href="/blog/archives/">
+            <span class="title">
+                文章
+            </span>
+            <span class="count">
+                121
+            </span>
+        </a>
+        <a class="meta-item" href="/blog/categories/">
+            <span class="title">
+                分类
+            </span>
+            <span class="count">
+                15
+            </span>
+        </a>
+        <a class="meta-item" href="/blog/tags/">
+            <span class="title">
+                标签
+            </span>
+            <span class="count">
+                40
+            </span>
+        </a>
+    </div>
+</aside>
+            
+                    <div class="sticky-area">
+                
+                    <aside id="krw-toc" class="widget widget-kratos-toc clearfix toc-div-class" >
+    <div class="photo-background"></div>
+    <h4 class="widget-title no-after">
+        <i class="fa fa-compass"></i>
+        文章目录
+        <span class="toc-progress-bar" role="progressbar" aria-label="阅读进度："></span>
+    </h4>
+    <div class="textwidget">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%A3%85%E9%A5%B0%E5%99%A8%E7%AE%80%E4%BB%8B"><span class="toc-text">装饰器简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%B1%BB%E8%A3%85%E9%A5%B0%E5%99%A8"><span class="toc-text">类装饰器</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9F%BA%E6%9C%AC%E8%AF%AD%E6%B3%95"><span class="toc-text">基本语法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BA%94%E7%94%A8%E4%B8%BE%E4%BE%8B"><span class="toc-text">应用举例</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B3%E4%BA%8E%E8%BF%94%E5%9B%9E%E5%80%BC"><span class="toc-text">关于返回值</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B3%E4%BA%8E%E6%9E%84%E9%80%A0%E7%B1%BB%E5%9E%8B"><span class="toc-text">关于构造类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9B%BF%E6%8D%A2%E8%A2%AB%E8%A3%85%E9%A5%B0%E7%9A%84%E7%B1%BB"><span class="toc-text">替换被装饰的类</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%A3%85%E9%A5%B0%E5%99%A8%E5%B7%A5%E5%8E%82"><span class="toc-text">装饰器工厂</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%A3%85%E9%A5%B0%E5%99%A8%E7%BB%84%E5%90%88"><span class="toc-text">装饰器组合</span></a></li></ol>
+    </div>
+</aside>
+                
+                
+  <aside id="krw-tags" class="widget widget-kratos-tags clearfix">
+    <h4 class="widget-title"><i class="fa fa-tags"></i>标签聚合</h4>
+      <div class="tag-clouds">
+        <a href="/blog/tags/AI/" style="font-size: 0.8em;">AI</a> <a href="/blog/tags/CORS/" style="font-size: 0.8em;">CORS</a> <a href="/blog/tags/CSS/" style="font-size: 0.8em;">CSS</a> <a href="/blog/tags/Docker/" style="font-size: 0.8em;">Docker</a> <a href="/blog/tags/Dubbo/" style="font-size: 0.8em;">Dubbo</a> <a href="/blog/tags/ELK/" style="font-size: 0.8em;">ELK</a> <a href="/blog/tags/Elasticsearch/" style="font-size: 0.8em;">Elasticsearch</a> <a href="/blog/tags/Eureka/" style="font-size: 0.8em;">Eureka</a> <a href="/blog/tags/Feign/" style="font-size: 0.8em;">Feign</a> <a href="/blog/tags/Gateway/" style="font-size: 0.8em;">Gateway</a> <a href="/blog/tags/HTML/" style="font-size: 0.8em;">HTML</a> <a href="/blog/tags/Idea/" style="font-size: 0.8em;">Idea</a> <a href="/blog/tags/Java/" style="font-size: 0.8em;">Java</a> <a href="/blog/tags/JavaScript/" style="font-size: 0.8em;">JavaScript</a> <a href="/blog/tags/JavaWeb/" style="font-size: 0.8em;">JavaWeb</a> <a href="/blog/tags/K8s/" style="font-size: 0.8em;">K8s</a> <a href="/blog/tags/Linux/" style="font-size: 0.8em;">Linux</a> <a href="/blog/tags/Maven/" style="font-size: 0.8em;">Maven</a>
+      </div>
+  </aside>
+
+            
+                
+  <aside id="krw-posts" class="widget widget-kratos-posts">
+  <h4 class="widget-title"><i class="fa fa-file"></i>最新文章</h4>
+  <div class="tab-content">
+      <ul class="list-group">
+        
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/08/19/03%E5%89%8D%E7%AB%AF/TypeScript/06.%E8%A3%85%E9%A5%B0%E5%99%A8%E8%BF%9B%E9%98%B6/"><i class="fa  fa-book"></i> 【TypeScript】装饰器进阶</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/08/19/03%E5%89%8D%E7%AB%AF/TypeScript/05.%E8%A3%85%E9%A5%B0%E5%99%A8%E5%9F%BA%E7%A1%80/"><i class="fa  fa-book"></i> 【TypeScript】装饰器基础</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/08/19/03%E5%89%8D%E7%AB%AF/TypeScript/04.%E6%B3%9B%E5%9E%8B/"><i class="fa  fa-book"></i> 【TypeScript】泛型</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/08/19/03%E5%89%8D%E7%AB%AF/TypeScript/03.%E7%B1%BB%E4%B8%8E%E6%8E%A5%E5%8F%A3/"><i class="fa  fa-book"></i> 【TypeScript】类与接口</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/08/19/03%E5%89%8D%E7%AB%AF/TypeScript/02.%E5%B8%B8%E7%94%A8%E7%B1%BB%E5%9E%8B%EF%BC%88%E4%B8%8B%EF%BC%89/"><i class="fa  fa-book"></i> 【TypeScript】常用类型（下）</a>
+            
+          
+        
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+      </ul>
+  </div>
+  </aside>
+
+            
+    </div>
+</section>
+        
+        </div>
+    </div>
+</div>
+<footer>
+    <div id="footer"  >
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3 footer-list text-center">
+                    <ul class="kratos-social-icons">
+                        <!-- Keep for compatibility -->
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <!-- New links -->
+                        
+                    </ul>
+                    <ul class="kratos-copyright">
+                        <div>
+                            <li>&copy; 2026 溪岚花的博客 版权所有.</li>
+                            <li>本站已运行<span id="span_dt">Loading...</span></li>
+                        </div>
+                        <div>
+                            <li>Theme <a href="https://github.com/Candinya/Kratos-Rebirth" target="_blank">Kratos:Rebirth</a></li>
+                            <li>Site built with&nbsp;<i class="fa fa-heart throb" style="color:#d43f57"></i>&nbsp;by 林家隆.</li>
+                        </div>
+                        <div>
+                            <li>Powered by <a href="https://hexo.io" target="_blank" rel="nofollow">Hexo</a></li>
+                            <li>Hosted on <a href="https://gitee.com/" target="_blank">Gitee Pages</a></li>
+                        </div>
+                        <div>
+                            
+                            
+                        </div>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="kr-tool text-center">
+            <div class="tool">
+                
+                    <div class="box search-box">
+                        <a href="/blog/search/">
+                            <span class="fa fa-search"></span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="box theme-box" id="darkmode-switch">
+                        <span class="fa fa-adjust"></span>
+                    </div>
+                
+                
+                
+            </div>
+            <div class="box gotop-box">
+                <span class="fa fa-chevron-up"></span>
+            </div>
+        </div>
+    </div>
+</footer>
+</div>
+</div>
+
+        <script defer src="/blog/vendors/bootstrap@3.3.4/dist/js/bootstrap.min.js"></script>
+<script defer src="/blog/vendors/nprogress@0.2.0/nprogress.js"></script>
+<script>
+    if (!window.kr) {
+        window.kr = {};
+    }
+    window.kr.notMobile = (!(navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i)));
+    window.kr.siteRoot = "/blog/";
+</script>
+
+
+
+
+
+    <script defer src="/blog/vendors/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+
+<script defer src="/blog/js/kratosr.min.js"></script>
+<script defer src="/blog/js/pjax.min.js"></script>
+
+
+
+<!-- Extra support for third-party plguins  -->
+
+
+    </body>
+</html>

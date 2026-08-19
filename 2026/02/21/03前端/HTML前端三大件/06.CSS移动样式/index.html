@@ -17,16 +17,16 @@
   
     <meta name="keywords" content="CSS, HTML, JavaScript" />
   
-  <meta name="description" content="渐变CSS 渐变是一种特殊的背景图像，用于在两种或多种颜色之间创建平滑过渡效果，本质上是 background-image 的一种形式。  常见渐变类型：    类型 说明    linear-gradient() 线性渐变（沿直线方向）   radial-gradient() 径向渐变（圆形 &#x2F; 椭圆）   conic-gradient() 锥形渐变（围绕角度旋转）    线性渐变 l">
+  <meta name="description" content="渐变CSS 渐变是一种特殊的背景图像，用于在两种或多种颜色之间创建平滑过渡效果，本质上是 background-image 的一种形式。  常见渐变类型：    类型 说明    linear-gradient() 线性渐变（沿直线方向）   radial-gradient() 径向渐变（圆形 &#x2F; 椭圆）   conic-gradient() 锥形渐变（围绕角度旋转）     线性渐变">
 <meta property="og:type" content="article">
 <meta property="og:title" content="【CSS】CSS 移动样式">
 <meta property="og:url" content="https://lin316.gitee.io/blog/2026/02/21/03%E5%89%8D%E7%AB%AF/HTML%E5%89%8D%E7%AB%AF%E4%B8%89%E5%A4%A7%E4%BB%B6/06.CSS%E7%A7%BB%E5%8A%A8%E6%A0%B7%E5%BC%8F/index.html">
 <meta property="og:site_name" content="溪岚花的博客">
-<meta property="og:description" content="渐变CSS 渐变是一种特殊的背景图像，用于在两种或多种颜色之间创建平滑过渡效果，本质上是 background-image 的一种形式。  常见渐变类型：    类型 说明    linear-gradient() 线性渐变（沿直线方向）   radial-gradient() 径向渐变（圆形 &#x2F; 椭圆）   conic-gradient() 锥形渐变（围绕角度旋转）    线性渐变 l">
+<meta property="og:description" content="渐变CSS 渐变是一种特殊的背景图像，用于在两种或多种颜色之间创建平滑过渡效果，本质上是 background-image 的一种形式。  常见渐变类型：    类型 说明    linear-gradient() 线性渐变（沿直线方向）   radial-gradient() 径向渐变（圆形 &#x2F; 椭圆）   conic-gradient() 锥形渐变（围绕角度旋转）     线性渐变">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://lin316.gitee.io/blog/blog/images/logo.png">
 <meta property="article:published_time" content="2026-02-21T02:00:00.000Z">
-<meta property="article:modified_time" content="2026-03-08T13:13:58.780Z">
+<meta property="article:modified_time" content="2026-07-02T13:34:33.762Z">
 <meta property="article:author" content="林家隆">
 <meta property="article:tag" content="HTML">
 <meta property="article:tag" content="CSS">
@@ -198,7 +198,7 @@
                         <i class="fa fa-edit"></i> 
                         
                         
-                            8.84K
+                            9.31K
                         
                         字
                     </li>
@@ -210,13 +210,13 @@
             
             <div id="expire-alert" class="alert alert-warning hidden" role="alert">
                 <div class="icon"><i class="fa fa-warning"></i></div>
-                <div class="text"><p>本文最后编辑于 <time datetime="1772975638780"></time> 前，其中的内容可能需要更新。</p></div>
+                <div class="text"><p>本文最后编辑于 <time datetime="1782999273762"></time> 前，其中的内容可能需要更新。</p></div>
             </div>
             
             
             
                 <div class="kratos-post-inner-toc toc-div-class" >
-                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B8%90%E5%8F%98"><span class="toc-number">1.</span> <span class="toc-text">渐变</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BA%BF%E6%80%A7%E6%B8%90%E5%8F%98-linear-gradient"><span class="toc-number">1.1.</span> <span class="toc-text">线性渐变 linear-gradient</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BE%84%E5%90%91%E6%B8%90%E5%8F%98-radial-gradient"><span class="toc-number">1.2.</span> <span class="toc-text">径向渐变 radial-gradient</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2D-%E5%B9%B3%E9%9D%A2%E8%BD%AC%E6%8D%A2"><span class="toc-number">2.</span> <span class="toc-text">2D 平面转换</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#CSS-%E5%B9%B3%E9%9D%A2%E8%BD%AC%E6%8D%A2%E4%BB%8B%E7%BB%8D"><span class="toc-number">2.1.</span> <span class="toc-text">CSS 平面转换介绍</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%8D%E7%A7%BB%EF%BC%9Atranslate"><span class="toc-number">2.2.</span> <span class="toc-text">位移：translate()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BC%A9%E6%94%BE%EF%BC%9Ascale"><span class="toc-number">2.3.</span> <span class="toc-text">缩放：scale()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%97%8B%E8%BD%AC%EF%BC%9Arotate"><span class="toc-number">2.4.</span> <span class="toc-text">旋转：rotate()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%80%BE%E6%96%9C%EF%BC%9Askew"><span class="toc-number">2.5.</span> <span class="toc-text">倾斜：skew()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%98%E6%8D%A2%E4%B8%AD%E5%BF%83%E7%82%B9-transform-origin"><span class="toc-number">2.6.</span> <span class="toc-text">变换中心点 transform-origin</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3D-%E7%A9%BA%E9%97%B4%E8%BD%AC%E6%8D%A2"><span class="toc-number">3.</span> <span class="toc-text">3D 空间转换</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#CSS-%E7%A9%BA%E9%97%B4%E8%BD%AC%E6%8D%A2%E4%BB%8B%E7%BB%8D"><span class="toc-number">3.1.</span> <span class="toc-text">CSS 空间转换介绍</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%8D%E7%A7%BB%EF%BC%9Atranslate3d"><span class="toc-number">3.2.</span> <span class="toc-text">位移：translate3d</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%97%8B%E8%BD%AC%EF%BC%9Arotate3d"><span class="toc-number">3.3.</span> <span class="toc-text">旋转：rotate3d</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BC%A9%E6%94%BE%EF%BC%9Ascale3d"><span class="toc-number">3.4.</span> <span class="toc-text">缩放：scale3d</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A7%86%E8%B7%9D%EF%BC%9Aperspective"><span class="toc-number">3.5.</span> <span class="toc-text">视距：perspective</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AD%90%E5%85%83%E7%B4%A0%E7%A9%BA%E9%97%B4%E7%B1%BB%E5%9E%8B-transform-style"><span class="toc-number">3.6.</span> <span class="toc-text">子元素空间类型 transform-style</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%83%8C%E9%9D%A2%E5%8F%AF%E8%A7%81%E6%80%A7-backface-visibility"><span class="toc-number">3.7.</span> <span class="toc-text">背面可见性 backface-visibility</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%AA%B0%E5%AD%90%E7%A4%BA%E4%BE%8B"><span class="toc-number">3.8.</span> <span class="toc-text">骰子示例</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%A7%BB%E5%8A%A8%E7%AB%AF%E8%87%AA%E9%80%82%E5%BA%94%E5%B8%83%E5%B1%80"><span class="toc-number">4.</span> <span class="toc-text">移动端自适应布局</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%87%AA%E9%80%82%E5%BA%94%E5%B8%83%E5%B1%80-rem"><span class="toc-number">4.1.</span> <span class="toc-text">自适应布局 rem</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%87%AA%E9%80%82%E5%BA%94%E5%B8%83%E5%B1%80-vw"><span class="toc-number">4.2.</span> <span class="toc-text">自适应布局 vw</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%87%AA%E9%80%82%E5%BA%94%E5%B8%83%E5%B1%80-vh"><span class="toc-number">4.3.</span> <span class="toc-text">自适应布局 vh</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%A8%E6%B3%95%E6%80%BB%E7%BB%93"><span class="toc-number">4.4.</span> <span class="toc-text">用法总结</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AA%92%E4%BD%93%E6%9F%A5%E8%AF%A2"><span class="toc-number">5.</span> <span class="toc-text">媒体查询</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AA%92%E4%BD%93%E6%9F%A5%E8%AF%A2%E8%AF%AD%E6%B3%95"><span class="toc-number">5.1.</span> <span class="toc-text">媒体查询语法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AA%92%E4%BD%93%E7%B1%BB%E5%9E%8B"><span class="toc-number">5.2.</span> <span class="toc-text">媒体类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AA%92%E4%BD%93%E7%89%B9%E6%80%A7"><span class="toc-number">5.3.</span> <span class="toc-text">媒体特性</span></a></li></ol></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B8%90%E5%8F%98"><span class="toc-number">1.</span> <span class="toc-text">渐变</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BA%BF%E6%80%A7%E6%B8%90%E5%8F%98-linear-gradient"><span class="toc-number">1.1.</span> <span class="toc-text">线性渐变 linear-gradient</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BE%84%E5%90%91%E6%B8%90%E5%8F%98-radial-gradient"><span class="toc-number">1.2.</span> <span class="toc-text">径向渐变 radial-gradient</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%87%E5%AD%97%E6%B8%90%E5%8F%98"><span class="toc-number">1.3.</span> <span class="toc-text">文字渐变</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2D-%E5%B9%B3%E9%9D%A2%E8%BD%AC%E6%8D%A2"><span class="toc-number">2.</span> <span class="toc-text">2D 平面转换</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#CSS-%E5%B9%B3%E9%9D%A2%E8%BD%AC%E6%8D%A2%E4%BB%8B%E7%BB%8D"><span class="toc-number">2.1.</span> <span class="toc-text">CSS 平面转换介绍</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%8D%E7%A7%BB%EF%BC%9Atranslate"><span class="toc-number">2.2.</span> <span class="toc-text">位移：translate()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BC%A9%E6%94%BE%EF%BC%9Ascale"><span class="toc-number">2.3.</span> <span class="toc-text">缩放：scale()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%97%8B%E8%BD%AC%EF%BC%9Arotate"><span class="toc-number">2.4.</span> <span class="toc-text">旋转：rotate()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%80%BE%E6%96%9C%EF%BC%9Askew"><span class="toc-number">2.5.</span> <span class="toc-text">倾斜：skew()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%98%E6%8D%A2%E4%B8%AD%E5%BF%83%E7%82%B9-transform-origin"><span class="toc-number">2.6.</span> <span class="toc-text">变换中心点 transform-origin</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3D-%E7%A9%BA%E9%97%B4%E8%BD%AC%E6%8D%A2"><span class="toc-number">3.</span> <span class="toc-text">3D 空间转换</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#CSS-%E7%A9%BA%E9%97%B4%E8%BD%AC%E6%8D%A2%E4%BB%8B%E7%BB%8D"><span class="toc-number">3.1.</span> <span class="toc-text">CSS 空间转换介绍</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%8D%E7%A7%BB%EF%BC%9Atranslate3d"><span class="toc-number">3.2.</span> <span class="toc-text">位移：translate3d</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%97%8B%E8%BD%AC%EF%BC%9Arotate3d"><span class="toc-number">3.3.</span> <span class="toc-text">旋转：rotate3d</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BC%A9%E6%94%BE%EF%BC%9Ascale3d"><span class="toc-number">3.4.</span> <span class="toc-text">缩放：scale3d</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A7%86%E8%B7%9D%EF%BC%9Aperspective"><span class="toc-number">3.5.</span> <span class="toc-text">视距：perspective</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AD%90%E5%85%83%E7%B4%A0%E7%A9%BA%E9%97%B4%E7%B1%BB%E5%9E%8B-transform-style"><span class="toc-number">3.6.</span> <span class="toc-text">子元素空间类型 transform-style</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%83%8C%E9%9D%A2%E5%8F%AF%E8%A7%81%E6%80%A7-backface-visibility"><span class="toc-number">3.7.</span> <span class="toc-text">背面可见性 backface-visibility</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%AA%B0%E5%AD%90%E7%A4%BA%E4%BE%8B"><span class="toc-number">3.8.</span> <span class="toc-text">骰子示例</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%A7%BB%E5%8A%A8%E7%AB%AF%E8%87%AA%E9%80%82%E5%BA%94%E5%B8%83%E5%B1%80"><span class="toc-number">4.</span> <span class="toc-text">移动端自适应布局</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%87%AA%E9%80%82%E5%BA%94%E5%B8%83%E5%B1%80-rem"><span class="toc-number">4.1.</span> <span class="toc-text">自适应布局 rem</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%87%AA%E9%80%82%E5%BA%94%E5%B8%83%E5%B1%80-vw"><span class="toc-number">4.2.</span> <span class="toc-text">自适应布局 vw</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%87%AA%E9%80%82%E5%BA%94%E5%B8%83%E5%B1%80-vh"><span class="toc-number">4.3.</span> <span class="toc-text">自适应布局 vh</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%A8%E6%B3%95%E6%80%BB%E7%BB%93"><span class="toc-number">4.4.</span> <span class="toc-text">用法总结</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AA%92%E4%BD%93%E6%9F%A5%E8%AF%A2"><span class="toc-number">5.</span> <span class="toc-text">媒体查询</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AA%92%E4%BD%93%E6%9F%A5%E8%AF%A2%E8%AF%AD%E6%B3%95"><span class="toc-number">5.1.</span> <span class="toc-text">媒体查询语法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AA%92%E4%BD%93%E7%B1%BB%E5%9E%8B"><span class="toc-number">5.2.</span> <span class="toc-text">媒体类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AA%92%E4%BD%93%E7%89%B9%E6%80%A7"><span class="toc-number">5.3.</span> <span class="toc-text">媒体特性</span></a></li></ol></li></ol>
                 </div>
             
             <hr />
@@ -244,6 +244,7 @@
 </tr>
 </tbody></table>
 </blockquote>
+<hr>
 <h3 id="线性渐变-linear-gradient"><a href="#线性渐变-linear-gradient" class="headerlink" title="线性渐变 linear-gradient"></a>线性渐变 <code>linear-gradient</code></h3><p>基本语法：</p>
 <figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* 渐变方向 */</span></span><br><span class="line"><span class="attribute">background-image</span>: <span class="built_in">linear-gradient</span>(方向, 颜色<span class="number">1</span>, 颜色<span class="number">2</span>, ...);</span><br><span class="line"><span class="comment">/* 渐变角度 */</span></span><br><span class="line"><span class="attribute">background-image</span>: <span class="built_in">linear-gradient</span>(<span class="number">45deg</span>, red, blue);</span><br></pre></td></tr></table></figure>
 
@@ -276,6 +277,7 @@
 <p>示例：按钮渐变</p>
 <figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">button</span> &#123;</span><br><span class="line">  <span class="attribute">background</span>: <span class="built_in">linear-gradient</span>(to right, <span class="number">#ff7e5f</span>, <span class="number">#feb47b</span>);</span><br><span class="line">  <span class="attribute">color</span>: <span class="number">#fff</span>;</span><br><span class="line">  <span class="attribute">border</span>: none;</span><br><span class="line">  <span class="attribute">padding</span>: <span class="number">10px</span> <span class="number">20px</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
+<hr>
 <h3 id="径向渐变-radial-gradient"><a href="#径向渐变-radial-gradient" class="headerlink" title="径向渐变 radial-gradient"></a>径向渐变 <code>radial-gradient</code></h3><p>径向渐变从中心向外扩散。</p>
 <p>基本语法</p>
 <figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">background-image</span>: <span class="built_in">radial-gradient</span>(颜色<span class="number">1</span>, 颜色<span class="number">2</span>);</span><br></pre></td></tr></table></figure>
@@ -299,9 +301,25 @@
 <p>示例：聚光灯效果</p>
 <figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">div</span> &#123;</span><br><span class="line">  <span class="attribute">width</span>: <span class="number">300px</span>;</span><br><span class="line">  <span class="attribute">height</span>: <span class="number">200px</span>;</span><br><span class="line">  <span class="attribute">background</span>: <span class="built_in">radial-gradient</span>(</span><br><span class="line">    circle at center,</span><br><span class="line">    white <span class="number">0%</span>,</span><br><span class="line">    lightblue <span class="number">40%</span>,</span><br><span class="line">    blue <span class="number">100%</span></span><br><span class="line">  );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<h2 id="2D-平面转换"><a href="#2D-平面转换" class="headerlink" title="2D 平面转换"></a>2D 平面转换</h2><h3 id="CSS-平面转换介绍"><a href="#CSS-平面转换介绍" class="headerlink" title="CSS 平面转换介绍"></a>CSS 平面转换介绍</h3><p>CSS 平面转换（2D Transform）指的是在二维平面上对元素进行移动、旋转、缩放、倾斜等操作。</p>
+<hr>
+<h3 id="文字渐变"><a href="#文字渐变" class="headerlink" title="文字渐变"></a>文字渐变</h3><p>基本写法：</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.gradient-text</span> &#123;</span><br><span class="line">  <span class="attribute">background</span>: <span class="built_in">linear-gradient</span>(to right, <span class="number">#ff6a00</span>, <span class="number">#ee0979</span>);</span><br><span class="line">  <span class="attribute">background-clip</span>: text;</span><br><span class="line">  -webkit-<span class="attribute">background-clip</span>: text;</span><br><span class="line">  -webkit-text-fill-<span class="attribute">color</span>: transparent;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>html：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">h1</span> <span class="attr">class</span>=<span class="string">&quot;gradient-text&quot;</span>&gt;</span>渐变文字<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>linear-gradient(...)</code>：定义线性渐变颜色</li>
+<li><code>background-clip: text</code>：让背景只显示在文字区域</li>
+<li><code>-webkit-background-clip: text</code>：让背景只显示在文字区域，兼容谷歌旧版本</li>
+<li><code>-webkit-text-fill-color: transparent</code>：把文字填充色设为透明，这样才能看到背景渐变</li>
+</ul>
+<hr>
+<h2 id="2D-平面转换"><a href="#2D-平面转换" class="headerlink" title="2D 平面转换"></a>2D 平面转换</h2><hr>
+<h3 id="CSS-平面转换介绍"><a href="#CSS-平面转换介绍" class="headerlink" title="CSS 平面转换介绍"></a>CSS 平面转换介绍</h3><p>CSS 平面转换（2D Transform）指的是在二维平面上对元素进行移动、旋转、缩放、倾斜等操作。</p>
 <p>核心属性：<code>transform</code></p>
 <p>它可以改变元素的视觉位置和形态，但不会影响文档流（不会挤开其他元素）。</p>
+<hr>
 <h3 id="位移：translate"><a href="#位移：translate" class="headerlink" title="位移：translate()"></a>位移：<code>translate()</code></h3><p>用于移动元素。</p>
 <p>语法：</p>
 <figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">transform</span>: <span class="built_in">translate</span>(x, y);</span><br></pre></td></tr></table></figure>
@@ -325,6 +343,7 @@
 <p>常用于居中定位的写法：</p>
 <figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.parent</span> &#123;</span><br><span class="line">  <span class="attribute">position</span>: relative;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.child</span> &#123;</span><br><span class="line">  <span class="attribute">position</span>: absolute;</span><br><span class="line">  <span class="attribute">left</span>: <span class="number">50%</span>;</span><br><span class="line">  <span class="attribute">top</span>: <span class="number">50%</span>;</span><br><span class="line">  <span class="attribute">transform</span>: <span class="built_in">translate</span>(-<span class="number">50%</span>, -<span class="number">50%</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
+<hr>
 <h3 id="缩放：scale"><a href="#缩放：scale" class="headerlink" title="缩放：scale()"></a>缩放：<code>scale()</code></h3><p>改变元素大小。</p>
 <p>语法：</p>
 <figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">transform</span>: <span class="built_in">scale</span>(x, y);</span><br></pre></td></tr></table></figure>
@@ -343,6 +362,7 @@
 <p>常见效果：配合 <code>:hover</code> 做放大动效：</p>
 <figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">div</span><span class="selector-pseudo">:hover</span> &#123;</span><br><span class="line">  <span class="attribute">transform</span>: <span class="built_in">scale</span>(<span class="number">1.1</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
+<hr>
 <h3 id="旋转：rotate"><a href="#旋转：rotate" class="headerlink" title="旋转：rotate()"></a>旋转：<code>rotate()</code></h3><p>围绕中心点旋转。</p>
 <p>语法：</p>
 <figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">transform</span>: <span class="built_in">rotate</span>(角度);</span><br></pre></td></tr></table></figure>
@@ -355,6 +375,7 @@
 <li>正值：顺时针</li>
 <li>负值：逆时针</li>
 </ul>
+<hr>
 <h3 id="倾斜：skew"><a href="#倾斜：skew" class="headerlink" title="倾斜：skew()"></a>倾斜：<code>skew()</code></h3><p>使元素倾斜（类似平行四边形效果）。</p>
 <p>语法：</p>
 <figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">transform</span>: <span class="built_in">skew</span>(x-angle, y-angle);</span><br></pre></td></tr></table></figure>
@@ -374,6 +395,7 @@
 
 <p>这两种写法的效果完全不同，因为后写的变换会在前一个变换结果的基础上继续计算。</p>
 </blockquote>
+<hr>
 <h3 id="变换中心点-transform-origin"><a href="#变换中心点-transform-origin" class="headerlink" title="变换中心点 transform-origin"></a>变换中心点 <code>transform-origin</code></h3><p>默认变换中心点：</p>
 <figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">transform-origin</span>: center center;</span><br></pre></td></tr></table></figure>
 
@@ -391,7 +413,9 @@
 <li>具体 <code>px</code> 数值</li>
 <li>百分比 <code>%</code></li>
 </ul>
-<h2 id="3D-空间转换"><a href="#3D-空间转换" class="headerlink" title="3D 空间转换"></a>3D 空间转换</h2><h3 id="CSS-空间转换介绍"><a href="#CSS-空间转换介绍" class="headerlink" title="CSS 空间转换介绍"></a>CSS 空间转换介绍</h3><p>CSS 3D 空间转换是基于三维坐标系（X、Y、Z）对元素进行旋转、位移、缩放等操作，让页面产生“立体效果”。</p>
+<hr>
+<h2 id="3D-空间转换"><a href="#3D-空间转换" class="headerlink" title="3D 空间转换"></a>3D 空间转换</h2><hr>
+<h3 id="CSS-空间转换介绍"><a href="#CSS-空间转换介绍" class="headerlink" title="CSS 空间转换介绍"></a>CSS 空间转换介绍</h3><p>CSS 3D 空间转换是基于三维坐标系（X、Y、Z）对元素进行旋转、位移、缩放等操作，让页面产生“立体效果”。</p>
 <blockquote>
 <p>在 3D 空间中：</p>
 <ul>
@@ -405,6 +429,7 @@
 </ul>
 <p><img src="/blog/2026/02/21/03%E5%89%8D%E7%AB%AF/HTML%E5%89%8D%E7%AB%AF%E4%B8%89%E5%A4%A7%E4%BB%B6/06.CSS%E7%A7%BB%E5%8A%A8%E6%A0%B7%E5%BC%8F/1681723381377.png" alt="CSS 3D 空间"></p>
 </blockquote>
+<hr>
 <h3 id="位移：translate3d"><a href="#位移：translate3d" class="headerlink" title="位移：translate3d"></a>位移：<code>translate3d</code></h3><p><code>translateZ()</code> 必须给父元素配置 <code>perspective</code> 才能明显看到立体效果。</p>
 <figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">transform</span>: <span class="built_in">translateX</span>(<span class="number">100px</span>);</span><br><span class="line"><span class="attribute">transform</span>: <span class="built_in">translateY</span>(<span class="number">100px</span>);</span><br><span class="line"><span class="attribute">transform</span>: <span class="built_in">translateZ</span>(<span class="number">100px</span>);</span><br><span class="line"><span class="attribute">transform</span>: <span class="built_in">translate3d</span>(<span class="number">100px</span>, <span class="number">50px</span>, <span class="number">200px</span>);</span><br></pre></td></tr></table></figure>
 
@@ -415,6 +440,7 @@
 <figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.box</span> &#123;</span><br><span class="line">  <span class="attribute">width</span>: <span class="number">100px</span>;</span><br><span class="line">  <span class="attribute">height</span>: <span class="number">100px</span>;</span><br><span class="line">  <span class="attribute">background</span>: red;</span><br><span class="line">  <span class="attribute">transform</span>: <span class="built_in">translateZ</span>(<span class="number">100px</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 </blockquote>
+<hr>
 <h3 id="旋转：rotate3d"><a href="#旋转：rotate3d" class="headerlink" title="旋转：rotate3d"></a>旋转：<code>rotate3d</code></h3><p><code>rotate3d()</code> 必须给父元素配置 <code>perspective</code> 才能明显看到立体效果。</p>
 <figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">transform</span>: <span class="built_in">rotateX</span>(<span class="number">45deg</span>);</span><br><span class="line"><span class="attribute">transform</span>: <span class="built_in">rotateY</span>(<span class="number">45deg</span>);</span><br><span class="line"><span class="attribute">transform</span>: <span class="built_in">rotateZ</span>(<span class="number">45deg</span>);</span><br><span class="line"><span class="attribute">transform</span>: <span class="built_in">rotate3d</span>(<span class="number">1</span>, <span class="number">1</span>, <span class="number">0</span>, <span class="number">45deg</span>); <span class="comment">/* 一般不用这个方法 */</span></span><br></pre></td></tr></table></figure>
 
@@ -430,9 +456,11 @@
 
 <p>效果：元素绕 X 轴翻转。</p>
 </blockquote>
+<hr>
 <h3 id="缩放：scale3d"><a href="#缩放：scale3d" class="headerlink" title="缩放：scale3d"></a>缩放：<code>scale3d</code></h3><p><code>scale3d()</code> 必须给父元素配置 <code>transform-style: preserve-3d</code> 才能明显看到立体效果。</p>
 <figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">transform</span>: <span class="built_in">scaleX</span>(<span class="number">2</span>);</span><br><span class="line"><span class="attribute">transform</span>: <span class="built_in">scaleY</span>(<span class="number">2</span>);</span><br><span class="line"><span class="attribute">transform</span>: <span class="built_in">scaleZ</span>(<span class="number">2</span>);</span><br><span class="line"><span class="attribute">transform</span>: <span class="built_in">scale3d</span>(<span class="number">1.5</span>, <span class="number">1.5</span>, <span class="number">2</span>);</span><br></pre></td></tr></table></figure>
 
+<hr>
 <h3 id="视距：perspective"><a href="#视距：perspective" class="headerlink" title="视距：perspective"></a>视距：<code>perspective</code></h3><p>指定了观察者与 Z&#x3D;0 平面的距离，为元素添加透视效果，通常加在父元素上：</p>
 <ul>
 <li>数值越小 → 透视效果越强（更“夸张”）</li>
@@ -444,6 +472,7 @@
 <p>示例：</p>
 <figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.parent</span> &#123;</span><br><span class="line">  <span class="attribute">perspective</span>: <span class="number">800px</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 </blockquote>
+<hr>
 <h3 id="子元素空间类型-transform-style"><a href="#子元素空间类型-transform-style" class="headerlink" title="子元素空间类型 transform-style"></a>子元素空间类型 <code>transform-style</code></h3><p>控制子元素在 3D 空间中是否保留 3D 效果：</p>
 <figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.parent</span> &#123;</span><br><span class="line">  <span class="attribute">transform-style</span>: preserve-<span class="number">3</span>d;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
@@ -451,6 +480,7 @@
 <li><code>flat</code>（默认）：子元素被压扁为 2D</li>
 <li><code>preserve-3d</code>：子元素保留 3D</li>
 </ul>
+<hr>
 <h3 id="背面可见性-backface-visibility"><a href="#背面可见性-backface-visibility" class="headerlink" title="背面可见性 backface-visibility"></a>背面可见性 <code>backface-visibility</code></h3><p>控制元素翻转 180° 后，背面是否可见：</p>
 <figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.box</span> &#123;</span><br><span class="line">  <span class="attribute">backface-visibility</span>: hidden;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
@@ -458,10 +488,12 @@
 <li><code>visible</code>：背面可见（默认）</li>
 <li><code>hidden</code>： 背面隐藏</li>
 </ul>
+<hr>
 <h3 id="骰子示例"><a href="#骰子示例" class="headerlink" title="骰子示例"></a>骰子示例</h3><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;div-father&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;div-son-front&quot;</span>&gt;</span>1<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;div-son-back&quot;</span>&gt;</span>6<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;div-son-left&quot;</span>&gt;</span>2<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;div-son-right&quot;</span>&gt;</span>3<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;div-son-top&quot;</span>&gt;</span>4<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;div-son-bottom&quot;</span>&gt;</span>5<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
 
 <figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line">&lt;style&gt;</span><br><span class="line">    <span class="selector-class">.div-father</span>&#123;</span><br><span class="line">        <span class="attribute">margin</span>: <span class="number">150px</span> <span class="number">300px</span>;</span><br><span class="line">        <span class="attribute">width</span>: <span class="number">300px</span>;</span><br><span class="line">        <span class="attribute">height</span>: <span class="number">300px</span>;</span><br><span class="line">        <span class="comment">/*background-color: antiquewhite;*/</span></span><br><span class="line">        <span class="attribute">position</span>: relative;</span><br><span class="line">        <span class="attribute">transform-style</span>: preserve-<span class="number">3</span>d;</span><br><span class="line">        <span class="attribute">transition</span>: all <span class="number">1.5s</span>;</span><br><span class="line">        <span class="attribute">transform</span>: <span class="built_in">rotate3d</span>(-<span class="number">1</span>, <span class="number">1</span>, <span class="number">0</span>, <span class="number">40deg</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="selector-class">.div-father</span><span class="selector-pseudo">:hover</span>&#123;</span><br><span class="line">        <span class="attribute">transform</span>: <span class="built_in">rotate3d</span>(<span class="number">1</span>, -<span class="number">1</span>, <span class="number">0</span>, <span class="number">170deg</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="selector-class">.div-father</span> <span class="selector-tag">div</span>&#123;</span><br><span class="line">        <span class="attribute">width</span>: <span class="number">300px</span>;</span><br><span class="line">        <span class="attribute">height</span>: <span class="number">300px</span>;</span><br><span class="line">        <span class="attribute">position</span>: absolute;</span><br><span class="line">        <span class="attribute">left</span>: <span class="number">0</span>;</span><br><span class="line">        <span class="attribute">top</span>: <span class="number">0</span>;</span><br><span class="line">        <span class="attribute">font-size</span>: <span class="number">160px</span>;</span><br><span class="line">        <span class="attribute">line-height</span>: <span class="number">300px</span>;</span><br><span class="line">        <span class="attribute">text-align</span>: center;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="selector-class">.div-son-front</span>&#123;</span><br><span class="line">        <span class="attribute">background-color</span>: <span class="number">#a162dc</span>;</span><br><span class="line">        <span class="attribute">transform</span>: <span class="built_in">translateZ</span>(<span class="number">150px</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="selector-class">.div-son-back</span>&#123;</span><br><span class="line">        <span class="attribute">background-color</span>: <span class="number">#5ea8da</span>;</span><br><span class="line">        <span class="attribute">transform</span>: <span class="built_in">translateZ</span>(-<span class="number">150px</span>) <span class="built_in">rotateY</span>(<span class="number">180deg</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="selector-class">.div-son-left</span>&#123;</span><br><span class="line">        <span class="attribute">background-color</span>: <span class="number">#62dc72</span>;</span><br><span class="line">        <span class="attribute">transform</span>: <span class="built_in">translateX</span>(-<span class="number">150px</span>) <span class="built_in">rotateY</span>(-<span class="number">90deg</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="selector-class">.div-son-right</span>&#123;</span><br><span class="line">        <span class="attribute">background-color</span>: <span class="number">#d4dc62</span>;</span><br><span class="line">        <span class="attribute">transform</span>: <span class="built_in">translateX</span>(<span class="number">150px</span>) <span class="built_in">rotateY</span>(<span class="number">90deg</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="selector-class">.div-son-top</span>&#123;</span><br><span class="line">        <span class="attribute">background-color</span>: <span class="number">#dc62cc</span>;</span><br><span class="line">        <span class="attribute">transform</span>: <span class="built_in">translateY</span>(-<span class="number">150px</span>) <span class="built_in">rotateX</span>(<span class="number">90deg</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="selector-class">.div-son-bottom</span>&#123;</span><br><span class="line">        <span class="attribute">background-color</span>: <span class="number">#dc6287</span>;</span><br><span class="line">        <span class="attribute">transform</span>: <span class="built_in">translateY</span>(<span class="number">150px</span>) <span class="built_in">rotateX</span>(-<span class="number">90deg</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&lt;/style&gt;</span><br></pre></td></tr></table></figure>
 
+<hr>
 <h2 id="移动端自适应布局"><a href="#移动端自适应布局" class="headerlink" title="移动端自适应布局"></a>移动端自适应布局</h2><table>
 <thead>
 <tr>
@@ -486,6 +518,7 @@
 <td><code>1vh = 视口高度的 1%</code></td>
 </tr>
 </tbody></table>
+<hr>
 <h3 id="自适应布局-rem"><a href="#自适应布局-rem" class="headerlink" title="自适应布局 rem"></a>自适应布局 <code>rem</code></h3><p><code>rem</code> 是一个<strong>相对于根元素（html）的 font-size</strong> 的单位。</p>
 <figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">html</span> &#123;</span><br><span class="line">  <span class="attribute">font-size</span>: <span class="number">16px</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.box</span> &#123;</span><br><span class="line">  <span class="attribute">width</span>: <span class="number">2rem</span>;   <span class="comment">/* = 32px */</span></span><br><span class="line">  <span class="attribute">font-size</span>: <span class="number">1.5rem</span>; <span class="comment">/* = 24px */</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
@@ -503,6 +536,7 @@
 <li>不适合纯按屏幕比例缩放的布局</li>
 </ul>
 </blockquote>
+<hr>
 <h3 id="自适应布局-vw"><a href="#自适应布局-vw" class="headerlink" title="自适应布局 vw"></a>自适应布局 <code>vw</code></h3><p><code>1vw</code> 就是屏幕宽度的 1%：</p>
 <ul>
 <li>视口宽 390px → <code>1vw = 3.9px</code></li>
@@ -527,6 +561,7 @@
 
 <p>含义：最小 16px，随 5vw 增长，但最大不超过 48px。</p>
 </blockquote>
+<hr>
 <h3 id="自适应布局-vh"><a href="#自适应布局-vh" class="headerlink" title="自适应布局 vh"></a>自适应布局 <code>vh</code></h3><p><code>1vh</code> 就是屏幕长度的 1%：</p>
 <ul>
 <li>视口长 200px → <code>1vh = 2.0px</code></li>
@@ -547,19 +582,23 @@
 <li><code>svh</code>：小视口高度（地址栏展开时的最小高度，更保守）</li>
 </ul>
 </blockquote>
+<hr>
 <h3 id="用法总结"><a href="#用法总结" class="headerlink" title="用法总结"></a>用法总结</h3><ul>
 <li>想“整体缩放一套 UI”（间距、圆角、字号一致变大&#x2F;变小）：优先 <code>rem</code></li>
 <li>想“某个东西永远占屏幕的百分比”（比如 2 列卡片、左右留白）：优先 <code>vw</code></li>
 <li>想做“首屏&#x2F;全屏高度”：优先 <code>dvh/svh</code>（其次 <code>vh</code>）</li>
 <li>字号：常用 <code>rem</code> 或 <code>clamp(px, vw, px)</code>，避免纯 vw</li>
 </ul>
+<hr>
 <h2 id="媒体查询"><a href="#媒体查询" class="headerlink" title="媒体查询"></a>媒体查询</h2><p>CSS <strong>媒体查询</strong> 是一种 <strong>响应式设计</strong> 的核心技术，它允许网页根据 <strong>不同设备特性</strong>（如屏幕宽度、高度、方向、分辨率等）应用不同的 CSS 样式，从而适配手机、平板、电脑等不同设备。</p>
+<hr>
 <h3 id="媒体查询语法"><a href="#媒体查询语法" class="headerlink" title="媒体查询语法"></a>媒体查询语法</h3><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">@media</span> 媒体类型 <span class="keyword">and</span> (媒体特性) &#123;</span><br><span class="line">    CSS代码</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>示例：</p>
 <figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">@media</span> screen <span class="keyword">and</span> (<span class="attribute">max-width</span>: <span class="number">768px</span>) &#123;</span><br><span class="line">  <span class="selector-class">.container</span> &#123;</span><br><span class="line">    <span class="attribute">width</span>: <span class="number">100%</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>当 <strong>屏幕设备且宽度 ≤ 768px</strong> 时生效。</p>
+<hr>
 <h3 id="媒体类型"><a href="#媒体类型" class="headerlink" title="媒体类型"></a>媒体类型</h3><p>媒体类型表示 <strong>设备类别</strong>。</p>
 <table>
 <thead>
@@ -585,6 +624,7 @@
 <td>屏幕阅读器</td>
 </tr>
 </tbody></table>
+<hr>
 <h3 id="媒体特性"><a href="#媒体特性" class="headerlink" title="媒体特性"></a>媒体特性</h3><p>常用的媒体特性有：</p>
 <table>
 <thead>
@@ -646,7 +686,7 @@
                     <a class="tag-none-link" href="/blog/tags/CSS/" rel="tag">CSS</a>, <a class="tag-none-link" href="/blog/tags/HTML/" rel="tag">HTML</a>, <a class="tag-none-link" href="/blog/tags/JavaScript/" rel="tag">JavaScript</a>
                 </div>
                 <div class="pull-date">
-                    <time datetime="2026-03-08T13:13:58.780Z" itemprop="dateModified">最后编辑：2026-03-08</time>
+                    <time datetime="2026-07-02T13:34:33.762Z" itemprop="dateModified">最后编辑：2026-07-02</time>
                 </div>
             </div>
         </footer>
@@ -697,7 +737,7 @@
                 文章
             </span>
             <span class="count">
-                115
+                121
             </span>
         </a>
         <a class="meta-item" href="/blog/categories/">
@@ -705,7 +745,7 @@
                 分类
             </span>
             <span class="count">
-                14
+                15
             </span>
         </a>
         <a class="meta-item" href="/blog/tags/">
@@ -713,7 +753,7 @@
                 标签
             </span>
             <span class="count">
-                38
+                40
             </span>
         </a>
     </div>
@@ -729,7 +769,7 @@
         <span class="toc-progress-bar" role="progressbar" aria-label="阅读进度："></span>
     </h4>
     <div class="textwidget">
-        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B8%90%E5%8F%98"><span class="toc-text">渐变</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BA%BF%E6%80%A7%E6%B8%90%E5%8F%98-linear-gradient"><span class="toc-text">线性渐变 linear-gradient</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BE%84%E5%90%91%E6%B8%90%E5%8F%98-radial-gradient"><span class="toc-text">径向渐变 radial-gradient</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2D-%E5%B9%B3%E9%9D%A2%E8%BD%AC%E6%8D%A2"><span class="toc-text">2D 平面转换</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#CSS-%E5%B9%B3%E9%9D%A2%E8%BD%AC%E6%8D%A2%E4%BB%8B%E7%BB%8D"><span class="toc-text">CSS 平面转换介绍</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%8D%E7%A7%BB%EF%BC%9Atranslate"><span class="toc-text">位移：translate()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BC%A9%E6%94%BE%EF%BC%9Ascale"><span class="toc-text">缩放：scale()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%97%8B%E8%BD%AC%EF%BC%9Arotate"><span class="toc-text">旋转：rotate()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%80%BE%E6%96%9C%EF%BC%9Askew"><span class="toc-text">倾斜：skew()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%98%E6%8D%A2%E4%B8%AD%E5%BF%83%E7%82%B9-transform-origin"><span class="toc-text">变换中心点 transform-origin</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3D-%E7%A9%BA%E9%97%B4%E8%BD%AC%E6%8D%A2"><span class="toc-text">3D 空间转换</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#CSS-%E7%A9%BA%E9%97%B4%E8%BD%AC%E6%8D%A2%E4%BB%8B%E7%BB%8D"><span class="toc-text">CSS 空间转换介绍</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%8D%E7%A7%BB%EF%BC%9Atranslate3d"><span class="toc-text">位移：translate3d</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%97%8B%E8%BD%AC%EF%BC%9Arotate3d"><span class="toc-text">旋转：rotate3d</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BC%A9%E6%94%BE%EF%BC%9Ascale3d"><span class="toc-text">缩放：scale3d</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A7%86%E8%B7%9D%EF%BC%9Aperspective"><span class="toc-text">视距：perspective</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AD%90%E5%85%83%E7%B4%A0%E7%A9%BA%E9%97%B4%E7%B1%BB%E5%9E%8B-transform-style"><span class="toc-text">子元素空间类型 transform-style</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%83%8C%E9%9D%A2%E5%8F%AF%E8%A7%81%E6%80%A7-backface-visibility"><span class="toc-text">背面可见性 backface-visibility</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%AA%B0%E5%AD%90%E7%A4%BA%E4%BE%8B"><span class="toc-text">骰子示例</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%A7%BB%E5%8A%A8%E7%AB%AF%E8%87%AA%E9%80%82%E5%BA%94%E5%B8%83%E5%B1%80"><span class="toc-text">移动端自适应布局</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%87%AA%E9%80%82%E5%BA%94%E5%B8%83%E5%B1%80-rem"><span class="toc-text">自适应布局 rem</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%87%AA%E9%80%82%E5%BA%94%E5%B8%83%E5%B1%80-vw"><span class="toc-text">自适应布局 vw</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%87%AA%E9%80%82%E5%BA%94%E5%B8%83%E5%B1%80-vh"><span class="toc-text">自适应布局 vh</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%A8%E6%B3%95%E6%80%BB%E7%BB%93"><span class="toc-text">用法总结</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AA%92%E4%BD%93%E6%9F%A5%E8%AF%A2"><span class="toc-text">媒体查询</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AA%92%E4%BD%93%E6%9F%A5%E8%AF%A2%E8%AF%AD%E6%B3%95"><span class="toc-text">媒体查询语法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AA%92%E4%BD%93%E7%B1%BB%E5%9E%8B"><span class="toc-text">媒体类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AA%92%E4%BD%93%E7%89%B9%E6%80%A7"><span class="toc-text">媒体特性</span></a></li></ol></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B8%90%E5%8F%98"><span class="toc-text">渐变</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BA%BF%E6%80%A7%E6%B8%90%E5%8F%98-linear-gradient"><span class="toc-text">线性渐变 linear-gradient</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BE%84%E5%90%91%E6%B8%90%E5%8F%98-radial-gradient"><span class="toc-text">径向渐变 radial-gradient</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%87%E5%AD%97%E6%B8%90%E5%8F%98"><span class="toc-text">文字渐变</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2D-%E5%B9%B3%E9%9D%A2%E8%BD%AC%E6%8D%A2"><span class="toc-text">2D 平面转换</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#CSS-%E5%B9%B3%E9%9D%A2%E8%BD%AC%E6%8D%A2%E4%BB%8B%E7%BB%8D"><span class="toc-text">CSS 平面转换介绍</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%8D%E7%A7%BB%EF%BC%9Atranslate"><span class="toc-text">位移：translate()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BC%A9%E6%94%BE%EF%BC%9Ascale"><span class="toc-text">缩放：scale()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%97%8B%E8%BD%AC%EF%BC%9Arotate"><span class="toc-text">旋转：rotate()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%80%BE%E6%96%9C%EF%BC%9Askew"><span class="toc-text">倾斜：skew()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%98%E6%8D%A2%E4%B8%AD%E5%BF%83%E7%82%B9-transform-origin"><span class="toc-text">变换中心点 transform-origin</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3D-%E7%A9%BA%E9%97%B4%E8%BD%AC%E6%8D%A2"><span class="toc-text">3D 空间转换</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#CSS-%E7%A9%BA%E9%97%B4%E8%BD%AC%E6%8D%A2%E4%BB%8B%E7%BB%8D"><span class="toc-text">CSS 空间转换介绍</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%8D%E7%A7%BB%EF%BC%9Atranslate3d"><span class="toc-text">位移：translate3d</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%97%8B%E8%BD%AC%EF%BC%9Arotate3d"><span class="toc-text">旋转：rotate3d</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BC%A9%E6%94%BE%EF%BC%9Ascale3d"><span class="toc-text">缩放：scale3d</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A7%86%E8%B7%9D%EF%BC%9Aperspective"><span class="toc-text">视距：perspective</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AD%90%E5%85%83%E7%B4%A0%E7%A9%BA%E9%97%B4%E7%B1%BB%E5%9E%8B-transform-style"><span class="toc-text">子元素空间类型 transform-style</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%83%8C%E9%9D%A2%E5%8F%AF%E8%A7%81%E6%80%A7-backface-visibility"><span class="toc-text">背面可见性 backface-visibility</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%AA%B0%E5%AD%90%E7%A4%BA%E4%BE%8B"><span class="toc-text">骰子示例</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%A7%BB%E5%8A%A8%E7%AB%AF%E8%87%AA%E9%80%82%E5%BA%94%E5%B8%83%E5%B1%80"><span class="toc-text">移动端自适应布局</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%87%AA%E9%80%82%E5%BA%94%E5%B8%83%E5%B1%80-rem"><span class="toc-text">自适应布局 rem</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%87%AA%E9%80%82%E5%BA%94%E5%B8%83%E5%B1%80-vw"><span class="toc-text">自适应布局 vw</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%87%AA%E9%80%82%E5%BA%94%E5%B8%83%E5%B1%80-vh"><span class="toc-text">自适应布局 vh</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%A8%E6%B3%95%E6%80%BB%E7%BB%93"><span class="toc-text">用法总结</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AA%92%E4%BD%93%E6%9F%A5%E8%AF%A2"><span class="toc-text">媒体查询</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AA%92%E4%BD%93%E6%9F%A5%E8%AF%A2%E8%AF%AD%E6%B3%95"><span class="toc-text">媒体查询语法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AA%92%E4%BD%93%E7%B1%BB%E5%9E%8B"><span class="toc-text">媒体类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AA%92%E4%BD%93%E7%89%B9%E6%80%A7"><span class="toc-text">媒体特性</span></a></li></ol></li></ol>
     </div>
 </aside>
                 
@@ -751,34 +791,46 @@
         
           
           
-            <a class="list-group-item" href="/blog/2026/07/02/01%E5%AD%A6%E4%B9%A0%E8%B7%AF%E7%BA%BF/20.AI%E5%BA%94%E8%AF%A5%E5%BC%80%E5%8F%91%E5%AD%A6%E4%B9%A0%E8%B7%AF%E7%BA%BF/"><i class="fa  fa-book"></i> 【学习路线】AI应该开发学习路线</a>
+            <a class="list-group-item" href="/blog/2026/08/19/03%E5%89%8D%E7%AB%AF/TypeScript/06.%E8%A3%85%E9%A5%B0%E5%99%A8%E8%BF%9B%E9%98%B6/"><i class="fa  fa-book"></i> 【TypeScript】装饰器进阶</a>
             
           
         
           
           
-            <a class="list-group-item" href="/blog/2026/07/01/01%E5%AD%A6%E4%B9%A0%E8%B7%AF%E7%BA%BF/10.%E5%89%8D%E7%AB%AF%E5%AD%A6%E4%B9%A0%E8%B7%AF%E7%BA%BF/"><i class="fa  fa-book"></i> 【学习路线】前端学习路线</a>
+            <a class="list-group-item" href="/blog/2026/08/19/03%E5%89%8D%E7%AB%AF/TypeScript/05.%E8%A3%85%E9%A5%B0%E5%99%A8%E5%9F%BA%E7%A1%80/"><i class="fa  fa-book"></i> 【TypeScript】装饰器基础</a>
             
           
         
           
           
-            <a class="list-group-item" href="/blog/2026/05/14/04AI%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91/Python/09.Python%E5%BC%82%E5%B8%B8/"><i class="fa  fa-book"></i> 【Python】异常</a>
+            <a class="list-group-item" href="/blog/2026/08/19/03%E5%89%8D%E7%AB%AF/TypeScript/04.%E6%B3%9B%E5%9E%8B/"><i class="fa  fa-book"></i> 【TypeScript】泛型</a>
             
           
         
           
           
-            <a class="list-group-item" href="/blog/2026/05/13/04AI%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91/Python/05.Python%E5%87%BD%E6%95%B0%E8%BF%9B%E9%98%B6/"><i class="fa  fa-book"></i> 【Python】函数进阶</a>
+            <a class="list-group-item" href="/blog/2026/08/19/03%E5%89%8D%E7%AB%AF/TypeScript/03.%E7%B1%BB%E4%B8%8E%E6%8E%A5%E5%8F%A3/"><i class="fa  fa-book"></i> 【TypeScript】类与接口</a>
             
           
         
           
           
-            <a class="list-group-item" href="/blog/2026/05/11/04AI%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91/Python/08.Python%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1/"><i class="fa  fa-book"></i> 【Python】面向对象</a>
+            <a class="list-group-item" href="/blog/2026/08/19/03%E5%89%8D%E7%AB%AF/TypeScript/02.%E5%B8%B8%E7%94%A8%E7%B1%BB%E5%9E%8B%EF%BC%88%E4%B8%8B%EF%BC%89/"><i class="fa  fa-book"></i> 【TypeScript】常用类型（下）</a>
             
           
         
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
           
             
           
