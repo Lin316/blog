@@ -1,0 +1,891 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+  <!-- 元数据 -->
+  <meta charset="utf-8">
+  <link rel="icon" href="/blog/images/logo.png">
+  
+  <title>【Kafka】生产者 | 溪岚花的博客</title>
+  
+  <meta name="author" content="林家隆" />
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="robots" content="index,follow" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <meta name="format-detection" content="telphone=no, email=no" />
+  
+    <meta name="keywords" content="Kafka" />
+  
+  <meta name="description" content="生产者消息发送流程发送过程涉及 main 线程和 Sender 线程：  main 线程创建双端队列 RecordAccumulator，把消息发送到队列。 Sender 线程不断从 RecordAccumulator 拉取消息，发送到 Kafka Broker。  几个关键参数：  batch.size（批次大小，默认 16k，数据积累到该值才发送） linger.ms（未达到 batch.si">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【Kafka】生产者">
+<meta property="og:url" content="https://lin316.gitee.io/blog/2026/08/31/02%E5%90%8E%E7%AB%AF/Kafka/02.Kafka%E7%94%9F%E4%BA%A7%E8%80%85/index.html">
+<meta property="og:site_name" content="溪岚花的博客">
+<meta property="og:description" content="生产者消息发送流程发送过程涉及 main 线程和 Sender 线程：  main 线程创建双端队列 RecordAccumulator，把消息发送到队列。 Sender 线程不断从 RecordAccumulator 拉取消息，发送到 Kafka Broker。  几个关键参数：  batch.size（批次大小，默认 16k，数据积累到该值才发送） linger.ms（未达到 batch.si">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://lin316.gitee.io/blog/blog/images/logo.png">
+<meta property="article:published_time" content="2026-08-31T13:00:00.000Z">
+<meta property="article:modified_time" content="2026-09-01T00:51:11.022Z">
+<meta property="article:author" content="林家隆">
+<meta property="article:tag" content="Kafka">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://lin316.gitee.io/blog/blog/images/logo.png">
+  
+  <!-- 站点验证相关 -->
+  
+    
+    
+    
+  
+  <!-- 样式表文件 -->
+  <link rel="stylesheet" id="kratos-css" href="/blog/css/kratosr.min.css" media="all"></script>
+  
+    <link rel="stylesheet" id="darkmode-css" href="/blog/css/kr-color-dark.min.css" media="(prefers-color-scheme: dark)"></script>
+    <script src="/blog/js/kr-dark.min.js"></script>
+  
+  
+    <link rel="stylesheet" id="highlight-css" href="/blog/css/highlight/night-eighties.min.css" media="all"></script>
+  
+  <link rel="stylesheet" id="fontawe-css" href="/blog/vendors/font-awesome@4.7.0/css/font-awesome.min.css" media="all"></script>
+  <link rel="stylesheet" id="nprogress-css" href="/blog/vendors/nprogress@0.2.0/nprogress.css" media="all"></script>
+  
+  
+  
+    <link rel="stylesheet" href="/blog/vendors/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css"></script>
+  
+  <!-- 不得不预先加载的一些JS文件 -->
+  <script src="/blog/vendors/jquery@3.6.0/dist/jquery.min.js"></script>
+  
+  
+  <style>
+    
+    
+  </style>
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+    <body class="custom-background">
+        <div id="kratos-wrapper">
+    <div id="kratos-page">
+        <div id="kratos-header">
+            <header id="kratos-desktop-topnav" class="kratos-topnav">
+                <div class="container">
+                    <div class="nav-header">
+                        <nav id="kratos-menu-wrap">
+                            <ul id="kratos-primary-menu" class="sf-menu">
+                                
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/">
+                                            
+                                                
+                                                    <i class="fa fa-home"></i>
+                                                
+                                                首页
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/archives/">
+                                            
+                                                
+                                                    <i class="fa fa-file"></i>
+                                                
+                                                归档
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/tags/">
+                                            
+                                                
+                                                    <i class="fa fa-tag"></i>
+                                                
+                                                标签
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/categories/">
+                                            
+                                                
+                                                    <i class="fa fa-folder"></i>
+                                                
+                                                目录
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/search/">
+                                            
+                                                
+                                                    <i class="fa fa-search"></i>
+                                                
+                                                搜索
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </header>
+            <header id="kratos-mobile-topnav" class="kratos-topnav">
+                <div class="container">
+                    <div class="color-logo"><a href="/blog/">溪岚花的博客</a></div>
+                    <div class="nav-toggle">
+                        <a class="kratos-nav-toggle js-kratos-nav-toggle">
+                            <i></i>
+                        </a>
+                    </div>
+                </div>
+            </header>
+        </div>
+        <div class="kratos-start kratos-hero-2">
+            <!-- <div class="kratos-overlay"></div> -->
+            <div class="kratos-cover kratos-cover-2 text-center">
+                <div class="desc desc2 animate-box">
+                    <a href="/blog/">
+                        <h2 style="opacity: 0.2;">溪岚花的博客</h2> <br />
+                        <span></span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div id="kratos-blog-post">
+            <div class="container">
+                <div id="main" class="row">
+                    
+
+        
+
+            <section class="col-md-8">
+
+        
+
+            <article itemscope itemtype="https://schema.org/Article">
+    
+    <link itemprop="mainEntityOfPage" href="https://lin316.gitee.io/blog/2026/08/31/02%E5%90%8E%E7%AB%AF/Kafka/02.Kafka%E7%94%9F%E4%BA%A7%E8%80%85/">
+    <div class="kratos-hentry kratos-post-inner clearfix">
+        <header class="kratos-entry-header">
+            
+                <h1 class="kratos-entry-title text-center" itemprop="name headline">【Kafka】生产者</h1>
+            
+            
+            <ul class="kratos-post-meta text-center">
+                <li><time datetime="2026-08-31T13:00:00.000Z" itemprop="datePublished"><i class="fa fa-calendar"></i> 2026-08-31</time></li>
+                <li itemprop="author" itemscope itemtype="https://schema.org/Person">
+                    <i class="fa fa-user"></i> 作者 <span itemprop="name">林家隆</span>
+                </li>
+                
+                    <li>
+                        <i class="fa fa-edit"></i> 
+                        
+                        
+                            8.53K
+                        
+                        字
+                    </li>
+                
+                
+            </ul>
+        </header>
+        <div class="kratos-post-content">
+            
+            <div id="expire-alert" class="alert alert-warning hidden" role="alert">
+                <div class="icon"><i class="fa fa-warning"></i></div>
+                <div class="text"><p>本文最后编辑于 <time datetime="1788223871022"></time> 前，其中的内容可能需要更新。</p></div>
+            </div>
+            
+            
+            
+                <div class="kratos-post-inner-toc toc-div-class" >
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%94%9F%E4%BA%A7%E8%80%85%E6%B6%88%E6%81%AF%E5%8F%91%E9%80%81%E6%B5%81%E7%A8%8B"><span class="toc-number">1.</span> <span class="toc-text">生产者消息发送流程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%87%8D%E8%A6%81%E5%8F%82%E6%95%B0"><span class="toc-number">1.1.</span> <span class="toc-text">重要参数</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BC%82%E6%AD%A5%E5%8F%91%E9%80%81-API"><span class="toc-number">2.</span> <span class="toc-text">异步发送 API</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%90%8C%E6%AD%A5%E5%8F%91%E9%80%81-API"><span class="toc-number">3.</span> <span class="toc-text">同步发送 API</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%94%9F%E4%BA%A7%E8%80%85%E5%88%86%E5%8C%BA"><span class="toc-number">4.</span> <span class="toc-text">生产者分区</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%86%E5%8C%BA%E7%AD%96%E7%95%A5"><span class="toc-number">4.1.</span> <span class="toc-text">分区策略</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89%E5%88%86%E5%8C%BA%E5%99%A8"><span class="toc-number">4.2.</span> <span class="toc-text">自定义分区器</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%94%9F%E4%BA%A7%E7%BB%8F%E9%AA%8C"><span class="toc-number">5.</span> <span class="toc-text">生产经验</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8F%90%E9%AB%98%E5%90%9E%E5%90%90%E9%87%8F"><span class="toc-number">5.1.</span> <span class="toc-text">提高吞吐量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%8F%AF%E9%9D%A0%E6%80%A7"><span class="toc-number">5.2.</span> <span class="toc-text">数据可靠性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%B9%82%E7%AD%89%E6%80%A7"><span class="toc-number">5.3.</span> <span class="toc-text">数据幂等性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%9F%E4%BA%A7%E8%80%85%E4%BA%8B%E5%8A%A1"><span class="toc-number">5.4.</span> <span class="toc-text">生产者事务</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E6%9C%89%E5%BA%8F%E4%B8%8E%E4%B9%B1%E5%BA%8F"><span class="toc-number">5.5.</span> <span class="toc-text">数据有序与乱序</span></a></li></ol></li></ol>
+                </div>
+            
+            <hr />
+            <div itemprop="articleBody"><h2 id="生产者消息发送流程"><a href="#生产者消息发送流程" class="headerlink" title="生产者消息发送流程"></a>生产者消息发送流程</h2><p>发送过程涉及 main 线程和 Sender 线程：</p>
+<ol>
+<li>main 线程创建双端队列 RecordAccumulator，把消息发送到队列。</li>
+<li>Sender 线程不断从 RecordAccumulator 拉取消息，发送到 Kafka Broker。</li>
+</ol>
+<p>几个关键参数：</p>
+<ul>
+<li><code>batch.size</code>（批次大小，默认 16k，数据积累到该值才发送）</li>
+<li><code>linger.ms</code>（未达到 batch.size 时最多等待的时间，默认 0）</li>
+<li><code>buffer.memory</code>（缓冲区总大小，默认 32m）</li>
+</ul>
+<p><img src="/blog/2026/08/31/02%E5%90%8E%E7%AB%AF/Kafka/02.Kafka%E7%94%9F%E4%BA%A7%E8%80%85/%E7%94%9F%E4%BA%A7%E8%80%85%E6%B6%88%E6%81%AF%E5%8F%91%E9%80%81%E6%B5%81%E7%A8%8B.png" alt="生产者消息发送流程"></p>
+<h3 id="重要参数"><a href="#重要参数" class="headerlink" title="重要参数"></a>重要参数</h3><table>
+<thead>
+<tr>
+<th>参数</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>bootstrap.servers</td>
+<td>连接集群的 broker 地址清单，如 hadoop102:9092</td>
+</tr>
+<tr>
+<td>key.serializer &#x2F; value.serializer</td>
+<td>key、value 的序列化类，必须写全类名</td>
+</tr>
+<tr>
+<td>buffer.memory</td>
+<td>RecordAccumulator 缓冲区总大小，默认 32m</td>
+</tr>
+<tr>
+<td>batch.size</td>
+<td>一批数据最大值，默认 16k，适当增大可提高吞吐量</td>
+</tr>
+<tr>
+<td>linger.ms</td>
+<td>未达到 batch.size 时最多等待时间，默认 0</td>
+</tr>
+<tr>
+<td>acks</td>
+<td>应答级别：0 不等落盘、1 Leader 收到即应答、-1(all) Leader+ISR 全部收到才应答</td>
+</tr>
+<tr>
+<td>max.in.flight.requests.per.connection</td>
+<td>最多未返回 ack 的请求数，默认 5</td>
+</tr>
+<tr>
+<td>retries</td>
+<td>失败重试次数，默认 int 最大值</td>
+</tr>
+<tr>
+<td>enable.idempotence</td>
+<td>是否开启幂等性，默认 true</td>
+</tr>
+<tr>
+<td>compression.type</td>
+<td>压缩方式，默认 none，可选 gzip&#x2F;snappy&#x2F;lz4&#x2F;zstd</td>
+</tr>
+</tbody></table>
+<h2 id="异步发送-API"><a href="#异步发送-API" class="headerlink" title="异步发送 API"></a>异步发送 API</h2><p>添加依赖（kafka-clients 3.0.0），编写生产者：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">Properties</span> <span class="variable">properties</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Properties</span>();</span><br><span class="line">properties.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, <span class="string">&quot;hadoop102:9092&quot;</span>);</span><br><span class="line">properties.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());</span><br><span class="line">properties.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());</span><br><span class="line"></span><br><span class="line">KafkaProducer&lt;String, String&gt; kafkaProducer = <span class="keyword">new</span> <span class="title class_">KafkaProducer</span>&lt;&gt;(properties);</span><br><span class="line"><span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; <span class="number">5</span>; i++) &#123;</span><br><span class="line">    kafkaProducer.send(<span class="keyword">new</span> <span class="title class_">ProducerRecord</span>&lt;&gt;(<span class="string">&quot;first&quot;</span>, <span class="string">&quot;atguigu &quot;</span> + i));</span><br><span class="line">&#125;</span><br><span class="line">kafkaProducer.close();</span><br></pre></td></tr></table></figure>
+
+<p>带回调的异步发送：回调在收到 ack 时异步调用，参数为元数据（RecordMetadata）和异常（Exception），异常为 null 表示成功。消息发送失败会自动重试，不需要在回调里手动重试：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">kafkaProducer.send(<span class="keyword">new</span> <span class="title class_">ProducerRecord</span>&lt;&gt;(<span class="string">&quot;first&quot;</span>, <span class="string">&quot;atguigu &quot;</span> + i), (metadata, exception) -&gt; &#123;</span><br><span class="line">    <span class="keyword">if</span> (exception == <span class="literal">null</span>) &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;主题：&quot;</span> + metadata.topic() + <span class="string">&quot;-&gt;分区：&quot;</span> + metadata.partition());</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        exception.printStackTrace();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<h2 id="同步发送-API"><a href="#同步发送-API" class="headerlink" title="同步发送 API"></a>同步发送 API</h2><p>在异步发送的基础上调用 <code>get()</code> 即可同步等待结果：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kafkaProducer.send(<span class="keyword">new</span> <span class="title class_">ProducerRecord</span>&lt;&gt;(<span class="string">&quot;first&quot;</span>, <span class="string">&quot;kafka&quot;</span> + i)).get();</span><br></pre></td></tr></table></figure>
+
+<h2 id="生产者分区"><a href="#生产者分区" class="headerlink" title="生产者分区"></a>生产者分区</h2><p>分区的好处：便于合理利用存储资源并实现负载均衡；生产者和消费者都可以以分区为单位并行处理，提高并行度。</p>
+<h3 id="分区策略"><a href="#分区策略" class="headerlink" title="分区策略"></a>分区策略</h3><p>默认分区器 DefaultPartitioner 的规则：</p>
+<ul>
+<li>指明 partition，直接使用该值。</li>
+<li>没有 partition 但有 key，用 key 的 hash 值与分区数取余得到分区。</li>
+<li>没有 partition 也没有 key，采用 Sticky（黏性）分区：随机选一个分区并尽量一直使用，等批次满了或 linger.ms 到后，再随机换一个分区。</li>
+</ul>
+<p>指定分区发送：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kafkaProducer.send(<span class="keyword">new</span> <span class="title class_">ProducerRecord</span>&lt;&gt;(<span class="string">&quot;first&quot;</span>, <span class="number">1</span>, <span class="string">&quot;&quot;</span>, <span class="string">&quot;atguigu &quot;</span> + i));</span><br></pre></td></tr></table></figure>
+
+<p>按 key 发送（key 的 hash 对分区数取余）：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kafkaProducer.send(<span class="keyword">new</span> <span class="title class_">ProducerRecord</span>&lt;&gt;(<span class="string">&quot;first&quot;</span>, <span class="string">&quot;a&quot;</span>, <span class="string">&quot;atguigu &quot;</span> + i));</span><br></pre></td></tr></table></figure>
+
+<h3 id="自定义分区器"><a href="#自定义分区器" class="headerlink" title="自定义分区器"></a>自定义分区器</h3><p>实现 <code>Partitioner</code> 接口，重写 <code>partition()</code> 方法，并在生产者配置中指定：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">MyPartitioner</span> <span class="keyword">implements</span> <span class="title class_">Partitioner</span> &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">partition</span><span class="params">(String topic, Object key, <span class="type">byte</span>[] keyBytes, Object value, <span class="type">byte</span>[] valueBytes, Cluster cluster)</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> value.toString().contains(<span class="string">&quot;atguigu&quot;</span>) ? <span class="number">0</span> : <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">@Override</span> <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">close</span><span class="params">()</span> &#123;&#125;</span><br><span class="line">    <span class="meta">@Override</span> <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">configure</span><span class="params">(Map&lt;String, ?&gt; configs)</span> &#123;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">properties.put(ProducerConfig.PARTITIONER_CLASS_CONFIG, <span class="string">&quot;com.atguigu.kafka.producer.MyPartitioner&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<h2 id="生产经验"><a href="#生产经验" class="headerlink" title="生产经验"></a>生产经验</h2><h3 id="提高吞吐量"><a href="#提高吞吐量" class="headerlink" title="提高吞吐量"></a>提高吞吐量</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">properties.put(ProducerConfig.BATCH_SIZE_CONFIG, <span class="number">16384</span>);      <span class="comment">// batch.size 增大</span></span><br><span class="line">properties.put(ProducerConfig.LINGER_MS_CONFIG, <span class="number">1</span>);            <span class="comment">// linger.ms 设 5-100ms</span></span><br><span class="line">properties.put(ProducerConfig.BUFFER_MEMORY_CONFIG, <span class="number">33554432</span>); <span class="comment">// buffer.memory 增大到 64m</span></span><br><span class="line">properties.put(ProducerConfig.COMPRESSION_TYPE_CONFIG, <span class="string">&quot;snappy&quot;</span>); <span class="comment">// 压缩</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="数据可靠性"><a href="#数据可靠性" class="headerlink" title="数据可靠性"></a>数据可靠性</h3><p>ack 应答级别：<code>acks=0</code> 不等待落盘、<code>acks=1</code> Leader 收到即应答、<code>acks=-1</code>（all）Leader 与 ISR 里所有节点都收到才应答。</p>
+<ul>
+<li>数据完全可靠条件：acks&#x3D;-1 + 分区副本数 &gt;&#x3D; 2 + ISR 里应答的最小副本数（min.insync.replicas）&gt;&#x3D; 2。</li>
+<li>acks&#x3D;0 可靠性差效率高；acks&#x3D;1 中等，适合普通日志；acks&#x3D;-1 可靠性高效率低，适合和钱相关的数据。</li>
+<li>ISR：和 Leader 保持同步的 Follower + Leader 集合，Follower 超时未同步会被踢出 ISR（阈值由 replica.lag.time.max.ms 控制，默认 30s）。</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">properties.put(ProducerConfig.ACKS_CONFIG, <span class="string">&quot;all&quot;</span>);</span><br><span class="line">properties.put(ProducerConfig.RETRIES_CONFIG, <span class="number">3</span>);</span><br></pre></td></tr></table></figure>
+
+<h3 id="数据幂等性"><a href="#数据幂等性" class="headerlink" title="数据幂等性"></a>数据幂等性</h3><ul>
+<li>至少一次（AtLeastOnce）＝acks&#x3D;-1 + 副本&gt;&#x3D;2 + min.insync.replicas&gt;&#x3D;2，能保证不丢但不能保证不重复。</li>
+<li>最多一次（AtMostOnce）＝acks&#x3D;0，能保证不重复但不能保证不丢。</li>
+<li>精确一次（ExactlyOnce）＝幂等性 + 至少一次。</li>
+</ul>
+<p><strong>幂等性</strong></p>
+<p>开启参数 enable.idempotence 默认为 true。Broker 以 &lt;PID, Partition, SeqNumber&gt; 作为重复判断主键，相同主键的消息只持久化一条：PID 是 Kafka 每次重启都会重新分配的，Partition 表示分区号，SeqNumber 单调自增。所以幂等性只能在单分区单会话内保证不重复，跨分区、跨会话仍然可能重复。</p>
+<h3 id="生产者事务"><a href="#生产者事务" class="headerlink" title="生产者事务"></a>生产者事务</h3><p>事务的作用：把跨分区、跨会话（甚至跨 Topic）的一批消息绑定成一个整体，要么全部提交成功、要么全部失败回滚，从而比幂等性覆盖的范围更广，在复杂场景下保证精确一次（ExactlyOnce）。</p>
+<p>什么时候用事务？举例来说：</p>
+<ul>
+<li>从 topic A 消费订单，处理完把结果写到 topic B，同时提交 offset：这三个动作希望一起成功或一起失败，避免出现“结果写了但 offset 没提交”导致的重复处理。</li>
+<li>一批数据要发往多个分区或多个 Topic：希望这批数据要么全部对外可见、要么全部不生效，配合消费者的 read_committed 隔离级别，只读到已经提交的数据。</li>
+</ul>
+<p>开启事务必须先开启幂等性，并设置唯一的 transactional.id。设置了 transactional.id，即使客户端挂掉，重启后也能继续处理未完成的事务。</p>
+<p><img src="/blog/2026/08/31/02%E5%90%8E%E7%AB%AF/Kafka/02.Kafka%E7%94%9F%E4%BA%A7%E8%80%85/%E4%BA%8B%E5%8A%A1%E6%B5%81%E7%A8%8B%E5%9B%BE.png" alt="事务流程图"></p>
+<p>事务的 5 个 API：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 1. 初始化事务</span></span><br><span class="line"><span class="keyword">void</span> <span class="title function_">initTransactions</span><span class="params">()</span>;</span><br><span class="line"><span class="comment">// 2. 开启事务</span></span><br><span class="line"><span class="keyword">void</span> <span class="title function_">beginTransaction</span><span class="params">()</span>;</span><br><span class="line"><span class="comment">// 3. 在事务内提交已消费的偏移量（主要用于消费者）</span></span><br><span class="line"><span class="keyword">void</span> <span class="title function_">sendOffsetsToTransaction</span><span class="params">(Map&lt;TopicPartition, OffsetAndMetadata&gt; offsets, String consumerGroupId)</span>;</span><br><span class="line"><span class="comment">// 4. 提交事务</span></span><br><span class="line"><span class="keyword">void</span> <span class="title function_">commitTransaction</span><span class="params">()</span>;</span><br><span class="line"><span class="comment">// 5. 放弃事务（相当于回滚）</span></span><br><span class="line"><span class="keyword">void</span> <span class="title function_">abortTransaction</span><span class="params">()</span>;</span><br></pre></td></tr></table></figure>
+
+<p>代码示例：单个 Producer 使用事务保证消息仅一次发送。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.atguigu.kafka.producer;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.apache.kafka.clients.producer.KafkaProducer;</span><br><span class="line"><span class="keyword">import</span> org.apache.kafka.clients.producer.ProducerConfig;</span><br><span class="line"><span class="keyword">import</span> org.apache.kafka.clients.producer.ProducerRecord;</span><br><span class="line"><span class="keyword">import</span> org.apache.kafka.common.serialization.StringSerializer;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.Properties;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">CustomProducerTransactions</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="comment">// 1. 创建生产者的配置对象</span></span><br><span class="line">        <span class="type">Properties</span> <span class="variable">properties</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Properties</span>();</span><br><span class="line">        properties.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, <span class="string">&quot;hadoop102:9092&quot;</span>);</span><br><span class="line">        <span class="comment">// key、value 序列化（必须）</span></span><br><span class="line">        properties.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());</span><br><span class="line">        properties.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());</span><br><span class="line">        <span class="comment">// 设置事务 id（必须），事务 id 任意起名</span></span><br><span class="line">        properties.put(ProducerConfig.TRANSACTIONAL_ID_CONFIG, <span class="string">&quot;transaction_id_0&quot;</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 2. 创建 Kafka 生产者对象</span></span><br><span class="line">        KafkaProducer&lt;String, String&gt; kafkaProducer = <span class="keyword">new</span> <span class="title class_">KafkaProducer</span>&lt;&gt;(properties);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 3. 初始化事务</span></span><br><span class="line">        kafkaProducer.initTransactions();</span><br><span class="line">        <span class="comment">// 4. 开启事务</span></span><br><span class="line">        kafkaProducer.beginTransaction();</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="comment">// 5. 在事务内发送消息</span></span><br><span class="line">            <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; <span class="number">5</span>; i++) &#123;</span><br><span class="line">                kafkaProducer.send(<span class="keyword">new</span> <span class="title class_">ProducerRecord</span>&lt;&gt;(<span class="string">&quot;first&quot;</span>, <span class="string">&quot;atguigu &quot;</span> + i));</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">// 6. 提交事务</span></span><br><span class="line">            kafkaProducer.commitTransaction();</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">            <span class="comment">// 7. 出现异常，放弃（回滚）事务</span></span><br><span class="line">            kafkaProducer.abortTransaction();</span><br><span class="line">        &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">            <span class="comment">// 8. 关闭资源</span></span><br><span class="line">            kafkaProducer.close();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>说明：开启事务后，消息会先由事务协调器记录；只有 commit 成功，配合消费者的 read_committed 隔离级别，这批消息才对下游可见；若中途异常执行 abort，这批消息就不会生效，从而实现“要么全部成功、要么全部失败”的精确一次语义。</p>
+<h3 id="数据有序与乱序"><a href="#数据有序与乱序" class="headerlink" title="数据有序与乱序"></a>数据有序与乱序</h3><p>Kafka 只能保证<strong>单个 Partition 内有序</strong>，不能保证整个 Topic 全局有序。</p>
+<p><strong>为什么 Partition 内有序</strong></p>
+<p>一个 Partition 本质上是一个追加日志（Append-only Log），消息按 offset 顺序追加、按 offset 顺序读取，所以分区内天然有序。但一个 Topic 通常有多个 Partition，消息会被分散到不同分区，分区与分区之间没有全局顺序。例如 P0 收到 A、C，P1 收到 B、D，消费时可能出现 A→C→B→D，而不是 A→B→C→D。</p>
+<p><strong>如何保证同一个业务有序</strong></p>
+<p>使用业务 ID 作为消息的 key，相同 key 的消息会被分到同一个分区（简单理解：hash(key) % 分区数），分区内有序就保证了该业务的数据有序：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// key 相同，进入同一个分区</span></span><br><span class="line">kafkaProducer.send(<span class="keyword">new</span> <span class="title class_">ProducerRecord</span>&lt;&gt;(<span class="string">&quot;order-topic&quot;</span>, <span class="string">&quot;1001&quot;</span>, <span class="string">&quot;创建订单&quot;</span>));</span><br><span class="line">kafkaProducer.send(<span class="keyword">new</span> <span class="title class_">ProducerRecord</span>&lt;&gt;(<span class="string">&quot;order-topic&quot;</span>, <span class="string">&quot;1001&quot;</span>, <span class="string">&quot;支付订单&quot;</span>));</span><br><span class="line">kafkaProducer.send(<span class="keyword">new</span> <span class="title class_">ProducerRecord</span>&lt;&gt;(<span class="string">&quot;order-topic&quot;</span>, <span class="string">&quot;1001&quot;</span>, <span class="string">&quot;完成订单&quot;</span>));</span><br></pre></td></tr></table></figure>
+
+<p>注意：这只能保证同一个 key 内部有序，不同 key（如不同订单）之间仍然没有全局顺序。</p>
+<p><strong>生产者端也可能导致乱序</strong></p>
+<ul>
+<li>多个请求并发发送时，网络延迟或重试可能让后发的消息先到达，导致分区内乱序。</li>
+<li><code>max.in.flight.requests.per.connection</code> 控制一个连接上允许同时存在的未完成请求数：1.x 之前要保证单分区有序，该值必须为 1；1.x 及以后未开启幂等时该值需为 1，开启幂等（enable.idempotence&#x3D;true）时该值 &lt;&#x3D; 5 即可，服务端会缓存最近 5 个请求的元数据以便重新排序。</li>
+<li>重试也可能造成乱序和重复，开启幂等性后 Kafka 利用 ProducerId、ProducerEpoch、Sequence Number 来避免。</li>
+<li>注意：acks 解决的是”消息有没有可靠写入”，和有序性是两回事，acks&#x3D;all 不等于保证有序。</li>
+</ul>
+<p><strong>消费者端也可能造成”业务上的乱序”</strong></p>
+<p>分区内有序不等于业务处理结果有序：如果消费者用线程池并发处理，即使消息按 A→B→C 到达，处理结果也可能是 B→C→A。同一业务需要串行处理时，消费者侧也要保持单线程或按 key 串行。</p>
+<p>消费者组中每个消费者负责自己的分区，各分区消费互不干扰，但跨分区的全局顺序同样没有保证。</p>
+<p><strong>如何实现全局有序</strong></p>
+<p>最简单的方式是 Topic 只设置一个 Partition，整个 Topic 严格有序；但分区数为 1 会限制并行能力和吞吐量，生产环境很少这样做。实际开发按业务选择：</p>
+<table>
+<thead>
+<tr>
+<th>需求</th>
+<th>方案</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>所有消息全局有序</td>
+<td>1 个 Partition</td>
+</tr>
+<tr>
+<td>同一个用户有序</td>
+<td>userId 作为 Key</td>
+</tr>
+<tr>
+<td>同一个订单有序</td>
+<td>orderId 作为 Key</td>
+</tr>
+<tr>
+<td>同一个设备有序</td>
+<td>deviceId 作为 Key</td>
+</tr>
+<tr>
+<td>同一业务 Key 串行处理</td>
+<td>相同 Key → 同 Partition + 消费者侧串行处理</td>
+</tr>
+<tr>
+<td>不要求顺序</td>
+<td>多 Partition</td>
+</tr>
+</tbody></table>
+<p><strong>总结</strong></p>
+<ul>
+<li>Partition 内有序，Partition 之间无序。</li>
+<li>同一业务用业务 ID 作为 Key，保证进入同一分区，从而有序。</li>
+<li>全局有序只能靠单个 Partition 实现，但会牺牲并行能力和吞吐量。</li>
+<li>Kafka 的设计理念不是追求全局有序，而是用 Partition 平衡”有序性”和”并行性”。</li>
+</ul>
+</div>
+        </div>
+        
+        <footer class="kratos-entry-footer clearfix">
+            
+            <div class="footer-tag clearfix">
+                <div class="pull-left">
+                <i class="fa fa-tags"></i>
+                    <a class="tag-none-link" href="/blog/tags/Kafka/" rel="tag">Kafka</a>
+                </div>
+                <div class="pull-date">
+                    <time datetime="2026-09-01T00:51:11.022Z" itemprop="dateModified">最后编辑：2026-09-01</time>
+                </div>
+            </div>
+        </footer>
+    </div>
+    
+        <nav class="navigation post-navigation clearfix" role="navigation">
+            
+            <div class="nav-previous clearfix">
+                <a title=" 【Kafka】消费者" href="/blog/2026/08/31/02后端/Kafka/04.Kafka消费者/">&lt; 上一篇</a>
+            </div>
+            
+            
+            <div class="nav-next clearfix">
+                <a title=" 【Kafka】基础" href="/blog/2026/08/31/02后端/Kafka/01.Kafka基础/">下一篇 &gt;</a>
+            </div>
+            
+        </nav>
+    
+    
+</article>
+
+        
+
+            </section>
+
+        
+
+                
+            
+
+<section id="kratos-widget-area" class="col-md-4 hidden-xs hidden-sm">
+    <!-- 文章和页面根据splitter来分割，没有的话就从头开始设置为sticky -->
+    
+    
+                <aside id="krw-about" class="widget widget-kratos-about clearfix">
+    <div class="photo-background"></div>
+    <div class="photo-wrapper clearfix">
+        <div class="photo-wrapper-tip text-center">
+            <img class="about-photo" src="/blog/images/avatar.webp" loading="lazy" decoding="auto" />
+        </div>
+    </div>
+    <div class="textwidget">
+        <p class="text-center">极简主义</p>
+    </div>
+    <div class="site-meta">
+        <a class="meta-item" href="/blog/archives/">
+            <span class="title">
+                文章
+            </span>
+            <span class="count">
+                128
+            </span>
+        </a>
+        <a class="meta-item" href="/blog/categories/">
+            <span class="title">
+                分类
+            </span>
+            <span class="count">
+                16
+            </span>
+        </a>
+        <a class="meta-item" href="/blog/tags/">
+            <span class="title">
+                标签
+            </span>
+            <span class="count">
+                41
+            </span>
+        </a>
+    </div>
+</aside>
+            
+                    <div class="sticky-area">
+                
+                    <aside id="krw-toc" class="widget widget-kratos-toc clearfix toc-div-class" >
+    <div class="photo-background"></div>
+    <h4 class="widget-title no-after">
+        <i class="fa fa-compass"></i>
+        文章目录
+        <span class="toc-progress-bar" role="progressbar" aria-label="阅读进度："></span>
+    </h4>
+    <div class="textwidget">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%94%9F%E4%BA%A7%E8%80%85%E6%B6%88%E6%81%AF%E5%8F%91%E9%80%81%E6%B5%81%E7%A8%8B"><span class="toc-text">生产者消息发送流程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%87%8D%E8%A6%81%E5%8F%82%E6%95%B0"><span class="toc-text">重要参数</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BC%82%E6%AD%A5%E5%8F%91%E9%80%81-API"><span class="toc-text">异步发送 API</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%90%8C%E6%AD%A5%E5%8F%91%E9%80%81-API"><span class="toc-text">同步发送 API</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%94%9F%E4%BA%A7%E8%80%85%E5%88%86%E5%8C%BA"><span class="toc-text">生产者分区</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%86%E5%8C%BA%E7%AD%96%E7%95%A5"><span class="toc-text">分区策略</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89%E5%88%86%E5%8C%BA%E5%99%A8"><span class="toc-text">自定义分区器</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%94%9F%E4%BA%A7%E7%BB%8F%E9%AA%8C"><span class="toc-text">生产经验</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8F%90%E9%AB%98%E5%90%9E%E5%90%90%E9%87%8F"><span class="toc-text">提高吞吐量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%8F%AF%E9%9D%A0%E6%80%A7"><span class="toc-text">数据可靠性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%B9%82%E7%AD%89%E6%80%A7"><span class="toc-text">数据幂等性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%9F%E4%BA%A7%E8%80%85%E4%BA%8B%E5%8A%A1"><span class="toc-text">生产者事务</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E6%9C%89%E5%BA%8F%E4%B8%8E%E4%B9%B1%E5%BA%8F"><span class="toc-text">数据有序与乱序</span></a></li></ol></li></ol>
+    </div>
+</aside>
+                
+                
+  <aside id="krw-tags" class="widget widget-kratos-tags clearfix">
+    <h4 class="widget-title"><i class="fa fa-tags"></i>标签聚合</h4>
+      <div class="tag-clouds">
+        <a href="/blog/tags/AI/" style="font-size: 0.8em;">AI</a> <a href="/blog/tags/CORS/" style="font-size: 0.8em;">CORS</a> <a href="/blog/tags/CSS/" style="font-size: 0.8em;">CSS</a> <a href="/blog/tags/Docker/" style="font-size: 0.8em;">Docker</a> <a href="/blog/tags/Dubbo/" style="font-size: 0.8em;">Dubbo</a> <a href="/blog/tags/ELK/" style="font-size: 0.8em;">ELK</a> <a href="/blog/tags/Elasticsearch/" style="font-size: 0.8em;">Elasticsearch</a> <a href="/blog/tags/Eureka/" style="font-size: 0.8em;">Eureka</a> <a href="/blog/tags/Feign/" style="font-size: 0.8em;">Feign</a> <a href="/blog/tags/Gateway/" style="font-size: 0.8em;">Gateway</a> <a href="/blog/tags/HTML/" style="font-size: 0.8em;">HTML</a> <a href="/blog/tags/Idea/" style="font-size: 0.8em;">Idea</a> <a href="/blog/tags/Java/" style="font-size: 0.8em;">Java</a> <a href="/blog/tags/JavaScript/" style="font-size: 0.8em;">JavaScript</a> <a href="/blog/tags/JavaWeb/" style="font-size: 0.8em;">JavaWeb</a> <a href="/blog/tags/K8s/" style="font-size: 0.8em;">K8s</a> <a href="/blog/tags/Kafka/" style="font-size: 0.8em;">Kafka</a> <a href="/blog/tags/Linux/" style="font-size: 0.8em;">Linux</a>
+      </div>
+  </aside>
+
+            
+                
+  <aside id="krw-posts" class="widget widget-kratos-posts">
+  <h4 class="widget-title"><i class="fa fa-file"></i>最新文章</h4>
+  <div class="tab-content">
+      <ul class="list-group">
+        
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/08/31/02%E5%90%8E%E7%AB%AF/Kafka/01.Kafka%E5%9F%BA%E7%A1%80/"><i class="fa  fa-book"></i> 【Kafka】基础</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/08/31/02%E5%90%8E%E7%AB%AF/Kafka/02.Kafka%E7%94%9F%E4%BA%A7%E8%80%85/"><i class="fa  fa-book"></i> 【Kafka】生产者</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/08/31/02%E5%90%8E%E7%AB%AF/Kafka/04.Kafka%E6%B6%88%E8%B4%B9%E8%80%85/"><i class="fa  fa-book"></i> 【Kafka】消费者</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/08/31/02%E5%90%8E%E7%AB%AF/Kafka/03.KafkaBroker/"><i class="fa  fa-book"></i> 【Kafka】Broker</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/08/28/02%E5%90%8E%E7%AB%AF/K8s/Service%E4%B8%8EIngress/"><i class="fa  fa-book"></i> 【K8s】Service与Ingress</a>
+            
+          
+        
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+      </ul>
+  </div>
+  </aside>
+
+            
+    </div>
+</section>
+        
+        </div>
+    </div>
+</div>
+<footer>
+    <div id="footer"  >
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3 footer-list text-center">
+                    <ul class="kratos-social-icons">
+                        <!-- Keep for compatibility -->
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <!-- New links -->
+                        
+                    </ul>
+                    <ul class="kratos-copyright">
+                        <div>
+                            <li>&copy; 2026 溪岚花的博客 版权所有.</li>
+                            <li>本站已运行<span id="span_dt">Loading...</span></li>
+                        </div>
+                        <div>
+                            <li>Theme <a href="https://github.com/Candinya/Kratos-Rebirth" target="_blank">Kratos:Rebirth</a></li>
+                            <li>Site built with&nbsp;<i class="fa fa-heart throb" style="color:#d43f57"></i>&nbsp;by 林家隆.</li>
+                        </div>
+                        <div>
+                            <li>Powered by <a href="https://hexo.io" target="_blank" rel="nofollow">Hexo</a></li>
+                            <li>Hosted on <a href="https://gitee.com/" target="_blank">Gitee Pages</a></li>
+                        </div>
+                        <div>
+                            
+                            
+                        </div>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="kr-tool text-center">
+            <div class="tool">
+                
+                    <div class="box search-box">
+                        <a href="/blog/search/">
+                            <span class="fa fa-search"></span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="box theme-box" id="darkmode-switch">
+                        <span class="fa fa-adjust"></span>
+                    </div>
+                
+                
+                
+            </div>
+            <div class="box gotop-box">
+                <span class="fa fa-chevron-up"></span>
+            </div>
+        </div>
+    </div>
+</footer>
+</div>
+</div>
+
+        <script defer src="/blog/vendors/bootstrap@3.3.4/dist/js/bootstrap.min.js"></script>
+<script defer src="/blog/vendors/nprogress@0.2.0/nprogress.js"></script>
+<script>
+    if (!window.kr) {
+        window.kr = {};
+    }
+    window.kr.notMobile = (!(navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i)));
+    window.kr.siteRoot = "/blog/";
+</script>
+
+
+
+
+
+    <script defer src="/blog/vendors/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+
+<script defer src="/blog/js/kratosr.min.js"></script>
+<script defer src="/blog/js/pjax.min.js"></script>
+
+
+
+<!-- Extra support for third-party plguins  -->
+
+
+    </body>
+</html>

@@ -20,7 +20,7 @@
   <meta name="description" content="Maven 介绍Maven 是什么Maven 的本质是一个项目管理工具，将项目开发和管理过程抽象成一个项目对象模型（POM）。 POM：全称 Project Object Model，项目对象模型。  Maven 的作用项目构建：提供标准的自动化项目构建方式。 依赖管理：方便快捷地管理项目依赖的资源（jar包），避免资源间的版本冲突问题。 统一开发结构：提供标准的、统一的项目结构。 Maven 的">
 <meta property="og:type" content="article">
 <meta property="og:title" content="【Maven】基本使用">
-<meta property="og:url" content="https://lin316.gitee.io/blog/2024/03/02/Maven/maven%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/index.html">
+<meta property="og:url" content="https://lin316.gitee.io/blog/2024/03/02/02%E5%90%8E%E7%AB%AF/Maven/maven%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/index.html">
 <meta property="og:site_name" content="溪岚花的博客">
 <meta property="og:description" content="Maven 介绍Maven 是什么Maven 的本质是一个项目管理工具，将项目开发和管理过程抽象成一个项目对象模型（POM）。 POM：全称 Project Object Model，项目对象模型。  Maven 的作用项目构建：提供标准的自动化项目构建方式。 依赖管理：方便快捷地管理项目依赖的资源（jar包），避免资源间的版本冲突问题。 统一开发结构：提供标准的、统一的项目结构。 Maven 的">
 <meta property="og:locale" content="zh_CN">
@@ -179,7 +179,7 @@
 
             <article itemscope itemtype="https://schema.org/Article">
     
-    <link itemprop="mainEntityOfPage" href="https://lin316.gitee.io/blog/2024/03/02/Maven/maven%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/">
+    <link itemprop="mainEntityOfPage" href="https://lin316.gitee.io/blog/2024/03/02/02%E5%90%8E%E7%AB%AF/Maven/maven%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/">
     <div class="kratos-hentry kratos-post-inner clearfix">
         <header class="kratos-entry-header">
             
@@ -220,7 +220,7 @@
             <hr />
             <div itemprop="articleBody"><h2 id="Maven-介绍"><a href="#Maven-介绍" class="headerlink" title="Maven 介绍"></a>Maven 介绍</h2><h3 id="Maven-是什么"><a href="#Maven-是什么" class="headerlink" title="Maven 是什么"></a>Maven 是什么</h3><p>Maven 的本质是一个项目管理工具，将项目开发和管理过程抽象成一个项目对象模型（POM）。</p>
 <p>POM：全称 Project Object Model，项目对象模型。</p>
-<p><img src="/blog/2024/03/02/Maven/maven%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20240308203606195.png"></p>
+<p><img src="/blog/2024/03/02/02%E5%90%8E%E7%AB%AF/Maven/maven%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20240308203606195.png"></p>
 <h3 id="Maven-的作用"><a href="#Maven-的作用" class="headerlink" title="Maven 的作用"></a>Maven 的作用</h3><p>项目构建：提供标准的自动化项目构建方式。</p>
 <p>依赖管理：方便快捷地管理项目依赖的资源（jar包），避免资源间的版本冲突问题。</p>
 <p>统一开发结构：提供标准的、统一的项目结构。</p>
@@ -437,7 +437,7 @@
 <li>代理仓库 proxy：代理远程仓库，通过 nexus 访问其他公共仓库，例如中央仓库。</li>
 <li>仓库组 group：将若干个仓库组成一个群组，简化配置。仓库组不能保存资源，属于设计型仓库。</li>
 </ul>
-<p><img src="/blog/2024/03/02/Maven/maven%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/69560254a195d45da7c508d16ba215d.png"></p>
+<p><img src="/blog/2024/03/02/02%E5%90%8E%E7%AB%AF/Maven/maven%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/69560254a195d45da7c508d16ba215d.png"></p>
 <h3 id="IDEA-上传-x2F-访问私服"><a href="#IDEA-上传-x2F-访问私服" class="headerlink" title="IDEA 上传&#x2F;访问私服"></a>IDEA 上传&#x2F;访问私服</h3><ol>
 <li><p>在 maven 的 setting.xml 配置文件添加访问私服的账号和密码</p>
 <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">servers</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">server</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">id</span>&gt;</span>account_release<span class="tag">&lt;/<span class="name">id</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">username</span>&gt;</span>&#123;私服账号&#125;<span class="tag">&lt;/<span class="name">username</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">password</span>&gt;</span>&#123;私服密码&#125;<span class="tag">&lt;/<span class="name">password</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">server</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">server</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">id</span>&gt;</span>account_snapshot<span class="tag">&lt;/<span class="name">id</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">username</span>&gt;</span>&#123;私服账号&#125;<span class="tag">&lt;/<span class="name">username</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">password</span>&gt;</span>&#123;私服密码&#125;<span class="tag">&lt;/<span class="name">password</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">server</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">servers</span>&gt;</span></span><br></pre></td></tr></table></figure>
@@ -538,7 +538,7 @@
                 文章
             </span>
             <span class="count">
-                121
+                128
             </span>
         </a>
         <a class="meta-item" href="/blog/categories/">
@@ -546,7 +546,7 @@
                 分类
             </span>
             <span class="count">
-                15
+                16
             </span>
         </a>
         <a class="meta-item" href="/blog/tags/">
@@ -554,7 +554,7 @@
                 标签
             </span>
             <span class="count">
-                40
+                41
             </span>
         </a>
     </div>
@@ -578,7 +578,7 @@
   <aside id="krw-tags" class="widget widget-kratos-tags clearfix">
     <h4 class="widget-title"><i class="fa fa-tags"></i>标签聚合</h4>
       <div class="tag-clouds">
-        <a href="/blog/tags/AI/" style="font-size: 0.8em;">AI</a> <a href="/blog/tags/CORS/" style="font-size: 0.8em;">CORS</a> <a href="/blog/tags/CSS/" style="font-size: 0.8em;">CSS</a> <a href="/blog/tags/Docker/" style="font-size: 0.8em;">Docker</a> <a href="/blog/tags/Dubbo/" style="font-size: 0.8em;">Dubbo</a> <a href="/blog/tags/ELK/" style="font-size: 0.8em;">ELK</a> <a href="/blog/tags/Elasticsearch/" style="font-size: 0.8em;">Elasticsearch</a> <a href="/blog/tags/Eureka/" style="font-size: 0.8em;">Eureka</a> <a href="/blog/tags/Feign/" style="font-size: 0.8em;">Feign</a> <a href="/blog/tags/Gateway/" style="font-size: 0.8em;">Gateway</a> <a href="/blog/tags/HTML/" style="font-size: 0.8em;">HTML</a> <a href="/blog/tags/Idea/" style="font-size: 0.8em;">Idea</a> <a href="/blog/tags/Java/" style="font-size: 0.8em;">Java</a> <a href="/blog/tags/JavaScript/" style="font-size: 0.8em;">JavaScript</a> <a href="/blog/tags/JavaWeb/" style="font-size: 0.8em;">JavaWeb</a> <a href="/blog/tags/K8s/" style="font-size: 0.8em;">K8s</a> <a href="/blog/tags/Linux/" style="font-size: 0.8em;">Linux</a> <a href="/blog/tags/Maven/" style="font-size: 0.8em;">Maven</a>
+        <a href="/blog/tags/AI/" style="font-size: 0.8em;">AI</a> <a href="/blog/tags/CORS/" style="font-size: 0.8em;">CORS</a> <a href="/blog/tags/CSS/" style="font-size: 0.8em;">CSS</a> <a href="/blog/tags/Docker/" style="font-size: 0.8em;">Docker</a> <a href="/blog/tags/Dubbo/" style="font-size: 0.8em;">Dubbo</a> <a href="/blog/tags/ELK/" style="font-size: 0.8em;">ELK</a> <a href="/blog/tags/Elasticsearch/" style="font-size: 0.8em;">Elasticsearch</a> <a href="/blog/tags/Eureka/" style="font-size: 0.8em;">Eureka</a> <a href="/blog/tags/Feign/" style="font-size: 0.8em;">Feign</a> <a href="/blog/tags/Gateway/" style="font-size: 0.8em;">Gateway</a> <a href="/blog/tags/HTML/" style="font-size: 0.8em;">HTML</a> <a href="/blog/tags/Idea/" style="font-size: 0.8em;">Idea</a> <a href="/blog/tags/Java/" style="font-size: 0.8em;">Java</a> <a href="/blog/tags/JavaScript/" style="font-size: 0.8em;">JavaScript</a> <a href="/blog/tags/JavaWeb/" style="font-size: 0.8em;">JavaWeb</a> <a href="/blog/tags/K8s/" style="font-size: 0.8em;">K8s</a> <a href="/blog/tags/Kafka/" style="font-size: 0.8em;">Kafka</a> <a href="/blog/tags/Linux/" style="font-size: 0.8em;">Linux</a>
       </div>
   </aside>
 
@@ -592,34 +592,48 @@
         
           
           
-            <a class="list-group-item" href="/blog/2026/08/19/03%E5%89%8D%E7%AB%AF/TypeScript/06.%E8%A3%85%E9%A5%B0%E5%99%A8%E8%BF%9B%E9%98%B6/"><i class="fa  fa-book"></i> 【TypeScript】装饰器进阶</a>
+            <a class="list-group-item" href="/blog/2026/08/31/02%E5%90%8E%E7%AB%AF/Kafka/01.Kafka%E5%9F%BA%E7%A1%80/"><i class="fa  fa-book"></i> 【Kafka】基础</a>
             
           
         
           
           
-            <a class="list-group-item" href="/blog/2026/08/19/03%E5%89%8D%E7%AB%AF/TypeScript/05.%E8%A3%85%E9%A5%B0%E5%99%A8%E5%9F%BA%E7%A1%80/"><i class="fa  fa-book"></i> 【TypeScript】装饰器基础</a>
+            <a class="list-group-item" href="/blog/2026/08/31/02%E5%90%8E%E7%AB%AF/Kafka/02.Kafka%E7%94%9F%E4%BA%A7%E8%80%85/"><i class="fa  fa-book"></i> 【Kafka】生产者</a>
             
           
         
           
           
-            <a class="list-group-item" href="/blog/2026/08/19/03%E5%89%8D%E7%AB%AF/TypeScript/04.%E6%B3%9B%E5%9E%8B/"><i class="fa  fa-book"></i> 【TypeScript】泛型</a>
+            <a class="list-group-item" href="/blog/2026/08/31/02%E5%90%8E%E7%AB%AF/Kafka/04.Kafka%E6%B6%88%E8%B4%B9%E8%80%85/"><i class="fa  fa-book"></i> 【Kafka】消费者</a>
             
           
         
           
           
-            <a class="list-group-item" href="/blog/2026/08/19/03%E5%89%8D%E7%AB%AF/TypeScript/03.%E7%B1%BB%E4%B8%8E%E6%8E%A5%E5%8F%A3/"><i class="fa  fa-book"></i> 【TypeScript】类与接口</a>
+            <a class="list-group-item" href="/blog/2026/08/31/02%E5%90%8E%E7%AB%AF/Kafka/03.KafkaBroker/"><i class="fa  fa-book"></i> 【Kafka】Broker</a>
             
           
         
           
           
-            <a class="list-group-item" href="/blog/2026/08/19/03%E5%89%8D%E7%AB%AF/TypeScript/02.%E5%B8%B8%E7%94%A8%E7%B1%BB%E5%9E%8B%EF%BC%88%E4%B8%8B%EF%BC%89/"><i class="fa  fa-book"></i> 【TypeScript】常用类型（下）</a>
+            <a class="list-group-item" href="/blog/2026/08/28/02%E5%90%8E%E7%AB%AF/K8s/Service%E4%B8%8EIngress/"><i class="fa  fa-book"></i> 【K8s】Service与Ingress</a>
             
           
         
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
           
             
           

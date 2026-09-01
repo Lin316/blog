@@ -20,13 +20,13 @@
   <meta name="description" content="Pod 组件 yaml 配置Pod 组件 yaml 配置详情123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566676869707172737475767778798081828384apiVersion:">
 <meta property="og:type" content="article">
 <meta property="og:title" content="【K8s】Pod组件详情">
-<meta property="og:url" content="https://lin316.gitee.io/blog/2026/02/03/K8s/Pod%E7%BB%84%E4%BB%B6%E8%AF%A6%E6%83%85/index.html">
+<meta property="og:url" content="https://lin316.gitee.io/blog/2026/02/03/02%E5%90%8E%E7%AB%AF/K8s/Pod%E7%BB%84%E4%BB%B6%E8%AF%A6%E6%83%85/index.html">
 <meta property="og:site_name" content="溪岚花的博客">
 <meta property="og:description" content="Pod 组件 yaml 配置Pod 组件 yaml 配置详情123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566676869707172737475767778798081828384apiVersion:">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://lin316.gitee.io/blog/blog/images/logo.png">
 <meta property="article:published_time" content="2026-02-03T13:00:00.000Z">
-<meta property="article:modified_time" content="2026-02-16T11:36:12.913Z">
+<meta property="article:modified_time" content="2026-08-27T07:49:32.640Z">
 <meta property="article:author" content="林家隆">
 <meta property="article:tag" content="K8s">
 <meta name="twitter:card" content="summary">
@@ -179,7 +179,7 @@
 
             <article itemscope itemtype="https://schema.org/Article">
     
-    <link itemprop="mainEntityOfPage" href="https://lin316.gitee.io/blog/2026/02/03/K8s/Pod%E7%BB%84%E4%BB%B6%E8%AF%A6%E6%83%85/">
+    <link itemprop="mainEntityOfPage" href="https://lin316.gitee.io/blog/2026/02/03/02%E5%90%8E%E7%AB%AF/K8s/Pod%E7%BB%84%E4%BB%B6%E8%AF%A6%E6%83%85/">
     <div class="kratos-hentry kratos-post-inner clearfix">
         <header class="kratos-entry-header">
             
@@ -196,7 +196,7 @@
                         <i class="fa fa-edit"></i> 
                         
                         
-                            5.00K
+                            11.99K
                         
                         字
                     </li>
@@ -208,13 +208,13 @@
             
             <div id="expire-alert" class="alert alert-warning hidden" role="alert">
                 <div class="icon"><i class="fa fa-warning"></i></div>
-                <div class="text"><p>本文最后编辑于 <time datetime="1771241772913"></time> 前，其中的内容可能需要更新。</p></div>
+                <div class="text"><p>本文最后编辑于 <time datetime="1787816972640"></time> 前，其中的内容可能需要更新。</p></div>
             </div>
             
             
             
                 <div class="kratos-post-inner-toc toc-div-class" >
-                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Pod-%E7%BB%84%E4%BB%B6-yaml-%E9%85%8D%E7%BD%AE"><span class="toc-number">1.</span> <span class="toc-text">Pod 组件 yaml 配置</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Pod-%E7%BB%84%E4%BB%B6-yaml-%E9%85%8D%E7%BD%AE%E8%AF%A6%E6%83%85"><span class="toc-number">1.1.</span> <span class="toc-text">Pod 组件 yaml 配置详情</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%B9%E5%99%A8-imagePullPolicy-%E9%85%8D%E7%BD%AE"><span class="toc-number">1.2.</span> <span class="toc-text">容器 imagePullPolicy 配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%B9%E5%99%A8-command-%E9%85%8D%E7%BD%AE"><span class="toc-number">1.3.</span> <span class="toc-text">容器 command 配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%B9%E5%99%A8-resources-%E9%85%8D%E7%BD%AE"><span class="toc-number">1.4.</span> <span class="toc-text">容器 resources 配置</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Pod-%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F"><span class="toc-number">2.</span> <span class="toc-text">Pod 生命周期</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Pod-%E5%88%9B%E5%BB%BA%E5%92%8C%E7%BB%88%E6%AD%A2%E6%B5%81%E7%A8%8B"><span class="toc-number">2.1.</span> <span class="toc-text">Pod 创建和终止流程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9D%E5%A7%8B%E5%8C%96%E5%AE%B9%E5%99%A8"><span class="toc-number">2.2.</span> <span class="toc-text">初始化容器</span></a></li></ol></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Pod-%E7%BB%84%E4%BB%B6-yaml-%E9%85%8D%E7%BD%AE"><span class="toc-number">1.</span> <span class="toc-text">Pod 组件 yaml 配置</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Pod-%E7%BB%84%E4%BB%B6-yaml-%E9%85%8D%E7%BD%AE%E8%AF%A6%E6%83%85"><span class="toc-number">1.1.</span> <span class="toc-text">Pod 组件 yaml 配置详情</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%B9%E5%99%A8-imagePullPolicy-%E9%85%8D%E7%BD%AE"><span class="toc-number">1.2.</span> <span class="toc-text">容器 imagePullPolicy 配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%B9%E5%99%A8-command-%E9%85%8D%E7%BD%AE"><span class="toc-number">1.3.</span> <span class="toc-text">容器 command 配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%B9%E5%99%A8-resources-%E9%85%8D%E7%BD%AE"><span class="toc-number">1.4.</span> <span class="toc-text">容器 resources 配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%B9%E5%99%A8-ports-%E9%85%8D%E7%BD%AE"><span class="toc-number">1.5.</span> <span class="toc-text">容器 ports 配置</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Pod-%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F"><span class="toc-number">2.</span> <span class="toc-text">Pod 生命周期</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Pod-%E5%88%9B%E5%BB%BA%E5%92%8C%E7%BB%88%E6%AD%A2%E6%B5%81%E7%A8%8B"><span class="toc-number">2.1.</span> <span class="toc-text">Pod 创建和终止流程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9D%E5%A7%8B%E5%8C%96%E5%AE%B9%E5%99%A8"><span class="toc-number">2.2.</span> <span class="toc-text">初始化容器</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Pod-%E8%B0%83%E5%BA%A6"><span class="toc-number">3.</span> <span class="toc-text">Pod 调度</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9A%E5%90%91%E8%B0%83%E5%BA%A6"><span class="toc-number">3.1.</span> <span class="toc-text">定向调度</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%B2%E5%92%8C%E6%80%A7%E8%B0%83%E5%BA%A6"><span class="toc-number">3.2.</span> <span class="toc-text">亲和性调度</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B1%A1%E7%82%B9%E4%B8%8E%E5%AE%B9%E5%BF%8D"><span class="toc-number">3.3.</span> <span class="toc-text">污点与容忍</span></a></li></ol></li></ol>
                 </div>
             
             <hr />
@@ -245,12 +245,47 @@
 <h3 id="容器-command-配置"><a href="#容器-command-配置" class="headerlink" title="容器 command 配置"></a>容器 command 配置</h3><p>command 用来配置容器的启动命令，如果yaml 配置了 command，那么 Dockerfile 的 CMD 启动命令配置就不会生效，以 command 配置的启动命令为准。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">k8s 的 command 和 args 配置跟 Dockerfile 的 CMD 配置的更新：</span><br><span class="line">1. 如果 command 和 args 都没有配置，那么以 Dockerfile 的配置为准。</span><br><span class="line">2. 如果 command 配置了，但 args 没有配置，以 command 配置为准。</span><br><span class="line">3. 如果 command 没有配置，但 args 配置了，那么以 Dockerfile 的启动命令为准，但会使用 args 的参数配置。</span><br><span class="line">4. 如果 command 和 args 都配置了，那么以 command 启动命令为准，并使用 args 的参数配置。</span><br></pre></td></tr></table></figure>
 
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Pod</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">pod-common</span></span><br><span class="line">  <span class="attr">namespace:</span> <span class="string">dev</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">containers:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">demo-test</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">demo-test:1.0</span></span><br><span class="line">    <span class="attr">imagePullPolicy:</span> <span class="string">IfNotPresent</span></span><br><span class="line">    <span class="attr">command:</span> [<span class="string">&quot;java&quot;</span>, <span class="string">&quot;-jar&quot;</span>, <span class="string">&quot;/app/demo-test-1.0-SNAPSHOT.jar&quot;</span>, <span class="string">&quot;pod-001&quot;</span>, <span class="string">&quot;pod-002&quot;</span>, <span class="string">&quot;pod-003&quot;</span>]</span><br></pre></td></tr></table></figure>
+
 <h3 id="容器-resources-配置"><a href="#容器-resources-配置" class="headerlink" title="容器 resources 配置"></a>容器 resources 配置</h3><p>limits：用于配置容器运行时最多可以占用的资源，当容器占用的资源超过上限时会被终止，并进行重启。</p>
 <p>requests：用于配置运行容器最少需要的资源，如果资源没有达到最低要求，容器无法启动。</p>
 <p>cpu：配置 CPU 的核心数，可以为整数或小数。</p>
 <p>memory：配置内存大小，单位可以选 Gi、Mi、G、M。</p>
 <figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">containers:</span></span><br><span class="line">    <span class="attr">resources:</span>              <span class="comment"># CPU 和内存资源配置</span></span><br><span class="line">      <span class="attr">limits:</span>               <span class="comment"># 配置 CPU 和内存资源的上限</span></span><br><span class="line">        <span class="attr">cpu:</span> <span class="string">&quot;2&quot;</span>            <span class="comment"># 配置 CPU 核数的上限，最多 2 颗</span></span><br><span class="line">        <span class="attr">memory:</span> <span class="string">&quot;10Gi&quot;</span>      <span class="comment"># 配置内存的上限，最多 10G</span></span><br><span class="line">      <span class="attr">requests:</span>             <span class="comment"># 配置 CPU 和内存资源的下限</span></span><br><span class="line">        <span class="attr">cpu:</span> <span class="string">&quot;1&quot;</span>            <span class="comment"># 配置 CPU 核数的下限，至少需要 1 颗</span></span><br><span class="line">        <span class="attr">memory:</span> <span class="string">&quot;512Mi&quot;</span>     <span class="comment"># 配置内存的下限，至少需要 512M</span></span><br></pre></td></tr></table></figure>
 
+<h3 id="容器-ports-配置"><a href="#容器-ports-配置" class="headerlink" title="容器 ports 配置"></a>容器 ports 配置</h3><p>ports 用来声明容器的端口信息。需要说明的是：ports 只是描述信息，并不会真正开放端口，容器能否被访问由容器内应用决定。</p>
+<table>
+<thead>
+<tr>
+<th>配置项</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>name</td>
+<td>端口名称，同一个 Pod 内必须唯一</td>
+</tr>
+<tr>
+<td>containerPort</td>
+<td>容器端口，即容器内应用监听的端口</td>
+</tr>
+<tr>
+<td>protocol</td>
+<td>端口协议，可选 TCP、UDP、SCTP，默认为 TCP</td>
+</tr>
+<tr>
+<td>hostPort</td>
+<td>把容器端口映射到宿主机端口，通过 节点IP:hostPort 访问，不推荐使用</td>
+</tr>
+</tbody></table>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Pod</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">pod-ports</span></span><br><span class="line">  <span class="attr">namespace:</span> <span class="string">dev</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">containers:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">nginx</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">nginx:1.17.1</span></span><br><span class="line">    <span class="attr">ports:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">nginx-port</span>     <span class="comment"># 端口名称，同一个 Pod 内必须唯一</span></span><br><span class="line">      <span class="attr">containerPort:</span> <span class="number">80</span>    <span class="comment"># 容器内应用监听的端口</span></span><br><span class="line">      <span class="attr">protocol:</span> <span class="string">TCP</span>        <span class="comment"># 端口协议，默认 TCP</span></span><br></pre></td></tr></table></figure>
+
+<p>说明：</p>
+<ul>
+<li>即使不配置 ports，容器也可以正常被访问，ports 主要起描述作用，方便 kubectl describe 等工具展示。</li>
+<li>容器端口只在 Pod 内部和集群内有效，想对外提供服务需要借助 Service。</li>
+<li>hostPort 会把端口映射到宿主机，同一节点同一端口只能有一个 Pod，容易冲突，生产环境一般用 Service 的 NodePort 代替。</li>
+</ul>
 <h2 id="Pod-生命周期"><a href="#Pod-生命周期" class="headerlink" title="Pod 生命周期"></a>Pod 生命周期</h2><p>Pod 生命周期：创建 Pod、运行初始化容器、运行主容器、终止 Pod。</p>
 <p>Pod 在生命周期中会出现的5种<strong>状态</strong>：</p>
 <ul>
@@ -260,7 +295,7 @@
 <li>失败（Failed）：pod 内的所有容器都已终止，但至少有一个容器异常终止，比如逻辑报错、内存溢出等。</li>
 <li>未知（Unknown）：无法获取 pod 状态，通常由网络通信失败导致的。</li>
 </ul>
-<h3 id="Pod-创建和终止流程"><a href="#Pod-创建和终止流程" class="headerlink" title="Pod 创建和终止流程"></a>Pod 创建和终止流程</h3><p><img src="/blog/2026/02/03/K8s/Pod%E7%BB%84%E4%BB%B6%E8%AF%A6%E6%83%85/image-20200406184656917-1770969257538-4.png" alt="k8s部件"></p>
+<h3 id="Pod-创建和终止流程"><a href="#Pod-创建和终止流程" class="headerlink" title="Pod 创建和终止流程"></a>Pod 创建和终止流程</h3><p><img src="/blog/2026/02/03/02%E5%90%8E%E7%AB%AF/K8s/Pod%E7%BB%84%E4%BB%B6%E8%AF%A6%E6%83%85/image-20200406184656917-1770969257538-4.png" alt="k8s部件"></p>
 <figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Pod 的创建过程：</span><br><span class="line">1. 用户通过 kubectl 命令提交需要创建的 pod 信息给 apiServer。</span><br><span class="line">2. apiServer 接收到信息后，生成 pod 对象信息，并存入 etcd 中，然后给客户端返回执行结果。</span><br><span class="line">4. scheduler 通过监控 apiServer，发现有新增的 pod 资源对象，开始为新 pod 对象分配主机并将结果更新至 apiServer。</span><br><span class="line">5. node 节点上的 kubelet 发现有 pod 调度过来，尝试使用 docker 启动容器，并将结果推送到 apiServer。</span><br><span class="line">6. apiServer 将接收到的 pod 状态信息存入 etcd 中。</span><br></pre></td></tr></table></figure>
 
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Pod 的终止过程：</span><br><span class="line">1. 用户通过 kubectl 向 apiServer 发送删除 pod 对象命令</span><br><span class="line">2. apiServer 将 pod 标记为 terminating 状态。</span><br><span class="line">3. kubelet 监控到 pod 对象转为 terminating 状态后，启动 pod 关闭过程。</span><br><span class="line">4. 端点控制器监控到 pod 对象需要关闭时，获取跟 pod 相关的 service 资源，从列表中移除 pod，停止转发到该 pod。</span><br><span class="line">5. 如果 pod 对象定义了 preStop 钩子处理器，则在其标记为 terminating 后会以同步的方式启动执行。</span><br><span class="line">6. pod 对象中的容器进程收到停止信号。</span><br><span class="line">7. 宽限期结束后，如果 pod 中还有运行的容器，那么 pod 对象会收到立即终止的信号。</span><br><span class="line">8. kubelet 请求 apiServer 将此 pod 对象的宽限期设置为 0 从而完成删除操作，此时 pod 对于用户不可见。</span><br></pre></td></tr></table></figure>
@@ -278,6 +313,99 @@
 <li>注入主容器缺少的工具：例如 curl、bash 等通过共享 Volume 提供给主容器使用。</li>
 <li>等待依赖服务就绪：如等待下游服务启动后再启动主容器。</li>
 </ul>
+<h2 id="Pod-调度"><a href="#Pod-调度" class="headerlink" title="Pod 调度"></a>Pod 调度</h2><p>Pod 调度就是决定 Pod 运行在集群中的哪个节点上。默认情况下由 kube-scheduler 自动调度，也可以通过配置指定调度方式。调度方式主要分为三种：定向调度、亲和性调度、污点与容忍。</p>
+<h3 id="定向调度"><a href="#定向调度" class="headerlink" title="定向调度"></a>定向调度</h3><p>定向调度是直接在 Pod 上指定要调度到哪个节点，分为 nodeName 和 nodeSelector 两种。</p>
+<p><strong>nodeName</strong></p>
+<p>通过 nodeName 直接指定 Pod 运行在哪个节点上。通常用于测试或调试场景，生产环境一般不用，因为如果该节点故障，Pod 也无法在其他节点重建。</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Pod</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">pod-nodename</span></span><br><span class="line">  <span class="attr">namespace:</span> <span class="string">dev</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">containers:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">nginx</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">nginx:1.17.1</span></span><br><span class="line">  <span class="attr">nodeName:</span> <span class="string">node1</span>   <span class="comment"># 指定 Pod 调度到 node1 节点</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>nodeSelector</strong></p>
+<p>通过节点标签选择节点，Pod 只会调度到带有匹配标签的节点上。需要先用 kubectl 给节点打标签：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl label nodes node1 nodeenv=pro   # 给 node1 打上 nodeenv=pro 的标签</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Pod</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">pod-nodeselector</span></span><br><span class="line">  <span class="attr">namespace:</span> <span class="string">dev</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">containers:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">nginx</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">nginx:1.17.1</span></span><br><span class="line">  <span class="attr">nodeSelector:</span>            <span class="comment"># 选择带 nodeenv=pro 标签的节点</span></span><br><span class="line">    <span class="attr">nodeenv:</span> <span class="string">pro</span></span><br></pre></td></tr></table></figure>
+
+<p>如果没有节点满足标签条件，Pod 会一直停留在 Pending 状态，可以通过 <code>kubectl describe pod &lt;pod名称&gt;</code> 查看调度失败的提示。</p>
+<h3 id="亲和性调度"><a href="#亲和性调度" class="headerlink" title="亲和性调度"></a>亲和性调度</h3><p>定向调度是硬性指定，如果没有满足条件的节点，Pod 就无法运行。亲和性调度更灵活，分为三种：</p>
+<ul>
+<li>nodeAffinity（node 亲和性）：决定 Pod 倾向于调度到哪些节点。</li>
+<li>podAffinity（pod 亲和性）：让 Pod 和指定标签的 Pod 调度到同一个拓扑域（如同一个节点）。</li>
+<li>podAntiAffinity（pod 反亲和性）：让 Pod 和指定标签的 Pod 调度到不同的拓扑域，例如将多副本打散到不同节点，提高服务高可用性。</li>
+</ul>
+<p>亲和性都支持两种限制：</p>
+<ul>
+<li>requiredDuringSchedulingIgnoredDuringExecution：硬限制，节点必须满足条件才能调度。</li>
+<li>preferredDuringSchedulingIgnoredDuringExecution：软限制，优先调度到满足条件的节点，没有满足条件的节点也能调度到其他节点，weight 权重范围 1-100，越大优先级越高。</li>
+</ul>
+<p>操作符（operator）的取值：</p>
+<table>
+<thead>
+<tr>
+<th>operator</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>In</td>
+<td>标签值在给定的 values 列表中</td>
+</tr>
+<tr>
+<td>NotIn</td>
+<td>标签值不在给定的 values 列表中</td>
+</tr>
+<tr>
+<td>Exists</td>
+<td>只要存在该 key 的标签即匹配，不需要配置 values</td>
+</tr>
+<tr>
+<td>DoesNotExist</td>
+<td>不存在该 key 的标签即匹配，不需要配置 values</td>
+</tr>
+<tr>
+<td>Gt</td>
+<td>标签值大于给定的数值，只支持 nodeAffinity</td>
+</tr>
+<tr>
+<td>Lt</td>
+<td>标签值小于给定的数值，只支持 nodeAffinity</td>
+</tr>
+</tbody></table>
+<p><strong>注意：</strong>Gt 和 Lt 只支持 nodeAffinity，且 values 只能写一个整数；podAffinity 和 podAntiAffinity 只支持 In、NotIn、Exists、DoesNotExist。</p>
+<p><strong>案例1：nodeAffinity 硬限制（required）</strong></p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Pod</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">pod-nodeaffinity</span></span><br><span class="line">  <span class="attr">namespace:</span> <span class="string">dev</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">containers:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">nginx</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">nginx:1.17.1</span></span><br><span class="line">  <span class="attr">affinity:</span>                                           <span class="comment"># 亲和性设置</span></span><br><span class="line">    <span class="attr">nodeAffinity:</span>                                     <span class="comment"># node 亲和性</span></span><br><span class="line">      <span class="attr">requiredDuringSchedulingIgnoredDuringExecution:</span> <span class="comment"># 硬限制</span></span><br><span class="line">        <span class="attr">nodeSelectorTerms:</span></span><br><span class="line">        <span class="bullet">-</span> <span class="attr">matchExpressions:</span>                           <span class="comment"># 匹配标签 nodeenv=pro 的节点</span></span><br><span class="line">          <span class="bullet">-</span> <span class="attr">key:</span> <span class="string">nodeenv</span></span><br><span class="line">            <span class="attr">operator:</span> <span class="string">In</span></span><br><span class="line">            <span class="attr">values:</span> [<span class="string">&quot;pro&quot;</span>]</span><br></pre></td></tr></table></figure>
+
+<p>说明：只有当集群中存在 nodeenv&#x3D;pro 标签的节点时，Pod 才会被调度，否则会一直 Pending，可以通过 <code>kubectl describe pod &lt;pod名称&gt;</code> 查看调度失败的提示。</p>
+<p><strong>案例2：nodeAffinity 软限制（preferred + weight）</strong></p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Pod</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">pod-nodeaffinity-preferred</span></span><br><span class="line">  <span class="attr">namespace:</span> <span class="string">dev</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">containers:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">nginx</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">nginx:1.17.1</span></span><br><span class="line">  <span class="attr">affinity:</span>                                                  <span class="comment"># 亲和性设置</span></span><br><span class="line">    <span class="attr">nodeAffinity:</span>                                            <span class="comment"># node 亲和性</span></span><br><span class="line">      <span class="attr">preferredDuringSchedulingIgnoredDuringExecution:</span>       <span class="comment"># 软限制</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">weight:</span> <span class="number">10</span>                                           <span class="comment"># 权重越高越优先</span></span><br><span class="line">        <span class="attr">preference:</span></span><br><span class="line">          <span class="attr">matchExpressions:</span>                                  <span class="comment"># 优先匹配 nodeenv=pro 的节点</span></span><br><span class="line">          <span class="bullet">-</span> <span class="attr">key:</span> <span class="string">nodeenv</span></span><br><span class="line">            <span class="attr">operator:</span> <span class="string">In</span></span><br><span class="line">            <span class="attr">values:</span> [<span class="string">&quot;pro&quot;</span>]</span><br></pre></td></tr></table></figure>
+
+<p>说明：Pod 会优先调度到 nodeenv&#x3D;pro 的节点，如果集群中没有这种节点，也会调度到其他节点，不会一直 Pending。可以配置多个软限制，调度器按 weight 加权打分，权重越大越优先。</p>
+<p><strong>案例3：podAffinity（Pod 亲和性）</strong></p>
+<p>先创建一个参照 Pod，并给它打上标签：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Pod</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">pod-affinity-target</span></span><br><span class="line">  <span class="attr">namespace:</span> <span class="string">dev</span></span><br><span class="line">  <span class="attr">labels:</span></span><br><span class="line">    <span class="attr">app:</span> <span class="string">nginx</span>          <span class="comment"># 给参照 Pod 打标签</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">containers:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">nginx</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">nginx:1.17.1</span></span><br></pre></td></tr></table></figure>
+
+<p>再创建需要和参照 Pod 部署在同一节点的 Pod：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Pod</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">pod-affinity</span></span><br><span class="line">  <span class="attr">namespace:</span> <span class="string">dev</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">containers:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">nginx</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">nginx:1.17.1</span></span><br><span class="line">  <span class="attr">affinity:</span></span><br><span class="line">    <span class="attr">podAffinity:</span>                                            <span class="comment"># pod 亲和性</span></span><br><span class="line">      <span class="attr">requiredDuringSchedulingIgnoredDuringExecution:</span>       <span class="comment"># 硬限制</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">labelSelector:</span>                                      <span class="comment"># 选择参照 Pod（标签 app=nginx）</span></span><br><span class="line">          <span class="attr">matchExpressions:</span></span><br><span class="line">          <span class="bullet">-</span> <span class="attr">key:</span> <span class="string">app</span></span><br><span class="line">            <span class="attr">operator:</span> <span class="string">In</span></span><br><span class="line">            <span class="attr">values:</span> [<span class="string">&quot;nginx&quot;</span>]</span><br><span class="line">        <span class="attr">topologyKey:</span> <span class="string">kubernetes.io/hostname</span>                 <span class="comment"># 以节点为拓扑域</span></span><br></pre></td></tr></table></figure>
+
+<p>说明：新 Pod 必须和有 app&#x3D;nginx 标签的 Pod 调度到同一个节点。topologyKey 指定拓扑域，kubernetes.io&#x2F;hostname 表示以节点为单位，也可以换成可用区等维度；labelSelector 选择参照 Pod。适合把频繁交互的应用部署在一起，减少网络通信开销。如果找不到符合条件的参照 Pod，新 Pod 会一直 Pending。</p>
+<p><strong>案例4：podAntiAffinity（Pod 反亲和性）</strong></p>
+<p>多副本应用打散到不同节点：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">apps/v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Deployment</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">nginx</span></span><br><span class="line">  <span class="attr">namespace:</span> <span class="string">dev</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">replicas:</span> <span class="number">3</span></span><br><span class="line">  <span class="attr">selector:</span></span><br><span class="line">    <span class="attr">matchLabels:</span></span><br><span class="line">      <span class="attr">app:</span> <span class="string">nginx</span></span><br><span class="line">  <span class="attr">template:</span></span><br><span class="line">    <span class="attr">metadata:</span></span><br><span class="line">      <span class="attr">labels:</span></span><br><span class="line">        <span class="attr">app:</span> <span class="string">nginx</span></span><br><span class="line">    <span class="attr">spec:</span></span><br><span class="line">      <span class="attr">containers:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">nginx</span></span><br><span class="line">        <span class="attr">image:</span> <span class="string">nginx:1.17.1</span></span><br><span class="line">      <span class="attr">affinity:</span></span><br><span class="line">        <span class="attr">podAntiAffinity:</span>                                    <span class="comment"># pod 反亲和性</span></span><br><span class="line">          <span class="attr">requiredDuringSchedulingIgnoredDuringExecution:</span>   <span class="comment"># 硬限制</span></span><br><span class="line">          <span class="bullet">-</span> <span class="attr">labelSelector:</span>                                  <span class="comment"># 避开有 app=nginx 标签的 Pod</span></span><br><span class="line">              <span class="attr">matchExpressions:</span></span><br><span class="line">              <span class="bullet">-</span> <span class="attr">key:</span> <span class="string">app</span></span><br><span class="line">                <span class="attr">operator:</span> <span class="string">In</span></span><br><span class="line">                <span class="attr">values:</span> [<span class="string">&quot;nginx&quot;</span>]</span><br><span class="line">            <span class="attr">topologyKey:</span> <span class="string">kubernetes.io/hostname</span></span><br></pre></td></tr></table></figure>
+
+<p>说明：新副本必须调度到没有 app&#x3D;nginx Pod 的节点，3 个副本会被打散到不同节点，避免副本集中在一台节点上，节点故障时服务仍然可用。注意两点：一是集群节点数不能少于副本数，否则多余的副本会一直 Pending；二是 required 硬限制在 Deployment 滚动更新时，可能因为节点被旧副本占满而无法调度新副本，生产环境更常用 preferred 软限制来打散副本。</p>
+<h3 id="污点与容忍"><a href="#污点与容忍" class="headerlink" title="污点与容忍"></a>污点与容忍</h3><p>污点（Taint）是站在节点角度设置的属性，用来拒绝 Pod 调度到该节点；容忍（Toleration）是站在 Pod 角度设置的属性，用来忽略节点上的污点。污点格式为 <code>key=value:effect</code>，effect 有三种：</p>
+<ul>
+<li>PreferNoSchedule：尽量不把 Pod 调度过来，没有其他节点时也会调度。</li>
+<li>NoSchedule：不调度新的 Pod 过来，不影响节点上已有的 Pod。</li>
+<li>NoExecute：不调度新的 Pod 过来，同时驱逐节点上已有的 Pod。</li>
+</ul>
+<p>设置和移除污点：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">kubectl taint nodes node1 tag=heima:NoSchedule   # 设置污点</span><br><span class="line">kubectl taint nodes node1 tag:NoSchedule-        # 移除污点</span><br></pre></td></tr></table></figure>
+
+<p>给 Pod 添加容忍，调度到带污点的节点：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Pod</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">pod-toleration</span></span><br><span class="line">  <span class="attr">namespace:</span> <span class="string">dev</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">containers:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">nginx</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">nginx:1.17.1</span></span><br><span class="line">  <span class="attr">tolerations:</span>             <span class="comment"># 容忍设置</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">key:</span> <span class="string">&quot;tag&quot;</span>             <span class="comment"># 容忍污点的 key</span></span><br><span class="line">    <span class="attr">operator:</span> <span class="string">&quot;Equal&quot;</span></span><br><span class="line">    <span class="attr">value:</span> <span class="string">&quot;heima&quot;</span>         <span class="comment"># 容忍污点的 value</span></span><br><span class="line">    <span class="attr">effect:</span> <span class="string">&quot;NoSchedule&quot;</span>   <span class="comment"># 容忍的 effect，需要和污点一致</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>注意：</strong>tolerations 的 operator 支持 Equal（key、value、effect 都要匹配）和 Exists（只匹配 key，不需要写 value）。</p>
+<p><strong>说明：</strong>使用 kubeadm 搭建的集群，默认会给 master 节点打上污点，所以业务 Pod 不会被调度到 master 节点上。</p>
 </div>
         </div>
         
@@ -289,7 +417,7 @@
                     <a class="tag-none-link" href="/blog/tags/K8s/" rel="tag">K8s</a>
                 </div>
                 <div class="pull-date">
-                    <time datetime="2026-02-16T11:36:12.913Z" itemprop="dateModified">最后编辑：2026-02-16</time>
+                    <time datetime="2026-08-27T07:49:32.640Z" itemprop="dateModified">最后编辑：2026-08-27</time>
                 </div>
             </div>
         </footer>
@@ -298,7 +426,7 @@
         <nav class="navigation post-navigation clearfix" role="navigation">
             
             <div class="nav-previous clearfix">
-                <a title=" 【K8s】组件" href="/blog/2026/01/25/K8s/K8s组件/">&lt; 上一篇</a>
+                <a title=" 【K8s】组件" href="/blog/2026/01/25/02后端/K8s/K8s组件/">&lt; 上一篇</a>
             </div>
             
             
@@ -340,7 +468,7 @@
                 文章
             </span>
             <span class="count">
-                121
+                128
             </span>
         </a>
         <a class="meta-item" href="/blog/categories/">
@@ -348,7 +476,7 @@
                 分类
             </span>
             <span class="count">
-                15
+                16
             </span>
         </a>
         <a class="meta-item" href="/blog/tags/">
@@ -356,7 +484,7 @@
                 标签
             </span>
             <span class="count">
-                40
+                41
             </span>
         </a>
     </div>
@@ -372,7 +500,7 @@
         <span class="toc-progress-bar" role="progressbar" aria-label="阅读进度："></span>
     </h4>
     <div class="textwidget">
-        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Pod-%E7%BB%84%E4%BB%B6-yaml-%E9%85%8D%E7%BD%AE"><span class="toc-text">Pod 组件 yaml 配置</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Pod-%E7%BB%84%E4%BB%B6-yaml-%E9%85%8D%E7%BD%AE%E8%AF%A6%E6%83%85"><span class="toc-text">Pod 组件 yaml 配置详情</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%B9%E5%99%A8-imagePullPolicy-%E9%85%8D%E7%BD%AE"><span class="toc-text">容器 imagePullPolicy 配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%B9%E5%99%A8-command-%E9%85%8D%E7%BD%AE"><span class="toc-text">容器 command 配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%B9%E5%99%A8-resources-%E9%85%8D%E7%BD%AE"><span class="toc-text">容器 resources 配置</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Pod-%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F"><span class="toc-text">Pod 生命周期</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Pod-%E5%88%9B%E5%BB%BA%E5%92%8C%E7%BB%88%E6%AD%A2%E6%B5%81%E7%A8%8B"><span class="toc-text">Pod 创建和终止流程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9D%E5%A7%8B%E5%8C%96%E5%AE%B9%E5%99%A8"><span class="toc-text">初始化容器</span></a></li></ol></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Pod-%E7%BB%84%E4%BB%B6-yaml-%E9%85%8D%E7%BD%AE"><span class="toc-text">Pod 组件 yaml 配置</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Pod-%E7%BB%84%E4%BB%B6-yaml-%E9%85%8D%E7%BD%AE%E8%AF%A6%E6%83%85"><span class="toc-text">Pod 组件 yaml 配置详情</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%B9%E5%99%A8-imagePullPolicy-%E9%85%8D%E7%BD%AE"><span class="toc-text">容器 imagePullPolicy 配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%B9%E5%99%A8-command-%E9%85%8D%E7%BD%AE"><span class="toc-text">容器 command 配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%B9%E5%99%A8-resources-%E9%85%8D%E7%BD%AE"><span class="toc-text">容器 resources 配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%B9%E5%99%A8-ports-%E9%85%8D%E7%BD%AE"><span class="toc-text">容器 ports 配置</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Pod-%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F"><span class="toc-text">Pod 生命周期</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Pod-%E5%88%9B%E5%BB%BA%E5%92%8C%E7%BB%88%E6%AD%A2%E6%B5%81%E7%A8%8B"><span class="toc-text">Pod 创建和终止流程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9D%E5%A7%8B%E5%8C%96%E5%AE%B9%E5%99%A8"><span class="toc-text">初始化容器</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Pod-%E8%B0%83%E5%BA%A6"><span class="toc-text">Pod 调度</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9A%E5%90%91%E8%B0%83%E5%BA%A6"><span class="toc-text">定向调度</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%B2%E5%92%8C%E6%80%A7%E8%B0%83%E5%BA%A6"><span class="toc-text">亲和性调度</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B1%A1%E7%82%B9%E4%B8%8E%E5%AE%B9%E5%BF%8D"><span class="toc-text">污点与容忍</span></a></li></ol></li></ol>
     </div>
 </aside>
                 
@@ -380,7 +508,7 @@
   <aside id="krw-tags" class="widget widget-kratos-tags clearfix">
     <h4 class="widget-title"><i class="fa fa-tags"></i>标签聚合</h4>
       <div class="tag-clouds">
-        <a href="/blog/tags/AI/" style="font-size: 0.8em;">AI</a> <a href="/blog/tags/CORS/" style="font-size: 0.8em;">CORS</a> <a href="/blog/tags/CSS/" style="font-size: 0.8em;">CSS</a> <a href="/blog/tags/Docker/" style="font-size: 0.8em;">Docker</a> <a href="/blog/tags/Dubbo/" style="font-size: 0.8em;">Dubbo</a> <a href="/blog/tags/ELK/" style="font-size: 0.8em;">ELK</a> <a href="/blog/tags/Elasticsearch/" style="font-size: 0.8em;">Elasticsearch</a> <a href="/blog/tags/Eureka/" style="font-size: 0.8em;">Eureka</a> <a href="/blog/tags/Feign/" style="font-size: 0.8em;">Feign</a> <a href="/blog/tags/Gateway/" style="font-size: 0.8em;">Gateway</a> <a href="/blog/tags/HTML/" style="font-size: 0.8em;">HTML</a> <a href="/blog/tags/Idea/" style="font-size: 0.8em;">Idea</a> <a href="/blog/tags/Java/" style="font-size: 0.8em;">Java</a> <a href="/blog/tags/JavaScript/" style="font-size: 0.8em;">JavaScript</a> <a href="/blog/tags/JavaWeb/" style="font-size: 0.8em;">JavaWeb</a> <a href="/blog/tags/K8s/" style="font-size: 0.8em;">K8s</a> <a href="/blog/tags/Linux/" style="font-size: 0.8em;">Linux</a> <a href="/blog/tags/Maven/" style="font-size: 0.8em;">Maven</a>
+        <a href="/blog/tags/AI/" style="font-size: 0.8em;">AI</a> <a href="/blog/tags/CORS/" style="font-size: 0.8em;">CORS</a> <a href="/blog/tags/CSS/" style="font-size: 0.8em;">CSS</a> <a href="/blog/tags/Docker/" style="font-size: 0.8em;">Docker</a> <a href="/blog/tags/Dubbo/" style="font-size: 0.8em;">Dubbo</a> <a href="/blog/tags/ELK/" style="font-size: 0.8em;">ELK</a> <a href="/blog/tags/Elasticsearch/" style="font-size: 0.8em;">Elasticsearch</a> <a href="/blog/tags/Eureka/" style="font-size: 0.8em;">Eureka</a> <a href="/blog/tags/Feign/" style="font-size: 0.8em;">Feign</a> <a href="/blog/tags/Gateway/" style="font-size: 0.8em;">Gateway</a> <a href="/blog/tags/HTML/" style="font-size: 0.8em;">HTML</a> <a href="/blog/tags/Idea/" style="font-size: 0.8em;">Idea</a> <a href="/blog/tags/Java/" style="font-size: 0.8em;">Java</a> <a href="/blog/tags/JavaScript/" style="font-size: 0.8em;">JavaScript</a> <a href="/blog/tags/JavaWeb/" style="font-size: 0.8em;">JavaWeb</a> <a href="/blog/tags/K8s/" style="font-size: 0.8em;">K8s</a> <a href="/blog/tags/Kafka/" style="font-size: 0.8em;">Kafka</a> <a href="/blog/tags/Linux/" style="font-size: 0.8em;">Linux</a>
       </div>
   </aside>
 
@@ -394,34 +522,48 @@
         
           
           
-            <a class="list-group-item" href="/blog/2026/08/19/03%E5%89%8D%E7%AB%AF/TypeScript/06.%E8%A3%85%E9%A5%B0%E5%99%A8%E8%BF%9B%E9%98%B6/"><i class="fa  fa-book"></i> 【TypeScript】装饰器进阶</a>
+            <a class="list-group-item" href="/blog/2026/08/31/02%E5%90%8E%E7%AB%AF/Kafka/01.Kafka%E5%9F%BA%E7%A1%80/"><i class="fa  fa-book"></i> 【Kafka】基础</a>
             
           
         
           
           
-            <a class="list-group-item" href="/blog/2026/08/19/03%E5%89%8D%E7%AB%AF/TypeScript/05.%E8%A3%85%E9%A5%B0%E5%99%A8%E5%9F%BA%E7%A1%80/"><i class="fa  fa-book"></i> 【TypeScript】装饰器基础</a>
+            <a class="list-group-item" href="/blog/2026/08/31/02%E5%90%8E%E7%AB%AF/Kafka/02.Kafka%E7%94%9F%E4%BA%A7%E8%80%85/"><i class="fa  fa-book"></i> 【Kafka】生产者</a>
             
           
         
           
           
-            <a class="list-group-item" href="/blog/2026/08/19/03%E5%89%8D%E7%AB%AF/TypeScript/04.%E6%B3%9B%E5%9E%8B/"><i class="fa  fa-book"></i> 【TypeScript】泛型</a>
+            <a class="list-group-item" href="/blog/2026/08/31/02%E5%90%8E%E7%AB%AF/Kafka/04.Kafka%E6%B6%88%E8%B4%B9%E8%80%85/"><i class="fa  fa-book"></i> 【Kafka】消费者</a>
             
           
         
           
           
-            <a class="list-group-item" href="/blog/2026/08/19/03%E5%89%8D%E7%AB%AF/TypeScript/03.%E7%B1%BB%E4%B8%8E%E6%8E%A5%E5%8F%A3/"><i class="fa  fa-book"></i> 【TypeScript】类与接口</a>
+            <a class="list-group-item" href="/blog/2026/08/31/02%E5%90%8E%E7%AB%AF/Kafka/03.KafkaBroker/"><i class="fa  fa-book"></i> 【Kafka】Broker</a>
             
           
         
           
           
-            <a class="list-group-item" href="/blog/2026/08/19/03%E5%89%8D%E7%AB%AF/TypeScript/02.%E5%B8%B8%E7%94%A8%E7%B1%BB%E5%9E%8B%EF%BC%88%E4%B8%8B%EF%BC%89/"><i class="fa  fa-book"></i> 【TypeScript】常用类型（下）</a>
+            <a class="list-group-item" href="/blog/2026/08/28/02%E5%90%8E%E7%AB%AF/K8s/Service%E4%B8%8EIngress/"><i class="fa  fa-book"></i> 【K8s】Service与Ingress</a>
             
           
         
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
           
             
           

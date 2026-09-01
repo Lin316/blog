@@ -1,0 +1,880 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+  <!-- 元数据 -->
+  <meta charset="utf-8">
+  <link rel="icon" href="/blog/images/logo.png">
+  
+  <title>【K8s】Pod控制器 | 溪岚花的博客</title>
+  
+  <meta name="author" content="林家隆" />
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="robots" content="index,follow" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <meta name="format-detection" content="telphone=no, email=no" />
+  
+    <meta name="keywords" content="K8s" />
+  
+  <meta name="description" content="Pod 控制器介绍按照 Pod 的创建方式，Pod 分为两类：  自主式 Pod：直接创建的 Pod，删除后不会重建。 控制器创建的 Pod：由控制器创建的 Pod，删除后会自动重建。  Pod 控制器是管理 Pod 的中间层，只需要告诉控制器需要多少个什么样的 Pod，控制器就会确保 Pod 处于期望的状态，Pod 出现故障时还会按策略重启或重建。 常见的 Pod 控制器：    控制器 作用">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【K8s】Pod控制器">
+<meta property="og:url" content="https://lin316.gitee.io/blog/2026/08/27/02%E5%90%8E%E7%AB%AF/K8s/Pod%E6%8E%A7%E5%88%B6%E5%99%A8/index.html">
+<meta property="og:site_name" content="溪岚花的博客">
+<meta property="og:description" content="Pod 控制器介绍按照 Pod 的创建方式，Pod 分为两类：  自主式 Pod：直接创建的 Pod，删除后不会重建。 控制器创建的 Pod：由控制器创建的 Pod，删除后会自动重建。  Pod 控制器是管理 Pod 的中间层，只需要告诉控制器需要多少个什么样的 Pod，控制器就会确保 Pod 处于期望的状态，Pod 出现故障时还会按策略重启或重建。 常见的 Pod 控制器：    控制器 作用">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://lin316.gitee.io/blog/blog/images/logo.png">
+<meta property="article:published_time" content="2026-08-27T13:00:00.000Z">
+<meta property="article:modified_time" content="2026-08-27T14:20:40.096Z">
+<meta property="article:author" content="林家隆">
+<meta property="article:tag" content="K8s">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://lin316.gitee.io/blog/blog/images/logo.png">
+  
+  <!-- 站点验证相关 -->
+  
+    
+    
+    
+  
+  <!-- 样式表文件 -->
+  <link rel="stylesheet" id="kratos-css" href="/blog/css/kratosr.min.css" media="all"></script>
+  
+    <link rel="stylesheet" id="darkmode-css" href="/blog/css/kr-color-dark.min.css" media="(prefers-color-scheme: dark)"></script>
+    <script src="/blog/js/kr-dark.min.js"></script>
+  
+  
+    <link rel="stylesheet" id="highlight-css" href="/blog/css/highlight/night-eighties.min.css" media="all"></script>
+  
+  <link rel="stylesheet" id="fontawe-css" href="/blog/vendors/font-awesome@4.7.0/css/font-awesome.min.css" media="all"></script>
+  <link rel="stylesheet" id="nprogress-css" href="/blog/vendors/nprogress@0.2.0/nprogress.css" media="all"></script>
+  
+  
+  
+    <link rel="stylesheet" href="/blog/vendors/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css"></script>
+  
+  <!-- 不得不预先加载的一些JS文件 -->
+  <script src="/blog/vendors/jquery@3.6.0/dist/jquery.min.js"></script>
+  
+  
+  <style>
+    
+    
+  </style>
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+    <body class="custom-background">
+        <div id="kratos-wrapper">
+    <div id="kratos-page">
+        <div id="kratos-header">
+            <header id="kratos-desktop-topnav" class="kratos-topnav">
+                <div class="container">
+                    <div class="nav-header">
+                        <nav id="kratos-menu-wrap">
+                            <ul id="kratos-primary-menu" class="sf-menu">
+                                
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/">
+                                            
+                                                
+                                                    <i class="fa fa-home"></i>
+                                                
+                                                首页
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/archives/">
+                                            
+                                                
+                                                    <i class="fa fa-file"></i>
+                                                
+                                                归档
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/tags/">
+                                            
+                                                
+                                                    <i class="fa fa-tag"></i>
+                                                
+                                                标签
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/categories/">
+                                            
+                                                
+                                                    <i class="fa fa-folder"></i>
+                                                
+                                                目录
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/search/">
+                                            
+                                                
+                                                    <i class="fa fa-search"></i>
+                                                
+                                                搜索
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </header>
+            <header id="kratos-mobile-topnav" class="kratos-topnav">
+                <div class="container">
+                    <div class="color-logo"><a href="/blog/">溪岚花的博客</a></div>
+                    <div class="nav-toggle">
+                        <a class="kratos-nav-toggle js-kratos-nav-toggle">
+                            <i></i>
+                        </a>
+                    </div>
+                </div>
+            </header>
+        </div>
+        <div class="kratos-start kratos-hero-2">
+            <!-- <div class="kratos-overlay"></div> -->
+            <div class="kratos-cover kratos-cover-2 text-center">
+                <div class="desc desc2 animate-box">
+                    <a href="/blog/">
+                        <h2 style="opacity: 0.2;">溪岚花的博客</h2> <br />
+                        <span></span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div id="kratos-blog-post">
+            <div class="container">
+                <div id="main" class="row">
+                    
+
+        
+
+            <section class="col-md-8">
+
+        
+
+            <article itemscope itemtype="https://schema.org/Article">
+    
+    <link itemprop="mainEntityOfPage" href="https://lin316.gitee.io/blog/2026/08/27/02%E5%90%8E%E7%AB%AF/K8s/Pod%E6%8E%A7%E5%88%B6%E5%99%A8/">
+    <div class="kratos-hentry kratos-post-inner clearfix">
+        <header class="kratos-entry-header">
+            
+                <h1 class="kratos-entry-title text-center" itemprop="name headline">【K8s】Pod控制器</h1>
+            
+            
+            <ul class="kratos-post-meta text-center">
+                <li><time datetime="2026-08-27T13:00:00.000Z" itemprop="datePublished"><i class="fa fa-calendar"></i> 2026-08-27</time></li>
+                <li itemprop="author" itemscope itemtype="https://schema.org/Person">
+                    <i class="fa fa-user"></i> 作者 <span itemprop="name">林家隆</span>
+                </li>
+                
+                    <li>
+                        <i class="fa fa-edit"></i> 
+                        
+                        
+                            11.14K
+                        
+                        字
+                    </li>
+                
+                
+            </ul>
+        </header>
+        <div class="kratos-post-content">
+            
+            <div id="expire-alert" class="alert alert-warning hidden" role="alert">
+                <div class="icon"><i class="fa fa-warning"></i></div>
+                <div class="text"><p>本文最后编辑于 <time datetime="1787840440096"></time> 前，其中的内容可能需要更新。</p></div>
+            </div>
+            
+            
+            
+                <div class="kratos-post-inner-toc toc-div-class" >
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Pod-%E6%8E%A7%E5%88%B6%E5%99%A8%E4%BB%8B%E7%BB%8D"><span class="toc-number">1.</span> <span class="toc-text">Pod 控制器介绍</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ReplicaSet%EF%BC%88RS%EF%BC%89"><span class="toc-number">2.</span> <span class="toc-text">ReplicaSet（RS）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4"><span class="toc-number">2.1.</span> <span class="toc-text">常用命令</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Deployment%EF%BC%88Deploy%EF%BC%89"><span class="toc-number">3.</span> <span class="toc-text">Deployment（Deploy）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9B%B4%E6%96%B0%E7%AD%96%E7%95%A5"><span class="toc-number">3.1.</span> <span class="toc-text">更新策略</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%89%88%E6%9C%AC%E5%9B%9E%E9%80%80"><span class="toc-number">3.2.</span> <span class="toc-text">版本回退</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4-1"><span class="toc-number">3.3.</span> <span class="toc-text">常用命令</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Horizontal-Pod-Autoscaler%EF%BC%88HPA%EF%BC%89"><span class="toc-number">4.</span> <span class="toc-text">Horizontal Pod Autoscaler（HPA）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E8%A3%85-metrics-server"><span class="toc-number">4.1.</span> <span class="toc-text">安装 metrics-server</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE-HPA"><span class="toc-number">4.2.</span> <span class="toc-text">配置 HPA</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4-2"><span class="toc-number">4.3.</span> <span class="toc-text">常用命令</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#DaemonSet%EF%BC%88DS%EF%BC%89"><span class="toc-number">5.</span> <span class="toc-text">DaemonSet（DS）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4-3"><span class="toc-number">5.1.</span> <span class="toc-text">常用命令</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Job"><span class="toc-number">6.</span> <span class="toc-text">Job</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4-4"><span class="toc-number">6.1.</span> <span class="toc-text">常用命令</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#CronJob%EF%BC%88CJ%EF%BC%89"><span class="toc-number">7.</span> <span class="toc-text">CronJob（CJ）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4-5"><span class="toc-number">7.1.</span> <span class="toc-text">常用命令</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">8.</span> <span class="toc-text">总结</span></a></li></ol>
+                </div>
+            
+            <hr />
+            <div itemprop="articleBody"><h2 id="Pod-控制器介绍"><a href="#Pod-控制器介绍" class="headerlink" title="Pod 控制器介绍"></a>Pod 控制器介绍</h2><p>按照 Pod 的创建方式，Pod 分为两类：</p>
+<ul>
+<li>自主式 Pod：直接创建的 Pod，删除后不会重建。</li>
+<li>控制器创建的 Pod：由控制器创建的 Pod，删除后会自动重建。</li>
+</ul>
+<p>Pod 控制器是管理 Pod 的中间层，只需要告诉控制器需要多少个什么样的 Pod，控制器就会确保 Pod 处于期望的状态，Pod 出现故障时还会按策略重启或重建。</p>
+<p>常见的 Pod 控制器：</p>
+<table>
+<thead>
+<tr>
+<th>控制器</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>ReplicaSet</td>
+<td>保证副本数量维持在期望值，支持扩缩容和镜像升级</td>
+</tr>
+<tr>
+<td>Deployment</td>
+<td>通过管理 ReplicaSet 管理 Pod，支持滚动升级、版本回退</td>
+</tr>
+<tr>
+<td>HPA</td>
+<td>根据负载自动调整副本数量，实现削峰填谷</td>
+</tr>
+<tr>
+<td>DaemonSet</td>
+<td>在指定的每个节点上运行且仅运行一个副本</td>
+</tr>
+<tr>
+<td>Job</td>
+<td>执行一次性任务，任务完成即退出</td>
+</tr>
+<tr>
+<td>CronJob</td>
+<td>定时执行 Job，用于周期性任务</td>
+</tr>
+<tr>
+<td>StatefulSet</td>
+<td>管理有状态应用</td>
+</tr>
+</tbody></table>
+<p>其中 ReplicationController 是早期的控制器，已被 ReplicaSet 替代。</p>
+<h2 id="ReplicaSet（RS）"><a href="#ReplicaSet（RS）" class="headerlink" title="ReplicaSet（RS）"></a>ReplicaSet（RS）</h2><p>ReplicaSet 的主要作用是保证一定数量的 Pod 正常运行，它会持续监听 Pod 的状态，一旦 Pod 故障就重启或重建，同时支持扩缩容和镜像升级。</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">apps/v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">ReplicaSet</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">pc-replicaset</span></span><br><span class="line">  <span class="attr">namespace:</span> <span class="string">dev</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">replicas:</span> <span class="number">3</span>               <span class="comment"># 副本数量，默认 1</span></span><br><span class="line">  <span class="attr">selector:</span>                 <span class="comment"># 选择器，建立控制器和 Pod 的关联</span></span><br><span class="line">    <span class="attr">matchLabels:</span>            <span class="comment"># 标签匹配</span></span><br><span class="line">      <span class="attr">app:</span> <span class="string">nginx-pod</span></span><br><span class="line">    <span class="attr">matchExpressions:</span>       <span class="comment"># 表达式匹配</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">key:</span> <span class="string">app</span></span><br><span class="line">      <span class="attr">operator:</span> <span class="string">In</span></span><br><span class="line">      <span class="attr">values:</span> [<span class="string">&quot;nginx-pod&quot;</span>]</span><br><span class="line">  <span class="attr">template:</span>                 <span class="comment"># Pod 模板，副本不足时按模板创建</span></span><br><span class="line">    <span class="attr">metadata:</span></span><br><span class="line">      <span class="attr">labels:</span></span><br><span class="line">        <span class="attr">app:</span> <span class="string">nginx-pod</span></span><br><span class="line">    <span class="attr">spec:</span></span><br><span class="line">      <span class="attr">containers:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">nginx</span></span><br><span class="line">        <span class="attr">image:</span> <span class="string">nginx:1.17.1</span></span><br></pre></td></tr></table></figure>
+
+<p>selector 用来关联控制器管理的 Pod，支持 matchLabels（标签匹配）和 matchExpressions（表达式匹配），可以同时配置，所有规则都满足时才匹配；matchExpressions 的 operator 支持 In、NotIn、Exists、DoesNotExist。</p>
+<h3 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">kubectl create -f pc-replicaset.yaml                                  # 创建 rs</span><br><span class="line">kubectl get rs pc-replicaset -n dev -o wide                           # 查看 rs</span><br><span class="line">kubectl scale rs pc-replicaset --replicas=2 -n dev                    # 扩缩容</span><br><span class="line">kubectl set image rs pc-replicaset nginx=nginx:1.17.2 -n dev          # 升级镜像</span><br><span class="line">kubectl delete rs pc-replicaset -n dev                                # 删除 rs</span><br></pre></td></tr></table></figure>
+
+<p>说明：</p>
+<ul>
+<li>控制器创建的 Pod 名称是「控制器名 + 随机码」，如 pc-replicaset-6vmvt。</li>
+<li>删除 RS 时，会先把副本数调整为 0，等 Pod 全部删除后再删除 RS 对象；加上 <code>--cascade=false</code> 可以只删控制器保留 Pod，但不推荐。</li>
+<li>RS 升级镜像会重建全部 Pod，不能滚动升级，所以生产环境一般使用功能更强大的 Deployment。</li>
+</ul>
+<h2 id="Deployment（Deploy）"><a href="#Deployment（Deploy）" class="headerlink" title="Deployment（Deploy）"></a>Deployment（Deploy）</h2><p>Deployment 不直接管理 Pod，而是通过管理 ReplicaSet 间接管理 Pod，即 Deployment → ReplicaSet → Pod。它在 ReplicaSet 的基础上增加了滚动升级、版本回退、发布暂停&#x2F;继续等功能，是生产环境最常用的控制器。</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">apps/v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Deployment</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">pc-deployment</span></span><br><span class="line">  <span class="attr">namespace:</span> <span class="string">dev</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">replicas:</span> <span class="number">3</span></span><br><span class="line">  <span class="attr">selector:</span></span><br><span class="line">    <span class="attr">matchLabels:</span></span><br><span class="line">      <span class="attr">app:</span> <span class="string">nginx-pod</span></span><br><span class="line">    <span class="attr">matchExpressions:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">key:</span> <span class="string">app</span></span><br><span class="line">      <span class="attr">operator:</span> <span class="string">In</span></span><br><span class="line">      <span class="attr">values:</span> [<span class="string">&quot;nginx-pod&quot;</span>]</span><br><span class="line">  <span class="attr">template:</span></span><br><span class="line">    <span class="attr">metadata:</span></span><br><span class="line">      <span class="attr">labels:</span></span><br><span class="line">        <span class="attr">app:</span> <span class="string">nginx-pod</span></span><br><span class="line">    <span class="attr">spec:</span></span><br><span class="line">      <span class="attr">containers:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">nginx</span></span><br><span class="line">        <span class="attr">image:</span> <span class="string">nginx:1.17.1</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="更新策略"><a href="#更新策略" class="headerlink" title="更新策略"></a>更新策略</h3><p>Deployment 支持两种更新策略，通过 <code>spec.strategy.type</code> 指定：</p>
+<ul>
+<li>Recreate（重建更新）：先杀掉所有旧 Pod，再创建新 Pod，更新期间服务中断。</li>
+<li>RollingUpdate（滚动更新，默认）：边销毁边创建，更新过程中新旧版本 Pod 共存。</li>
+</ul>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">strategy:</span>                   <span class="comment"># 更新策略</span></span><br><span class="line">    <span class="attr">type:</span> <span class="string">RollingUpdate</span>       <span class="comment"># 滚动更新</span></span><br><span class="line">    <span class="attr">rollingUpdate:</span></span><br><span class="line">      <span class="attr">maxSurge:</span> <span class="number">25</span><span class="string">%</span>           <span class="comment"># 更新中最多可超过期望副本数的比例</span></span><br><span class="line">      <span class="attr">maxUnavailable:</span> <span class="number">25</span><span class="string">%</span>     <span class="comment"># 更新中最多允许不可用副本数的比例</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="版本回退"><a href="#版本回退" class="headerlink" title="版本回退"></a>版本回退</h3><p>版本回退的原理：每次升级镜像，Deployment 都会生成一个新的 ReplicaSet，并把旧的 ReplicaSet 保留下来（副本数降为 0），同时记录一个版本号。回滚时只需要把当前版本副本数降为 0、把目标版本副本数提升到期望数量即可，所以回滚很快。</p>
+<p>示例：把 pc-deployment 从 nginx:1.17.1 依次升级到 1.17.2、1.17.3，再回滚到第一版。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">1. 依次升级镜像，共产生 3 个版本记录</span></span><br><span class="line">kubectl set image deploy pc-deployment nginx=nginx:1.17.2 -n dev</span><br><span class="line">kubectl set image deploy pc-deployment nginx=nginx:1.17.3 -n dev</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">2. 查看升级历史</span></span><br><span class="line">kubectl rollout history deploy pc-deployment -n dev</span><br><span class="line">deployment.apps/pc-deployment</span><br><span class="line">REVISION  CHANGE-CAUSE</span><br><span class="line">1         &lt;none&gt;</span><br><span class="line">2         &lt;none&gt;</span><br><span class="line">3         &lt;none&gt;</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">3. 回滚到指定版本（第一版）</span></span><br><span class="line">kubectl rollout undo deploy pc-deployment --to-revision=1 -n dev</span><br><span class="line">deployment.apps/pc-deployment rolled back</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">4. 验证：镜像已经回到第一版</span></span><br><span class="line">kubectl get deploy pc-deployment -n dev -o wide</span><br><span class="line">NAME            READY   UP-TO-DATE   AVAILABLE   AGE   CONTAINERS   IMAGES</span><br><span class="line">pc-deployment   3/3     3            3           12m   nginx        nginx:1.17.1</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">5. 查看 rs：第一版的 RS 中运行着 3 个副本，其他版本的 RS 副本为 0</span></span><br><span class="line">kubectl get rs -n dev</span><br><span class="line">NAME                       DESIRED   CURRENT   READY   AGE</span><br><span class="line">pc-deployment-6696798b78   3         3         3       12m</span><br><span class="line">pc-deployment-675d469f8b   0         0         0       8m</span><br><span class="line">pc-deployment-c848d76789   0         0         0       4m</span><br></pre></td></tr></table></figure>
+
+<p>说明：</p>
+<ul>
+<li>省略 <code>--to-revision</code> 时，<code>kubectl rollout undo</code> 默认回退到上一个版本。</li>
+<li>保留的历史版本数量由 <code>revisionHistoryLimit</code> 控制，默认 10，超过后最旧的版本记录会被清理，将无法再回滚到该版本。</li>
+</ul>
+<h3 id="常用命令-1"><a href="#常用命令-1" class="headerlink" title="常用命令"></a>常用命令</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">kubectl create -f pc-deployment.yaml                                       # 创建 deploy</span><br><span class="line">kubectl get deploy pc-deployment -n dev -o wide                            # 查看 deploy</span><br><span class="line">kubectl scale deploy pc-deployment --replicas=5 -n dev                     # 扩缩容</span><br><span class="line">kubectl set image deploy pc-deployment nginx=nginx:1.17.2 -n dev           # 升级镜像</span><br><span class="line">kubectl rollout status deploy pc-deployment -n dev                         # 查看升级状态</span><br><span class="line">kubectl rollout history deploy pc-deployment -n dev                        # 查看升级历史</span><br><span class="line">kubectl rollout undo deploy pc-deployment --to-revision=1 -n dev           # 回滚到指定版本</span><br><span class="line">kubectl rollout pause deploy pc-deployment -n dev                          # 暂停发布</span><br><span class="line">kubectl rollout resume deploy pc-deployment -n dev                         # 继续发布</span><br><span class="line">kubectl delete -f pc-deployment.yaml                                       # 删除 deploy</span><br></pre></td></tr></table></figure>
+
+<p>说明：</p>
+<ul>
+<li>金丝雀发布：更新后先执行 <code>rollout pause</code> 暂停，此时只有部分 Pod 是新版本，验证没问题后再执行 <code>rollout resume</code> 继续，有问题直接回滚。</li>
+</ul>
+<h2 id="Horizontal-Pod-Autoscaler（HPA）"><a href="#Horizontal-Pod-Autoscaler（HPA）" class="headerlink" title="Horizontal Pod Autoscaler（HPA）"></a>Horizontal Pod Autoscaler（HPA）</h2><p>HPA 会监控 Pod 的资源使用率（如 CPU），和设定的指标对比，自动调整副本数量，实现削峰填谷。使用前需要先安装 metrics-server 提供资源指标，并给 Pod 配置 resources.requests。</p>
+<h3 id="安装-metrics-server"><a href="#安装-metrics-server" class="headerlink" title="安装 metrics-server"></a>安装 metrics-server</h3><p>metrics-server 用来收集集群中节点和 Pod 的资源使用情况，kubectl top 和 HPA 都依赖它提供指标。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">yum install git -y</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">1. 获取 metrics-server 源码（课程环境使用 v0.3.6 版本）</span></span><br><span class="line">git clone -b v0.3.6 https://github.com/kubernetes-incubator/metrics-server</span><br><span class="line">cd metrics-server/deploy/1.8+/</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">2. 修改 metrics-server-deployment.yaml，添加/修改下面配置</span></span><br><span class="line">vim metrics-server-deployment.yaml</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># metrics-server-deployment.yaml 中需要添加/修改的内容</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">template:</span></span><br><span class="line">    <span class="attr">spec:</span></span><br><span class="line">      <span class="attr">hostNetwork:</span> <span class="literal">true</span>                                <span class="comment"># 使用宿主机网络</span></span><br><span class="line">      <span class="attr">containers:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">metrics-server</span></span><br><span class="line">        <span class="attr">image:</span> <span class="string">registry.cn-hangzhou.aliyuncs.com/google_containers/metrics-server-amd64:v0.3.6</span>   <span class="comment"># 国内镜像</span></span><br><span class="line">        <span class="attr">args:</span></span><br><span class="line">        <span class="bullet">-</span> <span class="string">--kubelet-insecure-tls</span>                       <span class="comment"># 跳过 kubelet 证书校验</span></span><br><span class="line">        <span class="bullet">-</span> <span class="string">--kubelet-preferred-address-types=InternalIP,Hostname,InternalDNS,ExternalDNS,ExternalIP</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">3. 创建 metrics-server</span></span><br><span class="line">kubectl apply -f ./</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">4. 查看运行状态</span></span><br><span class="line">kubectl get pod -n kube-system</span><br><span class="line">NAME                              READY   STATUS    RESTARTS   AGE</span><br><span class="line">metrics-server-6b976979db-2xwbj   1/1     Running   0          90s</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">5. 验证：查看节点和 Pod 的资源使用情况</span></span><br><span class="line">kubectl top node</span><br><span class="line">NAME     CPU(cores)   CPU%   MEMORY(bytes)   MEMORY%</span><br><span class="line">master   98m          4%     1067Mi          62%</span><br><span class="line">node1    27m          1%     727Mi           42%</span><br><span class="line"></span><br><span class="line">kubectl top pod -n kube-system</span><br><span class="line">NAME                              CPU(cores)   MEMORY(bytes)</span><br><span class="line">coredns-6955765f44-7ptsb          3m           9Mi</span><br></pre></td></tr></table></figure>
+
+<p>说明：metrics-server 安装完成后，<code>kubectl top</code> 才能查到资源使用情况。较新版本的 metrics-server（v0.4+）可以直接用官方 components.yaml 一键安装，不需要修改上面的参数。</p>
+<h3 id="配置-HPA"><a href="#配置-HPA" class="headerlink" title="配置 HPA"></a>配置 HPA</h3><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">autoscaling/v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">HorizontalPodAutoscaler</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">pc-hpa</span></span><br><span class="line">  <span class="attr">namespace:</span> <span class="string">dev</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">minReplicas:</span> <span class="number">1</span>                      <span class="comment"># 最小副本数</span></span><br><span class="line">  <span class="attr">maxReplicas:</span> <span class="number">10</span>                     <span class="comment"># 最大副本数</span></span><br><span class="line">  <span class="attr">targetCPUUtilizationPercentage:</span> <span class="number">50</span>  <span class="comment"># CPU 使用率目标，超过则扩容</span></span><br><span class="line">  <span class="attr">scaleTargetRef:</span>                     <span class="comment"># 指定控制的目标</span></span><br><span class="line">    <span class="attr">apiVersion:</span> <span class="string">apps/v1</span></span><br><span class="line">    <span class="attr">kind:</span> <span class="string">Deployment</span></span><br><span class="line">    <span class="attr">name:</span> <span class="string">nginx</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="常用命令-2"><a href="#常用命令-2" class="headerlink" title="常用命令"></a>常用命令</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">kubectl top node            # 查看节点资源使用情况</span><br><span class="line">kubectl top pod -n dev      # 查看 Pod 资源使用情况</span><br><span class="line">kubectl get hpa -n dev -w   # 监听 HPA 的变化</span><br></pre></td></tr></table></figure>
+
+<p>说明：压测时可以看到副本数量随 CPU 使用率自动变化，例如 CPU 超过目标后副本从 1 增加到 4、8，压力下降后自动缩回，无需手工执行 scale。</p>
+<h2 id="DaemonSet（DS）"><a href="#DaemonSet（DS）" class="headerlink" title="DaemonSet（DS）"></a>DaemonSet（DS）</h2><p>DaemonSet 保证在集群中的每个（或指定）节点上运行且仅运行一个副本：新增节点会自动部署 Pod，节点移除时 Pod 会被回收。适合日志收集、节点监控等节点级别的功能。</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">apps/v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">DaemonSet</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">pc-daemonset</span></span><br><span class="line">  <span class="attr">namespace:</span> <span class="string">dev</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">selector:</span></span><br><span class="line">    <span class="attr">matchLabels:</span></span><br><span class="line">      <span class="attr">app:</span> <span class="string">nginx-pod</span></span><br><span class="line">    <span class="attr">matchExpressions:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">key:</span> <span class="string">app</span></span><br><span class="line">      <span class="attr">operator:</span> <span class="string">In</span></span><br><span class="line">      <span class="attr">values:</span> [<span class="string">&quot;nginx-pod&quot;</span>]</span><br><span class="line">  <span class="attr">template:</span></span><br><span class="line">    <span class="attr">metadata:</span></span><br><span class="line">      <span class="attr">labels:</span></span><br><span class="line">        <span class="attr">app:</span> <span class="string">nginx-pod</span></span><br><span class="line">    <span class="attr">spec:</span></span><br><span class="line">      <span class="attr">containers:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">nginx</span></span><br><span class="line">        <span class="attr">image:</span> <span class="string">nginx:1.17.1</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="常用命令-3"><a href="#常用命令-3" class="headerlink" title="常用命令"></a>常用命令</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">kubectl create -f pc-daemonset.yaml        # 创建 daemonset</span><br><span class="line">kubectl get ds -n dev -o wide              # 查看 daemonset</span><br><span class="line">kubectl get pods -n dev -o wide            # 每个节点上都有一个 Pod</span><br><span class="line">kubectl delete -f pc-daemonset.yaml        # 删除 daemonset</span><br></pre></td></tr></table></figure>
+
+<p>说明：DaemonSet 不需要配置 replicas，副本数量由节点数量决定。</p>
+<h2 id="Job"><a href="#Job" class="headerlink" title="Job"></a>Job</h2><p>Job 用于执行一次性任务，Pod 运行完任务后会变成 Completed 状态，不会重启，适合批量处理、数据迁移等场景。</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">batch/v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Job</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">pc-job</span></span><br><span class="line">  <span class="attr">namespace:</span> <span class="string">dev</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">completions:</span> <span class="number">6</span>                <span class="comment"># 总共需要成功运行的次数</span></span><br><span class="line">  <span class="attr">parallelism:</span> <span class="number">3</span>                <span class="comment"># 同时并发运行的 Pod 数量</span></span><br><span class="line">  <span class="attr">activeDeadlineSeconds:</span> <span class="number">30</span>     <span class="comment"># 指定 job 可运行的时间期限，超过时间还未结束，系统将会尝试进行终止</span></span><br><span class="line">  <span class="attr">backoffLimit:</span> <span class="number">6</span>               <span class="comment"># 指定 job 失败后进行重试的次数，默认是 6</span></span><br><span class="line">  <span class="attr">manualSelector:</span> <span class="literal">true</span>          <span class="comment"># 是否可以使用 selector 选择器选择 pod，默认是 false</span></span><br><span class="line">  <span class="attr">selector:</span>                     <span class="comment"># 选择器，指定该 job 管理哪些 pod</span></span><br><span class="line">    <span class="attr">matchLabels:</span></span><br><span class="line">      <span class="attr">app:</span> <span class="string">counter-pod</span></span><br><span class="line">    <span class="attr">matchExpressions:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">key:</span> <span class="string">app</span></span><br><span class="line">      <span class="attr">operator:</span> <span class="string">In</span></span><br><span class="line">      <span class="attr">values:</span> [<span class="string">&quot;counter-pod&quot;</span>]</span><br><span class="line">  <span class="attr">template:</span></span><br><span class="line">    <span class="attr">metadata:</span></span><br><span class="line">      <span class="attr">labels:</span></span><br><span class="line">        <span class="attr">app:</span> <span class="string">counter-pod</span></span><br><span class="line">    <span class="attr">spec:</span></span><br><span class="line">      <span class="attr">restartPolicy:</span> <span class="string">Never</span>      <span class="comment"># Job 的 Pod 重启策略只能是 Never 或 OnFailure</span></span><br><span class="line">      <span class="attr">containers:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">counter</span></span><br><span class="line">        <span class="attr">image:</span> <span class="string">busybox:1.30</span></span><br><span class="line">        <span class="attr">command:</span> [<span class="string">&quot;sh&quot;</span>, <span class="string">&quot;-c&quot;</span>, <span class="string">&quot;for i in 9 8 7 6 5 4 3 2 1; do echo $i; sleep 2; done&quot;</span>]</span><br></pre></td></tr></table></figure>
+
+<h3 id="常用命令-4"><a href="#常用命令-4" class="headerlink" title="常用命令"></a>常用命令</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">kubectl create -f pc-job.yaml        # 创建 job</span><br><span class="line">kubectl get job pc-job -n dev -w     # 查看 job</span><br><span class="line">kubectl get pods -n dev -w           # 任务执行完后 Pod 变为 Completed</span><br><span class="line">kubectl delete -f pc-job.yaml        # 删除 job</span><br></pre></td></tr></table></figure>
+
+<p>说明：</p>
+<ul>
+<li>重启策略不能设置为 Always。设置为 Never 时，Pod 失败会创建新 Pod；设置为 OnFailure 时，Pod 失败会重启容器。</li>
+<li>completions 指定成功运行的次数，parallelism 指定并发数量，例如上面配置表示每次并发运行 3 个 Pod，总共成功 6 次。</li>
+<li>activeDeadlineSeconds 限制任务的总运行时长，超过期限未结束会被终止；backoffLimit 限制失败后的重试次数，超过后 Job 标记为失败；manualSelector 设置为 true 时可以手动指定 selector，并需要与 Pod 模板的标签匹配。</li>
+</ul>
+<h2 id="CronJob（CJ）"><a href="#CronJob（CJ）" class="headerlink" title="CronJob（CJ）"></a>CronJob（CJ）</h2><p>CronJob 以 Job 为管控对象，按 cron 表达式定时执行 Job，适合定时备份、定时清理等周期性任务。</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">batch/v1beta1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">CronJob</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">pc-cronjob</span></span><br><span class="line">  <span class="attr">namespace:</span> <span class="string">dev</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">schedule:</span> <span class="string">&quot;*/1 * * * *&quot;</span>    <span class="comment"># cron 表达式，这里表示每分钟执行一次</span></span><br><span class="line">  <span class="attr">concurrencyPolicy:</span> <span class="string">Allow</span>   <span class="comment"># 并发执行策略，用于定义前一次作业运行尚未完成时是否以及如何运行后一次的作业</span></span><br><span class="line">  <span class="attr">failedJobHistoryLimit:</span> <span class="number">1</span>   <span class="comment"># 为失败的任务执行保留的历史记录数，默认为 1</span></span><br><span class="line">  <span class="attr">successfulJobHistoryLimit:</span> <span class="number">3</span>   <span class="comment"># 为成功的任务执行保留的历史记录数，默认为 3</span></span><br><span class="line">  <span class="attr">startingDeadlineSeconds:</span> <span class="number">30</span>    <span class="comment"># 启动作业错误的超时时长（秒）</span></span><br><span class="line">  <span class="attr">jobTemplate:</span>               <span class="comment"># Job 模板，生成 Job 对象</span></span><br><span class="line">    <span class="attr">spec:</span></span><br><span class="line">      <span class="attr">template:</span></span><br><span class="line">        <span class="attr">spec:</span></span><br><span class="line">          <span class="attr">restartPolicy:</span> <span class="string">Never</span></span><br><span class="line">          <span class="attr">containers:</span></span><br><span class="line">          <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">counter</span></span><br><span class="line">            <span class="attr">image:</span> <span class="string">busybox:1.30</span></span><br><span class="line">            <span class="attr">command:</span> [<span class="string">&quot;sh&quot;</span>, <span class="string">&quot;-c&quot;</span>, <span class="string">&quot;for i in 9 8 7 6 5 4 3 2 1; do echo $i; sleep 3; done&quot;</span>]</span><br></pre></td></tr></table></figure>
+
+<p>cron 表达式格式为 <code>分钟 小时 日 月 星期</code>；concurrencyPolicy 有三种取值：</p>
+<ul>
+<li>Allow：允许 Job 并发运行（默认）。</li>
+<li>Forbid：上一次运行还没完成时，跳过下一次运行。</li>
+<li>Replace：取消当前正在运行的 Job，用新 Job 替换。</li>
+</ul>
+<h3 id="常用命令-5"><a href="#常用命令-5" class="headerlink" title="常用命令"></a>常用命令</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">kubectl create -f pc-cronjob.yaml          # 创建 cronjob</span><br><span class="line">kubectl get cronjob -n dev                 # 查看 cronjob</span><br><span class="line">kubectl get jobs -n dev                    # 每个执行周期都会生成一个 Job</span><br><span class="line">kubectl get pods -n dev                    # Job 下的 Pod 执行完变为 Completed</span><br><span class="line">kubectl delete -f pc-cronjob.yaml          # 删除 cronjob</span><br></pre></td></tr></table></figure>
+
+<p>说明：</p>
+<ul>
+<li>低版本集群使用 batch&#x2F;v1beta1，v1.21 以上版本可以直接使用 batch&#x2F;v1。</li>
+<li>failedJobHistoryLimit &#x2F; successfulJobHistoryLimit 控制保留的失败&#x2F;成功历史记录数（默认 1 &#x2F; 3）；startingDeadlineSeconds 表示任务超过该时间仍未能启动时，放弃本次调度执行。</li>
+</ul>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><table>
+<thead>
+<tr>
+<th>控制器</th>
+<th>作用</th>
+<th>适用场景</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>ReplicaSet</td>
+<td>保证副本数量，支持扩缩容和镜像升级</td>
+<td>简单的副本管理</td>
+</tr>
+<tr>
+<td>Deployment</td>
+<td>管理 ReplicaSet，支持滚动升级、版本回退</td>
+<td>无状态应用（最常用）</td>
+</tr>
+<tr>
+<td>HPA</td>
+<td>根据负载自动扩缩容</td>
+<td>流量波动大的应用</td>
+</tr>
+<tr>
+<td>DaemonSet</td>
+<td>每个节点运行一个副本</td>
+<td>日志收集、节点监控</td>
+</tr>
+<tr>
+<td>Job</td>
+<td>一次性任务</td>
+<td>批量处理、数据迁移</td>
+</tr>
+<tr>
+<td>CronJob</td>
+<td>定时执行 Job</td>
+<td>定时备份、定时清理</td>
+</tr>
+</tbody></table>
+</div>
+        </div>
+        
+        <footer class="kratos-entry-footer clearfix">
+            
+            <div class="footer-tag clearfix">
+                <div class="pull-left">
+                <i class="fa fa-tags"></i>
+                    <a class="tag-none-link" href="/blog/tags/K8s/" rel="tag">K8s</a>
+                </div>
+                <div class="pull-date">
+                    <time datetime="2026-08-27T14:20:40.096Z" itemprop="dateModified">最后编辑：2026-08-27</time>
+                </div>
+            </div>
+        </footer>
+    </div>
+    
+        <nav class="navigation post-navigation clearfix" role="navigation">
+            
+            <div class="nav-previous clearfix">
+                <a title=" 【TypeScript】装饰器进阶" href="/blog/2026/08/19/03前端/TypeScript/06.装饰器进阶/">&lt; 上一篇</a>
+            </div>
+            
+            
+            <div class="nav-next clearfix">
+                <a title=" 【K8s】数据存储与安全认证" href="/blog/2026/08/28/02后端/K8s/数据存储与安全认证/">下一篇 &gt;</a>
+            </div>
+            
+        </nav>
+    
+    
+</article>
+
+        
+
+            </section>
+
+        
+
+                
+            
+
+<section id="kratos-widget-area" class="col-md-4 hidden-xs hidden-sm">
+    <!-- 文章和页面根据splitter来分割，没有的话就从头开始设置为sticky -->
+    
+    
+                <aside id="krw-about" class="widget widget-kratos-about clearfix">
+    <div class="photo-background"></div>
+    <div class="photo-wrapper clearfix">
+        <div class="photo-wrapper-tip text-center">
+            <img class="about-photo" src="/blog/images/avatar.webp" loading="lazy" decoding="auto" />
+        </div>
+    </div>
+    <div class="textwidget">
+        <p class="text-center">极简主义</p>
+    </div>
+    <div class="site-meta">
+        <a class="meta-item" href="/blog/archives/">
+            <span class="title">
+                文章
+            </span>
+            <span class="count">
+                128
+            </span>
+        </a>
+        <a class="meta-item" href="/blog/categories/">
+            <span class="title">
+                分类
+            </span>
+            <span class="count">
+                16
+            </span>
+        </a>
+        <a class="meta-item" href="/blog/tags/">
+            <span class="title">
+                标签
+            </span>
+            <span class="count">
+                41
+            </span>
+        </a>
+    </div>
+</aside>
+            
+                    <div class="sticky-area">
+                
+                    <aside id="krw-toc" class="widget widget-kratos-toc clearfix toc-div-class" >
+    <div class="photo-background"></div>
+    <h4 class="widget-title no-after">
+        <i class="fa fa-compass"></i>
+        文章目录
+        <span class="toc-progress-bar" role="progressbar" aria-label="阅读进度："></span>
+    </h4>
+    <div class="textwidget">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Pod-%E6%8E%A7%E5%88%B6%E5%99%A8%E4%BB%8B%E7%BB%8D"><span class="toc-text">Pod 控制器介绍</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ReplicaSet%EF%BC%88RS%EF%BC%89"><span class="toc-text">ReplicaSet（RS）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4"><span class="toc-text">常用命令</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Deployment%EF%BC%88Deploy%EF%BC%89"><span class="toc-text">Deployment（Deploy）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9B%B4%E6%96%B0%E7%AD%96%E7%95%A5"><span class="toc-text">更新策略</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%89%88%E6%9C%AC%E5%9B%9E%E9%80%80"><span class="toc-text">版本回退</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4-1"><span class="toc-text">常用命令</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Horizontal-Pod-Autoscaler%EF%BC%88HPA%EF%BC%89"><span class="toc-text">Horizontal Pod Autoscaler（HPA）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E8%A3%85-metrics-server"><span class="toc-text">安装 metrics-server</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE-HPA"><span class="toc-text">配置 HPA</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4-2"><span class="toc-text">常用命令</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#DaemonSet%EF%BC%88DS%EF%BC%89"><span class="toc-text">DaemonSet（DS）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4-3"><span class="toc-text">常用命令</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Job"><span class="toc-text">Job</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4-4"><span class="toc-text">常用命令</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#CronJob%EF%BC%88CJ%EF%BC%89"><span class="toc-text">CronJob（CJ）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4-5"><span class="toc-text">常用命令</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-text">总结</span></a></li></ol>
+    </div>
+</aside>
+                
+                
+  <aside id="krw-tags" class="widget widget-kratos-tags clearfix">
+    <h4 class="widget-title"><i class="fa fa-tags"></i>标签聚合</h4>
+      <div class="tag-clouds">
+        <a href="/blog/tags/AI/" style="font-size: 0.8em;">AI</a> <a href="/blog/tags/CORS/" style="font-size: 0.8em;">CORS</a> <a href="/blog/tags/CSS/" style="font-size: 0.8em;">CSS</a> <a href="/blog/tags/Docker/" style="font-size: 0.8em;">Docker</a> <a href="/blog/tags/Dubbo/" style="font-size: 0.8em;">Dubbo</a> <a href="/blog/tags/ELK/" style="font-size: 0.8em;">ELK</a> <a href="/blog/tags/Elasticsearch/" style="font-size: 0.8em;">Elasticsearch</a> <a href="/blog/tags/Eureka/" style="font-size: 0.8em;">Eureka</a> <a href="/blog/tags/Feign/" style="font-size: 0.8em;">Feign</a> <a href="/blog/tags/Gateway/" style="font-size: 0.8em;">Gateway</a> <a href="/blog/tags/HTML/" style="font-size: 0.8em;">HTML</a> <a href="/blog/tags/Idea/" style="font-size: 0.8em;">Idea</a> <a href="/blog/tags/Java/" style="font-size: 0.8em;">Java</a> <a href="/blog/tags/JavaScript/" style="font-size: 0.8em;">JavaScript</a> <a href="/blog/tags/JavaWeb/" style="font-size: 0.8em;">JavaWeb</a> <a href="/blog/tags/K8s/" style="font-size: 0.8em;">K8s</a> <a href="/blog/tags/Kafka/" style="font-size: 0.8em;">Kafka</a> <a href="/blog/tags/Linux/" style="font-size: 0.8em;">Linux</a>
+      </div>
+  </aside>
+
+            
+                
+  <aside id="krw-posts" class="widget widget-kratos-posts">
+  <h4 class="widget-title"><i class="fa fa-file"></i>最新文章</h4>
+  <div class="tab-content">
+      <ul class="list-group">
+        
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/08/31/02%E5%90%8E%E7%AB%AF/Kafka/01.Kafka%E5%9F%BA%E7%A1%80/"><i class="fa  fa-book"></i> 【Kafka】基础</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/08/31/02%E5%90%8E%E7%AB%AF/Kafka/02.Kafka%E7%94%9F%E4%BA%A7%E8%80%85/"><i class="fa  fa-book"></i> 【Kafka】生产者</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/08/31/02%E5%90%8E%E7%AB%AF/Kafka/04.Kafka%E6%B6%88%E8%B4%B9%E8%80%85/"><i class="fa  fa-book"></i> 【Kafka】消费者</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/08/31/02%E5%90%8E%E7%AB%AF/Kafka/03.KafkaBroker/"><i class="fa  fa-book"></i> 【Kafka】Broker</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/08/28/02%E5%90%8E%E7%AB%AF/K8s/Service%E4%B8%8EIngress/"><i class="fa  fa-book"></i> 【K8s】Service与Ingress</a>
+            
+          
+        
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+      </ul>
+  </div>
+  </aside>
+
+            
+    </div>
+</section>
+        
+        </div>
+    </div>
+</div>
+<footer>
+    <div id="footer"  >
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3 footer-list text-center">
+                    <ul class="kratos-social-icons">
+                        <!-- Keep for compatibility -->
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <!-- New links -->
+                        
+                    </ul>
+                    <ul class="kratos-copyright">
+                        <div>
+                            <li>&copy; 2026 溪岚花的博客 版权所有.</li>
+                            <li>本站已运行<span id="span_dt">Loading...</span></li>
+                        </div>
+                        <div>
+                            <li>Theme <a href="https://github.com/Candinya/Kratos-Rebirth" target="_blank">Kratos:Rebirth</a></li>
+                            <li>Site built with&nbsp;<i class="fa fa-heart throb" style="color:#d43f57"></i>&nbsp;by 林家隆.</li>
+                        </div>
+                        <div>
+                            <li>Powered by <a href="https://hexo.io" target="_blank" rel="nofollow">Hexo</a></li>
+                            <li>Hosted on <a href="https://gitee.com/" target="_blank">Gitee Pages</a></li>
+                        </div>
+                        <div>
+                            
+                            
+                        </div>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="kr-tool text-center">
+            <div class="tool">
+                
+                    <div class="box search-box">
+                        <a href="/blog/search/">
+                            <span class="fa fa-search"></span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="box theme-box" id="darkmode-switch">
+                        <span class="fa fa-adjust"></span>
+                    </div>
+                
+                
+                
+            </div>
+            <div class="box gotop-box">
+                <span class="fa fa-chevron-up"></span>
+            </div>
+        </div>
+    </div>
+</footer>
+</div>
+</div>
+
+        <script defer src="/blog/vendors/bootstrap@3.3.4/dist/js/bootstrap.min.js"></script>
+<script defer src="/blog/vendors/nprogress@0.2.0/nprogress.js"></script>
+<script>
+    if (!window.kr) {
+        window.kr = {};
+    }
+    window.kr.notMobile = (!(navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i)));
+    window.kr.siteRoot = "/blog/";
+</script>
+
+
+
+
+
+    <script defer src="/blog/vendors/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+
+<script defer src="/blog/js/kratosr.min.js"></script>
+<script defer src="/blog/js/pjax.min.js"></script>
+
+
+
+<!-- Extra support for third-party plguins  -->
+
+
+    </body>
+</html>

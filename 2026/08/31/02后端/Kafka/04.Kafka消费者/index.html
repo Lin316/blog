@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+  <!-- 元数据 -->
+  <meta charset="utf-8">
+  <link rel="icon" href="/blog/images/logo.png">
+  
+  <title>【Kafka】消费者 | 溪岚花的博客</title>
+  
+  <meta name="author" content="林家隆" />
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="robots" content="index,follow" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <meta name="format-detection" content="telphone=no, email=no" />
+  
+    <meta name="keywords" content="Kafka" />
+  
+  <meta name="description" content="消费方式Kafka 采用 pull（拉）模式，消费者主动从 broker 拉取数据。优点是由消费者自己控制消费速率；缺点是数据不足时可能反复返回空数据。 消费者工作流程消费者组原理消费者组（CG）由多个 consumer 组成，条件是把 group.id 设为相同。  组内每个消费者负责消费不同分区的数据，一个分区只能由一个组内消费者消费。 消费者组之间互不影响；所有消费者都属于某个消费者组。 如">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【Kafka】消费者">
+<meta property="og:url" content="https://lin316.gitee.io/blog/2026/08/31/02%E5%90%8E%E7%AB%AF/Kafka/04.Kafka%E6%B6%88%E8%B4%B9%E8%80%85/index.html">
+<meta property="og:site_name" content="溪岚花的博客">
+<meta property="og:description" content="消费方式Kafka 采用 pull（拉）模式，消费者主动从 broker 拉取数据。优点是由消费者自己控制消费速率；缺点是数据不足时可能反复返回空数据。 消费者工作流程消费者组原理消费者组（CG）由多个 consumer 组成，条件是把 group.id 设为相同。  组内每个消费者负责消费不同分区的数据，一个分区只能由一个组内消费者消费。 消费者组之间互不影响；所有消费者都属于某个消费者组。 如">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://lin316.gitee.io/blog/blog/images/logo.png">
+<meta property="article:published_time" content="2026-08-31T13:00:00.000Z">
+<meta property="article:modified_time" content="2026-09-01T13:59:35.291Z">
+<meta property="article:author" content="林家隆">
+<meta property="article:tag" content="Kafka">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://lin316.gitee.io/blog/blog/images/logo.png">
+  
+  <!-- 站点验证相关 -->
+  
+    
+    
+    
+  
+  <!-- 样式表文件 -->
+  <link rel="stylesheet" id="kratos-css" href="/blog/css/kratosr.min.css" media="all"></script>
+  
+    <link rel="stylesheet" id="darkmode-css" href="/blog/css/kr-color-dark.min.css" media="(prefers-color-scheme: dark)"></script>
+    <script src="/blog/js/kr-dark.min.js"></script>
+  
+  
+    <link rel="stylesheet" id="highlight-css" href="/blog/css/highlight/night-eighties.min.css" media="all"></script>
+  
+  <link rel="stylesheet" id="fontawe-css" href="/blog/vendors/font-awesome@4.7.0/css/font-awesome.min.css" media="all"></script>
+  <link rel="stylesheet" id="nprogress-css" href="/blog/vendors/nprogress@0.2.0/nprogress.css" media="all"></script>
+  
+  
+  
+    <link rel="stylesheet" href="/blog/vendors/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css"></script>
+  
+  <!-- 不得不预先加载的一些JS文件 -->
+  <script src="/blog/vendors/jquery@3.6.0/dist/jquery.min.js"></script>
+  
+  
+  <style>
+    
+    
+  </style>
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+    <body class="custom-background">
+        <div id="kratos-wrapper">
+    <div id="kratos-page">
+        <div id="kratos-header">
+            <header id="kratos-desktop-topnav" class="kratos-topnav">
+                <div class="container">
+                    <div class="nav-header">
+                        <nav id="kratos-menu-wrap">
+                            <ul id="kratos-primary-menu" class="sf-menu">
+                                
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/">
+                                            
+                                                
+                                                    <i class="fa fa-home"></i>
+                                                
+                                                首页
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/archives/">
+                                            
+                                                
+                                                    <i class="fa fa-file"></i>
+                                                
+                                                归档
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/tags/">
+                                            
+                                                
+                                                    <i class="fa fa-tag"></i>
+                                                
+                                                标签
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/categories/">
+                                            
+                                                
+                                                    <i class="fa fa-folder"></i>
+                                                
+                                                目录
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/search/">
+                                            
+                                                
+                                                    <i class="fa fa-search"></i>
+                                                
+                                                搜索
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </header>
+            <header id="kratos-mobile-topnav" class="kratos-topnav">
+                <div class="container">
+                    <div class="color-logo"><a href="/blog/">溪岚花的博客</a></div>
+                    <div class="nav-toggle">
+                        <a class="kratos-nav-toggle js-kratos-nav-toggle">
+                            <i></i>
+                        </a>
+                    </div>
+                </div>
+            </header>
+        </div>
+        <div class="kratos-start kratos-hero-2">
+            <!-- <div class="kratos-overlay"></div> -->
+            <div class="kratos-cover kratos-cover-2 text-center">
+                <div class="desc desc2 animate-box">
+                    <a href="/blog/">
+                        <h2 style="opacity: 0.2;">溪岚花的博客</h2> <br />
+                        <span></span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div id="kratos-blog-post">
+            <div class="container">
+                <div id="main" class="row">
+                    
+
+        
+
+            <section class="col-md-8">
+
+        
+
+            <article itemscope itemtype="https://schema.org/Article">
+    
+    <link itemprop="mainEntityOfPage" href="https://lin316.gitee.io/blog/2026/08/31/02%E5%90%8E%E7%AB%AF/Kafka/04.Kafka%E6%B6%88%E8%B4%B9%E8%80%85/">
+    <div class="kratos-hentry kratos-post-inner clearfix">
+        <header class="kratos-entry-header">
+            
+                <h1 class="kratos-entry-title text-center" itemprop="name headline">【Kafka】消费者</h1>
+            
+            
+            <ul class="kratos-post-meta text-center">
+                <li><time datetime="2026-08-31T13:00:00.000Z" itemprop="datePublished"><i class="fa fa-calendar"></i> 2026-08-31</time></li>
+                <li itemprop="author" itemscope itemtype="https://schema.org/Person">
+                    <i class="fa fa-user"></i> 作者 <span itemprop="name">林家隆</span>
+                </li>
+                
+                    <li>
+                        <i class="fa fa-edit"></i> 
+                        
+                        
+                            4.44K
+                        
+                        字
+                    </li>
+                
+                
+            </ul>
+        </header>
+        <div class="kratos-post-content">
+            
+            <div id="expire-alert" class="alert alert-warning hidden" role="alert">
+                <div class="icon"><i class="fa fa-warning"></i></div>
+                <div class="text"><p>本文最后编辑于 <time datetime="1788271175291"></time> 前，其中的内容可能需要更新。</p></div>
+            </div>
+            
+            
+            
+                <div class="kratos-post-inner-toc toc-div-class" >
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B6%88%E8%B4%B9%E6%96%B9%E5%BC%8F"><span class="toc-number">1.</span> <span class="toc-text">消费方式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B6%88%E8%B4%B9%E8%80%85%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%A8%8B"><span class="toc-number">2.</span> <span class="toc-text">消费者工作流程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B6%88%E8%B4%B9%E8%80%85%E7%BB%84%E5%8E%9F%E7%90%86"><span class="toc-number">2.1.</span> <span class="toc-text">消费者组原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B6%88%E8%B4%B9%E8%80%85%E9%87%8D%E8%A6%81%E5%8F%82%E6%95%B0"><span class="toc-number">2.2.</span> <span class="toc-text">消费者重要参数</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B6%88%E8%B4%B9%E8%80%85-API"><span class="toc-number">3.</span> <span class="toc-text">消费者 API</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%8B%AC%E7%AB%8B%E6%B6%88%E8%B4%B9%E8%80%85%EF%BC%88%E8%AE%A2%E9%98%85%E4%B8%BB%E9%A2%98%EF%BC%89"><span class="toc-number">3.1.</span> <span class="toc-text">独立消费者（订阅主题）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%8B%AC%E7%AB%8B%E6%B6%88%E8%B4%B9%E8%80%85%EF%BC%88%E8%AE%A2%E9%98%85%E5%88%86%E5%8C%BA%EF%BC%89"><span class="toc-number">3.2.</span> <span class="toc-text">独立消费者（订阅分区）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%86%E5%8C%BA%E5%88%86%E9%85%8D%E4%B8%8E%E5%86%8D%E5%B9%B3%E8%A1%A1"><span class="toc-number">4.</span> <span class="toc-text">分区分配与再平衡</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#offset-%E4%BD%8D%E7%A7%BB"><span class="toc-number">5.</span> <span class="toc-text">offset 位移</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%87%AA%E5%8A%A8%E6%8F%90%E4%BA%A4"><span class="toc-number">5.1.</span> <span class="toc-text">自动提交</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%89%8B%E5%8A%A8%E6%8F%90%E4%BA%A4"><span class="toc-number">5.2.</span> <span class="toc-text">手动提交</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8C%87%E5%AE%9A-offset-%E6%B6%88%E8%B4%B9"><span class="toc-number">5.3.</span> <span class="toc-text">指定 offset 消费</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8C%87%E5%AE%9A%E6%97%B6%E9%97%B4%E6%B6%88%E8%B4%B9"><span class="toc-number">5.4.</span> <span class="toc-text">指定时间消费</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%BC%8F%E6%B6%88%E8%B4%B9%E5%92%8C%E9%87%8D%E5%A4%8D%E6%B6%88%E8%B4%B9"><span class="toc-number">5.5.</span> <span class="toc-text">漏消费和重复消费</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E7%A7%AF%E5%8E%8B"><span class="toc-number">6.</span> <span class="toc-text">数据积压</span></a></li></ol>
+                </div>
+            
+            <hr />
+            <div itemprop="articleBody"><h2 id="消费方式"><a href="#消费方式" class="headerlink" title="消费方式"></a>消费方式</h2><p>Kafka 采用 pull（拉）模式，消费者主动从 broker 拉取数据。优点是由消费者自己控制消费速率；缺点是数据不足时可能反复返回空数据。</p>
+<h2 id="消费者工作流程"><a href="#消费者工作流程" class="headerlink" title="消费者工作流程"></a>消费者工作流程</h2><h3 id="消费者组原理"><a href="#消费者组原理" class="headerlink" title="消费者组原理"></a>消费者组原理</h3><p>消费者组（CG）由多个 consumer 组成，条件是把 group.id 设为相同。</p>
+<ul>
+<li>组内每个消费者负责消费不同分区的数据，一个分区只能由一个组内消费者消费。</li>
+<li>消费者组之间互不影响；所有消费者都属于某个消费者组。</li>
+<li>如果组内消费者数量超过主题分区数，多出的消费者会闲置，不接收消息。</li>
+</ul>
+<p>消费者组初始化：每个消费者先发 JoinGroup 请求，协调者（Coordinator）选出一个 leader 消费者，由它制定消费方案，再通过 Coordinator 下发给每个消费者。</p>
+<ul>
+<li>coordinator 选择：<code>groupid 的 hashcode % 50</code>，落在 <code>__consumer_offsets</code> 的对应分区所在的 broker 上。</li>
+<li>每个消费者与 Coordinator 保持心跳（默认 3s），超时（session.timeout.ms&#x3D;45s）或处理消息过长（max.poll.interval.ms&#x3D;5min）会被移除并触发再平衡。</li>
+</ul>
+<h3 id="消费者重要参数"><a href="#消费者重要参数" class="headerlink" title="消费者重要参数"></a>消费者重要参数</h3><table>
+<thead>
+<tr>
+<th>参数</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>bootstrap.servers</td>
+<td>连接集群的 broker 地址清单</td>
+</tr>
+<tr>
+<td>key.deserializer &#x2F; value.deserializer</td>
+<td>key、value 的反序列化类，必须写全类名</td>
+</tr>
+<tr>
+<td>group.id</td>
+<td>消费者所属的消费者组，必须配置</td>
+</tr>
+<tr>
+<td>enable.auto.commit</td>
+<td>是否自动提交 offset，默认 true</td>
+</tr>
+<tr>
+<td>auto.commit.interval.ms</td>
+<td>自动提交 offset 的频率，默认 5s</td>
+</tr>
+<tr>
+<td>auto.offset.reset</td>
+<td>无初始 offset 时：earliest 从最早、latest 从最新、none 抛异常</td>
+</tr>
+<tr>
+<td>heartbeat.interval.ms</td>
+<td>与 coordinator 的心跳时间，默认 3s</td>
+</tr>
+<tr>
+<td>session.timeout.ms</td>
+<td>与 coordinator 连接超时时间，默认 45s</td>
+</tr>
+<tr>
+<td>max.poll.interval.ms</td>
+<td>处理消息最大时长，默认 5 分钟</td>
+</tr>
+<tr>
+<td>fetch.min.bytes</td>
+<td>一批消息最小字节数，默认 1 字节</td>
+</tr>
+<tr>
+<td>fetch.max.wait.ms</td>
+<td>未达到最小字节数的最长等待，默认 500ms</td>
+</tr>
+<tr>
+<td>max.poll.records</td>
+<td>一次 poll 拉取的最大条数，默认 500 条</td>
+</tr>
+</tbody></table>
+<h2 id="消费者-API"><a href="#消费者-API" class="headerlink" title="消费者 API"></a>消费者 API</h2><h3 id="独立消费者（订阅主题）"><a href="#独立消费者（订阅主题）" class="headerlink" title="独立消费者（订阅主题）"></a>独立消费者（订阅主题）</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">Properties</span> <span class="variable">properties</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Properties</span>();</span><br><span class="line">properties.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, <span class="string">&quot;hadoop102:9092&quot;</span>);</span><br><span class="line">properties.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());</span><br><span class="line">properties.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());</span><br><span class="line">properties.put(ConsumerConfig.GROUP_ID_CONFIG, <span class="string">&quot;test&quot;</span>);   <span class="comment">// 必须配置消费者组</span></span><br><span class="line"></span><br><span class="line">KafkaConsumer&lt;String, String&gt; consumer = <span class="keyword">new</span> <span class="title class_">KafkaConsumer</span>&lt;&gt;(properties);</span><br><span class="line">consumer.subscribe(Arrays.asList(<span class="string">&quot;first&quot;</span>));                 <span class="comment">// 订阅主题</span></span><br><span class="line"><span class="keyword">while</span> (<span class="literal">true</span>) &#123;</span><br><span class="line">    ConsumerRecords&lt;String, String&gt; records = consumer.poll(Duration.ofSeconds(<span class="number">1</span>));</span><br><span class="line">    <span class="keyword">for</span> (ConsumerRecord&lt;String, String&gt; record : records) &#123;</span><br><span class="line">        System.out.println(record);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="独立消费者（订阅分区）"><a href="#独立消费者（订阅分区）" class="headerlink" title="独立消费者（订阅分区）"></a>独立消费者（订阅分区）</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">KafkaConsumer&lt;String, String&gt; consumer = <span class="keyword">new</span> <span class="title class_">KafkaConsumer</span>&lt;&gt;(properties);</span><br><span class="line">consumer.assign(Arrays.asList(<span class="keyword">new</span> <span class="title class_">TopicPartition</span>(<span class="string">&quot;first&quot;</span>, <span class="number">0</span>)));  <span class="comment">// 只消费 0 号分区</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="分区分配与再平衡"><a href="#分区分配与再平衡" class="headerlink" title="分区分配与再平衡"></a>分区分配与再平衡</h2><p>Kafka 有四种分区分配策略：Range、RoundRobin、Sticky、CooperativeSticky，通过 <code>partition.assignment.strategy</code> 配置，默认是 Range + CooperativeSticky。</p>
+<ul>
+<li>Range：针对每个 topic，把分区排序后按消费者数量平均分配，除不尽时靠前的消费者多分 1 个；topic 多时容易造成数据倾斜。</li>
+<li>RoundRobin：把集群中所有 topic 的所有分区和消费者列出，排序后轮询分配，各消费者分区数更均衡。</li>
+<li>Sticky：分配带有”粘性”，尽量保持上一次分配结果不变，减少再平衡开销。</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 使用粘性分区策略</span></span><br><span class="line">properties.put(ConsumerConfig.PARTITION_ASSIGNMENT_STRATEGY_CONFIG,</span><br><span class="line">    Arrays.asList(<span class="string">&quot;org.apache.kafka.clients.consumer.StickyAssignor&quot;</span>));</span><br></pre></td></tr></table></figure>
+
+<h2 id="offset-位移"><a href="#offset-位移" class="headerlink" title="offset 位移"></a>offset 位移</h2><ul>
+<li>0.9 版本之后，offset 默认保存在 Kafka 内置主题 <code>__consumer_offsets</code> 中；之前保存在 Zookeeper。</li>
+<li><code>__consumer_offsets</code> 用 key &#x3D; group.id + topic + 分区号、value &#x3D; 当前 offset 存储，并定期 compact。</li>
+</ul>
+<h3 id="自动提交"><a href="#自动提交" class="headerlink" title="自动提交"></a>自动提交</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">properties.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, <span class="literal">true</span>);</span><br><span class="line">properties.put(ConsumerConfig.AUTO_COMMIT_INTERVAL_MS_CONFIG, <span class="number">1000</span>);</span><br></pre></td></tr></table></figure>
+
+<h3 id="手动提交"><a href="#手动提交" class="headerlink" title="手动提交"></a>手动提交</h3><p>开启手动提交需设置 <code>enable.auto.commit=false</code>。两种方式：</p>
+<ul>
+<li>commitSync（同步）：提交完才消费下一批，有失败重试，更可靠但效率低。</li>
+<li>commitAsync（异步）：发出提交请求就继续消费，效率高，但可能提交失败。</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">consumer.commitSync();   <span class="comment">// 同步提交</span></span><br><span class="line">consumer.commitAsync();  <span class="comment">// 异步提交</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="指定-offset-消费"><a href="#指定-offset-消费" class="headerlink" title="指定 offset 消费"></a>指定 offset 消费</h3><p>当 Kafka 中没有初始偏移量（消费者组第一次消费）或服务器上不再存在当前偏移量时（例如数据已被删除），由 <code>auto.offset.reset</code> 决定怎么处理，默认是 latest：</p>
+<table>
+<thead>
+<tr>
+<th>auto.offset.reset</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>earliest</td>
+<td>自动将偏移量重置为最早的偏移量，从头开始消费（等价于命令行的 –from-beginning）</td>
+</tr>
+<tr>
+<td>latest</td>
+<td>默认值，自动将偏移量重置为最新偏移量，只消费新数据</td>
+</tr>
+<tr>
+<td>none</td>
+<td>如果未找到消费者组的先前偏移量，则向消费者抛出异常</td>
+</tr>
+</tbody></table>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 配置 auto.offset.reset</span></span><br><span class="line">properties.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, <span class="string">&quot;earliest&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<p>除了靠 auto.offset.reset 自动重置，也可以手动指定从某个 offset 开始消费：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">consumer.poll(Duration.ofSeconds(<span class="number">1</span>));</span><br><span class="line">Set&lt;TopicPartition&gt; assignment = consumer.assignment();</span><br><span class="line"><span class="keyword">for</span> (TopicPartition tp : assignment) &#123;</span><br><span class="line">    consumer.seek(tp, <span class="number">1700</span>);   <span class="comment">// 从 1700 开始消费</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>注意：每次执行完需修改消费者组名。</p>
+<h3 id="指定时间消费"><a href="#指定时间消费" class="headerlink" title="指定时间消费"></a>指定时间消费</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Map&lt;TopicPartition, Long&gt; ts = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;();</span><br><span class="line"><span class="keyword">for</span> (TopicPartition tp : assignment) &#123;</span><br><span class="line">    ts.put(tp, System.currentTimeMillis() - <span class="number">1L</span> * <span class="number">24</span> * <span class="number">3600</span> * <span class="number">1000</span>);   <span class="comment">// 一天前</span></span><br><span class="line">&#125;</span><br><span class="line">Map&lt;TopicPartition, OffsetAndTimestamp&gt; offsets = consumer.offsetsForTimes(ts);</span><br><span class="line"><span class="keyword">for</span> (TopicPartition tp : assignment) &#123;</span><br><span class="line">    <span class="type">OffsetAndTimestamp</span> <span class="variable">oat</span> <span class="operator">=</span> offsets.get(tp);</span><br><span class="line">    <span class="keyword">if</span> (oat != <span class="literal">null</span>) consumer.seek(tp, oat.offset());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="漏消费和重复消费"><a href="#漏消费和重复消费" class="headerlink" title="漏消费和重复消费"></a>漏消费和重复消费</h3><ul>
+<li>重复消费：已消费但 offset 没提交（如自动提交间隔内消费者挂了）。</li>
+<li>漏消费：先提交 offset 后消费，提交后数据还在内存未落盘时消费者挂掉，导致数据丢失。</li>
+</ul>
+<p>要做到既不漏也不重，需要消费者事务，把消费和提交 offset 做原子绑定（如把 offset 存到支持事务的 MySQL）。</p>
+<h2 id="数据积压"><a href="#数据积压" class="headerlink" title="数据积压"></a>数据积压</h2><p>消费能力不足时：</p>
+<ul>
+<li>如果是 <code>kafka</code> 消费能力不足，增加 topic 分区数，并同时增加同组消费者数量（消费者数 &#x3D; 分区数）。</li>
+<li>如果是下游处理不及时，提高每批次拉取数量，如调大 <code>max.poll.records</code>（默认 500）。</li>
+</ul>
+</div>
+        </div>
+        
+        <footer class="kratos-entry-footer clearfix">
+            
+            <div class="footer-tag clearfix">
+                <div class="pull-left">
+                <i class="fa fa-tags"></i>
+                    <a class="tag-none-link" href="/blog/tags/Kafka/" rel="tag">Kafka</a>
+                </div>
+                <div class="pull-date">
+                    <time datetime="2026-09-01T13:59:35.291Z" itemprop="dateModified">最后编辑：2026-09-01</time>
+                </div>
+            </div>
+        </footer>
+    </div>
+    
+        <nav class="navigation post-navigation clearfix" role="navigation">
+            
+            <div class="nav-previous clearfix">
+                <a title=" 【Kafka】Broker" href="/blog/2026/08/31/02后端/Kafka/03.KafkaBroker/">&lt; 上一篇</a>
+            </div>
+            
+            
+            <div class="nav-next clearfix">
+                <a title=" 【Kafka】生产者" href="/blog/2026/08/31/02后端/Kafka/02.Kafka生产者/">下一篇 &gt;</a>
+            </div>
+            
+        </nav>
+    
+    
+</article>
+
+        
+
+            </section>
+
+        
+
+                
+            
+
+<section id="kratos-widget-area" class="col-md-4 hidden-xs hidden-sm">
+    <!-- 文章和页面根据splitter来分割，没有的话就从头开始设置为sticky -->
+    
+    
+                <aside id="krw-about" class="widget widget-kratos-about clearfix">
+    <div class="photo-background"></div>
+    <div class="photo-wrapper clearfix">
+        <div class="photo-wrapper-tip text-center">
+            <img class="about-photo" src="/blog/images/avatar.webp" loading="lazy" decoding="auto" />
+        </div>
+    </div>
+    <div class="textwidget">
+        <p class="text-center">极简主义</p>
+    </div>
+    <div class="site-meta">
+        <a class="meta-item" href="/blog/archives/">
+            <span class="title">
+                文章
+            </span>
+            <span class="count">
+                128
+            </span>
+        </a>
+        <a class="meta-item" href="/blog/categories/">
+            <span class="title">
+                分类
+            </span>
+            <span class="count">
+                16
+            </span>
+        </a>
+        <a class="meta-item" href="/blog/tags/">
+            <span class="title">
+                标签
+            </span>
+            <span class="count">
+                41
+            </span>
+        </a>
+    </div>
+</aside>
+            
+                    <div class="sticky-area">
+                
+                    <aside id="krw-toc" class="widget widget-kratos-toc clearfix toc-div-class" >
+    <div class="photo-background"></div>
+    <h4 class="widget-title no-after">
+        <i class="fa fa-compass"></i>
+        文章目录
+        <span class="toc-progress-bar" role="progressbar" aria-label="阅读进度："></span>
+    </h4>
+    <div class="textwidget">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B6%88%E8%B4%B9%E6%96%B9%E5%BC%8F"><span class="toc-text">消费方式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B6%88%E8%B4%B9%E8%80%85%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%A8%8B"><span class="toc-text">消费者工作流程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B6%88%E8%B4%B9%E8%80%85%E7%BB%84%E5%8E%9F%E7%90%86"><span class="toc-text">消费者组原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B6%88%E8%B4%B9%E8%80%85%E9%87%8D%E8%A6%81%E5%8F%82%E6%95%B0"><span class="toc-text">消费者重要参数</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B6%88%E8%B4%B9%E8%80%85-API"><span class="toc-text">消费者 API</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%8B%AC%E7%AB%8B%E6%B6%88%E8%B4%B9%E8%80%85%EF%BC%88%E8%AE%A2%E9%98%85%E4%B8%BB%E9%A2%98%EF%BC%89"><span class="toc-text">独立消费者（订阅主题）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%8B%AC%E7%AB%8B%E6%B6%88%E8%B4%B9%E8%80%85%EF%BC%88%E8%AE%A2%E9%98%85%E5%88%86%E5%8C%BA%EF%BC%89"><span class="toc-text">独立消费者（订阅分区）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%86%E5%8C%BA%E5%88%86%E9%85%8D%E4%B8%8E%E5%86%8D%E5%B9%B3%E8%A1%A1"><span class="toc-text">分区分配与再平衡</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#offset-%E4%BD%8D%E7%A7%BB"><span class="toc-text">offset 位移</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%87%AA%E5%8A%A8%E6%8F%90%E4%BA%A4"><span class="toc-text">自动提交</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%89%8B%E5%8A%A8%E6%8F%90%E4%BA%A4"><span class="toc-text">手动提交</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8C%87%E5%AE%9A-offset-%E6%B6%88%E8%B4%B9"><span class="toc-text">指定 offset 消费</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8C%87%E5%AE%9A%E6%97%B6%E9%97%B4%E6%B6%88%E8%B4%B9"><span class="toc-text">指定时间消费</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%BC%8F%E6%B6%88%E8%B4%B9%E5%92%8C%E9%87%8D%E5%A4%8D%E6%B6%88%E8%B4%B9"><span class="toc-text">漏消费和重复消费</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E7%A7%AF%E5%8E%8B"><span class="toc-text">数据积压</span></a></li></ol>
+    </div>
+</aside>
+                
+                
+  <aside id="krw-tags" class="widget widget-kratos-tags clearfix">
+    <h4 class="widget-title"><i class="fa fa-tags"></i>标签聚合</h4>
+      <div class="tag-clouds">
+        <a href="/blog/tags/AI/" style="font-size: 0.8em;">AI</a> <a href="/blog/tags/CORS/" style="font-size: 0.8em;">CORS</a> <a href="/blog/tags/CSS/" style="font-size: 0.8em;">CSS</a> <a href="/blog/tags/Docker/" style="font-size: 0.8em;">Docker</a> <a href="/blog/tags/Dubbo/" style="font-size: 0.8em;">Dubbo</a> <a href="/blog/tags/ELK/" style="font-size: 0.8em;">ELK</a> <a href="/blog/tags/Elasticsearch/" style="font-size: 0.8em;">Elasticsearch</a> <a href="/blog/tags/Eureka/" style="font-size: 0.8em;">Eureka</a> <a href="/blog/tags/Feign/" style="font-size: 0.8em;">Feign</a> <a href="/blog/tags/Gateway/" style="font-size: 0.8em;">Gateway</a> <a href="/blog/tags/HTML/" style="font-size: 0.8em;">HTML</a> <a href="/blog/tags/Idea/" style="font-size: 0.8em;">Idea</a> <a href="/blog/tags/Java/" style="font-size: 0.8em;">Java</a> <a href="/blog/tags/JavaScript/" style="font-size: 0.8em;">JavaScript</a> <a href="/blog/tags/JavaWeb/" style="font-size: 0.8em;">JavaWeb</a> <a href="/blog/tags/K8s/" style="font-size: 0.8em;">K8s</a> <a href="/blog/tags/Kafka/" style="font-size: 0.8em;">Kafka</a> <a href="/blog/tags/Linux/" style="font-size: 0.8em;">Linux</a>
+      </div>
+  </aside>
+
+            
+                
+  <aside id="krw-posts" class="widget widget-kratos-posts">
+  <h4 class="widget-title"><i class="fa fa-file"></i>最新文章</h4>
+  <div class="tab-content">
+      <ul class="list-group">
+        
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/08/31/02%E5%90%8E%E7%AB%AF/Kafka/01.Kafka%E5%9F%BA%E7%A1%80/"><i class="fa  fa-book"></i> 【Kafka】基础</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/08/31/02%E5%90%8E%E7%AB%AF/Kafka/02.Kafka%E7%94%9F%E4%BA%A7%E8%80%85/"><i class="fa  fa-book"></i> 【Kafka】生产者</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/08/31/02%E5%90%8E%E7%AB%AF/Kafka/04.Kafka%E6%B6%88%E8%B4%B9%E8%80%85/"><i class="fa  fa-book"></i> 【Kafka】消费者</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/08/31/02%E5%90%8E%E7%AB%AF/Kafka/03.KafkaBroker/"><i class="fa  fa-book"></i> 【Kafka】Broker</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/08/28/02%E5%90%8E%E7%AB%AF/K8s/Service%E4%B8%8EIngress/"><i class="fa  fa-book"></i> 【K8s】Service与Ingress</a>
+            
+          
+        
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+      </ul>
+  </div>
+  </aside>
+
+            
+    </div>
+</section>
+        
+        </div>
+    </div>
+</div>
+<footer>
+    <div id="footer"  >
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3 footer-list text-center">
+                    <ul class="kratos-social-icons">
+                        <!-- Keep for compatibility -->
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <!-- New links -->
+                        
+                    </ul>
+                    <ul class="kratos-copyright">
+                        <div>
+                            <li>&copy; 2026 溪岚花的博客 版权所有.</li>
+                            <li>本站已运行<span id="span_dt">Loading...</span></li>
+                        </div>
+                        <div>
+                            <li>Theme <a href="https://github.com/Candinya/Kratos-Rebirth" target="_blank">Kratos:Rebirth</a></li>
+                            <li>Site built with&nbsp;<i class="fa fa-heart throb" style="color:#d43f57"></i>&nbsp;by 林家隆.</li>
+                        </div>
+                        <div>
+                            <li>Powered by <a href="https://hexo.io" target="_blank" rel="nofollow">Hexo</a></li>
+                            <li>Hosted on <a href="https://gitee.com/" target="_blank">Gitee Pages</a></li>
+                        </div>
+                        <div>
+                            
+                            
+                        </div>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="kr-tool text-center">
+            <div class="tool">
+                
+                    <div class="box search-box">
+                        <a href="/blog/search/">
+                            <span class="fa fa-search"></span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="box theme-box" id="darkmode-switch">
+                        <span class="fa fa-adjust"></span>
+                    </div>
+                
+                
+                
+            </div>
+            <div class="box gotop-box">
+                <span class="fa fa-chevron-up"></span>
+            </div>
+        </div>
+    </div>
+</footer>
+</div>
+</div>
+
+        <script defer src="/blog/vendors/bootstrap@3.3.4/dist/js/bootstrap.min.js"></script>
+<script defer src="/blog/vendors/nprogress@0.2.0/nprogress.js"></script>
+<script>
+    if (!window.kr) {
+        window.kr = {};
+    }
+    window.kr.notMobile = (!(navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i)));
+    window.kr.siteRoot = "/blog/";
+</script>
+
+
+
+
+
+    <script defer src="/blog/vendors/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+
+<script defer src="/blog/js/kratosr.min.js"></script>
+<script defer src="/blog/js/pjax.min.js"></script>
+
+
+
+<!-- Extra support for third-party plguins  -->
+
+
+    </body>
+</html>
