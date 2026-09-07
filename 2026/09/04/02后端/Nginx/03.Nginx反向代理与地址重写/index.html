@@ -1,0 +1,1255 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+  <!-- 元数据 -->
+  <meta charset="utf-8">
+  <link rel="icon" href="/blog/images/logo.png">
+  
+  <title>【Nginx】反向代理与地址重写 | 溪岚花的博客</title>
+  
+  <meta name="author" content="林家隆" />
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="robots" content="index,follow" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <meta name="format-detection" content="telphone=no, email=no" />
+  
+    <meta name="keywords" content="Nginx" />
+  
+  <meta name="description" content="Rewrite 概述Rewrite 用于将请求 URI 改写为另一地址，典型场景包括旧域名跳转、URL 伪静态、路径简化等。该功能依赖 PCRE 正则库，由 ngx_http_rewrite_module 模块解析。 先区分两个易混淆的概念：    概念 浏览器地址 请求次数 性能    地址重写（Redirect） 发生变化 两次 较慢   地址转发（Forward） 不变化 一次 较快   常">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【Nginx】反向代理与地址重写">
+<meta property="og:url" content="https://lin316.gitee.io/blog/2026/09/04/02%E5%90%8E%E7%AB%AF/Nginx/03.Nginx%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86%E4%B8%8E%E5%9C%B0%E5%9D%80%E9%87%8D%E5%86%99/index.html">
+<meta property="og:site_name" content="溪岚花的博客">
+<meta property="og:description" content="Rewrite 概述Rewrite 用于将请求 URI 改写为另一地址，典型场景包括旧域名跳转、URL 伪静态、路径简化等。该功能依赖 PCRE 正则库，由 ngx_http_rewrite_module 模块解析。 先区分两个易混淆的概念：    概念 浏览器地址 请求次数 性能    地址重写（Redirect） 发生变化 两次 较慢   地址转发（Forward） 不变化 一次 较快   常">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://lin316.gitee.io/blog/blog/images/logo.png">
+<meta property="article:published_time" content="2026-09-04T13:00:00.000Z">
+<meta property="article:modified_time" content="2026-09-03T04:11:49.215Z">
+<meta property="article:author" content="林家隆">
+<meta property="article:tag" content="Nginx">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://lin316.gitee.io/blog/blog/images/logo.png">
+  
+  <!-- 站点验证相关 -->
+  
+    
+    
+    
+  
+  <!-- 样式表文件 -->
+  <link rel="stylesheet" id="kratos-css" href="/blog/css/kratosr.min.css" media="all"></script>
+  
+    <link rel="stylesheet" id="darkmode-css" href="/blog/css/kr-color-dark.min.css" media="(prefers-color-scheme: dark)"></script>
+    <script src="/blog/js/kr-dark.min.js"></script>
+  
+  
+    <link rel="stylesheet" id="highlight-css" href="/blog/css/highlight/night-eighties.min.css" media="all"></script>
+  
+  <link rel="stylesheet" id="fontawe-css" href="/blog/vendors/font-awesome@4.7.0/css/font-awesome.min.css" media="all"></script>
+  <link rel="stylesheet" id="nprogress-css" href="/blog/vendors/nprogress@0.2.0/nprogress.css" media="all"></script>
+  
+  
+  
+    <link rel="stylesheet" href="/blog/vendors/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css"></script>
+  
+  <!-- 不得不预先加载的一些JS文件 -->
+  <script src="/blog/vendors/jquery@3.6.0/dist/jquery.min.js"></script>
+  
+  
+  <style>
+    
+    
+  </style>
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+    <body class="custom-background">
+        <div id="kratos-wrapper">
+    <div id="kratos-page">
+        <div id="kratos-header">
+            <header id="kratos-desktop-topnav" class="kratos-topnav">
+                <div class="container">
+                    <div class="nav-header">
+                        <nav id="kratos-menu-wrap">
+                            <ul id="kratos-primary-menu" class="sf-menu">
+                                
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/">
+                                            
+                                                
+                                                    <i class="fa fa-home"></i>
+                                                
+                                                首页
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/archives/">
+                                            
+                                                
+                                                    <i class="fa fa-file"></i>
+                                                
+                                                归档
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/tags/">
+                                            
+                                                
+                                                    <i class="fa fa-tag"></i>
+                                                
+                                                标签
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/categories/">
+                                            
+                                                
+                                                    <i class="fa fa-folder"></i>
+                                                
+                                                目录
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/search/">
+                                            
+                                                
+                                                    <i class="fa fa-search"></i>
+                                                
+                                                搜索
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </header>
+            <header id="kratos-mobile-topnav" class="kratos-topnav">
+                <div class="container">
+                    <div class="color-logo"><a href="/blog/">溪岚花的博客</a></div>
+                    <div class="nav-toggle">
+                        <a class="kratos-nav-toggle js-kratos-nav-toggle">
+                            <i></i>
+                        </a>
+                    </div>
+                </div>
+            </header>
+        </div>
+        <div class="kratos-start kratos-hero-2">
+            <!-- <div class="kratos-overlay"></div> -->
+            <div class="kratos-cover kratos-cover-2 text-center">
+                <div class="desc desc2 animate-box">
+                    <a href="/blog/">
+                        <h2 style="opacity: 0.2;">溪岚花的博客</h2> <br />
+                        <span></span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div id="kratos-blog-post">
+            <div class="container">
+                <div id="main" class="row">
+                    
+
+        
+
+            <section class="col-md-8">
+
+        
+
+            <article itemscope itemtype="https://schema.org/Article">
+    
+    <link itemprop="mainEntityOfPage" href="https://lin316.gitee.io/blog/2026/09/04/02%E5%90%8E%E7%AB%AF/Nginx/03.Nginx%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86%E4%B8%8E%E5%9C%B0%E5%9D%80%E9%87%8D%E5%86%99/">
+    <div class="kratos-hentry kratos-post-inner clearfix">
+        <header class="kratos-entry-header">
+            
+                <h1 class="kratos-entry-title text-center" itemprop="name headline">【Nginx】反向代理与地址重写</h1>
+            
+            
+            <ul class="kratos-post-meta text-center">
+                <li><time datetime="2026-09-04T13:00:00.000Z" itemprop="datePublished"><i class="fa fa-calendar"></i> 2026-09-04</time></li>
+                <li itemprop="author" itemscope itemtype="https://schema.org/Person">
+                    <i class="fa fa-user"></i> 作者 <span itemprop="name">林家隆</span>
+                </li>
+                
+                    <li>
+                        <i class="fa fa-edit"></i> 
+                        
+                        
+                            13.35K
+                        
+                        字
+                    </li>
+                
+                
+            </ul>
+        </header>
+        <div class="kratos-post-content">
+            
+            <div id="expire-alert" class="alert alert-warning hidden" role="alert">
+                <div class="icon"><i class="fa fa-warning"></i></div>
+                <div class="text"><p>本文最后编辑于 <time datetime="1788408709215"></time> 前，其中的内容可能需要更新。</p></div>
+            </div>
+            
+            
+            
+                <div class="kratos-post-inner-toc toc-div-class" >
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Rewrite-%E6%A6%82%E8%BF%B0"><span class="toc-number">1.</span> <span class="toc-text">Rewrite 概述</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%B8%E7%94%A8%E6%8C%87%E4%BB%A4"><span class="toc-number">1.1.</span> <span class="toc-text">常用指令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%B8%E7%94%A8%E5%86%85%E7%BD%AE%E5%8F%98%E9%87%8F"><span class="toc-number">1.2.</span> <span class="toc-text">常用内置变量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#set%E3%80%81if%E3%80%81break%E3%80%81return-%E7%94%A8%E6%B3%95"><span class="toc-number">1.3.</span> <span class="toc-text">set、if、break、return 用法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#break-%E6%8C%87%E4%BB%A4"><span class="toc-number">1.4.</span> <span class="toc-text">break 指令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#if-%E6%8C%87%E4%BB%A4"><span class="toc-number">1.5.</span> <span class="toc-text">if 指令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#rewrite-%E6%8C%87%E4%BB%A4"><span class="toc-number">1.6.</span> <span class="toc-text">rewrite 指令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#rewrite-log-%E6%8C%87%E4%BB%A4"><span class="toc-number">1.7.</span> <span class="toc-text">rewrite_log 指令</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Rewrite-%E5%BA%94%E7%94%A8%E6%A1%88%E4%BE%8B"><span class="toc-number">2.</span> <span class="toc-text">Rewrite 应用案例</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A1%88%E4%BE%8B%E4%B8%80%EF%BC%9A%E5%9F%9F%E5%90%8D%E8%B7%B3%E8%BD%AC"><span class="toc-number">2.1.</span> <span class="toc-text">案例一：域名跳转</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A1%88%E4%BE%8B%E4%BA%8C%EF%BC%9A%E5%9F%9F%E5%90%8D%E9%95%9C%E5%83%8F"><span class="toc-number">2.2.</span> <span class="toc-text">案例二：域名镜像</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A1%88%E4%BE%8B%E4%B8%89%EF%BC%9A%E7%8B%AC%E7%AB%8B%E5%9F%9F%E5%90%8D"><span class="toc-number">2.3.</span> <span class="toc-text">案例三：独立域名</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A1%88%E4%BE%8B%E5%9B%9B%EF%BC%9A%E7%9B%AE%E5%BD%95%E8%87%AA%E5%8A%A8%E8%A1%A5-%E2%80%9C-x2F-%E2%80%9C"><span class="toc-number">2.4.</span> <span class="toc-text">案例四：目录自动补 “&#x2F;“</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A1%88%E4%BE%8B%E4%BA%94%EF%BC%9A%E5%90%88%E5%B9%B6%E7%9B%AE%E5%BD%95"><span class="toc-number">2.5.</span> <span class="toc-text">案例五：合并目录</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A1%88%E4%BE%8B%E5%85%AD%EF%BC%9A%E9%98%B2%E7%9B%97%E9%93%BE%E5%93%8D%E5%BA%94%E4%BC%98%E5%8C%96"><span class="toc-number">2.6.</span> <span class="toc-text">案例六：防盗链响应优化</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86"><span class="toc-number">3.</span> <span class="toc-text">反向代理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%AD%A3%E5%90%91%E4%BB%A3%E7%90%86%E4%B8%8E%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86"><span class="toc-number">3.1.</span> <span class="toc-text">正向代理与反向代理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#proxy-pass-%E6%8C%87%E4%BB%A4"><span class="toc-number">3.2.</span> <span class="toc-text">proxy_pass 指令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#proxy-set-header-%E6%8C%87%E4%BB%A4"><span class="toc-number">3.3.</span> <span class="toc-text">proxy_set_header 指令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#proxy-redirect-%E6%8C%87%E4%BB%A4"><span class="toc-number">3.4.</span> <span class="toc-text">proxy_redirect 指令</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BD%9C%E7%94%A8%E4%B8%8E%E4%BA%A7%E7%94%9F%E5%8E%9F%E5%9B%A0"><span class="toc-number">3.4.1.</span> <span class="toc-text">作用与产生原因</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%AF%AD%E6%B3%95%E4%B8%8E%E4%BD%8D%E7%BD%AE"><span class="toc-number">3.4.2.</span> <span class="toc-text">语法与位置</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%A1%88%E4%BE%8B%E4%B8%80%EF%BC%9A%E6%8A%8A%E5%86%85%E7%BD%91-IP-%E6%94%B9%E5%86%99%E4%B8%BA%E5%AF%B9%E5%A4%96%E5%9F%9F%E5%90%8D"><span class="toc-number">3.4.3.</span> <span class="toc-text">案例一：把内网 IP 改写为对外域名</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%A1%88%E4%BE%8B%E4%BA%8C%EF%BC%9A%E4%BD%BF%E7%94%A8-default-%E8%87%AA%E5%8A%A8%E6%8E%A8%E5%AF%BC"><span class="toc-number">3.4.4.</span> <span class="toc-text">案例二：使用 default 自动推导</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%A1%88%E4%BE%8B%E4%B8%89%EF%BC%9A%E5%85%B3%E9%97%AD%E6%9B%BF%E6%8D%A2%EF%BC%88off%EF%BC%89"><span class="toc-number">3.4.5.</span> <span class="toc-text">案例三：关闭替换（off）</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="toc-number">3.5.</span> <span class="toc-text">反向代理应用场景</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#HTTPS-%E6%8E%A5%E5%85%A5"><span class="toc-number">4.</span> <span class="toc-text">HTTPS 接入</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="toc-number">4.1.</span> <span class="toc-text">基本概念</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AF%81%E4%B9%A6%E7%94%9F%E6%88%90"><span class="toc-number">4.2.</span> <span class="toc-text">证书生成</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE%E7%A4%BA%E4%BE%8B"><span class="toc-number">4.3.</span> <span class="toc-text">配置示例</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E5%85%A8%E9%9A%94%E7%A6%BB"><span class="toc-number">4.4.</span> <span class="toc-text">安全隔离</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%A3%E7%90%86%E6%80%A7%E8%83%BD%E8%B0%83%E4%BC%98"><span class="toc-number">5.</span> <span class="toc-text">代理性能调优</span></a></li></ol>
+                </div>
+            
+            <hr />
+            <div itemprop="articleBody"><h2 id="Rewrite-概述"><a href="#Rewrite-概述" class="headerlink" title="Rewrite 概述"></a>Rewrite 概述</h2><p>Rewrite 用于将请求 URI 改写为另一地址，典型场景包括旧域名跳转、URL 伪静态、路径简化等。该功能依赖 PCRE 正则库，由 <code>ngx_http_rewrite_module</code> 模块解析。</p>
+<p>先区分两个易混淆的概念：</p>
+<table>
+<thead>
+<tr>
+<th>概念</th>
+<th>浏览器地址</th>
+<th>请求次数</th>
+<th>性能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>地址重写（Redirect）</td>
+<td>发生变化</td>
+<td>两次</td>
+<td>较慢</td>
+</tr>
+<tr>
+<td>地址转发（Forward）</td>
+<td>不变化</td>
+<td>一次</td>
+<td>较快</td>
+</tr>
+</tbody></table>
+<h3 id="常用指令"><a href="#常用指令" class="headerlink" title="常用指令"></a>常用指令</h3><table>
+<thead>
+<tr>
+<th>指令</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>set</code></td>
+<td>定义变量，如 <code>set $username TOM;</code></td>
+</tr>
+<tr>
+<td><code>if</code></td>
+<td>条件判断（语法受限，仅限特定场景使用）</td>
+</tr>
+<tr>
+<td><code>break</code></td>
+<td>中断当前作用域内后续指令的执行</td>
+</tr>
+<tr>
+<td><code>return</code></td>
+<td>直接返回状态码、内容或 URL，后续指令不再执行</td>
+</tr>
+<tr>
+<td><code>rewrite</code></td>
+<td>通过正则改写 URI</td>
+</tr>
+<tr>
+<td><code>rewrite_log</code></td>
+<td>开启重写日志（输出至 error.log 的 notice 级别）</td>
+</tr>
+</tbody></table>
+<h3 id="常用内置变量"><a href="#常用内置变量" class="headerlink" title="常用内置变量"></a>常用内置变量</h3><p>以下示例均基于同一个假设请求：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">客户端 IP：192.168.1.66</span><br><span class="line">请求行：GET http://192.168.200.133:8080/server/index.html?id=10&amp;name=zhangsan HTTP/1.1</span><br><span class="line">Host 头：www.nginx521.com</span><br><span class="line">User-Agent：Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/120.0.0.0 Safari/537.36</span><br><span class="line">Cookie：JSESSIONID=ABC123</span><br><span class="line">该请求命中的 location 配置了 root /usr/local/nginx/html</span><br></pre></td></tr></table></figure>
+
+<table>
+<thead>
+<tr>
+<th>变量</th>
+<th>含义</th>
+<th>示例值</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>$remote_addr</code></td>
+<td>客户端 IP</td>
+<td><code>192.168.1.66</code></td>
+</tr>
+<tr>
+<td><code>$args</code> &#x2F; <code>$query_string</code></td>
+<td>请求参数</td>
+<td><code>id=10&amp;name=zhangsan</code></td>
+</tr>
+<tr>
+<td><code>$request_uri</code></td>
+<td>完整 URI（含参数）</td>
+<td><code>/server/index.html?id=10&amp;name=zhangsan</code></td>
+</tr>
+<tr>
+<td><code>$uri</code> &#x2F; <code>$document_uri</code></td>
+<td>URI（不含参数）</td>
+<td><code>/server/index.html</code></td>
+</tr>
+<tr>
+<td><code>$host</code></td>
+<td>请求的 Host 头（server_name）</td>
+<td><code>www.nginx521.com</code></td>
+</tr>
+<tr>
+<td><code>$http_user_agent</code></td>
+<td>客户端浏览器 UA</td>
+<td><code>Mozilla/5.0 (Windows NT 10.0; ...) Chrome/120.0.0.0</code></td>
+</tr>
+<tr>
+<td><code>$http_cookie</code></td>
+<td>请求携带的 Cookie</td>
+<td><code>JSESSIONID=ABC123</code></td>
+</tr>
+<tr>
+<td><code>$request_method</code></td>
+<td>请求方法</td>
+<td><code>GET</code></td>
+</tr>
+<tr>
+<td><code>$scheme</code></td>
+<td>访问协议</td>
+<td><code>http</code>（HTTPS 请求则为 <code>https</code>）</td>
+</tr>
+<tr>
+<td><code>$server_addr</code></td>
+<td>服务器 IP</td>
+<td><code>192.168.200.133</code></td>
+</tr>
+<tr>
+<td><code>$server_port</code></td>
+<td>服务器监听端口</td>
+<td><code>8080</code></td>
+</tr>
+<tr>
+<td><code>$request_filename</code></td>
+<td>请求对应的本地文件路径（由 root + URI 推导）</td>
+<td><code>/usr/local/nginx/html/server/index.html</code></td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>说明：<code>$uri</code> 与 <code>$request_uri</code> 的区别在于是否包含参数；<code>$request_filename</code> 依赖 location 中的 root&#x2F;alias 配置，若未命中真实文件，该值仅表示拼接后的路径。</p>
+</blockquote>
+<h3 id="set、if、break、return-用法"><a href="#set、if、break、return-用法" class="headerlink" title="set、if、break、return 用法"></a>set、if、break、return 用法</h3><figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">location</span> /testbreak &#123;</span><br><span class="line">    <span class="attribute">default_type</span> text/plain;</span><br><span class="line">    <span class="attribute">set</span> <span class="variable">$username</span> TOM;</span><br><span class="line">    <span class="attribute">if</span> (<span class="variable">$args</span>) &#123;                 <span class="comment"># 请求携带参数时执行</span></span><br><span class="line">        <span class="attribute">set</span> <span class="variable">$username</span> JERRY;</span><br><span class="line">        break;                   <span class="comment"># 终止本作用域后续指令</span></span><br><span class="line">        <span class="attribute">set</span> <span class="variable">$username</span> ROSE;      <span class="comment"># 不会执行</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="attribute">add_header</span> username <span class="variable">$username</span>;</span><br><span class="line">    <span class="attribute">return</span> <span class="number">200</span> <span class="variable">$username</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>if 条件写法：</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">if</span> (<span class="variable">$request_method</span> = POST) &#123; <span class="attribute">return</span> <span class="number">405</span>; &#125;    <span class="comment"># 请求方法判断</span></span><br><span class="line"><span class="attribute">if</span> (<span class="variable">$http_user_agent</span> <span class="regexp">~ MSIE)</span> &#123; ... &#125;           <span class="comment"># 正则匹配（区分大小写）</span></span><br><span class="line"><span class="attribute">if</span> (<span class="variable">$http_user_agent</span> <span class="regexp">~* chrome)</span> &#123; ... &#125;        <span class="comment"># 正则匹配（不区分大小写）</span></span><br><span class="line"><span class="attribute">if</span> (-f <span class="variable">$request_filename</span>) &#123; ... &#125;              <span class="comment"># 文件存在</span></span><br><span class="line"><span class="attribute">if</span> (!-e <span class="variable">$request_filename</span>) &#123; ... &#125;             <span class="comment"># 文件或目录不存在</span></span><br></pre></td></tr></table></figure>
+
+<p>return 的三种形式：</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">return</span> <span class="number">200</span> success;</span><br><span class="line"><span class="attribute">return</span> https://www.baidu.com;      <span class="comment"># 重定向至外部地址</span></span><br><span class="line"><span class="attribute">return</span> <span class="number">302</span> https://www.baidu.com;  <span class="comment"># 指定状态码</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="break-指令"><a href="#break-指令" class="headerlink" title="break 指令"></a>break 指令</h3><p>break 在 Nginx 中有两种形态，作用不同，使用时应加以区分：</p>
+<ol>
+<li>**独立指令 <code>break;</code>**（由 ngx_http_rewrite_module 提供）：终止当前 rewrite 处理阶段中后续指令的执行，位于 break 之前的指令生效，之后的指令不再执行；</li>
+<li><strong>rewrite 的 flag（<code>rewrite ... break;</code>）</strong>：URI 重写后不再重新进入 location 匹配，仅在当前 location 内继续处理。</li>
+</ol>
+<p><strong>形态一：独立指令中断后续执行</strong></p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">location</span> /testbreak &#123;</span><br><span class="line">    <span class="attribute">default_type</span> text/plain;</span><br><span class="line">    <span class="attribute">set</span> <span class="variable">$username</span> TOM;</span><br><span class="line">    <span class="attribute">if</span> (<span class="variable">$args</span>) &#123;</span><br><span class="line">        <span class="attribute">set</span> <span class="variable">$username</span> JERRY;</span><br><span class="line">        break;                <span class="comment"># 中断：break 之后的指令不再执行</span></span><br><span class="line">        <span class="attribute">set</span> <span class="variable">$username</span> ROSE;   <span class="comment"># 不会执行</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="attribute">add_header</span> username <span class="variable">$username</span>;</span><br><span class="line">    <span class="attribute">return</span> <span class="number">200</span> <span class="variable">$username</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>执行说明：</p>
+<ul>
+<li>请求不带参数时，<code>$args</code> 为空，if 条件为 false，username 保持 <code>TOM</code>；</li>
+<li>请求携带参数时，username 先被设为 <code>JERRY</code>，随后 break 中断当前阶段处理，<code>ROSE</code> 的赋值被跳过，最终返回 <code>JERRY</code>。</li>
+</ul>
+<p><strong>形态二：rewrite 标志（与 last 对比）</strong></p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">location</span> /rewrite &#123;</span><br><span class="line">    <span class="attribute">rewrite</span><span class="regexp"> ^/rewrite/(test)\w*$</span> /<span class="variable">$1</span> <span class="literal">break</span>;   <span class="comment"># URI 改写为 /test</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="section">location</span> /test &#123;</span><br><span class="line">    <span class="attribute">return</span> <span class="number">200</span> test_success;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>访问 <code>/rewrite/testabc</code> 时：URI 被改写为 <code>/test</code>，但 break 使 Nginx <strong>不重新匹配 location</strong>，仍停留在 <code>/rewrite</code> 块内处理，最终返回 404；若把 break 换成 last，Nginx 会重新匹配 location 并落入 <code>/test</code> 块，返回 <code>test_success</code>。</p>
+<table>
+<thead>
+<tr>
+<th>用法</th>
+<th>改写后的行为</th>
+<th>结果</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>rewrite ... last;</code></td>
+<td>重新进入 location 匹配</td>
+<td>可能落入其他 location 处理</td>
+</tr>
+<tr>
+<td><code>rewrite ... break;</code></td>
+<td>留在当前 location 继续处理</td>
+<td>不跳出当前 location</td>
+</tr>
+</tbody></table>
+<p><strong>实际场景：防盗链提示图（为什么这里必须用 break）</strong></p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">location</span> <span class="regexp">~* \.(png|jpg|gif)$</span> &#123;</span><br><span class="line">    <span class="attribute">valid_referers</span> <span class="literal">none</span> <span class="literal">blocked</span> www.itcast.cn;</span><br><span class="line">    <span class="attribute">if</span> (<span class="variable">$invalid_referer</span>) &#123;</span><br><span class="line">        <span class="attribute">rewrite</span><span class="regexp"> ^/</span> /images/forbidden.png <span class="literal">break</span>;   <span class="comment"># 改为 last 会形成重写循环</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="attribute">root</span> html;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>说明：rewrite 将 URI 改写为 <code>/images/forbidden.png</code>。若使用 last，Nginx 会重新匹配 location，而新 URI 仍以 <code>.png</code> 结尾，会再次命中当前正则 location 并再次执行 rewrite，形成循环，Nginx 达到重写次数上限后返回 500；使用 break 则在当前 location 内直接以 root 查找并返回提示图片。</p>
+<h3 id="if-指令"><a href="#if-指令" class="headerlink" title="if 指令"></a>if 指令</h3><p>Nginx 的 if 与编程语言中的布尔判断不同：它没有独立的布尔类型，判定规则是”<strong>空字符串或 <code>&quot;0&quot;</code> 为假，其余为真</strong>“。具体分类如下：</p>
+<table>
+<thead>
+<tr>
+<th>条件写法</th>
+<th>为 false 的情形</th>
+<th>为 true 的情形</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>变量名：<code>if ($param)</code></td>
+<td>变量值为空字符串或 <code>&quot;0&quot;</code></td>
+<td>变量值非空且不等于 <code>&quot;0&quot;</code></td>
+</tr>
+<tr>
+<td>相等比较：<code>if ($x = value)</code></td>
+<td>两值不相等</td>
+<td>两值相等</td>
+</tr>
+<tr>
+<td>不等比较：<code>if ($x != value)</code></td>
+<td>两值相等</td>
+<td>两值不相等</td>
+</tr>
+<tr>
+<td>正则：<code>if ($ua ~ pattern)</code> &#x2F; <code>~*</code></td>
+<td>匹配失败</td>
+<td>匹配成功</td>
+</tr>
+<tr>
+<td>取反正则：<code>if ($ua !~ pattern)</code> &#x2F; <code>!~*</code></td>
+<td>匹配成功</td>
+<td>匹配失败</td>
+</tr>
+<tr>
+<td>文件存在：<code>if (-f $file)</code></td>
+<td>文件不存在</td>
+<td>文件存在</td>
+</tr>
+<tr>
+<td>目录存在：<code>if (-d $file)</code></td>
+<td>目录不存在</td>
+<td>目录存在</td>
+</tr>
+<tr>
+<td>文件或目录存在：<code>if (-e $file)</code></td>
+<td>均不存在</td>
+<td>任一存在</td>
+</tr>
+<tr>
+<td>可执行：<code>if (-x $file)</code></td>
+<td>文件不可执行</td>
+<td>文件可执行</td>
+</tr>
+<tr>
+<td>取反判断：<code>if (!-f $file)</code> 等</td>
+<td>原条件成立</td>
+<td>原条件不成立</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>注意：Nginx 中字符串无需加引号（除非包含 <code>&#125;</code>、<code>;</code> 等字符）；比较运算符 <code>=</code>、<code>!=</code> 前后需保留空格。</p>
+</blockquote>
+<h3 id="rewrite-指令"><a href="#rewrite-指令" class="headerlink" title="rewrite 指令"></a>rewrite 指令</h3><p>语法：<code>rewrite 正则 替换内容 [flag];</code></p>
+<table>
+<thead>
+<tr>
+<th>flag</th>
+<th>行为</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>last</code></td>
+<td>重写后重新进入 location 匹配流程，可能落入其他 location</td>
+</tr>
+<tr>
+<td><code>break</code></td>
+<td>重写后仅在当前 location 内继续处理</td>
+</tr>
+<tr>
+<td><code>redirect</code></td>
+<td>返回 302 临时重定向，浏览器地址变化</td>
+</tr>
+<tr>
+<td><code>permanent</code></td>
+<td>返回 301 永久重定向，浏览器地址变化</td>
+</tr>
+</tbody></table>
+<p>对比 last 与 break 的差异：</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">location</span> /rewrite &#123;</span><br><span class="line">    <span class="attribute">rewrite</span><span class="regexp"> ^/rewrite/(test)\w*$</span> /<span class="variable">$1</span> <span class="literal">last</span>;   <span class="comment"># 重写为 /test</span></span><br><span class="line">    <span class="attribute">rewrite</span><span class="regexp"> ^/rewrite/(demo)\w*$</span> /<span class="variable">$1</span> <span class="literal">last</span>;   <span class="comment"># 重写为 /demo</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="section">location</span> /test &#123;</span><br><span class="line">    <span class="attribute">return</span> <span class="number">200</span> test_success;</span><br><span class="line">&#125;</span><br><span class="line"><span class="section">location</span> /demo &#123;</span><br><span class="line">    <span class="attribute">return</span> <span class="number">200</span> demo_success;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>使用 last：访问 <code>/rewrite/testabc</code> 重写为 <code>/test</code> 后重新匹配 location，落入 <code>/test</code> 块并返回 <code>test_success</code>；</li>
+<li>改用 break：URI 虽被改写，但不会跳出当前 location，最终返回 404。</li>
+</ul>
+<p>若替换内容以 <code>http://</code> 或 <code>https://</code> 开头，Nginx 直接向客户端返回重定向：</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">rewrite</span><span class="regexp"> ^/rewrite/url\w*$</span> https://www.baidu.com;</span><br></pre></td></tr></table></figure>
+
+<h3 id="rewrite-log-指令"><a href="#rewrite-log-指令" class="headerlink" title="rewrite_log 指令"></a>rewrite_log 指令</h3><p>rewrite_log 用于输出 rewrite 指令的执行过程（正则是否命中、URI 被改写为什么），便于排查”rewrite 没生效””规则写错导致误跳转”等问题。</p>
+<p>语法与位置：</p>
+<table>
+<thead>
+<tr>
+<th>项目</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>语法</td>
+<td>&#96;rewrite_log on</td>
+</tr>
+<tr>
+<td>默认值</td>
+<td>off</td>
+</tr>
+<tr>
+<td>位置</td>
+<td>http、server、location、if</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>关键前提：rewrite 日志以 notice 级别写入 error_log，因此 <code>error_log</code> 的级别必须不高于 notice（即 debug&#x2F;info&#x2F;notice 均可）。若保持默认的 error 级别，notice 日志不会输出。</p>
+</blockquote>
+<p><strong>完整示例</strong></p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">http</span> &#123;</span><br><span class="line">    <span class="section">server</span> &#123;</span><br><span class="line">        <span class="attribute">listen</span> <span class="number">80</span>;</span><br><span class="line">        <span class="attribute">server_name</span> localhost;</span><br><span class="line"></span><br><span class="line">        <span class="section">location</span> /rewrite &#123;</span><br><span class="line">            <span class="attribute">rewrite_log</span> <span class="literal">on</span>;                    <span class="comment"># 1. 开启重写日志</span></span><br><span class="line">		    <span class="attribute">error_log</span> logs/<span class="literal">error</span>.log <span class="literal">notice</span>;   <span class="comment"># 2. 调整日志级别，否则看不到</span></span><br><span class="line">            <span class="attribute">rewrite</span><span class="regexp"> ^/rewrite/(test)\w*$</span> /<span class="variable">$1</span> <span class="literal">last</span>;   <span class="comment"># /rewrite/testabc -&gt; /test</span></span><br><span class="line">            <span class="attribute">rewrite</span><span class="regexp"> ^/rewrite/(demo)\w*$</span> /<span class="variable">$1</span> <span class="literal">last</span>;   <span class="comment"># /rewrite/demoabc  -&gt; /demo</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="section">location</span> /test &#123;</span><br><span class="line">            <span class="attribute">return</span> <span class="number">200</span> test_success;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="section">location</span> /demo &#123;</span><br><span class="line">            <span class="attribute">return</span> <span class="number">200</span> demo_success;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Rewrite-应用案例"><a href="#Rewrite-应用案例" class="headerlink" title="Rewrite 应用案例"></a>Rewrite 应用案例</h2><h3 id="案例一：域名跳转"><a href="#案例一：域名跳转" class="headerlink" title="案例一：域名跳转"></a>案例一：域名跳转</h3><p>网站更换域名后，通过重写将旧域名请求（含原路径）迁移至新域名：</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">server</span> &#123;</span><br><span class="line">    <span class="attribute">listen</span> <span class="number">80</span>;</span><br><span class="line">    <span class="attribute">server_name</span> www.itheima.com www.itheima.cn;</span><br><span class="line">    <span class="attribute">rewrite</span><span class="regexp"> ^(.*)</span> http://www.itcast.cn<span class="variable">$1</span> <span class="literal">permanent</span>;   <span class="comment"># 301 永久跳转</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>permanent</code> 适用于永久性变更（SEO 会收录新地址），临时场景应使用 302。</p>
+<p>URL 对照示例：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">原始 URL       ：http://www.itheima.com/news/detail</span><br><span class="line">rewrite 后 URL ：http://www.itcast.cn/news/detail</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>补充：若原请求携带查询参数（如 <code>/news/detail?id=10</code>），且 replacement 中未显式拼接参数，Nginx 会自动将原参数附加到新地址上。</p>
+</blockquote>
+<h3 id="案例二：域名镜像"><a href="#案例二：域名镜像" class="headerlink" title="案例二：域名镜像"></a>案例二：域名镜像</h3><p>仅将指定模块镜像到主域名，其余模块仍由镜像域名自行处理：</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">server</span> &#123;</span><br><span class="line">    <span class="attribute">listen</span> <span class="number">80</span>;</span><br><span class="line">    <span class="attribute">server_name</span> www.itheima.cn www.itheima.com;</span><br><span class="line">    <span class="section">location</span> /user &#123;</span><br><span class="line">        <span class="attribute">rewrite</span><span class="regexp"> ^/user(.*)$</span> http://www.itcast.cn/user<span class="variable">$1</span>;   <span class="comment"># 补回 /user，保留模块路径</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="section">location</span> /emp &#123;</span><br><span class="line">        <span class="attribute">return</span> <span class="number">200</span> <span class="string">&#x27;&lt;h1&gt;emp_success&lt;/h1&gt;&#x27;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>URL 对照示例：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">原始 URL       ：http://www.itheima.com/user/list</span><br><span class="line">rewrite 后 URL ：http://www.itcast.cn/list</span><br></pre></td></tr></table></figure>
+
+<h3 id="案例三：独立域名"><a href="#案例三：独立域名" class="headerlink" title="案例三：独立域名"></a>案例三：独立域名</h3><p>为不同业务模块配置独立子域名并跳转至主站对应路径：</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">server</span> &#123; </span><br><span class="line">    <span class="attribute">listen</span> <span class="number">81</span>; </span><br><span class="line">    <span class="attribute">server_name</span> search.itcast.com;</span><br><span class="line">    <span class="attribute">rewrite</span><span class="regexp"> ^(.*)</span> http://www.itcast.cn/search<span class="variable">$1</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="section">server</span> &#123; </span><br><span class="line">    <span class="attribute">listen</span> <span class="number">82</span>; </span><br><span class="line">    <span class="attribute">server_name</span> item.itcast.com;</span><br><span class="line">    <span class="attribute">rewrite</span><span class="regexp"> ^(.*)</span> http://www.itcast.cn/item<span class="variable">$1</span>; </span><br><span class="line">&#125;</span><br><span class="line"><span class="section">server</span> &#123; </span><br><span class="line">    <span class="attribute">listen</span> <span class="number">83</span>; </span><br><span class="line">    <span class="attribute">server_name</span> cart.itcast.com;</span><br><span class="line">    <span class="attribute">rewrite</span><span class="regexp"> ^(.*)</span> http://www.itcast.cn/cart<span class="variable">$1</span>; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>URL 对照示例（以商品详情模块为例）：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">原始 URL       ：http://item.itcast.com:82/goods/1001</span><br><span class="line">rewrite 后 URL ：http://www.itcast.cn/item/goods/1001</span><br></pre></td></tr></table></figure>
+
+<p>三个子域名（search&#x2F;item&#x2F;cart）分别对应主站 <code>/search</code>、<code>/item</code>、<code>/cart</code> 模块。</p>
+<h3 id="案例四：目录自动补-“-x2F-“"><a href="#案例四：目录自动补-“-x2F-“" class="headerlink" title="案例四：目录自动补 “&#x2F;“"></a>案例四：目录自动补 “&#x2F;“</h3><p>旧版本 Nginx 对不带末尾斜杠的目录访问，301 跳转可能生成错误地址。可通过 rewrite 显式补全：</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">location</span> /heima &#123;</span><br><span class="line">    <span class="attribute">if</span> (-d <span class="variable">$request_filename</span>) &#123;</span><br><span class="line">        <span class="attribute">rewrite</span><span class="regexp"> ^/(.*)([^/])$</span> http://<span class="variable">$host</span>/<span class="variable">$1</span><span class="variable">$2</span>/ <span class="literal">permanent</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>说明：新版本默认 <code>server_name_in_redirect off</code>，该问题已较少出现，此案例主要用于理解 rewrite 的目录处理能力。</p>
+</blockquote>
+<p>URL 对照示例：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">原始 URL       ：http://www.web.com/heima</span><br><span class="line">rewrite 后 URL ：http://www.web.com/heima/</span><br></pre></td></tr></table></figure>
+
+<h3 id="案例五：合并目录"><a href="#案例五：合并目录" class="headerlink" title="案例五：合并目录"></a>案例五：合并目录</h3><p>真实文件位于多级目录，通过重写提供扁平化短地址，利于 SEO 与用户记忆：</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">location</span> /server &#123;</span><br><span class="line">    <span class="attribute">rewrite</span><span class="regexp"> ^/server-([0-9]+)-([0-9]+)-([0-9]+)-([0-9]+)-([0-9]+)\.html$</span></span><br><span class="line">            /server/<span class="variable">$1</span>/<span class="variable">$2</span>/<span class="variable">$3</span>/<span class="variable">$4</span>/<span class="variable">$5</span>.html <span class="literal">last</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>URL 对照示例：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">原始 URL      ：http://www.web.com/server-11-22-33-44-20.html</span><br><span class="line">rewrite 后 URL：http://www.web.com/server/11/22/33/44/20.html</span><br></pre></td></tr></table></figure>
+
+<p>用户只需记忆扁平化的短地址，真实文件仍存放在多级目录中。</p>
+<h3 id="案例六：防盗链响应优化"><a href="#案例六：防盗链响应优化" class="headerlink" title="案例六：防盗链响应优化"></a>案例六：防盗链响应优化</h3><p>盗链请求不再直接返回 403，而是重定向至提示图片，提升用户体验：</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">location</span> /images &#123;</span><br><span class="line">    <span class="attribute">root</span> html;</span><br><span class="line">    <span class="attribute">valid_referers</span> <span class="literal">none</span> <span class="literal">blocked</span> www.baidu.com;</span><br><span class="line">    <span class="attribute">if</span> (<span class="variable">$invalid_referer</span>) &#123;</span><br><span class="line">        <span class="attribute">rewrite</span><span class="regexp"> ^/</span> /images/forbidden.png <span class="literal">break</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>URL 对照示例：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">原始 URL      ：http://www.web.com/images/photo.jpg（Referer 不在信任名单内）</span><br><span class="line">rewrite 后 URL：/images/forbidden.png</span><br></pre></td></tr></table></figure>
+
+<h2 id="反向代理"><a href="#反向代理" class="headerlink" title="反向代理"></a>反向代理</h2><h3 id="正向代理与反向代理"><a href="#正向代理与反向代理" class="headerlink" title="正向代理与反向代理"></a>正向代理与反向代理</h3><table>
+<thead>
+<tr>
+<th></th>
+<th>正向代理</th>
+<th>反向代理</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>代理对象</td>
+<td>客户端</td>
+<td>服务端</td>
+</tr>
+<tr>
+<td>隐藏对象</td>
+<td>客户端身份</td>
+<td>后端服务器</td>
+</tr>
+<tr>
+<td>典型场景</td>
+<td>企业上网代理</td>
+<td>流量网关、负载均衡入口</td>
+</tr>
+</tbody></table>
+<p>正向代理代替客户端发起请求，服务器只能感知代理地址；反向代理位于后端服务器之前，客户端只与 Nginx 交互，无法直接接触后端节点。</p>
+<h3 id="proxy-pass-指令"><a href="#proxy-pass-指令" class="headerlink" title="proxy_pass 指令"></a>proxy_pass 指令</h3><figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">location</span> /xxx &#123;</span><br><span class="line">    <span class="attribute">proxy_pass</span> http://192.168.200.146:8080;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>面试高频：proxy_pass 后是否添加 “&#x2F;“？</strong></p>
+<ul>
+<li>proxy_pass 后不含 URI（仅协议与 IP:端口）时，请求 URI 原样转发；</li>
+<li>proxy_pass 后含 URI（<code>/</code> 或具体路径）时，location 匹配部分将被替换。</li>
+</ul>
+<p>以 <code>location /server</code> 为例：</p>
+<table>
+<thead>
+<tr>
+<th>proxy_pass 写法</th>
+<th>访问 <code>/server/index.html</code> 时后端接收</th>
+<th>原因</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>proxy_pass http://192.168.200.146;</code></td>
+<td><code>/server/index.html</code></td>
+<td>不含 URI，原样转发</td>
+</tr>
+<tr>
+<td><code>proxy_pass http://192.168.200.146/;</code></td>
+<td><code>/index.html</code></td>
+<td>含 <code>/</code>，替换 location 前缀</td>
+</tr>
+</tbody></table>
+<h3 id="proxy-set-header-指令"><a href="#proxy-set-header-指令" class="headerlink" title="proxy_set_header 指令"></a>proxy_set_header 指令</h3><p>默认情况下后端仅能看到代理地址，须显式透传真实客户端信息：</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">location</span> /server &#123;</span><br><span class="line">    <span class="attribute">proxy_pass</span> http://192.168.200.146:8080/;</span><br><span class="line">    <span class="attribute">proxy_set_header</span> Host <span class="variable">$host</span>;</span><br><span class="line">    <span class="attribute">proxy_set_header</span> X-Real-IP <span class="variable">$remote_addr</span>;</span><br><span class="line">    <span class="attribute">proxy_set_header</span> X-Forwarded-For <span class="variable">$proxy_add_x_forwarded_for</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>后端据此获取用户真实 IP，用于日志、风控等场景。</p>
+<h3 id="proxy-redirect-指令"><a href="#proxy-redirect-指令" class="headerlink" title="proxy_redirect 指令"></a>proxy_redirect 指令</h3><h4 id="作用与产生原因"><a href="#作用与产生原因" class="headerlink" title="作用与产生原因"></a>作用与产生原因</h4><p>反向代理场景下，后端返回 301&#x2F;302 重定向时，响应头中的 <code>Location</code>（或 <code>Refresh</code>）往往指向后端自身的地址，例如写死的内网 IP、内部端口或上游主机名。客户端收到该响应后，会按 <code>Location</code> 再次发起请求，可能出现两种情况：</p>
+<ul>
+<li>客户端无法访问内网地址，重定向失败；</li>
+<li>客户端绕过 Nginx 直接访问后端，暴露内网节点。</li>
+</ul>
+<p><code>proxy_redirect</code> 用于<strong>修改被代理服务器响应头中的 Location 与 Refresh 字段</strong>，把后端返回的地址改写为客户端可访问的对外地址。</p>
+<h4 id="语法与位置"><a href="#语法与位置" class="headerlink" title="语法与位置"></a>语法与位置</h4><table>
+<thead>
+<tr>
+<th>项目</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>语法</td>
+<td><code>proxy_redirect redirect replacement;</code><br><code>proxy_redirect default;</code><br><code>proxy_redirect off;</code></td>
+</tr>
+<tr>
+<td>默认值</td>
+<td><code>proxy_redirect default;</code></td>
+</tr>
+<tr>
+<td>位置</td>
+<td>http、server、location</td>
+</tr>
+</tbody></table>
+<p>三种写法：</p>
+<table>
+<thead>
+<tr>
+<th>写法</th>
+<th>行为</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>proxy_redirect redirect replacement;</code></td>
+<td>将响应头中匹配 <code>redirect</code> 前缀的地址替换为 <code>replacement</code>（支持变量与正则）</td>
+</tr>
+<tr>
+<td><code>proxy_redirect default;</code></td>
+<td>由 Nginx 依据当前 location 与 proxy_pass 自动推导替换规则，适用于常规代理配置</td>
+</tr>
+<tr>
+<td><code>proxy_redirect off;</code></td>
+<td>关闭替换，原样透传后端返回的地址</td>
+</tr>
+</tbody></table>
+<p>可配置多条 proxy_redirect，Nginx 按配置顺序匹配，命中第一条即生效。</p>
+<h4 id="案例一：把内网-IP-改写为对外域名"><a href="#案例一：把内网-IP-改写为对外域名" class="headerlink" title="案例一：把内网 IP 改写为对外域名"></a>案例一：把内网 IP 改写为对外域名</h4><p>场景：客户端通过 <code>http://www.example.com</code> 访问 Nginx，后端返回的 Location 写死了内网 IP。</p>
+<p>后端返回的响应头：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">HTTP/1.1 302 Found</span><br><span class="line">Location: http://192.168.200.146:8081/index.html</span><br></pre></td></tr></table></figure>
+
+<p>Nginx 代理配置：</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">location</span> / &#123;</span><br><span class="line">    <span class="attribute">proxy_pass</span> http://192.168.200.146:8081/;</span><br><span class="line">    <span class="attribute">proxy_redirect</span> http://192.168.200.146:8081 http://<span class="variable">$host</span>;   <span class="comment"># $host = www.example.com</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>改写后客户端实际收到的响应头：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">HTTP/1.1 302 Found</span><br><span class="line">Location: http://www.example.com/index.html</span><br></pre></td></tr></table></figure>
+
+<p>说明：<code>redirect</code> 部分（<code>http://192.168.200.146:8081</code>）用于匹配后端返回地址的前缀，<code>replacement</code> 部分（<code>http://$host</code>）为替换后的对外地址，其中 <code>$host</code> 取客户端本次请求的主机名。浏览器随后会通过对外域名重新请求，不会再与内网后端直接交互。</p>
+<h4 id="案例二：使用-default-自动推导"><a href="#案例二：使用-default-自动推导" class="headerlink" title="案例二：使用 default 自动推导"></a>案例二：使用 default 自动推导</h4><p>当后端返回的地址与 <code>proxy_pass</code> 目标一致时，无需手工书写具体 IP，直接使用 default：</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">location</span> / &#123;</span><br><span class="line">    <span class="attribute">proxy_pass</span> http://192.168.200.146:8081/;</span><br><span class="line">    <span class="attribute">proxy_redirect</span> default;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>后端返回 <code>Location: http://192.168.200.146:8081/index.html</code> 时，default 会根据 location 与 proxy_pass 自动将其改写为相对地址 <code>/index.html</code>，浏览器基于当前访问的 Nginx 域名补全后请求。</p>
+<blockquote>
+<p>说明：后端返回相对地址（如 <code>Location: /index.html</code>）时，浏览器会基于当前页面地址自动解析，通常无需配置 proxy_redirect。</p>
+</blockquote>
+<h4 id="案例三：关闭替换（off）"><a href="#案例三：关闭替换（off）" class="headerlink" title="案例三：关闭替换（off）"></a>案例三：关闭替换（off）</h4><p>若后端返回的地址本身即为对外地址，或已通过其他方式处理，可显式关闭：</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">location</span> / &#123;</span><br><span class="line">    <span class="attribute">proxy_pass</span> http://192.168.200.146:8081/;</span><br><span class="line">    <span class="attribute">proxy_redirect</span> <span class="literal">off</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>注意：proxy_redirect 仅修改响应头；若页面响应体或业务代码中写死了内网地址，则不会被改写，需由后端修正或使用 body 内容替换方案。</p>
+</blockquote>
+<blockquote>
+<p>验证：可先用 curl 查看代理返回的响应头，对比配置前后 Location 字段的变化：</p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -I http://www.example.com/login</span><br></pre></td></tr></table></figure>
+
+<h3 id="反向代理应用场景"><a href="#反向代理应用场景" class="headerlink" title="反向代理应用场景"></a>反向代理应用场景</h3><p>后端节点内容不同时，可按路径分发至不同节点：</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">server</span> &#123;</span><br><span class="line">    <span class="attribute">listen</span> <span class="number">8082</span>;</span><br><span class="line">    <span class="attribute">server_name</span> localhost;</span><br><span class="line">    <span class="section">location</span> /server1 &#123; <span class="attribute">proxy_pass</span> http://192.168.200.146:9001/; &#125;</span><br><span class="line">    <span class="section">location</span> /server2 &#123; <span class="attribute">proxy_pass</span> http://192.168.200.146:9002/; &#125;</span><br><span class="line">    <span class="section">location</span> /server3 &#123; <span class="attribute">proxy_pass</span> http://192.168.200.146:9003/; &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>若后端节点内容一致，则属于集群场景，应通过负载均衡（upstream）统一调度，详见后续章节。</p>
+<h2 id="HTTPS-接入"><a href="#HTTPS-接入" class="headerlink" title="HTTPS 接入"></a>HTTPS 接入</h2><h3 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h3><p>HTTP 以明文传输，存在被窃听与篡改的风险。HTTPS 即 HTTP + SSL&#x2F;TLS，在传输前对数据进行加密，保障机密性与完整性。启用 HTTPS 需编译 <code>--with-http_ssl_module</code> 模块，并依赖 OpenSSL。</p>
+<h3 id="证书生成"><a href="#证书生成" class="headerlink" title="证书生成"></a>证书生成</h3><p>生产环境通常使用云平台证书；本地测试可用 openssl 自签：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">mkdir</span> /root/cert &amp;&amp; <span class="built_in">cd</span> /root/cert</span><br><span class="line">openssl genrsa -des3 -out server.key 1024</span><br><span class="line">openssl req -new -key server.key -out server.csr</span><br><span class="line"><span class="built_in">cp</span> server.key server.key.org</span><br><span class="line">openssl rsa -<span class="keyword">in</span> server.key.org -out server.key</span><br><span class="line">openssl x509 -req -days 365 -<span class="keyword">in</span> server.csr -signkey server.key -out server.crt</span><br></pre></td></tr></table></figure>
+
+<h3 id="配置示例"><a href="#配置示例" class="headerlink" title="配置示例"></a>配置示例</h3><figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">server</span> &#123;</span><br><span class="line">    <span class="attribute">listen</span>       <span class="number">443</span> ssl;                 <span class="comment"># HTTPS 默认端口</span></span><br><span class="line">    <span class="attribute">server_name</span>  localhost;</span><br><span class="line"></span><br><span class="line">    <span class="attribute">ssl_certificate</span>      server.crt;      <span class="comment"># 证书文件</span></span><br><span class="line">    <span class="attribute">ssl_certificate_key</span>  server.key;      <span class="comment"># 私钥文件</span></span><br><span class="line">    <span class="attribute">ssl_session_cache</span>    shared:SSL:<span class="number">1m</span>;   <span class="comment"># 会话缓存，worker 间共享</span></span><br><span class="line">    <span class="attribute">ssl_session_timeout</span>  <span class="number">5m</span>;</span><br><span class="line">    <span class="attribute">ssl_ciphers</span>          HIGH:!aNULL:!MD5;</span><br><span class="line">    <span class="attribute">ssl_prefer_server_ciphers</span> <span class="literal">on</span>;</span><br><span class="line"></span><br><span class="line">    <span class="section">location</span> / &#123;</span><br><span class="line">        <span class="attribute">root</span>   html;</span><br><span class="line">        <span class="attribute">index</span>  index.html index.htm;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="安全隔离"><a href="#安全隔离" class="headerlink" title="安全隔离"></a>安全隔离</h3><p>反向代理的另一价值在于安全隔离：后端节点部署于内网，防火墙仅对外开放 Nginx 的 80&#x2F;443 入口，外部无法直接访问应用服务器，从而降低被攻击面。</p>
+<h2 id="代理性能调优"><a href="#代理性能调优" class="headerlink" title="代理性能调优"></a>代理性能调优</h2><p>先区分两个概念：</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Buffer 缓冲</th>
+<th>Cache 缓存</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>本质</td>
+<td>数据中转区</td>
+<td>数据副本</td>
+</tr>
+<tr>
+<td>生命周期</td>
+<td>请求处理完毕即释放</td>
+<td>可长期复用</td>
+</tr>
+<tr>
+<td>解决的问题</td>
+<td>上下游传输速度不一致</td>
+<td>重复请求直接命中，降低后端压力</td>
+</tr>
+</tbody></table>
+<p>常用缓冲指令：</p>
+<table>
+<thead>
+<tr>
+<th>指令</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>proxy_buffering</code></td>
+<td>总开关，默认 on</td>
+</tr>
+<tr>
+<td><code>proxy_buffers 8 4k</code></td>
+<td>读取后端响应的缓冲区数量与大小</td>
+</tr>
+<tr>
+<td><code>proxy_buffer_size</code></td>
+<td>响应起始部分（响应头）的缓冲大小</td>
+</tr>
+<tr>
+<td><code>proxy_busy_buffers_size</code></td>
+<td>忙碌状态缓冲总大小上限</td>
+</tr>
+<tr>
+<td><code>proxy_temp_path</code></td>
+<td>缓冲区不足时临时落盘路径</td>
+</tr>
+<tr>
+<td><code>proxy_temp_file_write_size</code></td>
+<td>临时文件单次写入大小</td>
+</tr>
+</tbody></table>
+<p>通用配置参考：</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">proxy_buffering</span> <span class="literal">on</span>;</span><br><span class="line"><span class="attribute">proxy_buffer_size</span> <span class="number">32k</span>;</span><br><span class="line"><span class="attribute">proxy_busy_buffers_size</span> <span class="number">64k</span>;</span><br><span class="line"><span class="attribute">proxy_temp_file_write_size</span> <span class="number">64k</span>;</span><br></pre></td></tr></table></figure>
+</div>
+        </div>
+        
+        <footer class="kratos-entry-footer clearfix">
+            
+            <div class="footer-tag clearfix">
+                <div class="pull-left">
+                <i class="fa fa-tags"></i>
+                    <a class="tag-none-link" href="/blog/tags/Nginx/" rel="tag">Nginx</a>
+                </div>
+                <div class="pull-date">
+                    <time datetime="2026-09-03T04:11:49.215Z" itemprop="dateModified">最后编辑：2026-09-03</time>
+                </div>
+            </div>
+        </footer>
+    </div>
+    
+        <nav class="navigation post-navigation clearfix" role="navigation">
+            
+            <div class="nav-previous clearfix">
+                <a title=" 【Nginx】静态资源服务与优化" href="/blog/2026/09/03/02后端/Nginx/02.Nginx静态资源服务与优化/">&lt; 上一篇</a>
+            </div>
+            
+            
+            <div class="nav-next clearfix">
+                <a title=" 【Nginx】负载均衡与缓存" href="/blog/2026/09/05/02后端/Nginx/04.Nginx负载均衡与缓存/">下一篇 &gt;</a>
+            </div>
+            
+        </nav>
+    
+    
+</article>
+
+        
+
+            </section>
+
+        
+
+                
+            
+
+<section id="kratos-widget-area" class="col-md-4 hidden-xs hidden-sm">
+    <!-- 文章和页面根据splitter来分割，没有的话就从头开始设置为sticky -->
+    
+    
+                <aside id="krw-about" class="widget widget-kratos-about clearfix">
+    <div class="photo-background"></div>
+    <div class="photo-wrapper clearfix">
+        <div class="photo-wrapper-tip text-center">
+            <img class="about-photo" src="/blog/images/avatar.webp" loading="lazy" decoding="auto" />
+        </div>
+    </div>
+    <div class="textwidget">
+        <p class="text-center">极简主义</p>
+    </div>
+    <div class="site-meta">
+        <a class="meta-item" href="/blog/archives/">
+            <span class="title">
+                文章
+            </span>
+            <span class="count">
+                122
+            </span>
+        </a>
+        <a class="meta-item" href="/blog/categories/">
+            <span class="title">
+                分类
+            </span>
+            <span class="count">
+                17
+            </span>
+        </a>
+        <a class="meta-item" href="/blog/tags/">
+            <span class="title">
+                标签
+            </span>
+            <span class="count">
+                42
+            </span>
+        </a>
+    </div>
+</aside>
+            
+                    <div class="sticky-area">
+                
+                    <aside id="krw-toc" class="widget widget-kratos-toc clearfix toc-div-class" >
+    <div class="photo-background"></div>
+    <h4 class="widget-title no-after">
+        <i class="fa fa-compass"></i>
+        文章目录
+        <span class="toc-progress-bar" role="progressbar" aria-label="阅读进度："></span>
+    </h4>
+    <div class="textwidget">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Rewrite-%E6%A6%82%E8%BF%B0"><span class="toc-text">Rewrite 概述</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%B8%E7%94%A8%E6%8C%87%E4%BB%A4"><span class="toc-text">常用指令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%B8%E7%94%A8%E5%86%85%E7%BD%AE%E5%8F%98%E9%87%8F"><span class="toc-text">常用内置变量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#set%E3%80%81if%E3%80%81break%E3%80%81return-%E7%94%A8%E6%B3%95"><span class="toc-text">set、if、break、return 用法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#break-%E6%8C%87%E4%BB%A4"><span class="toc-text">break 指令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#if-%E6%8C%87%E4%BB%A4"><span class="toc-text">if 指令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#rewrite-%E6%8C%87%E4%BB%A4"><span class="toc-text">rewrite 指令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#rewrite-log-%E6%8C%87%E4%BB%A4"><span class="toc-text">rewrite_log 指令</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Rewrite-%E5%BA%94%E7%94%A8%E6%A1%88%E4%BE%8B"><span class="toc-text">Rewrite 应用案例</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A1%88%E4%BE%8B%E4%B8%80%EF%BC%9A%E5%9F%9F%E5%90%8D%E8%B7%B3%E8%BD%AC"><span class="toc-text">案例一：域名跳转</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A1%88%E4%BE%8B%E4%BA%8C%EF%BC%9A%E5%9F%9F%E5%90%8D%E9%95%9C%E5%83%8F"><span class="toc-text">案例二：域名镜像</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A1%88%E4%BE%8B%E4%B8%89%EF%BC%9A%E7%8B%AC%E7%AB%8B%E5%9F%9F%E5%90%8D"><span class="toc-text">案例三：独立域名</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A1%88%E4%BE%8B%E5%9B%9B%EF%BC%9A%E7%9B%AE%E5%BD%95%E8%87%AA%E5%8A%A8%E8%A1%A5-%E2%80%9C-x2F-%E2%80%9C"><span class="toc-text">案例四：目录自动补 “&#x2F;“</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A1%88%E4%BE%8B%E4%BA%94%EF%BC%9A%E5%90%88%E5%B9%B6%E7%9B%AE%E5%BD%95"><span class="toc-text">案例五：合并目录</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A1%88%E4%BE%8B%E5%85%AD%EF%BC%9A%E9%98%B2%E7%9B%97%E9%93%BE%E5%93%8D%E5%BA%94%E4%BC%98%E5%8C%96"><span class="toc-text">案例六：防盗链响应优化</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86"><span class="toc-text">反向代理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%AD%A3%E5%90%91%E4%BB%A3%E7%90%86%E4%B8%8E%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86"><span class="toc-text">正向代理与反向代理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#proxy-pass-%E6%8C%87%E4%BB%A4"><span class="toc-text">proxy_pass 指令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#proxy-set-header-%E6%8C%87%E4%BB%A4"><span class="toc-text">proxy_set_header 指令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#proxy-redirect-%E6%8C%87%E4%BB%A4"><span class="toc-text">proxy_redirect 指令</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BD%9C%E7%94%A8%E4%B8%8E%E4%BA%A7%E7%94%9F%E5%8E%9F%E5%9B%A0"><span class="toc-text">作用与产生原因</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%AF%AD%E6%B3%95%E4%B8%8E%E4%BD%8D%E7%BD%AE"><span class="toc-text">语法与位置</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%A1%88%E4%BE%8B%E4%B8%80%EF%BC%9A%E6%8A%8A%E5%86%85%E7%BD%91-IP-%E6%94%B9%E5%86%99%E4%B8%BA%E5%AF%B9%E5%A4%96%E5%9F%9F%E5%90%8D"><span class="toc-text">案例一：把内网 IP 改写为对外域名</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%A1%88%E4%BE%8B%E4%BA%8C%EF%BC%9A%E4%BD%BF%E7%94%A8-default-%E8%87%AA%E5%8A%A8%E6%8E%A8%E5%AF%BC"><span class="toc-text">案例二：使用 default 自动推导</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%A1%88%E4%BE%8B%E4%B8%89%EF%BC%9A%E5%85%B3%E9%97%AD%E6%9B%BF%E6%8D%A2%EF%BC%88off%EF%BC%89"><span class="toc-text">案例三：关闭替换（off）</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="toc-text">反向代理应用场景</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#HTTPS-%E6%8E%A5%E5%85%A5"><span class="toc-text">HTTPS 接入</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="toc-text">基本概念</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AF%81%E4%B9%A6%E7%94%9F%E6%88%90"><span class="toc-text">证书生成</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE%E7%A4%BA%E4%BE%8B"><span class="toc-text">配置示例</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E5%85%A8%E9%9A%94%E7%A6%BB"><span class="toc-text">安全隔离</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%A3%E7%90%86%E6%80%A7%E8%83%BD%E8%B0%83%E4%BC%98"><span class="toc-text">代理性能调优</span></a></li></ol>
+    </div>
+</aside>
+                
+                
+  <aside id="krw-tags" class="widget widget-kratos-tags clearfix">
+    <h4 class="widget-title"><i class="fa fa-tags"></i>标签聚合</h4>
+      <div class="tag-clouds">
+        <a href="/blog/tags/AI/" style="font-size: 0.8em;">AI</a> <a href="/blog/tags/CORS/" style="font-size: 0.8em;">CORS</a> <a href="/blog/tags/CSS/" style="font-size: 0.8em;">CSS</a> <a href="/blog/tags/Docker/" style="font-size: 0.8em;">Docker</a> <a href="/blog/tags/Dubbo/" style="font-size: 0.8em;">Dubbo</a> <a href="/blog/tags/ELK/" style="font-size: 0.8em;">ELK</a> <a href="/blog/tags/Elasticsearch/" style="font-size: 0.8em;">Elasticsearch</a> <a href="/blog/tags/Eureka/" style="font-size: 0.8em;">Eureka</a> <a href="/blog/tags/Feign/" style="font-size: 0.8em;">Feign</a> <a href="/blog/tags/Gateway/" style="font-size: 0.8em;">Gateway</a> <a href="/blog/tags/HTML/" style="font-size: 0.8em;">HTML</a> <a href="/blog/tags/Idea/" style="font-size: 0.8em;">Idea</a> <a href="/blog/tags/Java/" style="font-size: 0.8em;">Java</a> <a href="/blog/tags/JavaScript/" style="font-size: 0.8em;">JavaScript</a> <a href="/blog/tags/JavaWeb/" style="font-size: 0.8em;">JavaWeb</a> <a href="/blog/tags/K8s/" style="font-size: 0.8em;">K8s</a> <a href="/blog/tags/Kafka/" style="font-size: 0.8em;">Kafka</a> <a href="/blog/tags/Linux/" style="font-size: 0.8em;">Linux</a>
+      </div>
+  </aside>
+
+            
+                
+  <aside id="krw-posts" class="widget widget-kratos-posts">
+  <h4 class="widget-title"><i class="fa fa-file"></i>最新文章</h4>
+  <div class="tab-content">
+      <ul class="list-group">
+        
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/09/05/02%E5%90%8E%E7%AB%AF/Nginx/04.Nginx%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E4%B8%8E%E7%BC%93%E5%AD%98/"><i class="fa  fa-book"></i> 【Nginx】负载均衡与缓存</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/09/04/02%E5%90%8E%E7%AB%AF/Nginx/03.Nginx%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86%E4%B8%8E%E5%9C%B0%E5%9D%80%E9%87%8D%E5%86%99/"><i class="fa  fa-book"></i> 【Nginx】反向代理与地址重写</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/09/03/02%E5%90%8E%E7%AB%AF/Nginx/02.Nginx%E9%9D%99%E6%80%81%E8%B5%84%E6%BA%90%E6%9C%8D%E5%8A%A1%E4%B8%8E%E4%BC%98%E5%8C%96/"><i class="fa  fa-book"></i> 【Nginx】静态资源服务与优化</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/09/02/02%E5%90%8E%E7%AB%AF/Nginx/01.Nginx%E5%9F%BA%E7%A1%80%E4%B8%8E%E5%AE%89%E8%A3%85/"><i class="fa  fa-book"></i> 【Nginx】基础与安装</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/08/31/02%E5%90%8E%E7%AB%AF/Kafka/01.Kafka%E5%9F%BA%E7%A1%80/"><i class="fa  fa-book"></i> 【Kafka】基础</a>
+            
+          
+        
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+      </ul>
+  </div>
+  </aside>
+
+            
+    </div>
+</section>
+        
+        </div>
+    </div>
+</div>
+<footer>
+    <div id="footer"  >
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3 footer-list text-center">
+                    <ul class="kratos-social-icons">
+                        <!-- Keep for compatibility -->
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <!-- New links -->
+                        
+                    </ul>
+                    <ul class="kratos-copyright">
+                        <div>
+                            <li>&copy; 2026 溪岚花的博客 版权所有.</li>
+                            <li>本站已运行<span id="span_dt">Loading...</span></li>
+                        </div>
+                        <div>
+                            <li>Theme <a href="https://github.com/Candinya/Kratos-Rebirth" target="_blank">Kratos:Rebirth</a></li>
+                            <li>Site built with&nbsp;<i class="fa fa-heart throb" style="color:#d43f57"></i>&nbsp;by 林家隆.</li>
+                        </div>
+                        <div>
+                            <li>Powered by <a href="https://hexo.io" target="_blank" rel="nofollow">Hexo</a></li>
+                            <li>Hosted on <a href="https://gitee.com/" target="_blank">Gitee Pages</a></li>
+                        </div>
+                        <div>
+                            
+                            
+                        </div>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="kr-tool text-center">
+            <div class="tool">
+                
+                    <div class="box search-box">
+                        <a href="/blog/search/">
+                            <span class="fa fa-search"></span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="box theme-box" id="darkmode-switch">
+                        <span class="fa fa-adjust"></span>
+                    </div>
+                
+                
+                
+            </div>
+            <div class="box gotop-box">
+                <span class="fa fa-chevron-up"></span>
+            </div>
+        </div>
+    </div>
+</footer>
+</div>
+</div>
+
+        <script defer src="/blog/vendors/bootstrap@3.3.4/dist/js/bootstrap.min.js"></script>
+<script defer src="/blog/vendors/nprogress@0.2.0/nprogress.js"></script>
+<script>
+    if (!window.kr) {
+        window.kr = {};
+    }
+    window.kr.notMobile = (!(navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i)));
+    window.kr.siteRoot = "/blog/";
+</script>
+
+
+
+
+
+    <script defer src="/blog/vendors/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+
+<script defer src="/blog/js/kratosr.min.js"></script>
+<script defer src="/blog/js/pjax.min.js"></script>
+
+
+
+<!-- Extra support for third-party plguins  -->
+
+
+    </body>
+</html>

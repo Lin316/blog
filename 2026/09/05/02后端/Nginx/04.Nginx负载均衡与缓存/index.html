@@ -1,0 +1,995 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+  <!-- 元数据 -->
+  <meta charset="utf-8">
+  <link rel="icon" href="/blog/images/logo.png">
+  
+  <title>【Nginx】负载均衡与缓存 | 溪岚花的博客</title>
+  
+  <meta name="author" content="林家隆" />
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="robots" content="index,follow" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <meta name="format-detection" content="telphone=no, email=no" />
+  
+    <meta name="keywords" content="Nginx" />
+  
+  <meta name="description" content="负载均衡概述单台服务器的处理能力存在上限，且存在单点故障风险。系统扩展可分为两类：    方式 说明 特点    纵向扩展（Scale Up） 提升单机 CPU、内存、磁盘等硬件能力 存在硬件天花板，成本非线性增长   横向扩展（Scale Out） 增加服务器数量组成集群 可平滑扩容，需引入负载均衡   横向扩展涉及两个角色：  应用集群：同一应用部署于多台服务器，共同处理请求； 负载均衡器：依">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【Nginx】负载均衡与缓存">
+<meta property="og:url" content="https://lin316.gitee.io/blog/2026/09/05/02%E5%90%8E%E7%AB%AF/Nginx/04.Nginx%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E4%B8%8E%E7%BC%93%E5%AD%98/index.html">
+<meta property="og:site_name" content="溪岚花的博客">
+<meta property="og:description" content="负载均衡概述单台服务器的处理能力存在上限，且存在单点故障风险。系统扩展可分为两类：    方式 说明 特点    纵向扩展（Scale Up） 提升单机 CPU、内存、磁盘等硬件能力 存在硬件天花板，成本非线性增长   横向扩展（Scale Out） 增加服务器数量组成集群 可平滑扩容，需引入负载均衡   横向扩展涉及两个角色：  应用集群：同一应用部署于多台服务器，共同处理请求； 负载均衡器：依">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://lin316.gitee.io/blog/blog/images/logo.png">
+<meta property="article:published_time" content="2026-09-05T13:00:00.000Z">
+<meta property="article:modified_time" content="2026-09-03T06:24:09.646Z">
+<meta property="article:author" content="林家隆">
+<meta property="article:tag" content="Nginx">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://lin316.gitee.io/blog/blog/images/logo.png">
+  
+  <!-- 站点验证相关 -->
+  
+    
+    
+    
+  
+  <!-- 样式表文件 -->
+  <link rel="stylesheet" id="kratos-css" href="/blog/css/kratosr.min.css" media="all"></script>
+  
+    <link rel="stylesheet" id="darkmode-css" href="/blog/css/kr-color-dark.min.css" media="(prefers-color-scheme: dark)"></script>
+    <script src="/blog/js/kr-dark.min.js"></script>
+  
+  
+    <link rel="stylesheet" id="highlight-css" href="/blog/css/highlight/night-eighties.min.css" media="all"></script>
+  
+  <link rel="stylesheet" id="fontawe-css" href="/blog/vendors/font-awesome@4.7.0/css/font-awesome.min.css" media="all"></script>
+  <link rel="stylesheet" id="nprogress-css" href="/blog/vendors/nprogress@0.2.0/nprogress.css" media="all"></script>
+  
+  
+  
+    <link rel="stylesheet" href="/blog/vendors/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css"></script>
+  
+  <!-- 不得不预先加载的一些JS文件 -->
+  <script src="/blog/vendors/jquery@3.6.0/dist/jquery.min.js"></script>
+  
+  
+  <style>
+    
+    
+  </style>
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+    <body class="custom-background">
+        <div id="kratos-wrapper">
+    <div id="kratos-page">
+        <div id="kratos-header">
+            <header id="kratos-desktop-topnav" class="kratos-topnav">
+                <div class="container">
+                    <div class="nav-header">
+                        <nav id="kratos-menu-wrap">
+                            <ul id="kratos-primary-menu" class="sf-menu">
+                                
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/">
+                                            
+                                                
+                                                    <i class="fa fa-home"></i>
+                                                
+                                                首页
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/archives/">
+                                            
+                                                
+                                                    <i class="fa fa-file"></i>
+                                                
+                                                归档
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/tags/">
+                                            
+                                                
+                                                    <i class="fa fa-tag"></i>
+                                                
+                                                标签
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/categories/">
+                                            
+                                                
+                                                    <i class="fa fa-folder"></i>
+                                                
+                                                目录
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/search/">
+                                            
+                                                
+                                                    <i class="fa fa-search"></i>
+                                                
+                                                搜索
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </header>
+            <header id="kratos-mobile-topnav" class="kratos-topnav">
+                <div class="container">
+                    <div class="color-logo"><a href="/blog/">溪岚花的博客</a></div>
+                    <div class="nav-toggle">
+                        <a class="kratos-nav-toggle js-kratos-nav-toggle">
+                            <i></i>
+                        </a>
+                    </div>
+                </div>
+            </header>
+        </div>
+        <div class="kratos-start kratos-hero-2">
+            <!-- <div class="kratos-overlay"></div> -->
+            <div class="kratos-cover kratos-cover-2 text-center">
+                <div class="desc desc2 animate-box">
+                    <a href="/blog/">
+                        <h2 style="opacity: 0.2;">溪岚花的博客</h2> <br />
+                        <span></span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div id="kratos-blog-post">
+            <div class="container">
+                <div id="main" class="row">
+                    
+
+        
+
+            <section class="col-md-8">
+
+        
+
+            <article itemscope itemtype="https://schema.org/Article">
+    
+    <link itemprop="mainEntityOfPage" href="https://lin316.gitee.io/blog/2026/09/05/02%E5%90%8E%E7%AB%AF/Nginx/04.Nginx%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E4%B8%8E%E7%BC%93%E5%AD%98/">
+    <div class="kratos-hentry kratos-post-inner clearfix">
+        <header class="kratos-entry-header">
+            
+                <h1 class="kratos-entry-title text-center" itemprop="name headline">【Nginx】负载均衡与缓存</h1>
+            
+            
+            <ul class="kratos-post-meta text-center">
+                <li><time datetime="2026-09-05T13:00:00.000Z" itemprop="datePublished"><i class="fa fa-calendar"></i> 2026-09-05</time></li>
+                <li itemprop="author" itemscope itemtype="https://schema.org/Person">
+                    <i class="fa fa-user"></i> 作者 <span itemprop="name">林家隆</span>
+                </li>
+                
+                    <li>
+                        <i class="fa fa-edit"></i> 
+                        
+                        
+                            7.63K
+                        
+                        字
+                    </li>
+                
+                
+            </ul>
+        </header>
+        <div class="kratos-post-content">
+            
+            <div id="expire-alert" class="alert alert-warning hidden" role="alert">
+                <div class="icon"><i class="fa fa-warning"></i></div>
+                <div class="text"><p>本文最后编辑于 <time datetime="1788416649646"></time> 前，其中的内容可能需要更新。</p></div>
+            </div>
+            
+            
+            
+                <div class="kratos-post-inner-toc toc-div-class" >
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E6%A6%82%E8%BF%B0"><span class="toc-number">1.</span> <span class="toc-text">负载均衡概述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B8%B8%E8%A7%81%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E6%96%B9%E5%BC%8F"><span class="toc-number">2.</span> <span class="toc-text">常见负载均衡方式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9B%9B%E5%B1%82%E4%B8%8E%E4%B8%83%E5%B1%82%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1"><span class="toc-number">2.1.</span> <span class="toc-text">四层与七层负载均衡</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Nginx-%E4%B8%83%E5%B1%82%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1"><span class="toc-number">3.</span> <span class="toc-text">Nginx 七层负载均衡</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9F%BA%E6%9C%AC%E9%85%8D%E7%BD%AE"><span class="toc-number">3.1.</span> <span class="toc-text">基本配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%8A%82%E7%82%B9%E7%8A%B6%E6%80%81%E5%8F%82%E6%95%B0"><span class="toc-number">3.2.</span> <span class="toc-text">节点状态参数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%AD%E7%A7%8D%E8%B0%83%E5%BA%A6%E7%AD%96%E7%95%A5"><span class="toc-number">3.3.</span> <span class="toc-text">六种调度策略</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BB%BC%E5%90%88%E6%A1%88%E4%BE%8B"><span class="toc-number">3.4.</span> <span class="toc-text">综合案例</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Nginx-%E5%9B%9B%E5%B1%82%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%EF%BC%88stream%EF%BC%89"><span class="toc-number">4.</span> <span class="toc-text">Nginx 四层负载均衡（stream）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Nginx-Web-%E7%BC%93%E5%AD%98"><span class="toc-number">5.</span> <span class="toc-text">Nginx Web 缓存</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BC%93%E5%AD%98%E6%9C%BA%E5%88%B6"><span class="toc-number">5.1.</span> <span class="toc-text">缓存机制</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%8C%E6%95%B4%E9%85%8D%E7%BD%AE%E6%A1%88%E4%BE%8B"><span class="toc-number">5.2.</span> <span class="toc-text">完整配置案例</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#proxy-cache-path-%E5%8F%82%E6%95%B0"><span class="toc-number">5.3.</span> <span class="toc-text">proxy_cache_path 参数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8C%87%E4%BB%A4%E9%80%9F%E6%9F%A5"><span class="toc-number">5.4.</span> <span class="toc-text">指令速查</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BC%93%E5%AD%98%E6%B8%85%E9%99%A4"><span class="toc-number">5.5.</span> <span class="toc-text">缓存清除</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AE%BE%E7%BD%AE%E4%B8%8D%E7%BC%93%E5%AD%98"><span class="toc-number">5.6.</span> <span class="toc-text">设置不缓存</span></a></li></ol></li></ol>
+                </div>
+            
+            <hr />
+            <div itemprop="articleBody"><h2 id="负载均衡概述"><a href="#负载均衡概述" class="headerlink" title="负载均衡概述"></a>负载均衡概述</h2><p>单台服务器的处理能力存在上限，且存在单点故障风险。系统扩展可分为两类：</p>
+<table>
+<thead>
+<tr>
+<th>方式</th>
+<th>说明</th>
+<th>特点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>纵向扩展（Scale Up）</td>
+<td>提升单机 CPU、内存、磁盘等硬件能力</td>
+<td>存在硬件天花板，成本非线性增长</td>
+</tr>
+<tr>
+<td>横向扩展（Scale Out）</td>
+<td>增加服务器数量组成集群</td>
+<td>可平滑扩容，需引入负载均衡</td>
+</tr>
+</tbody></table>
+<p>横向扩展涉及两个角色：</p>
+<ul>
+<li><strong>应用集群</strong>：同一应用部署于多台服务器，共同处理请求；</li>
+<li><strong>负载均衡器</strong>：依据调度算法将请求分发至集群中的某一节点。</li>
+</ul>
+<p>负载均衡的价值包括：缓解高并发压力、实现故障转移、支持水平扩容，并可在入口层实施安全过滤。</p>
+<h2 id="常见负载均衡方式"><a href="#常见负载均衡方式" class="headerlink" title="常见负载均衡方式"></a>常见负载均衡方式</h2><table>
+<thead>
+<tr>
+<th>方式</th>
+<th>原理</th>
+<th>优点</th>
+<th>缺点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>用户手动选择</td>
+<td>页面提供多个入口由用户自选</td>
+<td>实现简单</td>
+<td>依赖用户，无法自动调度</td>
+</tr>
+<tr>
+<td>DNS 轮询</td>
+<td>域名配置多条 A 记录，解析时轮流返回不同 IP</td>
+<td>成本低、易配置</td>
+<td>可靠性差、分配不均（不感知节点状态与性能）</td>
+</tr>
+<tr>
+<td>四&#x2F;七层负载均衡</td>
+<td>负载均衡器按 IP+端口或 URL&#x2F;域名分发</td>
+<td>调度可控、支持故障转移</td>
+<td>需额外部署组件</td>
+</tr>
+</tbody></table>
+<p>生产环境常见组合为四层采用 LVS、七层采用 Nginx（或 HAProxy）。</p>
+<h3 id="四层与七层负载均衡"><a href="#四层与七层负载均衡" class="headerlink" title="四层与七层负载均衡"></a>四层与七层负载均衡</h3><table>
+<thead>
+<tr>
+<th></th>
+<th>四层</th>
+<th>七层</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>作用层级</td>
+<td>传输层（OSI 第 4 层）</td>
+<td>应用层（OSI 第 7 层）</td>
+</tr>
+<tr>
+<td>调度依据</td>
+<td>IP + 端口（TCP&#x2F;UDP）</td>
+<td>URL、域名、请求头等</td>
+</tr>
+<tr>
+<td>效率</td>
+<td>较高</td>
+<td>相对较低</td>
+</tr>
+<tr>
+<td>是否识别域名</td>
+<td>否</td>
+<td>是</td>
+</tr>
+</tbody></table>
+<p>四层负载均衡在底层完成数据包分发，效率更高；七层负载均衡可基于业务内容精细化调度。</p>
+<h2 id="Nginx-七层负载均衡"><a href="#Nginx-七层负载均衡" class="headerlink" title="Nginx 七层负载均衡"></a>Nginx 七层负载均衡</h2><h3 id="基本配置"><a href="#基本配置" class="headerlink" title="基本配置"></a>基本配置</h3><p>后端三台服务（端口 9001&#x2F;9002&#x2F;9003），Nginx 配置如下：</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">http</span> &#123;</span><br><span class="line">    <span class="section">upstream</span> backend &#123;</span><br><span class="line">        <span class="attribute">server</span> <span class="number">192.168.200.146:9001</span>;</span><br><span class="line">        <span class="attribute">server</span> <span class="number">192.168.200.146:9002</span>;</span><br><span class="line">        <span class="attribute">server</span> <span class="number">192.168.200.146:9003</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="section">server</span> &#123;</span><br><span class="line">        <span class="attribute">listen</span> <span class="number">8083</span>;</span><br><span class="line">        <span class="attribute">server_name</span> localhost;</span><br><span class="line">        <span class="section">location</span> / &#123;</span><br><span class="line">            <span class="attribute">proxy_pass</span> http://backend;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>upstream 定义后端服务器池，proxy_pass 指向该池。未指定策略时默认采用轮询，请求依序分发至各节点。</p>
+<h3 id="节点状态参数"><a href="#节点状态参数" class="headerlink" title="节点状态参数"></a>节点状态参数</h3><table>
+<thead>
+<tr>
+<th>参数</th>
+<th>作用</th>
+<th>适用场景</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>down</code></td>
+<td>节点不参与调度</td>
+<td>停机维护</td>
+</tr>
+<tr>
+<td><code>backup</code></td>
+<td>标记为备用节点</td>
+<td>主节点全部不可用时启用</td>
+</tr>
+<tr>
+<td><code>max_fails</code></td>
+<td>允许的连续失败次数</td>
+<td>故障熔断</td>
+</tr>
+<tr>
+<td><code>fail_timeout</code></td>
+<td>失败后的暂停时长</td>
+<td>默认 10 秒后重新探测</td>
+</tr>
+<tr>
+<td><code>max_conns</code></td>
+<td>节点的最大连接数</td>
+<td>保护性能较弱的节点</td>
+</tr>
+</tbody></table>
+<p>配置示例：</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">upstream</span> backend &#123;</span><br><span class="line">    <span class="attribute">server</span> <span class="number">192.168.200.133:9001</span> down;               <span class="comment"># 维护中</span></span><br><span class="line">    <span class="attribute">server</span> <span class="number">192.168.200.133:9002</span> backup;             <span class="comment"># 备用节点</span></span><br><span class="line">    <span class="attribute">server</span> <span class="number">192.168.200.133:9003</span> max_fails=<span class="number">3</span> fail_timeout=<span class="number">15</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>测试备用节点时，可通过防火墙模拟节点宕机：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">firewall-cmd --permanent --add-port=9002/tcp</span><br><span class="line">firewall-cmd --permanent --remove-port=9003/tcp</span><br><span class="line">firewall-cmd --reload</span><br></pre></td></tr></table></figure>
+
+<h3 id="六种调度策略"><a href="#六种调度策略" class="headerlink" title="六种调度策略"></a>六种调度策略</h3><table>
+<thead>
+<tr>
+<th>策略</th>
+<th>配置写法</th>
+<th>调度规则</th>
+<th>适用场景</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>轮询</td>
+<td>默认</td>
+<td>按顺序轮流分发</td>
+<td>节点配置均衡、请求耗时接近</td>
+</tr>
+<tr>
+<td>加权轮询</td>
+<td><code>weight=数字</code></td>
+<td>按权重比例分发</td>
+<td>节点性能存在差异</td>
+</tr>
+<tr>
+<td>ip_hash</td>
+<td><code>ip_hash;</code></td>
+<td>同一客户端 IP 固定分发至同一节点</td>
+<td>会话保持</td>
+</tr>
+<tr>
+<td>least_conn</td>
+<td><code>least_conn;</code></td>
+<td>分发至当前连接数最少的节点</td>
+<td>请求耗时差异较大</td>
+</tr>
+<tr>
+<td>url_hash</td>
+<td><code>hash $request_uri;</code></td>
+<td>同一 URI 固定分发至同一节点</td>
+<td>提升后端缓存命中率</td>
+</tr>
+<tr>
+<td>fair</td>
+<td><code>fair;</code>（第三方）</td>
+<td>分发至响应时间短的节点</td>
+<td>节点性能动态变化</td>
+</tr>
+</tbody></table>
+<p><strong>轮询</strong></p>
+<p>默认策略，无需额外配置，请求依时间顺序轮流分配。</p>
+<p><strong>加权轮询</strong></p>
+<p>按权重比例分配流量，权重与节点处理能力成正比：</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">upstream</span> backend &#123;</span><br><span class="line">    <span class="attribute">server</span> <span class="number">192.168.200.146:9001</span> weight=<span class="number">10</span>;</span><br><span class="line">    <span class="attribute">server</span> <span class="number">192.168.200.146:9002</span> weight=<span class="number">5</span>;</span><br><span class="line">    <span class="attribute">server</span> <span class="number">192.168.200.146:9003</span> weight=<span class="number">3</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>ip_hash</strong></p>
+<p>依据客户端 IP 的哈希结果固定节点，可保证同一用户的会话（Session）落在同一后端：</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">upstream</span> backend &#123;</span><br><span class="line">    ip_hash;</span><br><span class="line">    <span class="attribute">server</span> <span class="number">192.168.200.146:9001</span>;</span><br><span class="line">    <span class="attribute">server</span> <span class="number">192.168.200.146:9002</span>;</span><br><span class="line">    <span class="attribute">server</span> <span class="number">192.168.200.146:9003</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>局限：某客户端（或某出口 IP）请求量集中时可能造成节点负载不均，且 weight 对该策略不生效。</p>
+</blockquote>
+<p><strong>least_conn</strong></p>
+<p>轮询无法感知请求处理时长，长时间请求会使所在节点过载。least_conn 将请求分发至当前连接数最少的节点：</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">upstream</span> backend &#123;</span><br><span class="line">    least_conn;</span><br><span class="line">    <span class="attribute">server</span> <span class="number">192.168.200.146:9001</span>;</span><br><span class="line">    <span class="attribute">server</span> <span class="number">192.168.200.146:9002</span>;</span><br><span class="line">    <span class="attribute">server</span> <span class="number">192.168.200.146:9003</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>url_hash</strong></p>
+<p>同一 URL 固定分发至同一节点，便于资源在单节点持续命中缓存：</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">upstream</span> backend &#123;</span><br><span class="line">    <span class="attribute">hash</span> <span class="variable">$request_uri</span>;</span><br><span class="line">    <span class="attribute">server</span> <span class="number">192.168.200.146:9001</span>;</span><br><span class="line">    <span class="attribute">server</span> <span class="number">192.168.200.146:9002</span>;</span><br><span class="line">    <span class="attribute">server</span> <span class="number">192.168.200.146:9003</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>fair</strong></p>
+<p>fair 依据页面大小、响应时间等指标智能调度，属于第三方模块（nginx-upstream-fair），需编译安装：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">./configure --add-module=/root/fair</span><br><span class="line">make</span><br><span class="line">make upgrade</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">upstream</span> backend &#123;</span><br><span class="line">    fair;</span><br><span class="line">    <span class="attribute">server</span> <span class="number">192.168.200.146:9001</span>;</span><br><span class="line">    <span class="attribute">server</span> <span class="number">192.168.200.146:9002</span>;</span><br><span class="line">    <span class="attribute">server</span> <span class="number">192.168.200.146:9003</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>面试口径：官方内置策略为轮询、加权轮询、ip_hash、least_conn、url_hash 五种，加第三方 fair 共六种；按模块划分时可表述为六种并注明 fair 为第三方扩展。</p>
+</blockquote>
+<h3 id="综合案例"><a href="#综合案例" class="headerlink" title="综合案例"></a>综合案例</h3><p>按路径分流至不同服务器池：</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">upstream</span> videobackend &#123;</span><br><span class="line">    <span class="attribute">server</span> <span class="number">192.168.200.146:9001</span>;</span><br><span class="line">    <span class="attribute">server</span> <span class="number">192.168.200.146:9002</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="section">upstream</span> filebackend &#123;</span><br><span class="line">    <span class="attribute">server</span> <span class="number">192.168.200.146:9003</span>;</span><br><span class="line">    <span class="attribute">server</span> <span class="number">192.168.200.146:9004</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="section">server</span> &#123;</span><br><span class="line">    <span class="attribute">listen</span> <span class="number">8084</span>;</span><br><span class="line">    <span class="attribute">server_name</span> localhost;</span><br><span class="line">    <span class="section">location</span> /video/ &#123; <span class="attribute">proxy_pass</span> http://videobackend; &#125;</span><br><span class="line">    <span class="section">location</span> /file/  &#123; <span class="attribute">proxy_pass</span> http://filebackend; &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>按域名分发至不同集群：</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">server</span> &#123; <span class="attribute">listen</span> <span class="number">8085</span>; <span class="attribute">server_name</span> www.itcast.cn;  <span class="section">location</span> / &#123; <span class="attribute">proxy_pass</span> http://itcastbackend;  &#125; &#125;</span><br><span class="line"><span class="section">server</span> &#123; <span class="attribute">listen</span> <span class="number">8086</span>; <span class="attribute">server_name</span> www.itheima.cn; <span class="section">location</span> / &#123; <span class="attribute">proxy_pass</span> http://itheimabackend; &#125; &#125;</span><br></pre></td></tr></table></figure>
+
+<p>URL 重写与负载均衡组合：</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">upstream</span> backend &#123;</span><br><span class="line">    <span class="attribute">server</span> <span class="number">192.168.200.146:9001</span>;</span><br><span class="line">    <span class="attribute">server</span> <span class="number">192.168.200.146:9002</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="section">server</span> &#123;</span><br><span class="line">    <span class="attribute">listen</span> <span class="number">80</span>;</span><br><span class="line">    <span class="attribute">server_name</span> localhost;</span><br><span class="line">    <span class="section">location</span> /file/ &#123;</span><br><span class="line">        <span class="attribute">rewrite</span><span class="regexp"> ^(/file/.*)</span> /server/<span class="variable">$1</span> <span class="literal">last</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="section">location</span> / &#123;</span><br><span class="line">        <span class="attribute">proxy_pass</span> http://backend;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Nginx-四层负载均衡（stream）"><a href="#Nginx-四层负载均衡（stream）" class="headerlink" title="Nginx 四层负载均衡（stream）"></a>Nginx 四层负载均衡（stream）</h2><p>Nginx 1.9 起提供 stream 模块，可对 TCP&#x2F;UDP 流量进行转发与负载均衡，适用于 Redis、MySQL 等非 HTTP 服务。该模块默认未编译，需通过 <code>./configure --with-stream</code> 启用。</p>
+<p>stream 块与 http 块平级：</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">stream</span> &#123;</span><br><span class="line">    <span class="section">upstream</span> redisbackend &#123;</span><br><span class="line">        <span class="attribute">server</span> <span class="number">192.168.200.146:6379</span>;</span><br><span class="line">        <span class="attribute">server</span> <span class="number">192.168.200.146:6378</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="section">upstream</span> tomcatbackend &#123;</span><br><span class="line">        <span class="attribute">server</span> <span class="number">192.168.200.146:8080</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="section">server</span> &#123;</span><br><span class="line">        <span class="attribute">listen</span> <span class="number">81</span>;</span><br><span class="line">        <span class="attribute">proxy_pass</span> redisbackend;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="section">server</span> &#123;</span><br><span class="line">        <span class="attribute">listen</span> <span class="number">82</span>;</span><br><span class="line">        <span class="attribute">proxy_pass</span> tomcatbackend;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>七层代理可解析 HTTP 业务内容，四层代理仅依据 IP 与端口转发数据包，因此非 HTTP 协议须使用 stream 方案。</p>
+<h2 id="Nginx-Web-缓存"><a href="#Nginx-Web-缓存" class="headerlink" title="Nginx Web 缓存"></a>Nginx Web 缓存</h2><h3 id="缓存机制"><a href="#缓存机制" class="headerlink" title="缓存机制"></a>缓存机制</h3><p>缓存指在客户端与应用服务器之间保存响应副本，相同请求再次到达时直接返回副本，减少对后端的访问。其优势在于降低网络传输、减轻后端压力、提升响应速度；代价是可能产生数据不一致，并增加存储开销。</p>
+<p>Nginx 自 0.7.48 起提供缓存能力，基于 Proxy Store 实现：将 URL 等组合信息作为 Key，经 MD5 哈希映射为磁盘目录路径，缓存内容保存于对应目录。</p>
+<h3 id="完整配置案例"><a href="#完整配置案例" class="headerlink" title="完整配置案例"></a>完整配置案例</h3><p>缓存后端 Tomcat 提供的 <code>/js/jquery.js</code>：</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">http</span> &#123;</span><br><span class="line">    <span class="attribute">proxy_cache_path</span> /usr/local/proxy_cache levels=<span class="number">2</span>:<span class="number">1</span> keys_zone=itcast:<span class="number">200m</span> inactive=<span class="number">1d</span> max_size=<span class="number">20g</span>;</span><br><span class="line"></span><br><span class="line">    <span class="section">upstream</span> backend &#123;</span><br><span class="line">        <span class="attribute">server</span> <span class="number">192.168.200.146:8080</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="section">server</span> &#123;</span><br><span class="line">        <span class="attribute">listen</span> <span class="number">8080</span>;</span><br><span class="line">        <span class="attribute">server_name</span> localhost;</span><br><span class="line">        <span class="section">location</span> / &#123;</span><br><span class="line">            <span class="attribute">proxy_cache</span> itcast;                     <span class="comment"># 启用缓存区</span></span><br><span class="line">            <span class="attribute">proxy_cache_key</span> itheima;                <span class="comment"># 缓存 Key（默认 $scheme$proxy_host$request_uri）</span></span><br><span class="line">            <span class="attribute">proxy_cache_min_uses</span> <span class="number">5</span>;                 <span class="comment"># 访问 5 次后写入缓存</span></span><br><span class="line">            <span class="attribute">proxy_cache_valid</span> <span class="number">200</span> <span class="number">5d</span>;               <span class="comment"># 200 响应缓存 5 天</span></span><br><span class="line">            <span class="attribute">proxy_cache_valid</span> <span class="number">404</span> <span class="number">30s</span>;              <span class="comment"># 404 响应缓存 30 秒</span></span><br><span class="line">            <span class="attribute">proxy_cache_valid</span> any <span class="number">1m</span>;               <span class="comment"># 其余状态缓存 1 分钟</span></span><br><span class="line">            <span class="attribute">add_header</span> nginx-cache <span class="string">&quot;<span class="variable">$upstream_cache_status</span>&quot;</span>;  <span class="comment"># 便于观察命中状态</span></span><br><span class="line">            <span class="attribute">proxy_pass</span> http://backend/js/;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="proxy-cache-path-参数"><a href="#proxy-cache-path-参数" class="headerlink" title="proxy_cache_path 参数"></a>proxy_cache_path 参数</h3><figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">proxy_cache_path</span> /usr/local/proxy_cache      <span class="comment"># 缓存根目录</span></span><br><span class="line">    levels=<span class="number">2</span>:<span class="number">1</span>                              <span class="comment"># 目录层级（每层取值 1 或 2 个字符，最多 3 层）</span></span><br><span class="line">    keys_zone=itcast:<span class="number">200m</span>                    <span class="comment"># 缓存区名称与内存大小</span></span><br><span class="line">    inactive=<span class="number">1d</span>                              <span class="comment"># 超过该时长未访问则删除</span></span><br><span class="line">    max_size=<span class="number">20g</span>;                            <span class="comment"># 磁盘上限，满后淘汰最旧缓存</span></span><br></pre></td></tr></table></figure>
+
+<p>目录层级示例：Key 经 MD5 后为 <code>43c8233266edce38c2c9af0694e2107d</code></p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">levels=1:2   -&gt; /usr/local/proxy_cache/d/07</span><br><span class="line">levels=2:1:2 -&gt; /usr/local/proxy_cache/7d/0/21</span><br></pre></td></tr></table></figure>
+
+<p>多层目录用于分散文件，避免单目录文件过多影响查找性能。</p>
+<h3 id="指令速查"><a href="#指令速查" class="headerlink" title="指令速查"></a>指令速查</h3><table>
+<thead>
+<tr>
+<th>指令</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>proxy_cache zone_name</code></td>
+<td>开启缓存并指定缓存区</td>
+</tr>
+<tr>
+<td><code>proxy_cache_key key</code></td>
+<td>自定义缓存 Key</td>
+</tr>
+<tr>
+<td><code>proxy_cache_valid 200 5d</code></td>
+<td>按响应状态码设置缓存时长</td>
+</tr>
+<tr>
+<td><code>proxy_cache_min_uses 5</code></td>
+<td>被访问指定次数后才写入缓存</td>
+</tr>
+<tr>
+<td><code>proxy_cache_methods</code></td>
+<td>缓存的请求方法（默认 GET&#x2F;HEAD，POST 不缓存）</td>
+</tr>
+</tbody></table>
+<h3 id="缓存清除"><a href="#缓存清除" class="headerlink" title="缓存清除"></a>缓存清除</h3><p>方式一：删除缓存目录：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">rm</span> -rf /usr/local/proxy_cache/xxx</span><br></pre></td></tr></table></figure>
+
+<p>方式二：编译第三方模块 ngx_cache_purge，按 URL 精确清除：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">tar -zxf ngx_cache_purge-2.3.tar.gz</span><br><span class="line">./configure --add-module=/root/nginx/module/purge</span><br><span class="line">make &amp;&amp; make upgrade</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">server</span> &#123;</span><br><span class="line">    <span class="section">location</span> ~/purge(/.*) &#123;</span><br><span class="line">        <span class="attribute">proxy_cache_purge</span> itcast itheima;   <span class="comment"># 访问 /purge/js/jquery.js 即清除对应缓存</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="设置不缓存"><a href="#设置不缓存" class="headerlink" title="设置不缓存"></a>设置不缓存</h3><p>频繁变化的数据不适合缓存，可通过两个指令控制：</p>
+<ul>
+<li><code>proxy_no_cache</code>：满足条件时不写入缓存；</li>
+<li><code>proxy_cache_bypass</code>：满足条件时绕过缓存直接请求后端。</li>
+</ul>
+<p>常用开关变量：</p>
+<table>
+<thead>
+<tr>
+<th>变量</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>$cookie_nocache</code></td>
+<td>Cookie 中 nocache 键的值</td>
+</tr>
+<tr>
+<td><code>$arg_nocache</code></td>
+<td>请求参数 nocache 的值</td>
+</tr>
+<tr>
+<td><code>$arg_comment</code></td>
+<td>请求参数 comment 的值</td>
+</tr>
+</tbody></table>
+<p>示例：对所有 <code>.js</code> 请求绕过缓存：</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">server</span> &#123;</span><br><span class="line">    <span class="attribute">listen</span> <span class="number">8080</span>;</span><br><span class="line">    <span class="attribute">server_name</span> localhost;</span><br><span class="line">    <span class="section">location</span> / &#123;</span><br><span class="line">        <span class="attribute">if</span> (<span class="variable">$request_uri</span> <span class="regexp">~ /.*\.js$)</span> &#123;</span><br><span class="line">            <span class="attribute">set</span> <span class="variable">$nocache</span> <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="attribute">proxy_no_cache</span> <span class="variable">$nocache</span> <span class="variable">$cookie_nocache</span> <span class="variable">$arg_nocache</span> <span class="variable">$arg_comment</span>;</span><br><span class="line">        <span class="attribute">proxy_cache_bypass</span> <span class="variable">$nocache</span> <span class="variable">$cookie_nocache</span> <span class="variable">$arg_nocache</span> <span class="variable">$arg_comment</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>条件判定：所列变量中至少一个不为空且不等于 “0” 时，条件成立并跳过缓存。</p>
+</blockquote>
+</div>
+        </div>
+        
+        <footer class="kratos-entry-footer clearfix">
+            
+            <div class="footer-tag clearfix">
+                <div class="pull-left">
+                <i class="fa fa-tags"></i>
+                    <a class="tag-none-link" href="/blog/tags/Nginx/" rel="tag">Nginx</a>
+                </div>
+                <div class="pull-date">
+                    <time datetime="2026-09-03T06:24:09.646Z" itemprop="dateModified">最后编辑：2026-09-03</time>
+                </div>
+            </div>
+        </footer>
+    </div>
+    
+        <nav class="navigation post-navigation clearfix" role="navigation">
+            
+            <div class="nav-previous clearfix">
+                <a title=" 【Nginx】反向代理与地址重写" href="/blog/2026/09/04/02后端/Nginx/03.Nginx反向代理与地址重写/">&lt; 上一篇</a>
+            </div>
+            
+            
+        </nav>
+    
+    
+</article>
+
+        
+
+            </section>
+
+        
+
+                
+            
+
+<section id="kratos-widget-area" class="col-md-4 hidden-xs hidden-sm">
+    <!-- 文章和页面根据splitter来分割，没有的话就从头开始设置为sticky -->
+    
+    
+                <aside id="krw-about" class="widget widget-kratos-about clearfix">
+    <div class="photo-background"></div>
+    <div class="photo-wrapper clearfix">
+        <div class="photo-wrapper-tip text-center">
+            <img class="about-photo" src="/blog/images/avatar.webp" loading="lazy" decoding="auto" />
+        </div>
+    </div>
+    <div class="textwidget">
+        <p class="text-center">极简主义</p>
+    </div>
+    <div class="site-meta">
+        <a class="meta-item" href="/blog/archives/">
+            <span class="title">
+                文章
+            </span>
+            <span class="count">
+                122
+            </span>
+        </a>
+        <a class="meta-item" href="/blog/categories/">
+            <span class="title">
+                分类
+            </span>
+            <span class="count">
+                17
+            </span>
+        </a>
+        <a class="meta-item" href="/blog/tags/">
+            <span class="title">
+                标签
+            </span>
+            <span class="count">
+                42
+            </span>
+        </a>
+    </div>
+</aside>
+            
+                    <div class="sticky-area">
+                
+                    <aside id="krw-toc" class="widget widget-kratos-toc clearfix toc-div-class" >
+    <div class="photo-background"></div>
+    <h4 class="widget-title no-after">
+        <i class="fa fa-compass"></i>
+        文章目录
+        <span class="toc-progress-bar" role="progressbar" aria-label="阅读进度："></span>
+    </h4>
+    <div class="textwidget">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E6%A6%82%E8%BF%B0"><span class="toc-text">负载均衡概述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B8%B8%E8%A7%81%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E6%96%B9%E5%BC%8F"><span class="toc-text">常见负载均衡方式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9B%9B%E5%B1%82%E4%B8%8E%E4%B8%83%E5%B1%82%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1"><span class="toc-text">四层与七层负载均衡</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Nginx-%E4%B8%83%E5%B1%82%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1"><span class="toc-text">Nginx 七层负载均衡</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9F%BA%E6%9C%AC%E9%85%8D%E7%BD%AE"><span class="toc-text">基本配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%8A%82%E7%82%B9%E7%8A%B6%E6%80%81%E5%8F%82%E6%95%B0"><span class="toc-text">节点状态参数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%AD%E7%A7%8D%E8%B0%83%E5%BA%A6%E7%AD%96%E7%95%A5"><span class="toc-text">六种调度策略</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BB%BC%E5%90%88%E6%A1%88%E4%BE%8B"><span class="toc-text">综合案例</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Nginx-%E5%9B%9B%E5%B1%82%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%EF%BC%88stream%EF%BC%89"><span class="toc-text">Nginx 四层负载均衡（stream）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Nginx-Web-%E7%BC%93%E5%AD%98"><span class="toc-text">Nginx Web 缓存</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BC%93%E5%AD%98%E6%9C%BA%E5%88%B6"><span class="toc-text">缓存机制</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%8C%E6%95%B4%E9%85%8D%E7%BD%AE%E6%A1%88%E4%BE%8B"><span class="toc-text">完整配置案例</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#proxy-cache-path-%E5%8F%82%E6%95%B0"><span class="toc-text">proxy_cache_path 参数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8C%87%E4%BB%A4%E9%80%9F%E6%9F%A5"><span class="toc-text">指令速查</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BC%93%E5%AD%98%E6%B8%85%E9%99%A4"><span class="toc-text">缓存清除</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AE%BE%E7%BD%AE%E4%B8%8D%E7%BC%93%E5%AD%98"><span class="toc-text">设置不缓存</span></a></li></ol></li></ol>
+    </div>
+</aside>
+                
+                
+  <aside id="krw-tags" class="widget widget-kratos-tags clearfix">
+    <h4 class="widget-title"><i class="fa fa-tags"></i>标签聚合</h4>
+      <div class="tag-clouds">
+        <a href="/blog/tags/AI/" style="font-size: 0.8em;">AI</a> <a href="/blog/tags/CORS/" style="font-size: 0.8em;">CORS</a> <a href="/blog/tags/CSS/" style="font-size: 0.8em;">CSS</a> <a href="/blog/tags/Docker/" style="font-size: 0.8em;">Docker</a> <a href="/blog/tags/Dubbo/" style="font-size: 0.8em;">Dubbo</a> <a href="/blog/tags/ELK/" style="font-size: 0.8em;">ELK</a> <a href="/blog/tags/Elasticsearch/" style="font-size: 0.8em;">Elasticsearch</a> <a href="/blog/tags/Eureka/" style="font-size: 0.8em;">Eureka</a> <a href="/blog/tags/Feign/" style="font-size: 0.8em;">Feign</a> <a href="/blog/tags/Gateway/" style="font-size: 0.8em;">Gateway</a> <a href="/blog/tags/HTML/" style="font-size: 0.8em;">HTML</a> <a href="/blog/tags/Idea/" style="font-size: 0.8em;">Idea</a> <a href="/blog/tags/Java/" style="font-size: 0.8em;">Java</a> <a href="/blog/tags/JavaScript/" style="font-size: 0.8em;">JavaScript</a> <a href="/blog/tags/JavaWeb/" style="font-size: 0.8em;">JavaWeb</a> <a href="/blog/tags/K8s/" style="font-size: 0.8em;">K8s</a> <a href="/blog/tags/Kafka/" style="font-size: 0.8em;">Kafka</a> <a href="/blog/tags/Linux/" style="font-size: 0.8em;">Linux</a>
+      </div>
+  </aside>
+
+            
+                
+  <aside id="krw-posts" class="widget widget-kratos-posts">
+  <h4 class="widget-title"><i class="fa fa-file"></i>最新文章</h4>
+  <div class="tab-content">
+      <ul class="list-group">
+        
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/09/05/02%E5%90%8E%E7%AB%AF/Nginx/04.Nginx%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E4%B8%8E%E7%BC%93%E5%AD%98/"><i class="fa  fa-book"></i> 【Nginx】负载均衡与缓存</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/09/04/02%E5%90%8E%E7%AB%AF/Nginx/03.Nginx%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86%E4%B8%8E%E5%9C%B0%E5%9D%80%E9%87%8D%E5%86%99/"><i class="fa  fa-book"></i> 【Nginx】反向代理与地址重写</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/09/03/02%E5%90%8E%E7%AB%AF/Nginx/02.Nginx%E9%9D%99%E6%80%81%E8%B5%84%E6%BA%90%E6%9C%8D%E5%8A%A1%E4%B8%8E%E4%BC%98%E5%8C%96/"><i class="fa  fa-book"></i> 【Nginx】静态资源服务与优化</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/09/02/02%E5%90%8E%E7%AB%AF/Nginx/01.Nginx%E5%9F%BA%E7%A1%80%E4%B8%8E%E5%AE%89%E8%A3%85/"><i class="fa  fa-book"></i> 【Nginx】基础与安装</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/08/31/02%E5%90%8E%E7%AB%AF/Kafka/01.Kafka%E5%9F%BA%E7%A1%80/"><i class="fa  fa-book"></i> 【Kafka】基础</a>
+            
+          
+        
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+      </ul>
+  </div>
+  </aside>
+
+            
+    </div>
+</section>
+        
+        </div>
+    </div>
+</div>
+<footer>
+    <div id="footer"  >
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3 footer-list text-center">
+                    <ul class="kratos-social-icons">
+                        <!-- Keep for compatibility -->
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <!-- New links -->
+                        
+                    </ul>
+                    <ul class="kratos-copyright">
+                        <div>
+                            <li>&copy; 2026 溪岚花的博客 版权所有.</li>
+                            <li>本站已运行<span id="span_dt">Loading...</span></li>
+                        </div>
+                        <div>
+                            <li>Theme <a href="https://github.com/Candinya/Kratos-Rebirth" target="_blank">Kratos:Rebirth</a></li>
+                            <li>Site built with&nbsp;<i class="fa fa-heart throb" style="color:#d43f57"></i>&nbsp;by 林家隆.</li>
+                        </div>
+                        <div>
+                            <li>Powered by <a href="https://hexo.io" target="_blank" rel="nofollow">Hexo</a></li>
+                            <li>Hosted on <a href="https://gitee.com/" target="_blank">Gitee Pages</a></li>
+                        </div>
+                        <div>
+                            
+                            
+                        </div>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="kr-tool text-center">
+            <div class="tool">
+                
+                    <div class="box search-box">
+                        <a href="/blog/search/">
+                            <span class="fa fa-search"></span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="box theme-box" id="darkmode-switch">
+                        <span class="fa fa-adjust"></span>
+                    </div>
+                
+                
+                
+            </div>
+            <div class="box gotop-box">
+                <span class="fa fa-chevron-up"></span>
+            </div>
+        </div>
+    </div>
+</footer>
+</div>
+</div>
+
+        <script defer src="/blog/vendors/bootstrap@3.3.4/dist/js/bootstrap.min.js"></script>
+<script defer src="/blog/vendors/nprogress@0.2.0/nprogress.js"></script>
+<script>
+    if (!window.kr) {
+        window.kr = {};
+    }
+    window.kr.notMobile = (!(navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i)));
+    window.kr.siteRoot = "/blog/";
+</script>
+
+
+
+
+
+    <script defer src="/blog/vendors/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+
+<script defer src="/blog/js/kratosr.min.js"></script>
+<script defer src="/blog/js/pjax.min.js"></script>
+
+
+
+<!-- Extra support for third-party plguins  -->
+
+
+    </body>
+</html>

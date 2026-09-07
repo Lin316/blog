@@ -1,0 +1,919 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+  <!-- 元数据 -->
+  <meta charset="utf-8">
+  <link rel="icon" href="/blog/images/logo.png">
+  
+  <title>【Nginx】基础与安装 | 溪岚花的博客</title>
+  
+  <meta name="author" content="林家隆" />
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="robots" content="index,follow" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <meta name="format-detection" content="telphone=no, email=no" />
+  
+    <meta name="keywords" content="Nginx" />
+  
+  <meta name="description" content="Nginx 概述功能定位Nginx 是一个高性能的 HTTP 服务器和反向代理服务器。 核心用途可概括为一句话：在用户请求与后端服务之间承担接入、转发与分发职责，并高效处理静态资源。 Nginx 高性能的原因 多进程模型：一个 master 主进程负责管理，多个 worker 进程并行处理请求，进程间相互独立。 I&#x2F;O 多路复用（epoll）：单个 worker 可同时监控大量连接，仅处">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【Nginx】基础与安装">
+<meta property="og:url" content="https://lin316.gitee.io/blog/2026/09/02/02%E5%90%8E%E7%AB%AF/Nginx/01.Nginx%E5%9F%BA%E7%A1%80%E4%B8%8E%E5%AE%89%E8%A3%85/index.html">
+<meta property="og:site_name" content="溪岚花的博客">
+<meta property="og:description" content="Nginx 概述功能定位Nginx 是一个高性能的 HTTP 服务器和反向代理服务器。 核心用途可概括为一句话：在用户请求与后端服务之间承担接入、转发与分发职责，并高效处理静态资源。 Nginx 高性能的原因 多进程模型：一个 master 主进程负责管理，多个 worker 进程并行处理请求，进程间相互独立。 I&#x2F;O 多路复用（epoll）：单个 worker 可同时监控大量连接，仅处">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://lin316.gitee.io/blog/blog/images/logo.png">
+<meta property="article:published_time" content="2026-09-02T13:00:00.000Z">
+<meta property="article:modified_time" content="2026-09-03T06:23:05.476Z">
+<meta property="article:author" content="林家隆">
+<meta property="article:tag" content="Nginx">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://lin316.gitee.io/blog/blog/images/logo.png">
+  
+  <!-- 站点验证相关 -->
+  
+    
+    
+    
+  
+  <!-- 样式表文件 -->
+  <link rel="stylesheet" id="kratos-css" href="/blog/css/kratosr.min.css" media="all"></script>
+  
+    <link rel="stylesheet" id="darkmode-css" href="/blog/css/kr-color-dark.min.css" media="(prefers-color-scheme: dark)"></script>
+    <script src="/blog/js/kr-dark.min.js"></script>
+  
+  
+    <link rel="stylesheet" id="highlight-css" href="/blog/css/highlight/night-eighties.min.css" media="all"></script>
+  
+  <link rel="stylesheet" id="fontawe-css" href="/blog/vendors/font-awesome@4.7.0/css/font-awesome.min.css" media="all"></script>
+  <link rel="stylesheet" id="nprogress-css" href="/blog/vendors/nprogress@0.2.0/nprogress.css" media="all"></script>
+  
+  
+  
+    <link rel="stylesheet" href="/blog/vendors/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css"></script>
+  
+  <!-- 不得不预先加载的一些JS文件 -->
+  <script src="/blog/vendors/jquery@3.6.0/dist/jquery.min.js"></script>
+  
+  
+  <style>
+    
+    
+  </style>
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+    <body class="custom-background">
+        <div id="kratos-wrapper">
+    <div id="kratos-page">
+        <div id="kratos-header">
+            <header id="kratos-desktop-topnav" class="kratos-topnav">
+                <div class="container">
+                    <div class="nav-header">
+                        <nav id="kratos-menu-wrap">
+                            <ul id="kratos-primary-menu" class="sf-menu">
+                                
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/">
+                                            
+                                                
+                                                    <i class="fa fa-home"></i>
+                                                
+                                                首页
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/archives/">
+                                            
+                                                
+                                                    <i class="fa fa-file"></i>
+                                                
+                                                归档
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/tags/">
+                                            
+                                                
+                                                    <i class="fa fa-tag"></i>
+                                                
+                                                标签
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/categories/">
+                                            
+                                                
+                                                    <i class="fa fa-folder"></i>
+                                                
+                                                目录
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/blog/search/">
+                                            
+                                                
+                                                    <i class="fa fa-search"></i>
+                                                
+                                                搜索
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </header>
+            <header id="kratos-mobile-topnav" class="kratos-topnav">
+                <div class="container">
+                    <div class="color-logo"><a href="/blog/">溪岚花的博客</a></div>
+                    <div class="nav-toggle">
+                        <a class="kratos-nav-toggle js-kratos-nav-toggle">
+                            <i></i>
+                        </a>
+                    </div>
+                </div>
+            </header>
+        </div>
+        <div class="kratos-start kratos-hero-2">
+            <!-- <div class="kratos-overlay"></div> -->
+            <div class="kratos-cover kratos-cover-2 text-center">
+                <div class="desc desc2 animate-box">
+                    <a href="/blog/">
+                        <h2 style="opacity: 0.2;">溪岚花的博客</h2> <br />
+                        <span></span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div id="kratos-blog-post">
+            <div class="container">
+                <div id="main" class="row">
+                    
+
+        
+
+            <section class="col-md-8">
+
+        
+
+            <article itemscope itemtype="https://schema.org/Article">
+    
+    <link itemprop="mainEntityOfPage" href="https://lin316.gitee.io/blog/2026/09/02/02%E5%90%8E%E7%AB%AF/Nginx/01.Nginx%E5%9F%BA%E7%A1%80%E4%B8%8E%E5%AE%89%E8%A3%85/">
+    <div class="kratos-hentry kratos-post-inner clearfix">
+        <header class="kratos-entry-header">
+            
+                <h1 class="kratos-entry-title text-center" itemprop="name headline">【Nginx】基础与安装</h1>
+            
+            
+            <ul class="kratos-post-meta text-center">
+                <li><time datetime="2026-09-02T13:00:00.000Z" itemprop="datePublished"><i class="fa fa-calendar"></i> 2026-09-02</time></li>
+                <li itemprop="author" itemscope itemtype="https://schema.org/Person">
+                    <i class="fa fa-user"></i> 作者 <span itemprop="name">林家隆</span>
+                </li>
+                
+                    <li>
+                        <i class="fa fa-edit"></i> 
+                        
+                        
+                            4.90K
+                        
+                        字
+                    </li>
+                
+                
+            </ul>
+        </header>
+        <div class="kratos-post-content">
+            
+            <div id="expire-alert" class="alert alert-warning hidden" role="alert">
+                <div class="icon"><i class="fa fa-warning"></i></div>
+                <div class="text"><p>本文最后编辑于 <time datetime="1788416585476"></time> 前，其中的内容可能需要更新。</p></div>
+            </div>
+            
+            
+            
+                <div class="kratos-post-inner-toc toc-div-class" >
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Nginx-%E6%A6%82%E8%BF%B0"><span class="toc-number">1.</span> <span class="toc-text">Nginx 概述</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8A%9F%E8%83%BD%E5%AE%9A%E4%BD%8D"><span class="toc-number">1.1.</span> <span class="toc-text">功能定位</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Nginx-%E9%AB%98%E6%80%A7%E8%83%BD%E7%9A%84%E5%8E%9F%E5%9B%A0"><span class="toc-number">1.2.</span> <span class="toc-text">Nginx 高性能的原因</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BB%E8%A6%81%E4%BC%98%E5%8A%BF"><span class="toc-number">1.3.</span> <span class="toc-text">主要优势</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%83%A8%E7%BD%B2%E7%8E%AF%E5%A2%83%E4%B8%8E%E5%AE%89%E8%A3%85"><span class="toc-number">2.</span> <span class="toc-text">部署环境与安装</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%8E%AF%E5%A2%83%E5%87%86%E5%A4%87"><span class="toc-number">2.1.</span> <span class="toc-text">环境准备</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%89%E7%A7%8D%E5%AE%89%E8%A3%85%E6%96%B9%E5%BC%8F"><span class="toc-number">2.2.</span> <span class="toc-text">三种安装方式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E8%A3%85%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84"><span class="toc-number">2.3.</span> <span class="toc-text">安装目录结构</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%90%AF%E5%8A%A8%E3%80%81%E5%81%9C%E6%AD%A2%E4%B8%8E%E5%B9%B3%E6%BB%91%E7%AE%A1%E7%90%86"><span class="toc-number">3.</span> <span class="toc-text">启动、停止与平滑管理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%9B%E7%A8%8B%E6%A8%A1%E5%9E%8B"><span class="toc-number">3.1.</span> <span class="toc-text">进程模型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%91%BD%E4%BB%A4%E8%A1%8C%E6%8E%A7%E5%88%B6"><span class="toc-number">3.2.</span> <span class="toc-text">命令行控制</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE%E7%94%9F%E6%95%88%E6%B5%81%E7%A8%8B"><span class="toc-number">3.3.</span> <span class="toc-text">配置生效流程</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#nginx-conf-%E6%A0%B8%E5%BF%83%E9%85%8D%E7%BD%AE"><span class="toc-number">4.</span> <span class="toc-text">nginx.conf 核心配置</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE%E7%BB%93%E6%9E%84"><span class="toc-number">4.1.</span> <span class="toc-text">配置结构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B3%A8%E9%87%8A%E7%89%88%E9%AA%A8%E6%9E%B6%E9%85%8D%E7%BD%AE"><span class="toc-number">4.2.</span> <span class="toc-text">注释版骨架配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%A8%E5%B1%80%E5%9D%97%E5%B8%B8%E7%94%A8%E6%8C%87%E4%BB%A4"><span class="toc-number">4.3.</span> <span class="toc-text">全局块常用指令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#events-%E5%9D%97%E5%B8%B8%E7%94%A8%E6%8C%87%E4%BB%A4"><span class="toc-number">4.4.</span> <span class="toc-text">events 块常用指令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#http-%E5%9D%97%E8%A6%81%E7%82%B9"><span class="toc-number">4.5.</span> <span class="toc-text">http 块要点</span></a></li></ol></li></ol>
+                </div>
+            
+            <hr />
+            <div itemprop="articleBody"><h2 id="Nginx-概述"><a href="#Nginx-概述" class="headerlink" title="Nginx 概述"></a>Nginx 概述</h2><h3 id="功能定位"><a href="#功能定位" class="headerlink" title="功能定位"></a>功能定位</h3><p>Nginx 是一个高性能的 HTTP 服务器和反向代理服务器。</p>
+<p>核心用途可概括为一句话：<strong>在用户请求与后端服务之间承担接入、转发与分发职责，并高效处理静态资源</strong>。</p>
+<h3 id="Nginx-高性能的原因"><a href="#Nginx-高性能的原因" class="headerlink" title="Nginx 高性能的原因"></a>Nginx 高性能的原因</h3><ol>
+<li><strong>多进程模型</strong>：一个 master 主进程负责管理，多个 worker 进程并行处理请求，进程间相互独立。</li>
+<li><strong>I&#x2F;O 多路复用（epoll）</strong>：单个 worker 可同时监控大量连接，仅处理就绪的连接，避免为每个连接分配独立线程或进程。这也是要求 Linux 内核 2.6 以上的原因——epoll 自该版本起提供。</li>
+</ol>
+<p>可以理解为：传统模型为每个连接分配一个处理单元，而 Nginx 由少量 worker 统一监听海量连接，显著降低了上下文切换与资源占用。</p>
+<h3 id="主要优势"><a href="#主要优势" class="headerlink" title="主要优势"></a>主要优势</h3><table>
+<thead>
+<tr>
+<th>优势</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>高并发、低资源占用</td>
+<td>多进程 + epoll 架构，单机可支撑数万并发连接</td>
+</tr>
+<tr>
+<td>配置简单、扩展性强</td>
+<td>模块化设计，可通过配置启用官方或第三方模块</td>
+</tr>
+<tr>
+<td>高可靠性</td>
+<td>master 监控 worker，worker 异常退出时可被重新拉起</td>
+</tr>
+<tr>
+<td>热部署</td>
+<td>修改配置、升级版本无需停机，平滑切换</td>
+</tr>
+<tr>
+<td>开源免费</td>
+<td>BSD 许可证，可免费商用，也可修改源码定制</td>
+</tr>
+</tbody></table>
+<h2 id="部署环境与安装"><a href="#部署环境与安装" class="headerlink" title="部署环境与安装"></a>部署环境与安装</h2><h3 id="环境准备"><a href="#环境准备" class="headerlink" title="环境准备"></a>环境准备</h3><ul>
+<li><strong>Linux 内核 2.6 及以上</strong>：<code>uname -a</code> 查看，保证 epoll 可用；</li>
+<li><strong>依赖库</strong>：编译安装需要 GCC 编译器、PCRE（正则表达式）、zlib（gzip 压缩）、OpenSSL（HTTPS），可一次安装：</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install -y gcc pcre pcre-devel zlib zlib-devel openssl openssl-devel</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>防火墙与 SELinux</strong>：学习环境可临时关闭以便排障；生产环境应针对端口放行而非整体关闭：</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">systemctl stop firewalld        <span class="comment"># 临时关闭</span></span><br><span class="line">systemctl <span class="built_in">disable</span> firewalld     <span class="comment"># 禁止开机启动</span></span><br><span class="line">systemctl status firewalld      <span class="comment"># 查看状态</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="三种安装方式"><a href="#三种安装方式" class="headerlink" title="三种安装方式"></a>三种安装方式</h3><table>
+<thead>
+<tr>
+<th>方式</th>
+<th>流程</th>
+<th>适用场景</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>源码简单安装</td>
+<td><code>wget</code> 下载 → <code>tar</code> 解压 → <code>./configure</code> → <code>make</code> → <code>make install</code></td>
+<td>默认参数安装到 <code>/usr/local/nginx</code></td>
+</tr>
+<tr>
+<td>yum 安装</td>
+<td>配置官方 yum 源后 <code>yum install -y nginx</code></td>
+<td>快速部署，目录由包管理工具管理</td>
+</tr>
+<tr>
+<td>源码复杂安装</td>
+<td>同源码安装，但通过 <code>./configure</code> 指定路径与编译模块</td>
+<td>需要启用额外模块或定制安装路径</td>
+</tr>
+</tbody></table>
+<p>下载：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget http://nginx.org/download/nginx-1.16.1.tar.gz</span><br></pre></td></tr></table></figure>
+
+<p>复杂安装常用参数示例：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">./configure --prefix=/usr/local/nginx \</span><br><span class="line">--sbin-path=/usr/local/nginx/sbin/nginx \</span><br><span class="line">--modules-path=/usr/local/nginx/modules \</span><br><span class="line">--conf-path=/usr/local/nginx/conf/nginx.conf \</span><br><span class="line">--error-log-path=/usr/local/nginx/logs/error.log \</span><br><span class="line">--http-log-path=/usr/local/nginx/logs/access.log \</span><br><span class="line">--pid-path=/usr/local/nginx/logs/nginx.pid</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>编译参数约定：<code>--with-xxx</code> 表示启用默认未编译的模块，<code>--without-xxx</code> 表示关闭默认启用的模块。</p>
+</blockquote>
+<h3 id="安装目录结构"><a href="#安装目录结构" class="headerlink" title="安装目录结构"></a>安装目录结构</h3><figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">/usr/local/nginx</span><br><span class="line">├── conf/    # 配置文件目录（nginx.conf 为核心）</span><br><span class="line">├── html/    # 默认静态页面（index.html、50x.html）</span><br><span class="line">├── logs/    # 日志目录（access.log、error.log、nginx.pid）</span><br><span class="line">└── sbin/    # nginx 可执行文件</span><br></pre></td></tr></table></figure>
+
+<p>conf 目录中值得关注的文件：</p>
+<ul>
+<li><code>mime.types</code>：文件后缀与 Content-Type 的映射表，用于告知浏览器资源类型；</li>
+<li><code>nginx.conf</code>：Nginx 核心配置文件，是后续所有功能配置的基础。</li>
+</ul>
+<h2 id="启动、停止与平滑管理"><a href="#启动、停止与平滑管理" class="headerlink" title="启动、停止与平滑管理"></a>启动、停止与平滑管理</h2><h3 id="进程模型"><a href="#进程模型" class="headerlink" title="进程模型"></a>进程模型</h3><p>启动后通过 <code>ps -ef | grep nginx</code> 可观察到两类进程：</p>
+<ul>
+<li><strong>master 进程</strong>：负责接收外部信号、监控 worker 状态，并在 worker 异常退出时重新拉起；</li>
+<li><strong>worker 进程</strong>：实际处理用户请求，进程间相互独立、地位平等。</li>
+</ul>
+<p>管理员只需向 master 发送信号即可控制整个 Nginx，master 的 PID 记录于 <code>logs/nginx.pid</code>。</p>
+<h3 id="命令行控制"><a href="#命令行控制" class="headerlink" title="命令行控制"></a>命令行控制</h3><table>
+<thead>
+<tr>
+<th>命令</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>nginx</code></td>
+<td>启动</td>
+</tr>
+<tr>
+<td><code>nginx -s stop</code></td>
+<td>快速停止</td>
+</tr>
+<tr>
+<td><code>nginx -s quit</code></td>
+<td>优雅停止（处理完当前请求后退出）</td>
+</tr>
+<tr>
+<td><code>nginx -s reload</code></td>
+<td>平滑重载配置</td>
+</tr>
+<tr>
+<td><code>nginx -s reopen</code></td>
+<td>重新打开日志文件（用于日志切割）</td>
+</tr>
+<tr>
+<td><code>nginx -t</code></td>
+<td>检查配置文件语法</td>
+</tr>
+<tr>
+<td><code>nginx -v</code> &#x2F; <code>nginx -V</code></td>
+<td>查看版本 &#x2F; 版本与编译参数</td>
+</tr>
+</tbody></table>
+<h3 id="配置生效流程"><a href="#配置生效流程" class="headerlink" title="配置生效流程"></a>配置生效流程</h3><p>修改配置后的标准操作：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">nginx -t          <span class="comment"># 1. 语法检查</span></span><br><span class="line">nginx -s reload   <span class="comment"># 2. 平滑重载</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>reload 为何不中断服务</strong>（面试高频）：master 校验新配置通过后启动新 worker，旧 worker 处理完已有请求后自动退出，新旧进程交替期间服务持续可用。</p>
+<h2 id="nginx-conf-核心配置"><a href="#nginx-conf-核心配置" class="headerlink" title="nginx.conf 核心配置"></a>nginx.conf 核心配置</h2><h3 id="配置结构"><a href="#配置结构" class="headerlink" title="配置结构"></a>配置结构</h3><p>默认配置由三大块构成，且块之间层层嵌套：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">nginx.conf</span><br><span class="line">├── 全局块           # 影响进程运行的整体参数</span><br><span class="line">├── events 块       # 网络连接模型相关参数</span><br><span class="line">└── http 块         # HTTP 服务配置（代理、缓存、日志等）</span><br><span class="line">    ├── server 块   # 虚拟主机：一个 server 对应一个站点</span><br><span class="line">    │   └── location 块  # 按请求 URI 匹配并执行具体处理</span><br><span class="line">    └── ...</span><br></pre></td></tr></table></figure>
+
+<h3 id="注释版骨架配置"><a href="#注释版骨架配置" class="headerlink" title="注释版骨架配置"></a>注释版骨架配置</h3><figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># ============ 全局块 ============</span></span><br><span class="line"><span class="attribute">worker_processes</span>  <span class="number">1</span>;   <span class="comment"># worker 进程数，建议与 CPU 核数一致，可配置为 auto</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># ============ events 块 ============</span></span><br><span class="line"><span class="section">events</span> &#123;</span><br><span class="line">    <span class="attribute">worker_connections</span>  <span class="number">1024</span>;   <span class="comment"># 单个 worker 可同时保持的最大连接数</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># ============ http 块 ============</span></span><br><span class="line"><span class="section">http</span> &#123;</span><br><span class="line">    <span class="attribute">include</span>       mime.types;                <span class="comment"># 引入 MIME 类型映射</span></span><br><span class="line">    <span class="attribute">default_type</span>  application/octet-stream;  <span class="comment"># 未识别类型时的默认值</span></span><br><span class="line">    <span class="attribute">sendfile</span>        <span class="literal">on</span>;                      <span class="comment"># 开启零拷贝文件传输</span></span><br><span class="line">    <span class="attribute">keepalive_timeout</span>  <span class="number">65</span>;                   <span class="comment"># 长连接超时时间</span></span><br><span class="line"></span><br><span class="line">    <span class="section">server</span> &#123;</span><br><span class="line">        <span class="attribute">listen</span>       <span class="number">80</span>;</span><br><span class="line">        <span class="attribute">server_name</span>  localhost;</span><br><span class="line"></span><br><span class="line">        <span class="section">location</span> / &#123;</span><br><span class="line">            <span class="attribute">root</span>   html;                     <span class="comment"># 站点根目录</span></span><br><span class="line">            <span class="attribute">index</span>  index.html index.htm;     <span class="comment"># 默认首页</span></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="attribute">error_page</span>   <span class="number">500</span> <span class="number">502</span> <span class="number">503</span> <span class="number">504</span> <span class="number">404</span>  /50x.html;</span><br><span class="line">        <span class="section">location</span> = /50x.html &#123;</span><br><span class="line">            <span class="attribute">root</span>   html;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="全局块常用指令"><a href="#全局块常用指令" class="headerlink" title="全局块常用指令"></a>全局块常用指令</h3><table>
+<thead>
+<tr>
+<th>指令</th>
+<th>作用</th>
+<th>默认值</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>user</code></td>
+<td>指定 worker 进程的运行用户</td>
+<td>nobody</td>
+</tr>
+<tr>
+<td><code>worker_processes</code></td>
+<td>worker 进程数量</td>
+<td>1</td>
+</tr>
+<tr>
+<td><code>daemon</code></td>
+<td>是否以守护进程方式运行</td>
+<td>on</td>
+</tr>
+<tr>
+<td><code>pid</code></td>
+<td>master 进程 PID 文件路径</td>
+<td>logs&#x2F;nginx.pid</td>
+</tr>
+<tr>
+<td><code>error_log</code></td>
+<td>错误日志路径与级别</td>
+<td>logs&#x2F;error.log error</td>
+</tr>
+<tr>
+<td><code>include</code></td>
+<td>引入其他配置文件</td>
+<td>无</td>
+</tr>
+</tbody></table>
+<h3 id="events-块常用指令"><a href="#events-块常用指令" class="headerlink" title="events 块常用指令"></a>events 块常用指令</h3><table>
+<thead>
+<tr>
+<th>指令</th>
+<th>作用</th>
+<th>默认值</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>accept_mutex</code></td>
+<td>是否串行化接收新连接，避免惊群</td>
+<td>on</td>
+</tr>
+<tr>
+<td><code>multi_accept</code></td>
+<td>worker 是否一次接收多个新连接</td>
+<td>off</td>
+</tr>
+<tr>
+<td><code>worker_connections</code></td>
+<td>单个 worker 的最大连接数</td>
+<td>512</td>
+</tr>
+<tr>
+<td><code>use</code></td>
+<td>事件驱动模型，Linux 下使用 epoll</td>
+<td>系统自动选择</td>
+</tr>
+</tbody></table>
+<p>通用优化配置：</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">events</span> &#123;</span><br><span class="line">    <span class="attribute">accept_mutex</span> <span class="literal">on</span>;</span><br><span class="line">    <span class="attribute">multi_accept</span> <span class="literal">on</span>;</span><br><span class="line">    <span class="attribute">worker_connections</span> <span class="number">1024</span>;</span><br><span class="line">    <span class="attribute">use</span> <span class="literal">epoll</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>其中 <code>accept_mutex</code> 用于解决”惊群”问题：多进程同时被唤醒争夺同一个连接会造成无谓开销，开启后连接接收将被串行化。</p>
+<h3 id="http-块要点"><a href="#http-块要点" class="headerlink" title="http 块要点"></a>http 块要点</h3><p><strong>1. MIME 类型</strong>：<code>include mime.types;</code> 引入类型映射，<code>default_type</code> 兜底。Nginx 亦可直接返回固定文本或 JSON，无需编写后端程序：</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">location</span> /get_text &#123;</span><br><span class="line">    <span class="attribute">default_type</span> text/html;</span><br><span class="line">    <span class="attribute">return</span> <span class="number">200</span> <span class="string">&quot;This is nginx&#x27;s text&quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="section">location</span> /get_json &#123;</span><br><span class="line">    <span class="attribute">default_type</span> application/json;</span><br><span class="line">    <span class="attribute">return</span> <span class="number">200</span> <span class="string">&#x27;&#123;&quot;name&quot;:&quot;TOM&quot;,&quot;age&quot;:18&#125;&#x27;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>2. 访问日志</strong>：<code>access.log</code> 记录用户访问，<code>error.log</code> 记录运行错误，格式可通过 <code>log_format</code> 自定义：</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">log_format</span> main <span class="string">&#x27;client send request=&gt;clientIp=<span class="variable">$remote_addr</span> serverIp=&gt;<span class="variable">$host</span>&#x27;</span>;</span><br><span class="line"><span class="attribute">access_log</span> logs/access.log main;</span><br></pre></td></tr></table></figure>
+
+<p><strong>3. sendfile</strong>：开启后静态文件通过内核 <code>sendfile()</code> 直接传输（零拷贝），可显著提升静态资源处理性能。</p>
+<p><strong>4. keepalive</strong>：HTTP 本身无状态，长连接可避免每次请求重复建立 TCP 连接：</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">keepalive_timeout</span> <span class="number">65</span>;      <span class="comment"># 空闲超过该时间断开</span></span><br><span class="line"><span class="attribute">keepalive_requests</span> <span class="number">100</span>;    <span class="comment"># 单个连接最多复用次数</span></span><br></pre></td></tr></table></figure>
+</div>
+        </div>
+        
+        <footer class="kratos-entry-footer clearfix">
+            
+            <div class="footer-tag clearfix">
+                <div class="pull-left">
+                <i class="fa fa-tags"></i>
+                    <a class="tag-none-link" href="/blog/tags/Nginx/" rel="tag">Nginx</a>
+                </div>
+                <div class="pull-date">
+                    <time datetime="2026-09-03T06:23:05.476Z" itemprop="dateModified">最后编辑：2026-09-03</time>
+                </div>
+            </div>
+        </footer>
+    </div>
+    
+        <nav class="navigation post-navigation clearfix" role="navigation">
+            
+            <div class="nav-previous clearfix">
+                <a title=" 【Kafka】基础" href="/blog/2026/08/31/02后端/Kafka/01.Kafka基础/">&lt; 上一篇</a>
+            </div>
+            
+            
+            <div class="nav-next clearfix">
+                <a title=" 【Nginx】静态资源服务与优化" href="/blog/2026/09/03/02后端/Nginx/02.Nginx静态资源服务与优化/">下一篇 &gt;</a>
+            </div>
+            
+        </nav>
+    
+    
+</article>
+
+        
+
+            </section>
+
+        
+
+                
+            
+
+<section id="kratos-widget-area" class="col-md-4 hidden-xs hidden-sm">
+    <!-- 文章和页面根据splitter来分割，没有的话就从头开始设置为sticky -->
+    
+    
+                <aside id="krw-about" class="widget widget-kratos-about clearfix">
+    <div class="photo-background"></div>
+    <div class="photo-wrapper clearfix">
+        <div class="photo-wrapper-tip text-center">
+            <img class="about-photo" src="/blog/images/avatar.webp" loading="lazy" decoding="auto" />
+        </div>
+    </div>
+    <div class="textwidget">
+        <p class="text-center">极简主义</p>
+    </div>
+    <div class="site-meta">
+        <a class="meta-item" href="/blog/archives/">
+            <span class="title">
+                文章
+            </span>
+            <span class="count">
+                122
+            </span>
+        </a>
+        <a class="meta-item" href="/blog/categories/">
+            <span class="title">
+                分类
+            </span>
+            <span class="count">
+                17
+            </span>
+        </a>
+        <a class="meta-item" href="/blog/tags/">
+            <span class="title">
+                标签
+            </span>
+            <span class="count">
+                42
+            </span>
+        </a>
+    </div>
+</aside>
+            
+                    <div class="sticky-area">
+                
+                    <aside id="krw-toc" class="widget widget-kratos-toc clearfix toc-div-class" >
+    <div class="photo-background"></div>
+    <h4 class="widget-title no-after">
+        <i class="fa fa-compass"></i>
+        文章目录
+        <span class="toc-progress-bar" role="progressbar" aria-label="阅读进度："></span>
+    </h4>
+    <div class="textwidget">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Nginx-%E6%A6%82%E8%BF%B0"><span class="toc-text">Nginx 概述</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8A%9F%E8%83%BD%E5%AE%9A%E4%BD%8D"><span class="toc-text">功能定位</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Nginx-%E9%AB%98%E6%80%A7%E8%83%BD%E7%9A%84%E5%8E%9F%E5%9B%A0"><span class="toc-text">Nginx 高性能的原因</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BB%E8%A6%81%E4%BC%98%E5%8A%BF"><span class="toc-text">主要优势</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%83%A8%E7%BD%B2%E7%8E%AF%E5%A2%83%E4%B8%8E%E5%AE%89%E8%A3%85"><span class="toc-text">部署环境与安装</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%8E%AF%E5%A2%83%E5%87%86%E5%A4%87"><span class="toc-text">环境准备</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%89%E7%A7%8D%E5%AE%89%E8%A3%85%E6%96%B9%E5%BC%8F"><span class="toc-text">三种安装方式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E8%A3%85%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84"><span class="toc-text">安装目录结构</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%90%AF%E5%8A%A8%E3%80%81%E5%81%9C%E6%AD%A2%E4%B8%8E%E5%B9%B3%E6%BB%91%E7%AE%A1%E7%90%86"><span class="toc-text">启动、停止与平滑管理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%9B%E7%A8%8B%E6%A8%A1%E5%9E%8B"><span class="toc-text">进程模型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%91%BD%E4%BB%A4%E8%A1%8C%E6%8E%A7%E5%88%B6"><span class="toc-text">命令行控制</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE%E7%94%9F%E6%95%88%E6%B5%81%E7%A8%8B"><span class="toc-text">配置生效流程</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#nginx-conf-%E6%A0%B8%E5%BF%83%E9%85%8D%E7%BD%AE"><span class="toc-text">nginx.conf 核心配置</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE%E7%BB%93%E6%9E%84"><span class="toc-text">配置结构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B3%A8%E9%87%8A%E7%89%88%E9%AA%A8%E6%9E%B6%E9%85%8D%E7%BD%AE"><span class="toc-text">注释版骨架配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%A8%E5%B1%80%E5%9D%97%E5%B8%B8%E7%94%A8%E6%8C%87%E4%BB%A4"><span class="toc-text">全局块常用指令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#events-%E5%9D%97%E5%B8%B8%E7%94%A8%E6%8C%87%E4%BB%A4"><span class="toc-text">events 块常用指令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#http-%E5%9D%97%E8%A6%81%E7%82%B9"><span class="toc-text">http 块要点</span></a></li></ol></li></ol>
+    </div>
+</aside>
+                
+                
+  <aside id="krw-tags" class="widget widget-kratos-tags clearfix">
+    <h4 class="widget-title"><i class="fa fa-tags"></i>标签聚合</h4>
+      <div class="tag-clouds">
+        <a href="/blog/tags/AI/" style="font-size: 0.8em;">AI</a> <a href="/blog/tags/CORS/" style="font-size: 0.8em;">CORS</a> <a href="/blog/tags/CSS/" style="font-size: 0.8em;">CSS</a> <a href="/blog/tags/Docker/" style="font-size: 0.8em;">Docker</a> <a href="/blog/tags/Dubbo/" style="font-size: 0.8em;">Dubbo</a> <a href="/blog/tags/ELK/" style="font-size: 0.8em;">ELK</a> <a href="/blog/tags/Elasticsearch/" style="font-size: 0.8em;">Elasticsearch</a> <a href="/blog/tags/Eureka/" style="font-size: 0.8em;">Eureka</a> <a href="/blog/tags/Feign/" style="font-size: 0.8em;">Feign</a> <a href="/blog/tags/Gateway/" style="font-size: 0.8em;">Gateway</a> <a href="/blog/tags/HTML/" style="font-size: 0.8em;">HTML</a> <a href="/blog/tags/Idea/" style="font-size: 0.8em;">Idea</a> <a href="/blog/tags/Java/" style="font-size: 0.8em;">Java</a> <a href="/blog/tags/JavaScript/" style="font-size: 0.8em;">JavaScript</a> <a href="/blog/tags/JavaWeb/" style="font-size: 0.8em;">JavaWeb</a> <a href="/blog/tags/K8s/" style="font-size: 0.8em;">K8s</a> <a href="/blog/tags/Kafka/" style="font-size: 0.8em;">Kafka</a> <a href="/blog/tags/Linux/" style="font-size: 0.8em;">Linux</a>
+      </div>
+  </aside>
+
+            
+                
+  <aside id="krw-posts" class="widget widget-kratos-posts">
+  <h4 class="widget-title"><i class="fa fa-file"></i>最新文章</h4>
+  <div class="tab-content">
+      <ul class="list-group">
+        
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/09/05/02%E5%90%8E%E7%AB%AF/Nginx/04.Nginx%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E4%B8%8E%E7%BC%93%E5%AD%98/"><i class="fa  fa-book"></i> 【Nginx】负载均衡与缓存</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/09/04/02%E5%90%8E%E7%AB%AF/Nginx/03.Nginx%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86%E4%B8%8E%E5%9C%B0%E5%9D%80%E9%87%8D%E5%86%99/"><i class="fa  fa-book"></i> 【Nginx】反向代理与地址重写</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/09/03/02%E5%90%8E%E7%AB%AF/Nginx/02.Nginx%E9%9D%99%E6%80%81%E8%B5%84%E6%BA%90%E6%9C%8D%E5%8A%A1%E4%B8%8E%E4%BC%98%E5%8C%96/"><i class="fa  fa-book"></i> 【Nginx】静态资源服务与优化</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/09/02/02%E5%90%8E%E7%AB%AF/Nginx/01.Nginx%E5%9F%BA%E7%A1%80%E4%B8%8E%E5%AE%89%E8%A3%85/"><i class="fa  fa-book"></i> 【Nginx】基础与安装</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/blog/2026/08/31/02%E5%90%8E%E7%AB%AF/Kafka/01.Kafka%E5%9F%BA%E7%A1%80/"><i class="fa  fa-book"></i> 【Kafka】基础</a>
+            
+          
+        
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+      </ul>
+  </div>
+  </aside>
+
+            
+    </div>
+</section>
+        
+        </div>
+    </div>
+</div>
+<footer>
+    <div id="footer"  >
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3 footer-list text-center">
+                    <ul class="kratos-social-icons">
+                        <!-- Keep for compatibility -->
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <!-- New links -->
+                        
+                    </ul>
+                    <ul class="kratos-copyright">
+                        <div>
+                            <li>&copy; 2026 溪岚花的博客 版权所有.</li>
+                            <li>本站已运行<span id="span_dt">Loading...</span></li>
+                        </div>
+                        <div>
+                            <li>Theme <a href="https://github.com/Candinya/Kratos-Rebirth" target="_blank">Kratos:Rebirth</a></li>
+                            <li>Site built with&nbsp;<i class="fa fa-heart throb" style="color:#d43f57"></i>&nbsp;by 林家隆.</li>
+                        </div>
+                        <div>
+                            <li>Powered by <a href="https://hexo.io" target="_blank" rel="nofollow">Hexo</a></li>
+                            <li>Hosted on <a href="https://gitee.com/" target="_blank">Gitee Pages</a></li>
+                        </div>
+                        <div>
+                            
+                            
+                        </div>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="kr-tool text-center">
+            <div class="tool">
+                
+                    <div class="box search-box">
+                        <a href="/blog/search/">
+                            <span class="fa fa-search"></span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="box theme-box" id="darkmode-switch">
+                        <span class="fa fa-adjust"></span>
+                    </div>
+                
+                
+                
+            </div>
+            <div class="box gotop-box">
+                <span class="fa fa-chevron-up"></span>
+            </div>
+        </div>
+    </div>
+</footer>
+</div>
+</div>
+
+        <script defer src="/blog/vendors/bootstrap@3.3.4/dist/js/bootstrap.min.js"></script>
+<script defer src="/blog/vendors/nprogress@0.2.0/nprogress.js"></script>
+<script>
+    if (!window.kr) {
+        window.kr = {};
+    }
+    window.kr.notMobile = (!(navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i)));
+    window.kr.siteRoot = "/blog/";
+</script>
+
+
+
+
+
+    <script defer src="/blog/vendors/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+
+<script defer src="/blog/js/kratosr.min.js"></script>
+<script defer src="/blog/js/pjax.min.js"></script>
+
+
+
+<!-- Extra support for third-party plguins  -->
+
+
+    </body>
+</html>
